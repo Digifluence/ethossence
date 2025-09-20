@@ -1301,6 +1301,74 @@
     ]
   },
   {
+    "name": "t:settings_schema.btn_appointment.name",
+    "settings": [
+      {
+        "type": "text",
+        "id": "btn_appointment_label",
+        "label": "t:settings_schema.btn_appointment.settings.btn_label.label",
+        "placeholder": "t:settings_schema.btn_appointment.settings.btn_label.info"
+      },
+      {
+        "type": "text",
+        "id": "btn_appointment_url",
+        "label": "t:settings_schema.btn_appointment.settings.btn_url.label",
+        "placeholder": "t:settings_schema.btn_appointment.settings.btn_url.info"
+      }
+    ]
+  },
+  {
+    "name": "t:settings_schema.btn_product_finder.name",
+    "settings": [
+      {
+        "type": "text",
+        "id": "btn_product_finder_label",
+        "label": "t:settings_schema.btn_product_finder.settings.btn_label.label",
+        "placeholder": "t:settings_schema.btn_product_finder.settings.btn_label.info"
+      },
+      {
+        "type": "text",
+        "id": "btn_product_finder_url",
+        "label": "t:settings_schema.btn_product_finder.settings.btn_url.label",
+        "placeholder": "t:settings_schema.btn_product_finder.settings.btn_url.info"
+      }
+    ]
+  },  
+  {
+    "name": "t:settings_schema.wholesale.name",
+    "settings": [
+      {
+        "type": "text",
+        "id": "btn_wholesale_label",
+        "label": "t:settings_schema.wholesale.settings.btn_label.label",
+        "placeholder": "t:settings_schema.wholesale.settings.btn_label.info"
+      },
+      {
+        "type": "text",
+        "id": "btn_wholesale_url",
+        "label": "t:settings_schema.wholesale.settings.btn_url.label",
+        "placeholder": "t:settings_schema.wholesale.settings.btn_url.info"
+      }
+    ]
+  },    
+  {
+    "name": "t:settings_schema.quote_request.name",
+    "settings": [
+      {
+        "type": "text",
+        "id": "btn_quote_label",
+        "label": "t:settings_schema.quote_request.settings.btn_label.label",
+        "placeholder": "t:settings_schema.quote_request.settings.btn_label.info"
+      },
+      {
+        "type": "text",
+        "id": "btn_quote_url",
+        "label": "t:settings_schema.quote_request.settings.btn_url.label",
+        "placeholder": "t:settings_schema.quote_request.settings.btn_url.info"
+      }
+    ]
+  },    
+  {
     "name": "t:settings_schema.social-media.name",
     "settings": [
       {
