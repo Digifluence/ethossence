@@ -1,0 +1,78 @@
+  /* ADD MISSING FORM CSS CLASSES */
+  .cart-attributes .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .cart-attributes .form-group.full {
+    width: 100%;
+  }
+
+  .cart-attributes .form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: rgb(var(--color-foreground));
+  }
+
+  .cart-attributes .form-input {
+    width: 100%;
+    padding: 1rem;
+    border: 0.1rem solid rgba(var(--color-foreground), 0.2);
+    border-radius: 0.5rem;
+    font-family: inherit;
+    font-size: 1.4rem;
+    background-color: rgb(var(--color-background));
+    color: rgb(var(--color-foreground));
+  }
+
+  .cart-attributes .form-input:focus {
+    outline: 0.2rem solid rgba(var(--color-foreground), 0.5);
+    outline-offset: 0.1rem;
+    border-color: rgb(var(--color-foreground));
+  }
+
+  .cart-attributes .form-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3E%3C/svg%3E");
+    background-position: right 1rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5rem 1.5rem;
+    padding-right: 3rem;
+  }
+
+  .cart-save-draft {
+    text-align: center;
+    margin: 2rem 0;
+  }
+
+  #save-cart-message {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+  }
+
+  #save-cart-message.success {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: rgb(16, 185, 129);
+    border: 0.1rem solid rgba(16, 185, 129, 0.2);
+  }
+
+  #save-cart-message.error {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: rgb(239, 68, 68);
+    border: 0.1rem solid rgba(239, 68, 68, 0.2);
+  }
+
+  /* Responsive adjustments for cart attributes */
+  @media screen and (max-width: 749px) {
+    .cart-attributes {
+      margin: 1rem 0 !important;
+    }
+  }
+
+  @media screen and (min-width: 750px) and (max-width: 989px) {
+    .cart-attributes {
+      margin: 2rem 2rem !important;
+    }
+  }

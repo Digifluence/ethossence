@@ -1,0 +1,18 @@
+{%- comment -%} <!-- set if a variant is any amount \\\ START /// --> {%- endcomment -%} 
+{%- assign s_anyAmount_exist = false -%}
+{%- assign s_anyAmount_quantity = 1 -%}
+{%- for variant in product.variants -%}
+  {%- if variant.metafields.iqx.any_amount -%}
+    {%- assign s_anyAmount_exist = true -%}
+    {%- assign s_quantity_show = false -%}
+    {%- assign s_anyAmount_quantity = settings.product_any_amount_default -%}     
+  {%- endif -%}   
+{%- endfor -%} 
+{%- for item in cart.items -%}
+  {%- if item.variant.metafields.iqx.any_amount -%}
+    {%- if item.product.id == product.id -%}
+      {%- assign s_anyAmount_quantity = item.quantity -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endfor -%}
+{%- comment -%} <!-- set if a variant is any amount \\\ END /// --> {%- endcomment -%} 

@@ -1,0 +1,14 @@
+{%- if format == 'button' -%}
+   <div class="product-form__buttons">
+      <button name="{{ btn_label | handle }}" class="product-form__submit button button--full-width button--primary"
+         {% if btn_url != blank %} onclick="window.location.href='{{ btn_url }}'" {% else %} onclick="alert('url not define'); return false;" {% endif %}>
+         <span>{{ btn_label | escape }}</span> {% if include_arrow %}&nbsp; {{- 'icon-arrow.svg' | inline_asset_content -}}{% endif %}
+      </button>
+   </div>
+{%- elsif format == 'link' -%}   
+   <a {% if btn_url != blank %} href="{{ btn_url }}"{% else %} href="#" onclick="alert('url not define'); return false;"{% endif %} class="{{ btn_class }} button radius button--primary color-{{ btn_color_scheme }}">
+      <span>{{ btn_label | escape }}</span> {% if include_arrow %}&nbsp; {{- 'icon-arrow.svg' | inline_asset_content -}}{% endif %}
+   </a>
+{%- else -%}   
+   <pre> Undefine button format</pre>
+{%- endif -%}

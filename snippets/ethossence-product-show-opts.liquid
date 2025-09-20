@@ -1,0 +1,18 @@
+{%- comment -%}<!-- determine show options \\\ START /// -->{%- endcomment -%}
+{%- assign s_get_options_show = true %}
+{%- if template contains 'bio-only' -%}
+  {%- assign s_get_options_show = false %}
+{%- elsif s_object_tags_case contains 'options:' -%}
+  {%- assign s_options_match_found = false -%}
+  {%- assign s_object_tags_array = s_object_tags_case | split: ' ' -%}
+  {%- for this_object_tag in s_object_tags_array -%}
+    {%- if this_object_tag contains 'options:' and s_options_match_found == false -%}
+      {%- assign s_object_user_type_to_match = this_object_tag | remove: '"' | remove: ',' | remove: '[' | remove: ']' -%}
+      {%- if s_user_tags_case contains s_object_user_type_to_match -%}
+        {%- assign s_get_options_show = true -%}
+        {%- assign s_options_match_found = true -%}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+{%- comment -%}<!-- determine show options /// END \\\ -->{%- endcomment -%}

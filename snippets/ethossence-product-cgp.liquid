@@ -1,0 +1,22 @@
+{%- comment -%}<!-- customer group pricing auto-discount \\\ START /// -->{%- endcomment -%}
+{%- if customer %}
+  {%- assign s_cgp_cust_array = customer.metafields.iqx.cgp_discount | split: ',' -%}
+  {%- for cgp_cust_code in s_cgp_cust_array -%}
+    {%- assign s_cgp_cust_code_mod = cgp_cust_code | downcase | remove: ' ' | remove: '["' | remove: '"]' | remove: '"' -%}    
+    {%- for cgp_prod_codes in product.metafields.iqx.cgp_discount.value -%}
+      {%- assign s_cgp_prod_code_halves = cgp_prod_codes | split: '#' -%}
+      {%- for cgp_prod_code_half in s_cgp_prod_code_halves -%}
+        {%- if forloop.first -%}
+          {%- assign s_cgp_prod_code_mod = cgp_prod_code_half | downcase | remove: ' ' -%}
+        {%- elsif forloop.last -%}
+          {%- if s_cgp_cust_code_mod == s_cgp_prod_code_mod -%} 
+            {%- assign s_cgp_prod_percent = cgp_prod_code_half -%}
+            {%- assign s_cgp_percent = s_cgp_prod_percent | remove: '%' -%}
+            {%- assign s_cgp_promo_code = s_cgp_prod_code_mod -%}
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endfor -%}
+  {%- endfor -%}
+{%- endif -%}
+{%- comment -%}<!-- customer group pricing auto-discount /// END \\\ -->{%- endcomment -%}

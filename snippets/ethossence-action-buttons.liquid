@@ -1,0 +1,59 @@
+
+<div {{ block.shopify_attributes }}>
+
+{%- if show_btn_appointment and settings.btn_appointment_url != '' -%}
+   {%- render 'ethossence-buttons'
+   btn_url: settings.btn_appointment_url,
+   btn_label: settings.btn_appointment_label,
+   btn_class: '',
+   btn_color_scheme: section.settings.color_scheme,  
+   format: format,
+   include_arrow: true
+   -%}
+{%- endif -%}
+
+{% if show_btn_product_finder and settings.btn_product_finder_url != '' %} 
+   {%- render 'ethossence-buttons'
+   btn_url: settings.btn_product_finder_url,
+   btn_label: settings.btn_product_finder_label,
+   btn_class: '',
+   btn_color_scheme: section.settings.color_scheme,  
+   format: format,
+   include_arrow: true
+   -%}
+{% endif %}
+
+{% if show_btn_wholesale and settings.btn_wholesale_url != '' %}  
+   {%- render 'ethossence-buttons'
+   btn_url: settings.btn_wholesale_url,
+   btn_label: settings.btn_wholesale_label,
+   btn_class: '',
+   btn_color_scheme: section.settings.color_scheme,  
+   format: format,
+   include_arrow: true
+   -%}
+{% endif %}
+
+{% if show_btn_quote and settings.btn_quote_url != '' %}  
+   {%- render 'ethossence-buttons'
+   btn_url: settings.btn_quote_url,
+   btn_label: settings.btn_quote_label,
+   btn_class: '',
+   btn_color_scheme: section.settings.color_scheme,  
+   format: format,
+   include_arrow: true
+   -%}
+{% endif %}                    
+
+{% if btn_custom_label != '' %}
+   {%- render 'ethossence-buttons'
+   btn_url: btn_custom_url,
+   btn_label: btn_custom_label,
+   btn_class: '',
+   btn_color_scheme: section.settings.color_scheme,  
+   format: format,
+   include_arrow: true
+   -%}
+{% endif %}
+
+</div>

@@ -1,0 +1,11 @@
+
+   {% if txt_url != blank %}
+      <a href="{{ txt_url }}" class="focus-inset">
+   {% endif %}
+   <div>
+      <span>{{ txt_text | escape }}</span>
+      {% if include_arrow != blank %}{{ 'icon-arrow.svg' | inline_asset_content }}{% endif %}
+   </div>
+   {% if txt_url != blank %}
+      </a>
+   {% endif %}

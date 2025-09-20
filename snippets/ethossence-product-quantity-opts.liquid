@@ -1,0 +1,31 @@
+{%- comment -%}<!-- include quantity options \\\ START /// -->{%- endcomment -%}
+{%- assign s_qty_length_grid_up_size = 3 -%}
+{%- assign s_isQuantity = false -%}
+{%- for option in product.options_with_values -%}
+  {%- if option.name == 'Quantity' or option.name == 'quantity' or option.name == 'Qty' or option.name == 'qty' -%}
+  	{%- assign s_isQuantity = true -%}
+  {%- endif -%}
+  {%- if option.name == 'Quantity' or option.name == 'quantity' or option.name == 'Qty' or option.name == 'qty' or option.name contains 'Length' or option.name contains 'length' -%}  
+    {%- for value in option.values -%} 
+      {%- if forloop.first -%}{%- assign s_value_longest = value.size -%}
+      {%- elsif value.size > s_value_longest -%}{%- assign s_value_longest = value.size -%}
+      {%- endif -%}
+    {%- endfor -%}    
+    {%- assign s_qty_length_grid_up_size = 3 -%}
+    {%- if option.values.size == 2 -%}{%- assign s_qty_length_grid_up_size = 2 -%}
+    {%- elsif option.values.size == 3 -%}{%- assign s_qty_length_grid_up_size = 3 -%}
+    {%- elsif option.values.size > 3 -%}
+      {%- if s_value_longest < 5 -%} 
+        {%- if option.values.size >= 5 -%}{%- assign s_qty_length_grid_up_size = 5 -%}
+        {%- elsif option.values.size == 4 -%}{%- assign s_qty_length_grid_up_size = 4 -%}
+        {%- else -%}{%- assign s_qty_length_grid_up_size = 3 -%}
+        {%- endif -%}
+      {%- else -%}
+        {%- if option.values.size == 4 -%}{%- assign s_qty_length_grid_up_size = 2 -%}
+        {%- else -%}{%- assign s_qty_length_grid_up_size = 3 -%}
+        {%- endif -%}
+      {%- endif -%}  
+    {%- endif -%} 
+  {%- endif -%}  
+{%- endfor -%}
+{%- comment -%}<!-- include quantity options /// END \\\ -->{%- endcomment -%}

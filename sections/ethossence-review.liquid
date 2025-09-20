@@ -1,0 +1,448 @@
+{{ 'section-contact-form.css' | asset_url | stylesheet_tag }}
+{{ 'ethossence-forms.css' | asset_url | stylesheet_tag }}
+{{ 'section-main-page.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  /* Section Padding - Requires Liquid variables */
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- if cart.item_count != 0 -%}
+
+  <div class="page-width section-{{ section.id }}-padding">
+    <div class="frame width-80">
+
+      {%- for block in section.blocks -%} 
+        {%- if block.type == 'content' -%}                            
+          {%- liquid 
+            assign selected_page = pages[block.settings.page]
+            assign img_hero_class = selected_page.metafields.ethossence.img_hero_placement | prepend: 'img-' | replace: ' ', '-' | replace: '-|-', ' img-' | downcase | strip
+
+            if block.settings.content_audience == 'visitors' and customer == null
+              assign show_block = true
+            elsif block.settings.content_audience == 'accounts' and customer != null
+              assign show_block = true
+            else
+              assign show_block = false 
+            endif
+          -%}
+          {%- if selected_page != null and show_block -%}
+            {%- style -%}
+            .block-{{ block.id }}-padding {
+                padding-top: {{ block.settings.padding_top | times: 0.75 | round: 0 }}px;
+                padding-bottom: {{ block.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+            }
+
+            @media screen and (min-width: 750px) {
+                .block-{{ block.id }}-padding {
+                  padding-top: {{ block.settings.padding_top }}px;
+                  padding-bottom: {{ block.settings.padding_bottom }}px;
+                }
+            }
+            {%- endstyle -%}                 
+            <div class="color-{{ block.settings.color_scheme }} gradient">
+              <div class="block-{{ block.id }}-padding">               
+                {%- if block.settings.heading_hide != true -%}
+                  <{{ block.settings.heading_size }} class="page-title {{ block.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+                    {{ selected_page.title | escape }}
+                  </{{ block.settings.heading_size }}>
+                {%- endif -%}
+                {%- if selected_page.content != blank -%}
+                  <div>
+                    {%- if selected_page.metafields.ethossence.img_hero != blank -%}      
+                      {{ selected_page.metafields.ethossence.img_hero | image_url: width: 600 | image_tag: loading: 'lazy', class: img_hero_class }}
+                    {%- endif -%}          
+                    {{ selected_page.content }}
+                  </div>
+                {%- endif -%}
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}  
+
+      <div class="text-center">
+
+        {%- if customer == null -%}
+
+              <button type="button" class="button button--primary" id="register-trigger">
+                Create Account & Request Review &raquo;
+              </button>
+
+              <div class="margin-element-sm">
+                Already have an account? <a href="{{ routes.account_login_url }}?return_url={{ routes.cart_url | url_encode }}" title="Sign in to your existing account">sign in &raquo;</a>
+              </div>
+
+              {% if section.settings.animation_type == 'slide_down' %}
+                <!-- Slide Down Form -->
+                <div id="registration-dropdown" class="form-dropdown">
+                  <div class="form-dropdown__content">               
+                    {% render 'ethossence-review-account-create' %}
+                  </div>
+                  <div> 
+                    <button type="button" class="button button--small button--secondary dropdown__close float-right" id="close-dropdown" aria-label="Close registration form">Cancel</button>
+                  </div>               
+                </div>
+              {% else %}
+                <!-- Slide Out Drawer -->
+                <div id="registration-drawer" class="drawer drawer--right">
+                  <div class="drawer__header">
+                    <button type="button" class="drawer__close" id="close-registration" aria-label="Close registration form">×</button>
+                  </div>
+                  <div class="drawer__inner">
+                    {% render 'ethossence-review-account-create' %}
+                  </div>
+                </div>
+                <div class="drawer__overlay" id="registration-overlay"></div>
+              {% endif %}
+
+            <!-- <p class="text-center text-small"><em>No obligation. No sales pressure. Just expert guidance from welding professionals.</em></p> -->
+
+        {%- else -%}
+
+          <div class="cart-attributes" style="margin: 2rem 0;">
+            <div class="form-group full">
+              <label for="attributes[Needs description]" class="form-label">
+                Solution Notes
+              </label>
+              <textarea 
+                id="attributes[Needs description]"
+                name="attributes[Needs description]"
+                class="form-input"
+                placeholder="Please describe how you plan to use the products..."
+                rows="5"
+              >{{ cart.attributes['Needs description'] }}</textarea>
+            </div>
+            {% comment %}
+            <div class="form-group full" style="margin-top:10px;">
+              <label for="attributes[Currently own/use MeltView system?]" class="form-label">
+                Currently own/use MeltView system?
+              </label>
+              <select 
+                id="attributes[Currently own/use MeltView system?]"
+                name="attributes[Currently own/use MeltView system?]"
+                class="form-input form-select"
+              >
+                <option value="">Please select...</option>
+                <option value="true" {% if cart.attributes['Currently own/use MeltView system?'] == 'true' %}selected{% endif %}>
+                  Yes, I currently own/use MeltView system
+                </option>
+                <option value="false" {% if cart.attributes['Currently own/use MeltView system?'] == 'false' %}selected{% endif %}>
+                  No, I don't currently own/use MeltView system
+                </option>
+                <option value="unsure" {% if cart.attributes['Currently own/use MeltView system?'] == 'unsure' %}selected{% endif %}>
+                  Not sure / Need more information
+                </option>
+              </select>
+            </div>
+            {% endcomment %}
+          </div>
+
+          <div class="cart-save-draft" style="margin: 2rem 0; text-align: center;">
+            <button id="save-cart-draft" type="button" class="button" data-customer-id="{{ customer.id }}" data-customer-email="{{ customer.email }}">
+              Submit for Review &raquo;
+            </button>
+            <div id="save-cart-message" style="margin-top: 1rem; display: none;"></div>
+          </div>
+
+        {%- endif -%}
+
+      </div>
+
+    </div>
+  </div>
+
+  <script src="{{ 'ethossence-forms.js' | asset_url }}" defer></script>
+  <script>
+    // Pass Liquid configuration to the external JavaScript
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof initCustomerRegistration === 'function') {
+        initCustomerRegistration({
+          animationType: '{{ section.settings.animation_type }}',
+          webhookUrl: 'https://hook.us2.make.com/weeau8ogy96lpvkl4d8wlnfm5warbaer'
+        });
+      }
+    });
+  </script>
+
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Customer create (minimal)",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "desktop_content_position",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.rich-text.settings.desktop_content_position.options__1.label"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.rich-text.settings.desktop_content_position.options__2.label"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.rich-text.settings.desktop_content_position.options__3.label"
+        }
+      ],
+      "default": "center",
+      "label": "t:sections.rich-text.settings.desktop_content_position.label"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.rich-text.settings.content_alignment.options__1.label"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.rich-text.settings.content_alignment.options__2.label"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.rich-text.settings.content_alignment.options__3.label"
+        }
+      ],
+      "default": "center",
+      "label": "t:sections.rich-text.settings.content_alignment.label"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "default": true,
+      "label": "t:sections.rich-text.settings.full_width.label"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Create Account"
+    },
+    {
+      "type": "select",
+      "id": "animation_type",
+      "label": "Form Animation",
+      "options": [
+        {"value": "slide_out", "label": "Slide Out (Drawer)"},
+        {"value": "slide_down", "label": "Slide Down (Dropdown)"}
+      ],
+      "default": "slide_out"
+    },
+    {
+      "type": "textarea",
+      "id": "success_message",
+      "label": "Success Message",
+      "default": "Account created successfully! You'll receive a confirmation email shortly.",
+      "info": "Message displayed when account is created successfully"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 52
+    }
+  ],
+  "blocks": [
+      {
+         "type": "heading",
+         "name": "Headings",
+         "limit": 3,
+         "settings": [
+            {
+               "type": "inline_richtext",
+               "id": "heading",
+               "default": "Create Your Account",
+               "label": "Header text"
+            },
+            {
+               "type": "select",
+               "id": "heading_size",
+               "options": [
+                  {
+                     "value": "h2",
+                     "label": "t:sections.all.heading_size.options__1.label"
+                  },
+                  {
+                     "value": "h1",
+                     "label": "t:sections.all.heading_size.options__2.label"
+                  },
+                  {
+                     "value": "h0",
+                     "label": "t:sections.all.heading_size.options__3.label"
+                  },
+                  {
+                     "value": "hxl",
+                     "label": "t:sections.all.heading_size.options__4.label"
+                  },
+                  {
+                     "value": "hxxl",
+                     "label": "t:sections.all.heading_size.options__5.label"
+                  }
+               ],
+               "default": "h1",
+               "label": "t:sections.all.heading_size.label"
+            }
+         ]
+      },
+      {
+         "type": "content",
+         "name": "Content",
+         "settings": [   
+            {
+               "type": "header",
+               "content": "Content"
+            },            
+            {
+               "type": "page",
+               "id": "page",
+               "label": "t:sections.page.settings.page.label"
+            },
+            {
+               "type": "checkbox",
+               "id": "heading_hide",
+               "default": false,
+               "label": "Hide page title"
+            },
+            {
+               "type": "select",
+               "id": "heading_size",
+               "options": [
+               {
+                  "value": "h2",
+                  "label": "t:sections.all.heading_size.options__1.label"
+               },
+               {
+                  "value": "h1",
+                  "label": "t:sections.all.heading_size.options__2.label"
+               },
+               {
+                  "value": "h0",
+                  "label": "t:sections.all.heading_size.options__3.label"
+               },
+               {
+                  "value": "hxl",
+                  "label": "t:sections.all.heading_size.options__4.label"
+               },
+               {
+                  "value": "hxxl",
+                  "label": "t:sections.all.heading_size.options__5.label"
+               }
+               ],
+               "default": "h1",
+               "label": "t:sections.all.heading_size.label"
+            },            
+            {
+               "type": "header",
+               "content": "View permissions"
+            },              
+            {
+              "type": "select",
+              "id": "content_audience",
+              "options": [
+                {
+                  "value": "visitors",
+                  "label": "Visitors without an account"
+                },
+                {
+                  "value": "accounts",
+                  "label": "Those with accounts"
+                }
+              ],
+              "default": "visitors",
+              "label": "Account status",
+              "info": "If those with accounts is selected then authorization to view can be enforced."
+            },
+            {
+              "type": "checkbox",
+              "id": "authoriz_enabled",
+              "default": false,
+              "label": "Enforce authorization to view."
+            },   
+            {
+               "type": "header",
+               "content": "Display"
+            },                                    
+            {
+               "type": "color_scheme",
+               "id": "color_scheme",
+               "label": "t:sections.all.colors.label",
+               "default": "scheme-1"
+            },
+            {
+               "type": "header",
+               "content": "t:sections.all.padding.section_padding_heading"
+            },
+            {
+               "type": "range",
+               "id": "padding_top",
+               "min": 0,
+               "max": 100,
+               "step": 4,
+               "unit": "px",
+               "label": "t:sections.all.padding.padding_top",
+               "default": 36
+            },
+            {
+               "type": "range",
+               "id": "padding_bottom",
+               "min": 0,
+               "max": 100,
+               "step": 4,
+               "unit": "px",
+               "label": "t:sections.all.padding.padding_bottom",
+               "default": 36
+            }        
+         ]
+      }     
+   ],
+  "presets": [
+    {
+      "name": "Customer create (minimal)"
+    }
+  ]
+}
+{% endschema %}

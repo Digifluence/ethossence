@@ -1,0 +1,122 @@
+{% comment %}
+  Renders product variant options
+
+  Accepts:
+  - product: {Object} product object.
+  - option: {Object} current product_option object.
+  - block: {Object} block object.
+  - picker_type: {String} type of picker to display
+  - authorized_variant_ids: {Array} list of authorized variant IDs
+
+  Usage:
+  {% render 'product-variant-options',
+    product: product,
+    option: option,
+    block: block,
+    picker_type: picker_type,
+    authorized_variant_ids: authorized_variant_ids
+  %}
+{% endcomment %}
+
+{%- for value in option.values -%}
+  
+  {%- liquid
+    assign option_disabled = true
+    assign option_authorized = false
+    
+    # DEBUG: Show what we're checking
+    # echo '<p style="font-size: 11px; margin: 2px 0;"><strong>Checking value:</strong> ' | append: value
+    
+    # Check if this option value leads to any authorized variants
+    for variant in product.variants
+      assign variant_has_this_value = false
+      
+      # Check if this variant contains the current option value
+      if variant.option1 == value or variant.option2 == value or variant.option3 == value
+        assign variant_has_this_value = true
+        # echo ' → Found in variant ' | append: variant.id
+      endif
+      
+      if variant_has_this_value
+        # Check if this variant is authorized
+        assign variant_id_string = variant.id | append: ''
+        if authorized_variant_ids contains variant_id_string
+          assign option_authorized = true
+          # echo ' (AUTHORIZED)'
+          
+          # Also check if variant is available
+          if variant.available
+            assign option_disabled = false
+            # echo ' (AVAILABLE)'
+          endif
+        else
+          # echo ' (NOT AUTHORIZED)'
+        endif
+      endif
+    endfor
+    
+    # echo ' → Final: authorized=' | append: option_authorized | append: ', disabled=' | append: option_disabled | append: '</p>'
+    
+    # If customer has no authorization for any variants with this value, hide the option
+    unless option_authorized
+      continue
+    endunless
+  -%}
+
+  {%- capture input_id -%}
+    {{ section.id }}-{{ option.position }}-{{ forloop.index0 -}}
+  {%- endcapture -%}
+
+  {%- capture input_name -%}
+    {{ option.name }}-{{ option.position }}
+  {%- endcapture -%}
+
+  {% assign full_title = '' %}
+  
+  {% for variant in product.variants %}    
+    {% if variant.options[0] == value %} 
+      {% assign full_title = variant.option1 %}
+    {% elsif variant.options[1] == value %} 
+      {% assign full_title = variant.title %}
+    {% endif %}
+  {% endfor %}
+  
+  {%- capture input_dataset -%}
+    data-product-url="{{ value.product_url }}"
+    data-option-value-id="{{ value.id }}"
+    data-variant-title="{{ full_title }}"
+    data-option-authorized="{{ option_authorized }}"
+  {%- endcapture -%}
+
+  {%- capture label_unavailable -%}
+    <span class="visually-hidden label-unavailable">
+      {%- if option_disabled -%}
+        {{- 'products.product.variant_sold_out_or_unavailable' | t -}}
+      {%- endif -%}
+    </span>
+  {%- endcapture -%}
+
+<div class="variant-option{% unless option_authorized %} variant-option--unauthorized{% endunless %}">
+    <input
+      type="radio"
+      id="{{ input_id }}"
+      name="{{ input_name | escape }}"
+      value="{{ value | escape }}"
+      form="{{ product_form_id }}"
+      {% if value.selected %}
+        checked
+      {% endif %}
+      {% if option_disabled %}
+        class="disabled"
+      {% elsif option_authorized == false %}
+        class="unauthorized" disabled
+      {% endif %}
+      {{ input_dataset }}
+    >
+    <label for="{{ input_id }}" class="variant-frame{% unless option_authorized %} variant-frame--unauthorized{% endunless %}">
+      {{ value }}
+      {{ label_unavailable }}
+    </label>
+</div>  
+
+{%- endfor -%}

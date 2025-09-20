@@ -1,0 +1,491 @@
+{%- liquid
+
+  assign social_icons = true
+  if settings.social_facebook_link == blank and settings.social_instagram_link == blank and settings.social_youtube_link == blank and settings.social_tiktok_link == blank and settings.social_twitter_link == blank and settings.social_pinterest_link == blank and settings.social_snapchat_link == blank and settings.social_tumblr_link == blank and settings.social_vimeo_link == blank
+    assign social_icons = false
+  endif
+
+  assign preheader_block_count = section.blocks.size
+  
+  if preheader_block_count > 0
+    assign preheader_bar = true
+  endif
+
+  assign has_buttons = false
+  assign has_text = false
+  assign button_count = 0
+
+  for block in section.blocks
+
+    if block.settings.show_btn_appointment 
+      assign button_count = button_count | plus: 1
+    endif
+    if block.settings.show_btn_product_finder
+      assign button_count = button_count | plus: 1
+    endif
+    if block.settings.show_btn_wholesale
+      assign button_count = button_count | plus: 1
+    endif
+    if block.settings.btn_custom_label != ""
+      assign button_count = button_count | plus: 1
+    endif
+
+    if block.type == 'buttons'
+      assign has_buttons = true
+      assign buttons_alignment = block.settings.buttons_alignment
+    elsif block.type == 'text'
+      assign has_text = true
+      assign button_count = button_count | minus: 1
+    endif    
+
+  endfor
+
+  assign button_column_width = button_count | times: 19
+  assign text_column_width = 100 | minus: button_column_width
+    
+-%}
+
+{%- if preheader_bar -%}
+
+  {%- style -%}
+      
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    }
+  
+    @media (max-width: 749px) {
+      .button-column,
+      .text-column,
+      .grid__item {
+        flex-basis: 100% !important;
+        max-width: 100% !important;
+      }
+      .custom-columns {
+        flex-direction: column;
+        column-gap: 30px;
+      }
+    }
+
+    @media (min-width: 750px) {
+      .custom-columns {
+        display: flex;
+        gap: 0;
+      }
+      .button-column {
+        flex-basis: {{ button_column_width }}%;
+        max-width: {{ button_column_width }}%;
+        flex-grow: 0;
+        flex-shrink: 0;
+        width: auto;        
+      }
+      .text-column {
+        flex-basis: {{ text_column_width }}%;
+        max-width: {{ text_column_width }}%;
+        flex-grow: 0;
+        flex-shrink: 0;
+        width: auto;        
+      }
+      .section-{{ section.id }}-padding {
+        padding-top: {{ section.settings.padding_top }}px;
+        padding-bottom: {{ section.settings.padding_bottom }}px;
+      }      
+    }
+    
+    .text-row {
+      margin: 7px;
+      min-height: calc(2.5rem + var(--buttons-border-width) * 2);
+    }    
+
+    .button-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .preheader-button {
+      justify-self: end;
+      margin: 7px 0;
+      min-height: calc(2.5rem + var(--buttons-border-width) * 2);
+      white-space: nowrap;
+    }    
+
+  {%- endstyle -%}
+
+  {%- if section.settings.show_social and social_icons -%}
+    {{ 'component-list-social.css' | asset_url | stylesheet_tag }}
+  {%- endif -%}
+
+  <ethossence-preheader>
+    <div class="
+        section-{{ section.id }}-padding 
+        color-{{ section.settings.color_scheme }} 
+        gradient
+        {% if section.settings.show_line_separator and section.blocks.size > 0 %} utility-bar--bottom-border
+        {% elsif section.settings.show_line_separator and section.settings.show_social and social_icons%} utility-bar--bottom-border-social-only
+        {% endif %}
+      ">
+      <div class="page-width">
+
+        {%- if section.settings.show_social and social_icons -%}
+          <span style="float: left; padding-right: 10px;">
+            {%- render 'social-icons' -%}
+          </span>
+        {%- endif -%}        
+
+        {%- if section.settings.show_search -%}
+          <span style="float: left; padding-right: 10px;">
+            {% render 'header-search', input_id: 'Search-In-Modal' %}
+          </span>
+        {%- endif -%} 
+
+        <div class="custom-columns grid grid--2-col-tablet-down" style="justify-content: {{ buttons_alignment }};">
+
+          {%- if has_text and has_buttons -%}
+
+            {% for block in section.blocks %}
+              {% case block.type %}
+
+                {% when 'text' %}
+
+                  <div class="text-column color-{{ section.settings.color_scheme }} gradient">
+                    <div class="text-row" style="text-align: {{ block.settings.text_alignment }};">
+                      {%- render 'ethossence-text'
+                        txt_link: block.settings.txt_text,
+                        txt_url: block.settings.txt_url,
+                        include_arrow: true
+                      -%}
+                    </div>
+                  </div>
+
+                {% when 'buttons' %}          
+
+                  <div class="button-column">
+                    <div class="button-row">
+                      
+                      {%- if block.settings.show_btn_appointment -%}
+                        {%- render 'ethossence-buttons'
+                          btn_url: settings.btn_appointment_url,
+                          btn_label: settings.btn_appointment_label,
+                          btn_class: 'preheader-button',
+                          btn_color_scheme: section.settings.color_scheme,  
+                          format: 'link',
+                          include_arrow: true
+                        -%}
+                      {%- endif -%}
+
+                      {% if block.settings.show_btn_product_finder %} 
+                        {%- render 'ethossence-buttons'
+                          btn_url: settings.btn_product_finder_url,
+                          btn_label: settings.btn_product_finder_label,
+                          btn_class: 'preheader-button',
+                          btn_color_scheme: section.settings.color_scheme,  
+                          format: 'link',
+                          include_arrow: true
+                        -%}
+                      {% endif %}
+                      
+                      {% if block.settings.show_btn_wholesale %}  
+                        {%- render 'ethossence-buttons'
+                          btn_url: settings.btn_wholesale_url,
+                          btn_label: settings.btn_wholesale_label,
+                          btn_class: 'preheader-button',
+                          btn_color_scheme: section.settings.color_scheme,  
+                          format: 'link',
+                          include_arrow: true
+                        -%}
+                      {% endif %}
+
+                      {% if block.settings.show_btn_quote %}  
+                        {%- render 'ethossence-buttons'
+                          btn_url: settings.btn_quote_url,
+                          btn_label: settings.btn_quote_label,
+                          btn_class: 'preheader-button',
+                          btn_color_scheme: section.settings.color_scheme,  
+                          format: 'link',
+                          include_arrow: true
+                        -%}
+                      {% endif %}                        
+
+                      {% if block.settings.btn_custom_label != "" %}
+                        {%- render 'ethossence-buttons'
+                          btn_url: settings.btn_custom_url,
+                          btn_label: settings.btn_custom_label,
+                          btn_class: 'preheader-button',
+                          btn_color_scheme: section.settings.color_scheme,  
+                          format: 'link',
+                          include_arrow: true
+                        -%}
+                      {% endif %}  
+
+                    </div>
+                  </div>
+
+              {% endcase %}
+            {% endfor %}                     
+
+          {%- else -%}
+
+            {% for block in section.blocks %}
+              {% case block.type %}              
+
+                {% when 'text' %}
+                  <div class="text-column color-{{ section.settings.color_scheme }} gradient" style="text-align: {{ block.settings.text_alignment }};">
+                      {%- render 'ethossence-text'
+                        txt_link: block.settings.txt_text,
+                        txt_url: block.settings.txt_url,
+                        include_arrow: true
+                      -%}
+                  </div>
+
+                {% when 'buttons' %}
+                  <div class="button-row" style="justify-content: {{ block.settings.buttons_alignment }};">
+
+                    {%- if block.settings.show_btn_appointment -%}
+                      {%- render 'ethossence-buttons'
+                        btn_url: settings.btn_appointment_url,
+                        btn_label: settings.btn_appointment_label,
+                        btn_class: 'preheader-button',
+                        btn_color_scheme: section.settings.color_scheme,  
+                        format: 'link',
+                        include_arrow: true
+                      -%}
+                    {%- endif -%}
+
+                    {% if block.settings.show_btn_product_finder %} 
+                      {%- render 'ethossence-buttons'
+                        btn_url: settings.btn_product_finder_url,
+                        btn_label: settings.btn_product_finder_label,
+                        btn_class: 'preheader-button',
+                        btn_color_scheme: section.settings.color_scheme,  
+                        format: 'link',
+                        include_arrow: true
+                      -%}
+                    {% endif %}
+                    
+                    {% if block.settings.show_btn_wholesale %}  
+                      {%- render 'ethossence-buttons'
+                        btn_url: settings.btn_wholesale_url,
+                        btn_label: settings.btn_wholesale_label,
+                        btn_class: 'preheader-button',
+                        btn_color_scheme: section.settings.color_scheme,  
+                        format: 'link',
+                        include_arrow: true
+                      -%}
+                    {% endif %}
+
+                    {% if block.settings.show_btn_quote %}  
+                      {%- render 'ethossence-buttons'
+                        btn_url: settings.btn_quote_url,
+                        btn_label: settings.btn_quote_label,
+                        btn_class: 'preheader-button',
+                        btn_color_scheme: section.settings.color_scheme,  
+                        format: 'link',
+                        include_arrow: true
+                      -%}
+                    {% endif %}                    
+
+                    {% if block.settings.btn_custom_label != "" %}
+                      {%- render 'ethossence-buttons'
+                        btn_url: block.settings.btn_custom_url,
+                        btn_label: block.settings.btn_custom_label,
+                        btn_class: 'preheader-button',
+                        btn_color_scheme: section.settings.color_scheme,  
+                        format: 'link',
+                        include_arrow: true
+                      -%}
+                    {% endif %}
+
+                  </div>
+
+              {% endcase %}
+            {% endfor %}   
+
+          {%- endif -%}     
+
+        </div>
+      </div>
+    </div>
+  </ethossence-preheader>
+
+{%- endif -%}  
+
+{% schema %}
+  {
+    "name": "t:sections.preheader_bar.name",
+    "max_blocks": 3,
+    "class": "preheader-bar-section",
+    "enabled_on": {
+      "groups": ["header"]
+    },
+    "settings": [
+      {
+        "type": "color_scheme",
+        "id": "color_scheme",
+        "label": "t:sections.all.colors.label",
+        "default": "scheme-4"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_line_separator",
+        "default": true,
+        "label": "t:sections.header.settings.show_line_separator.label"
+      },
+      {
+          "type": "header",
+          "content": "t:sections.all.padding.section_padding_heading"
+      },
+      {
+          "type": "range",
+          "id": "padding_top",
+          "min": 0,
+          "max": 100,
+          "step": 4,
+          "unit": "px",
+          "label": "t:sections.all.padding.padding_top",
+          "default": 36
+      },
+      {
+          "type": "range",
+          "id": "padding_bottom",
+          "min": 0,
+          "max": 100,
+          "step": 4,
+          "unit": "px",
+          "label": "t:sections.all.padding.padding_bottom",
+          "default": 36
+      },      
+      {
+        "type": "header",
+        "content": "t:sections.preheader_bar.settings.heading_utilities.content"
+      },
+      {
+        "type": "paragraph",
+        "content": "t:sections.preheader_bar.settings.paragraph.content"
+      }, {
+        "type": "checkbox",
+        "id": "show_social",
+        "default": false,
+        "label": "t:sections.preheader_bar.settings.show_social.label",
+        "info": "t:sections.preheader_bar.settings.show_social.info"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_search",
+        "default": false,
+        "label": "t:sections.preheader_bar.settings.show_search.label"
+      }      
+    ],
+    "presets": [
+      {
+        "name": "Preheader",
+        "blocks": [
+          { "type": "buttons" }
+        ]        
+      }
+    ],
+    "blocks": [
+      {
+        "type": "buttons",
+        "name": "Buttons",
+        "settings": [
+          {
+            "type": "color_scheme",
+            "id": "color_scheme",
+            "label": "Buttons color scheme",
+            "default": "scheme-1"
+          },   
+          {
+            "type": "select",
+            "id": "buttons_alignment",
+            "label": "t:sections.preheader_bar.settings.buttons_alignment.label",
+            "options": [
+              { "value": "flex-start", "label": "Left" },
+              { "value": "center", "label": "Center" },
+              { "value": "flex-end", "label": "Right" }
+            ],
+            "default": "flex-end"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_btn_appointment",
+            "default": false,
+            "label": "t:sections.preheader_bar.settings.show_btn_appointment.label",
+            "info": "t:sections.preheader_bar.settings.show_btn_appointment.info"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_btn_product_finder",
+            "default": false,
+            "label": "t:sections.preheader_bar.settings.show_btn_product_finder.label",
+            "info": "t:sections.preheader_bar.settings.show_btn_product_finder.info"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_btn_wholesale",
+            "default": false,
+            "label": "t:sections.preheader_bar.settings.show_btn_wholesale.label",
+            "info": "t:sections.preheader_bar.settings.show_btn_wholesale.info"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_btn_quote",
+            "default": false,
+            "label": "t:sections.preheader_bar.settings.show_btn_quote.label",
+            "info": "t:sections.preheader_bar.settings.show_btn_quote.info"
+          },                         
+          {
+            "type": "header",
+            "content": "t:sections.preheader_bar.settings.custom_button.content"
+          },                
+          {
+            "type": "text",
+            "id": "btn_custom_label",
+            "label": "Label"
+          }, 
+          {
+            "type": "url",
+            "id": "btn_custom_url",
+            "label": "Label"
+          }
+        ],
+        "limit": 1
+      },  
+      {
+        "type": "text",
+        "name": "Text",
+        "settings": [
+          {
+            "type": "color_scheme",
+            "id": "color_scheme",
+            "label": "Buttons color scheme",
+            "default": "scheme-1"
+          },  
+          {
+            "type": "select",
+            "id": "text_alignment",
+            "label": "t:sections.preheader_bar.settings.buttons_alignment.label",
+            "options": [
+              { "value": "left", "label": "Left" },
+              { "value": "center", "label": "Center" },
+              { "value": "right", "label": "Right" }
+            ],
+            "default": "left"
+          },        
+          {
+            "type": "text",
+            "id": "txt_text",
+            "label": "Text"
+          }, 
+          {
+            "type": "url",
+            "id": "txt_url",
+            "label": "Link"
+          }
+        ],
+        "limit": 1
+      }
+    ]
+  }
+{% endschema %}

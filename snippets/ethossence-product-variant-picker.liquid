@@ -1,0 +1,191 @@
+{% comment %}
+  Renders product variant-picker
+
+  Accepts:
+  - product: {Object} product object.
+  - block: {Object} passing the block information.
+  - product_form_id: {String} Id of the product form to which the variant picker is associated.
+  Usage:
+  {% render 'ethossence-product-variant-picker', product: product, block: block, product_form_id: product_form_id %}
+{% endcomment %}
+
+{% style %}
+  .form__label {
+    font-size: 1.74rem;
+  }
+{% endstyle %}
+
+{% liquid
+  # AUTHORIZATION SHOW: PRODUCT VARIANT PICKER
+  
+  # GET CUSTOMER AUTHORIZATION LEVELS FROM METAFIELD
+  assign customer_authorization_levels = blank
+  if customer and customer.metafields.ethossence.authorization_show
+    assign customer_auth_list = customer.metafields.ethossence.authorization_show.value
+    assign temp_levels = blank
+    for auth_metaobject in customer_auth_list
+      if auth_metaobject.level
+        if temp_levels == blank
+          assign temp_levels = auth_metaobject.level
+        else
+          assign temp_levels = temp_levels | append: ',' | append: auth_metaobject.level
+        endif
+      endif
+    endfor
+    if temp_levels != blank
+      assign customer_authorization_levels = temp_levels | downcase | split: ','
+    endif
+  endif
+  
+  # CHECK EACH VARIANT FOR AUTHORIZATION
+  assign authorized_variants = blank
+  for variant in product.variants
+    assign variant_authorized = true
+  
+    # Check if variant has authorization requirements
+    if variant.metafields.ethossence.authorization_show
+      assign variant_auth_list = variant.metafields.ethossence.authorization_show.value
+      assign variant_has_requirements = false
+      assign variant_required_levels = blank
+
+      
+      # Get variant authorization requirements
+      assign temp_levels = blank
+      for auth_metaobject in variant_auth_list
+        if auth_metaobject.level
+          assign variant_has_requirements = true
+          if temp_levels == blank
+            assign temp_levels = auth_metaobject.level
+          else
+            assign temp_levels = temp_levels | append: ',' | append: auth_metaobject.level
+          endif
+        endif
+      endfor
+      
+      if temp_levels != blank
+        assign variant_required_levels = temp_levels | downcase | split: ',' | remove: '["' | remove: '"]'
+      endif
+      
+      # If variant has requirements, check customer authorization
+      if variant_has_requirements and variant_required_levels != blank
+         assign variant_authorized = false
+         if customer_authorization_levels != blank
+            for required_level in variant_required_levels
+               assign required_level_clean = required_level | strip
+               if customer_authorization_levels contains required_level_clean
+                  assign variant_authorized = true
+                  break
+               endif
+            endfor
+         else 
+            # If no customer authorization levels, variant is not authorized
+            assign variant_authorized = false   
+         endif
+      endif
+    endif
+    
+    # Build list of authorized variant IDs
+    if variant_authorized
+      if authorized_variants == blank
+        assign authorized_variants = variant.id
+      else
+        assign authorized_variants = authorized_variants | append: ',' | append: variant.id
+      endif
+    endif
+  endfor
+  
+  # Convert to array for easier checking
+  assign authorized_variant_ids = authorized_variants | split: ','
+%}
+ 
+{%- unless product.has_only_default_variant -%}
+  <variant-selects
+    id="variant-selects-{{ section.id }}"
+    data-section="{{ section.id }}"
+    data-authorized-variants="{{ authorized_variants }}"
+    {{ block.shopify_attributes }}
+  >
+    {%- for option in product.options_with_values -%}
+      {%- liquid
+        assign swatch_count = option.values | map: 'swatch' | compact | size
+        assign picker_type = block.settings.picker_type
+
+        if swatch_count > 0 and block.settings.swatch_shape != 'none'
+          if block.settings.picker_type == 'dropdown'
+            assign picker_type = 'swatch_dropdown'
+          else
+            assign picker_type = 'swatch'
+          endif
+        endif
+      -%}
+      {%- if picker_type == 'swatch' -%}
+        <fieldset class="js product-form__input product-form__input--swatch">
+          <legend class="form__label">
+            {{ option.name }}:
+            <span data-selected-value>
+              {{- option.selected_value -}}
+            </span>
+          </legend>
+          {% render 'ethossence-product-variant-options',
+            product: product,
+            option: option,
+            block: block,
+            picker_type: picker_type,
+            authorized_variant_ids: authorized_variant_ids
+          %}
+        </fieldset>
+      {%- elsif picker_type == 'button' -%}
+        <fieldset class="js product-form__input product-form__input--pill">
+          <legend class="form__label">{{ option.name }}</legend>
+          {% render 'ethossence-product-variant-options',
+            product: product,
+            option: option,
+            block: block,
+            picker_type: picker_type,
+            authorized_variant_ids: authorized_variant_ids
+          %}
+        </fieldset>
+      {%- else -%}
+        <div class="product-form__input product-form__input--dropdown">
+          <label class="form__label" for="Option-{{ section.id }}-{{ forloop.index0 }}">
+            {{ option.name }}
+          </label>
+          <div class="select">
+            {%- if picker_type == 'swatch_dropdown' -%}
+              <span
+                data-selected-value
+                class="dropdown-swatch"
+              >
+                {% render 'swatch', swatch: option.selected_value.swatch, shape: block.settings.swatch_shape %}
+              </span>
+            {%- endif -%}
+            <select
+              id="Option-{{ section.id }}-{{ forloop.index0 }}"
+              class="select__select"
+              name="options[{{ option.name | escape }}]"
+              form="{{ product_form_id }}"
+            >
+              {% render 'ethossence-product-variant-options',
+                product: product,
+                option: option,
+                block: block,
+                picker_type: picker_type,
+                authorized_variant_ids: authorized_variant_ids
+              %}
+            </select>
+            <span class="svg-wrapper">
+              {{- 'icon-caret.svg' | inline_asset_content -}}
+            </span>
+          </div>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+
+    <script type="application/json" data-selected-variant>
+      {{ product.selected_or_first_available_variant | json }}
+    </script>
+    <script type="application/json" data-authorized-variants>
+      {{ authorized_variant_ids | json }}
+    </script>
+  </variant-selects>
+{%- endunless -%}
