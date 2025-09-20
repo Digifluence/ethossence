@@ -22,6 +22,13 @@
     "ethossence_review_PFGKWW": {
       "type": "ethossence-review",
       "blocks": {
+        "heading_h3gTn3": {
+          "type": "heading",
+          "settings": {
+            "heading": "Create Your Account",
+            "heading_size": "h1"
+          }
+        },
         "content_ak6e3V": {
           "type": "content",
           "settings": {
@@ -37,6 +44,7 @@
         }
       },
       "block_order": [
+        "heading_h3gTn3",
         "content_ak6e3V"
       ],
       "name": "Review request",
