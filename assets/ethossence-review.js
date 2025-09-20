@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
          };
          
          // Send to Make webhook
-         const webhookResponse = await fetch('https://hook.us1.make.com/s59ivk5kq6tpxu0faj3gik9v2jehlxbm', {
+         const webhookResponse = await fetch('https://hook.us2.make.com/al800p8lmsn9c1rmouswa6ogtsmdrgvc', {
          method: 'POST',
          headers: {
             'Content-Type': 'application/json',
