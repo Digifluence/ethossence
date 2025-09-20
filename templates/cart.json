@@ -19,7 +19,7 @@
         "heading_size": "h1"
       }
     },
-    "ethossence_customer_create_quote_AVDJmE": {
+    "ethossence_review_AVDJmE": {
       "type": "ethossence-review",
       "blocks": {
         "content_RqabKW": {
@@ -85,7 +85,7 @@
   },
   "order": [
     "ethossence_cart_header_9Uqyhh",
-    "ethossence_customer_create_quote_AVDJmE",
+    "ethossence_review_AVDJmE",
     "cart-items",
     "cart-footer"
   ]
