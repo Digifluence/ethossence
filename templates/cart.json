@@ -22,13 +22,6 @@
     "ethossence_review_PFGKWW": {
       "type": "ethossence-review",
       "blocks": {
-        "heading_h3gTn3": {
-          "type": "heading",
-          "settings": {
-            "heading": "Create Your Account",
-            "heading_size": "h1"
-          }
-        },
         "content_ak6e3V": {
           "type": "content",
           "settings": {
@@ -37,25 +30,34 @@
             "heading_size": "h1",
             "content_audience": "visitors",
             "authoriz_enabled": false,
-            "color_scheme": "scheme-1",
             "padding_top": 12,
             "padding_bottom": 12
+          }
+        },
+        "form_PfTBcg": {
+          "type": "form",
+          "settings": {
+            "animation_type": "slide_out",
+            "content_alignment": "center",
+            "heading_text": "Create Your Account",
+            "heading_size": "h1",
+            "btn_trigger_account_form": "Create Account to Request Review »",
+            "bth_submit_account": "Create Account »",
+            "bth_submit_request": "Request Review »",
+            "success_message": "Account created successfully! You'll receive a confirmation email shortly.",
+            "padding_top": 40,
+            "padding_bottom": 52
           }
         }
       },
       "block_order": [
-        "heading_h3gTn3",
-        "content_ak6e3V"
+        "content_ak6e3V",
+        "form_PfTBcg"
       ],
       "name": "Review request",
       "settings": {
-        "desktop_content_position": "center",
-        "content_alignment": "center",
         "color_scheme": "",
         "full_width": true,
-        "button_text": "Create Account",
-        "animation_type": "slide_down",
-        "success_message": "Account created successfully! You'll receive a confirmation email shortly.",
         "padding_top": 12,
         "padding_bottom": 24
       }
