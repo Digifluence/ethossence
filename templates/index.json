@@ -74,9 +74,7 @@
         "color_scheme": "",
         "full_width": true,
         "padding_top": 40,
-        "padding_bottom": 52,
-        "display_if_not_null": true,
-        "authorization_show_enabled": false
+        "padding_bottom": 52
       }
     },
     "multicolumn_ErTmg8": {
@@ -175,8 +173,6 @@
       "settings": {
         "collection": "home-page-browse-our-products",
         "products_to_show": 5,
-        "authoriz_enabled": false,
-        "authoriz_require_msg": "",
         "title": "BROWSE OUR PRODUCTS",
         "heading_size": "h1",
         "description": "<p>SUPPORTED BY A DEDICATED TEAM</p>",
@@ -206,8 +202,6 @@
       "settings": {
         "collection": "featured-products-ii",
         "products_to_show": 5,
-        "authoriz_enabled": false,
-        "authoriz_require_msg": "",
         "title": "",
         "heading_size": "h1",
         "description": "",
@@ -237,8 +231,6 @@
       "settings": {
         "blog": "insight",
         "post_limit": 4,
-        "authoriz_enabled": false,
-        "authoriz_require_msg": "",
         "heading": "INSIGHT ARTICLES",
         "heading_size": "h1",
         "columns_desktop": 4,
@@ -291,9 +283,7 @@
         "color_scheme": "scheme-3",
         "full_width": true,
         "padding_top": 12,
-        "padding_bottom": 64,
-        "display_if_not_null": true,
-        "authorization_show_enabled": false
+        "padding_bottom": 64
       }
     }
   },
