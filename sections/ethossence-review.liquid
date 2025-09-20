@@ -78,6 +78,9 @@ ETHOSSENCE FEATURE: Allow customers to submit their cart for review/quote with a
           {%- when 'form' -%}
             {%- comment -%} FORMS {%- endcomment -%}
 
+            <pre>block.settings.animation_type {{ block.settings.animation_type }}</pre>
+            {%- assign s_animation_type = block.settings.animation_type | default: 'slide_down' -%}             
+
             {%- style -%}
               .block-{{ block.id }}-padding {
                   padding-top: {{ block.settings.padding_top | times: 0.75 | round: 0 }}px;
@@ -198,7 +201,7 @@ ETHOSSENCE FEATURE: Allow customers to submit their cart for review/quote with a
     document.addEventListener('DOMContentLoaded', function() {
       if (typeof initCustomerRegistration === 'function') {
         initCustomerRegistration({
-          animationType: '{{ block.settings.animation_type }}',
+          animationType: '{{ s_animation_type }}',
           webhookUrl: 'https://hook.us2.make.com/weeau8ogy96lpvkl4d8wlnfm5warbaer'
         });
       }
