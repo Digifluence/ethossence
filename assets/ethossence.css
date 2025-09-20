@@ -54,6 +54,11 @@
   margin: 6rem 0;
 }
 
+.pad-2lr {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
 .set-right {
   display: flex;
   justify-content: flex-end;

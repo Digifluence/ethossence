@@ -54,9 +54,9 @@ ETHOSSENCE FEATURE: Allow customers to submit their cart for review/quote with a
                     padding-bottom: {{ block.settings.padding_bottom }}px;
                   }
               }
-            {%- endstyle -%}                 
-            <div class="color-{{ block.settings.color_scheme }} gradient">
-              <div class="block-{{ block.id }}-padding">               
+            {%- endstyle -%}
+            <div class="block-{{ block.id }}-padding">
+              <div class="color-{{ block.settings.color_scheme }} gradient pad-2lr"> 
                 {%- if block.settings.heading_hide != true -%}
                   <{{ block.settings.heading_size }} class="page-title {{ block.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
                     {{ selected_page.title | escape }}
