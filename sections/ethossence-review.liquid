@@ -1,4 +1,4 @@
-<pre>2025-09-20 i 005</pre>
+<pre>2025-09-20 i 006</pre>
 
 {%- comment -%}
 ETHOSSENCE FEATURE: Allow customers to submit their cart for review/quote with ability to create an account if not a customer.
@@ -102,7 +102,7 @@ ETHOSSENCE FEATURE: Allow customers to submit their cart for review/quote with a
 
               {%- if customer == null -%}
 
-                <button type="button" class="button button--primary" id="register-trigger">
+                <button type="button" id="register-trigger" class="button button--primary">
                   {{ block.settings.btn_trigger_account_form | default: 'Create Account to Request Review' }}
                 </button>
 
@@ -146,8 +146,6 @@ ETHOSSENCE FEATURE: Allow customers to submit their cart for review/quote with a
                   </div>
                   <div class="drawer__overlay" id="registration-overlay"></div>
                 {% endif %}
-
-                <!-- <p class="text-center text-small"><em>No obligation. No sales pressure. Just expert guidance from welding professionals.</em></p> -->
 
               {%- else -%}
 

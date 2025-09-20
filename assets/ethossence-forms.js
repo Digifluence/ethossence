@@ -10,6 +10,7 @@
     constructor(animationType) {
       this.animationType = animationType;
       this.trigger = document.getElementById('register-trigger');
+      this.signinlink = document.getElementById('sign-in-link');
       this.drawer = document.getElementById('registration-drawer');
       this.dropdown = document.getElementById('registration-dropdown');
       this.overlay = document.getElementById('registration-overlay');
@@ -52,6 +53,9 @@
           if (this.trigger) {
             this.trigger.classList.add('hidden');
           }
+          if (this.signinlink) {
+            this.signinlink.classList.add('hidden');
+          }          
         }
       } else {
         if (this.drawer) {
@@ -72,6 +76,9 @@
         if (this.trigger) {
           this.trigger.classList.remove('hidden');
         }
+        if (this.signinlink) {
+          this.signinlink.classList.remove('hidden');
+        }        
       } else {
         if (this.drawer) {
           this.drawer.classList.remove('drawer--active');
