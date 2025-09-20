@@ -1,7 +1,3 @@
-/**
- * Customer Registration Form Handler
- * Manages form animations, validation, and submission
- */
 (function() {
   'use strict';
   
@@ -14,6 +10,11 @@
       this.drawer = document.getElementById('registration-drawer');
       this.dropdown = document.getElementById('registration-dropdown');
       this.overlay = document.getElementById('registration-overlay');
+      
+      // DEBUG: LOG ELEMENT AVAILABILITY
+      console.log('Trigger found:', this.trigger);
+      console.log('Sign-in link found:', this.signinlink);
+      console.log('Animation type:', this.animationType);
       
       this.init();
     }

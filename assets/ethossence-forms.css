@@ -135,12 +135,10 @@
   overflow: hidden;
 }
 
-/* Button Animation */
-#register-trigger.hidden {
-  opacity: 0;
-  transform: scale(0.95);
-  transition: opacity 0.3s ease, transform 0.3s ease;
-  pointer-events: none;
+/* BUTTON ANIMATION */
+#register-trigger.hidden,
+#sign-in-link.hidden {
+  display: none !important;
 }
 
 /* Checkbox Layout */
