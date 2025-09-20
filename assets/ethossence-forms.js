@@ -314,7 +314,7 @@
           }],
           metafields: [
             {
-              namespace: "melttools",
+              namespace: "ethossence",
               key: "business_type",
               type: "list.single_line_text_field",
               value: businessTypesFormatted
