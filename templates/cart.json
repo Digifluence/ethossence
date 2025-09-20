@@ -37,7 +37,7 @@
         "form_PfTBcg": {
           "type": "form",
           "settings": {
-            "animation_type": "slide_down",
+            "animation_type": "slide_out",
             "content_alignment": "center",
             "heading_text": "Create Your Account",
             "heading_size": "h1",
