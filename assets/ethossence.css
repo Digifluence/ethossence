@@ -80,7 +80,13 @@
     width: 70%;
     margin-left: auto;
     margin-right: auto;
-  }   
+  }
+
+  .width-90 {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
 
   .grid__item.grid__item--1-12  { width: calc(8.3333%  - var(--grid-desktop-horizontal-spacing) - var(--grid-gutter-compensation));  max-width: calc(8.3333%  - var(--grid-desktop-horizontal-spacing) - var(--grid-gutter-compensation));  flex-grow: 0; }
   .grid__item.grid__item--2-12  { width: calc(16.6667% - var(--grid-desktop-horizontal-spacing) - var(--grid-gutter-compensation));  max-width: calc(16.6667% - var(--grid-desktop-horizontal-spacing) - var(--grid-gutter-compensation));  flex-grow: 0; }

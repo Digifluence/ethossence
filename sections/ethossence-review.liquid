@@ -1,4 +1,4 @@
-<pre>2025-09-20 d</pre>
+<pre>2025-09-20 e</pre>
 
 {%- comment -%}
 ETHOSSENCE FEATURE: Allow customers to submit their cart for review/quote with ability to create an account if not a customer.
@@ -23,9 +23,10 @@ ETHOSSENCE FEATURE: Allow customers to submit their cart for review/quote with a
 
 {%- if cart.item_count != 0 -%}
 
-  <div class="page-width section-{{ section.id }}-padding">
-    <div class="frame width-80">
+  <div class="{%if section.settings.full_width %}page-width {% endif %}section-{{ section.id }}-padding">
+    <div class="frame {%if section.settings.full_width %} width-90{% endif %}">
 
+      {%- comment -%} CONTENT ADDED BY PAGE {%- endcomment -%}
       {%- for block in section.blocks -%} 
         {%- if block.type == 'content' -%}                            
           {%- liquid 
@@ -42,17 +43,17 @@ ETHOSSENCE FEATURE: Allow customers to submit their cart for review/quote with a
           -%}
           {%- if selected_page != null and show_block -%}
             {%- style -%}
-            .block-{{ block.id }}-padding {
-                padding-top: {{ block.settings.padding_top | times: 0.75 | round: 0 }}px;
-                padding-bottom: {{ block.settings.padding_bottom | times: 0.75 | round: 0 }}px;
-            }
+              .block-{{ block.id }}-padding {
+                  padding-top: {{ block.settings.padding_top | times: 0.75 | round: 0 }}px;
+                  padding-bottom: {{ block.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+              }
 
-            @media screen and (min-width: 750px) {
-                .block-{{ block.id }}-padding {
-                  padding-top: {{ block.settings.padding_top }}px;
-                  padding-bottom: {{ block.settings.padding_bottom }}px;
-                }
-            }
+              @media screen and (min-width: 750px) {
+                  .block-{{ block.id }}-padding {
+                    padding-top: {{ block.settings.padding_top }}px;
+                    padding-bottom: {{ block.settings.padding_bottom }}px;
+                  }
+              }
             {%- endstyle -%}                 
             <div class="color-{{ block.settings.color_scheme }} gradient">
               <div class="block-{{ block.id }}-padding">               
@@ -79,38 +80,38 @@ ETHOSSENCE FEATURE: Allow customers to submit their cart for review/quote with a
 
         {%- if customer == null -%}
 
-              <button type="button" class="button button--primary" id="register-trigger">
-                Create Account & Request Review &raquo;
-              </button>
+          <button type="button" class="button button--primary" id="register-trigger">
+            Create Account & Request Review &raquo;
+          </button>
 
-              <div class="margin-element-sm">
-                Already have an account? <a href="{{ routes.account_login_url }}?return_url={{ routes.cart_url | url_encode }}" title="Sign in to your existing account">sign in &raquo;</a>
+          <div class="margin-element-sm">
+            Already have an account? <a href="{{ routes.account_login_url }}?return_url={{ routes.cart_url | url_encode }}" title="Sign in to your existing account">sign in &raquo;</a>
+          </div>
+
+          {% if section.settings.animation_type == 'slide_down' %}
+            <!-- Slide Down Form -->
+            <div id="registration-dropdown" class="form-dropdown">
+              <div class="form-dropdown__content">               
+                {% render 'ethossence-review-account-create' %}
               </div>
+              <div> 
+                <button type="button" class="button button--small button--secondary dropdown__close float-right" id="close-dropdown" aria-label="Close registration form">Cancel</button>
+              </div>               
+            </div>
+          {% else %}
+            <!-- Slide Out Drawer -->
+            <div id="registration-drawer" class="drawer drawer--right">
+              <div class="drawer__header">
+                <button type="button" class="drawer__close" id="close-registration" aria-label="Close registration form">×</button>
+              </div>
+              <div class="drawer__inner">
+                {% render 'ethossence-review-account-create' %}
+              </div>
+            </div>
+            <div class="drawer__overlay" id="registration-overlay"></div>
+          {% endif %}
 
-              {% if section.settings.animation_type == 'slide_down' %}
-                <!-- Slide Down Form -->
-                <div id="registration-dropdown" class="form-dropdown">
-                  <div class="form-dropdown__content">               
-                    {% render 'ethossence-review-account-create' %}
-                  </div>
-                  <div> 
-                    <button type="button" class="button button--small button--secondary dropdown__close float-right" id="close-dropdown" aria-label="Close registration form">Cancel</button>
-                  </div>               
-                </div>
-              {% else %}
-                <!-- Slide Out Drawer -->
-                <div id="registration-drawer" class="drawer drawer--right">
-                  <div class="drawer__header">
-                    <button type="button" class="drawer__close" id="close-registration" aria-label="Close registration form">×</button>
-                  </div>
-                  <div class="drawer__inner">
-                    {% render 'ethossence-review-account-create' %}
-                  </div>
-                </div>
-                <div class="drawer__overlay" id="registration-overlay"></div>
-              {% endif %}
-
-            <!-- <p class="text-center text-small"><em>No obligation. No sales pressure. Just expert guidance from welding professionals.</em></p> -->
+          <!-- <p class="text-center text-small"><em>No obligation. No sales pressure. Just expert guidance from welding professionals.</em></p> -->
 
         {%- else -%}
 
@@ -127,7 +128,6 @@ ETHOSSENCE FEATURE: Allow customers to submit their cart for review/quote with a
                 rows="5"
               >{{ cart.attributes['Needs description'] }}</textarea>
             </div>
-            {% comment %}
             <div class="form-group full" style="margin-top:10px;">
               <label for="attributes[Currently own/use MeltView system?]" class="form-label">
                 Currently own/use MeltView system?
@@ -149,7 +149,6 @@ ETHOSSENCE FEATURE: Allow customers to submit their cart for review/quote with a
                 </option>
               </select>
             </div>
-            {% endcomment %}
           </div>
 
           <div class="cart-save-draft" style="margin: 2rem 0; text-align: center;">
@@ -190,6 +189,10 @@ ETHOSSENCE FEATURE: Allow customers to submit their cart for review/quote with a
     "groups": ["header", "footer"]
   },
   "settings": [
+    {
+      "type": "header",
+      "content": "Appearance"
+    },    
     {
       "type": "select",
       "id": "desktop_content_position",
@@ -243,29 +246,6 @@ ETHOSSENCE FEATURE: Allow customers to submit their cart for review/quote with a
       "label": "t:sections.rich-text.settings.full_width.label"
     },
     {
-      "type": "text",
-      "id": "button_text",
-      "label": "Button Text",
-      "default": "Create Account"
-    },
-    {
-      "type": "select",
-      "id": "animation_type",
-      "label": "Form Animation",
-      "options": [
-        {"value": "slide_out", "label": "Slide Out (Drawer)"},
-        {"value": "slide_down", "label": "Slide Down (Dropdown)"}
-      ],
-      "default": "slide_out"
-    },
-    {
-      "type": "textarea",
-      "id": "success_message",
-      "label": "Success Message",
-      "default": "Account created successfully! You'll receive a confirmation email shortly.",
-      "info": "Message displayed when account is created successfully"
-    },
-    {
       "type": "header",
       "content": "t:sections.all.padding.section_padding_heading"
     },
@@ -292,10 +272,54 @@ ETHOSSENCE FEATURE: Allow customers to submit their cart for review/quote with a
   ],
   "blocks": [
       {
-         "type": "heading",
-         "name": "Headings",
+         "type": "Form to create account",
+         "name": "form",
          "limit": 3,
          "settings": [
+            {
+               "type": "header",
+               "content": "Appearance"
+            },          
+            {
+              "type": "select",
+              "id": "animation_type",
+              "label": "Form animation",
+              "options": [
+                {"value": "slide_down", "label": "Slide down (dropdown)"},
+                {"value": "slide_out", "label": "Slide out (drawer)"}
+              ],
+              "default": "slide_down"
+            },  
+            {
+              "type": "select",
+              "id": "content_alignment",
+              "options": [
+                {
+                  "value": "left",
+                  "label": "t:sections.rich-text.settings.content_alignment.options__1.label"
+                },
+                {
+                  "value": "center",
+                  "label": "t:sections.rich-text.settings.content_alignment.options__2.label"
+                },
+                {
+                  "value": "right",
+                  "label": "t:sections.rich-text.settings.content_alignment.options__3.label"
+                }
+              ],
+              "default": "center",
+              "label": "t:sections.rich-text.settings.content_alignment.label"
+            },
+            {
+              "type": "color_scheme",
+              "id": "color_scheme",
+              "label": "t:sections.all.colors.label",
+              "default": "scheme-1"
+            },            
+            {
+               "type": "header",
+               "content": "Form header"
+            },                     
             {
                "type": "inline_richtext",
                "id": "heading",
@@ -329,12 +353,53 @@ ETHOSSENCE FEATURE: Allow customers to submit their cart for review/quote with a
                ],
                "default": "h1",
                "label": "t:sections.all.heading_size.label"
-            }
+            },
+            {
+               "type": "header",
+               "content": "Button and success message"
+            },             
+            {
+              "type": "text",
+              "id": "button_text",
+              "label": "Button Text",
+              "default": "Create Account"
+            },
+            {
+              "type": "textarea",
+              "id": "success_message",
+              "label": "Success Message",
+              "default": "Account created successfully! You'll receive a confirmation email shortly.",
+              "info": "Message displayed when account is created successfully"
+            },   
+            {
+              "type": "header",
+              "content": "t:sections.all.padding.section_padding_heading"
+            },
+            {
+              "type": "range",
+              "id": "padding_top",
+              "min": 0,
+              "max": 100,
+              "step": 4,
+              "unit": "px",
+              "label": "t:sections.all.padding.padding_top",
+              "default": 40
+            },
+            {
+              "type": "range",
+              "id": "padding_bottom",
+              "min": 0,
+              "max": 100,
+              "step": 4,
+              "unit": "px",
+              "label": "t:sections.all.padding.padding_bottom",
+              "default": 52
+            }                     
          ]
       },
       {
          "type": "content",
-         "name": "Content",
+         "name": "Content from page",
          "settings": [   
             {
                "type": "header",
@@ -345,6 +410,10 @@ ETHOSSENCE FEATURE: Allow customers to submit their cart for review/quote with a
                "id": "page",
                "label": "t:sections.page.settings.page.label"
             },
+            {
+               "type": "header",
+               "content": "Appearance"
+            },            
             {
                "type": "checkbox",
                "id": "heading_hide",
@@ -378,7 +447,13 @@ ETHOSSENCE FEATURE: Allow customers to submit their cart for review/quote with a
                ],
                "default": "h1",
                "label": "t:sections.all.heading_size.label"
-            },            
+            },     
+            {
+               "type": "color_scheme",
+               "id": "color_scheme",
+               "label": "t:sections.all.colors.label",
+               "default": "scheme-1"
+            },                   
             {
                "type": "header",
                "content": "View permissions"
@@ -406,16 +481,6 @@ ETHOSSENCE FEATURE: Allow customers to submit their cart for review/quote with a
               "default": false,
               "label": "Enforce authorization to view."
             },   
-            {
-               "type": "header",
-               "content": "Display"
-            },                                    
-            {
-               "type": "color_scheme",
-               "id": "color_scheme",
-               "label": "t:sections.all.colors.label",
-               "default": "scheme-1"
-            },
             {
                "type": "header",
                "content": "t:sections.all.padding.section_padding_heading"
