@@ -54,7 +54,7 @@
         "color_scheme": "",
         "full_width": true,
         "button_text": "Create Account",
-        "animation_type": "slide_out",
+        "animation_type": "slide_down",
         "success_message": "Account created successfully! You'll receive a confirmation email shortly.",
         "padding_top": 12,
         "padding_bottom": 24
