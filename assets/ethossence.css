@@ -54,6 +54,10 @@
   margin: 6rem 0;
 }
 
+.pad-2 {
+  padding: 2rem;
+}
+
 .pad-2lr {
   padding-left: 2rem;
   padding-right: 2rem;
@@ -68,7 +72,6 @@
   border: 0.1rem solid rgba(var(--color-foreground), 0.2);
   border-radius: 0.8rem;
   padding: 2rem;
-  margin: 6rem;
 }
 
 .frame--subtle {
