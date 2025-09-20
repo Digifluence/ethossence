@@ -1,4 +1,4 @@
-<pre>2025-09-20 i</pre>
+<pre>2025-09-20 i 002</pre>
 
 {%- comment -%}
 ETHOSSENCE FEATURE: Allow customers to submit their cart for review/quote with ability to create an account if not a customer.
@@ -104,7 +104,7 @@ ETHOSSENCE FEATURE: Allow customers to submit their cart for review/quote with a
                   Already have an account? <a href="{{ routes.account_login_url }}?return_url={{ routes.cart_url | url_encode }}" title="Sign in to your existing account">sign in &raquo;</a>
                 </div>
 
-                {% if section.settings.animation_type == 'slide_down' %}
+                {% if block.settings.animation_type == 'slide_down' %}
                   <!-- SLIDE DOWN -->
                   <div id="registration-dropdown" class="form-dropdown">
                     <div class="form-dropdown__content">               
@@ -198,7 +198,7 @@ ETHOSSENCE FEATURE: Allow customers to submit their cart for review/quote with a
     document.addEventListener('DOMContentLoaded', function() {
       if (typeof initCustomerRegistration === 'function') {
         initCustomerRegistration({
-          animationType: '{{ section.settings.animation_type }}',
+          animationType: '{{ block.settings.animation_type }}',
           webhookUrl: 'https://hook.us2.make.com/weeau8ogy96lpvkl4d8wlnfm5warbaer'
         });
       }
