@@ -14,8 +14,8 @@
       "name": "Cart header",
       "settings": {
         "color_scheme": "",
-        "padding_top": 36,
-        "padding_bottom": 8,
+        "padding_top": 24,
+        "padding_bottom": 12,
         "heading_size": "h1"
       }
     },
@@ -28,11 +28,11 @@
             "page": "get-expert-guidance-before-you-buy",
             "heading_hide": false,
             "heading_size": "h1",
+            "content_audience": "visitors",
+            "authoriz_enabled": false,
             "color_scheme": "scheme-1",
             "padding_top": 36,
-            "padding_bottom": 36,
-            "content_audience": "visitors",
-            "authoriz_enabled": false
+            "padding_bottom": 36
           }
         }
       },
@@ -48,8 +48,8 @@
         "button_text": "Create Account",
         "animation_type": "slide_down",
         "success_message": "Account created successfully! You'll receive a confirmation email shortly.",
-        "padding_top": 8,
-        "padding_bottom": 52
+        "padding_top": 12,
+        "padding_bottom": 12
       }
     },
     "cart-items": {
