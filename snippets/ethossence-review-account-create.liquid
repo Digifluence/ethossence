@@ -1,268 +1,263 @@
-<div class="contact">
-    <div class="ethossence-form">        
-        <{{ heading_size }} class="form-title {{ heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-            {{ heading_text }}
-        </{{ heading_size }}>
-        <form id="customerRegistrationForm">
+<div class="contact ethossence-form">
+    <form id="customerRegistrationForm">
 
-            <div class="contact__fields">
-                <!-- FIRST NAME -->
-                <div class="field">
-                    <input
-                        class="field__input"
-                        autocomplete="given-name"
-                        type="text"
-                        id="firstName"
-                        name="firstName"
-                        placeholder="First name"
-                        required
-                    >
-                    <label class="field__label" for="firstName">First name <span aria-hidden="true">*</span></label>
-                    <div class="error-message" id="firstNameError"></div>
-                </div>
-                <!-- LAST NAME -->
-                <div class="field">
-                    <input
-                        class="field__input"
-                        autocomplete="family-name"
-                        type="text"
-                        id="lastName"
-                        name="lastName"
-                        placeholder="Last name"
-                        required
-                    >
-                    <label class="field__label" for="lastName">Last name <span aria-hidden="true">*</span></label>
-                    <div class="error-message" id="lastNameError"></div>
-                </div>
-            </div>  
-
-            <!-- EMAIL -->
-            <div class="field field--with-error">
+        <div class="contact__fields">
+            <!-- FIRST NAME -->
+            <div class="field">
                 <input
-                    autocomplete="email"
-                    type="email"
-                    id="email"
                     class="field__input"
-                    name="email"
+                    autocomplete="given-name"
+                    type="text"
+                    id="firstName"
+                    name="firstName"
+                    placeholder="First name"
+                    required
+                >
+                <label class="field__label" for="firstName">First name <span aria-hidden="true">*</span></label>
+                <div class="error-message" id="firstNameError"></div>
+            </div>
+            <!-- LAST NAME -->
+            <div class="field">
+                <input
+                    class="field__input"
+                    autocomplete="family-name"
+                    type="text"
+                    id="lastName"
+                    name="lastName"
+                    placeholder="Last name"
+                    required
+                >
+                <label class="field__label" for="lastName">Last name <span aria-hidden="true">*</span></label>
+                <div class="error-message" id="lastNameError"></div>
+            </div>
+        </div>  
+
+        <!-- EMAIL -->
+        <div class="field field--with-error">
+            <input
+                autocomplete="email"
+                type="email"
+                id="email"
+                class="field__input"
+                name="email"
+                spellcheck="false"
+                autocapitalize="off"
+                placeholder="{{ 'templates.contact.form.email' | t }}"
+                aria-required="true"
+                required
+            >
+            <label class="field__label" for="email">Email <span aria-hidden="true">*</span></label>
+            <div class="error-message" id="emailError"></div>
+        </div>       
+
+        <!-- PHONE -->
+        <div class="field">
+            <input
+                autocomplete="tel"
+                type="tel"
+                id="phone"
+                class="field__input"
+                name="phone"
+                placeholder="+1 269 978 0968"
+            >
+            <label class="field__label" for="phone">Phone Number</label>
+            <div class="error-message" id="phoneError"></div>
+            <small class="field-help">Include country code (11 digits total)</small>
+        </div>
+
+        <div class="contact__fields">
+            <!-- COMPANY -->
+            <div class="field">
+                <input
+                    autocomplete="company"
+                    type="text"
+                    id="company"
+                    class="field__input"
+                    name="company"
                     spellcheck="false"
                     autocapitalize="off"
-                    placeholder="{{ 'templates.contact.form.email' | t }}"
+                    placeholder="Company name"
                     aria-required="true"
                     required
                 >
-                <label class="field__label" for="email">Email <span aria-hidden="true">*</span></label>
-                <div class="error-message" id="emailError"></div>
-            </div>       
-
-            <!-- PHONE -->
-            <div class="field">
-                <input
-                    autocomplete="tel"
-                    type="tel"
-                    id="phone"
+                <label class="field__label" for="company">Company <span aria-hidden="true">*</span></label>
+                <div class="error-message" id="companyError"></div>
+            </div>
+            <!-- COUNTRY -->
+            <div id="fieldCountry" class="field">
+                <select
+                    autocomplete="country"
+                    id="country" 
                     class="field__input"
-                    name="phone"
-                    placeholder="+1 269 978 0968"
+                    name="country"
+                    placeholder="Country"
                 >
-                <label class="field__label" for="phone">Phone Number</label>
-                <div class="error-message" id="phoneError"></div>
-                <small class="field-help">Include country code (11 digits total)</small>
-            </div>
-
-            <div class="contact__fields">
-                <!-- COMPANY -->
-                <div class="field">
-                    <input
-                        autocomplete="company"
-                        type="text"
-                        id="company"
-                        class="field__input"
-                        name="company"
-                        spellcheck="false"
-                        autocapitalize="off"
-                        placeholder="Company name"
-                        aria-required="true"
-                        required
-                    >
-                    <label class="field__label" for="company">Company <span aria-hidden="true">*</span></label>
-                    <div class="error-message" id="companyError"></div>
+                    <option value="" selected>Select country &nbsp;*</option>
+                    <option value="US">United States</option>
+                    <option value="AR">Argentina</option>
+                    <option value="AT">Austria</option>
+                    <option value="AU">Australia</option>
+                    <option value="BE">Belgium</option>
+                    <option value="BR">Brazil</option>
+                    <option value="CA">Canada</option>
+                    <option value="CL">Chile</option>
+                    <option value="CN">China</option>
+                    <option value="CO">Colombia</option>
+                    <option value="CZ">Czech Republic</option>
+                    <option value="DE">Germany</option>
+                    <option value="DK">Denmark</option>
+                    <option value="EG">Egypt</option>
+                    <option value="ES">Spain</option>
+                    <option value="FI">Finland</option>
+                    <option value="FR">France</option>
+                    <option value="GR">Greece</option>
+                    <option value="HU">Hungary</option>
+                    <option value="ID">Indonesia</option>
+                    <option value="IE">Ireland</option>
+                    <option value="IL">Israel</option>
+                    <option value="IN">India</option>
+                    <option value="IT">Italy</option>
+                    <option value="JP">Japan</option>
+                    <option value="KE">Kenya</option>
+                    <option value="KR">South Korea</option>
+                    <option value="MX">Mexico</option>
+                    <option value="MY">Malaysia</option>
+                    <option value="NG">Nigeria</option>
+                    <option value="NL">Netherlands</option>
+                    <option value="NO">Norway</option>
+                    <option value="NZ">New Zealand</option>
+                    <option value="PA">Panama</option>
+                    <option value="PH">Philippines</option>
+                    <option value="PL">Poland</option>
+                    <option value="PT">Portugal</option>
+                    <option value="SA">Saudi Arabia</option>
+                    <option value="SE">Sweden</option>
+                    <option value="SG">Singapore</option>
+                    <option value="CH">Switzerland</option>                           
+                    <option value="TH">Thailand</option>
+                    <option value="TR">Turkey</option>
+                    <option value="UA">Ukraine</option>
+                    <option value="GB">United Kingdom</option>                           
+                    <option value="VN">Vietnam</option>
+                    <option value="ZA">South Africa</option>
+                </select>
+                <!-- <label id="lblCountry" class="field__label" for="country">Country</label> -->
+                <div class="error-message" id="countryError"></div>
+            </div>            
+        </div>  
+        
+        <!-- BUSINESS TYPE -->
+        <div class="field">
+            <div>
+                <legend class="field__legend">
+                    Business Type <span aria-hidden="true">*</span>
+                </legend>
+            </div>                    
+            <div class="checkbox-group" id="businessType" role="group" aria-labelledby="business-type-label">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="business1" name="businessType" value="Distributor / Reseller" class="checkbox">
+                    <label for="business1" class="checkbox__label">Distributor / Reseller</label>
                 </div>
-                <!-- COUNTRY -->
-                <div id="fieldCountry" class="field">
-                    <select
-                        autocomplete="country"
-                        id="country" 
-                        class="field__input"
-                        name="country"
-                        placeholder="Country"
-                    >
-                        <option value="" selected>Select country &nbsp;*</option>
-                        <option value="US">United States</option>
-                        <option value="AR">Argentina</option>
-                        <option value="AT">Austria</option>
-                        <option value="AU">Australia</option>
-                        <option value="BE">Belgium</option>
-                        <option value="BR">Brazil</option>
-                        <option value="CA">Canada</option>
-                        <option value="CL">Chile</option>
-                        <option value="CN">China</option>
-                        <option value="CO">Colombia</option>
-                        <option value="CZ">Czech Republic</option>
-                        <option value="DE">Germany</option>
-                        <option value="DK">Denmark</option>
-                        <option value="EG">Egypt</option>
-                        <option value="ES">Spain</option>
-                        <option value="FI">Finland</option>
-                        <option value="FR">France</option>
-                        <option value="GR">Greece</option>
-                        <option value="HU">Hungary</option>
-                        <option value="ID">Indonesia</option>
-                        <option value="IE">Ireland</option>
-                        <option value="IL">Israel</option>
-                        <option value="IN">India</option>
-                        <option value="IT">Italy</option>
-                        <option value="JP">Japan</option>
-                        <option value="KE">Kenya</option>
-                        <option value="KR">South Korea</option>
-                        <option value="MX">Mexico</option>
-                        <option value="MY">Malaysia</option>
-                        <option value="NG">Nigeria</option>
-                        <option value="NL">Netherlands</option>
-                        <option value="NO">Norway</option>
-                        <option value="NZ">New Zealand</option>
-                        <option value="PA">Panama</option>
-                        <option value="PH">Philippines</option>
-                        <option value="PL">Poland</option>
-                        <option value="PT">Portugal</option>
-                        <option value="SA">Saudi Arabia</option>
-                        <option value="SE">Sweden</option>
-                        <option value="SG">Singapore</option>
-                        <option value="CH">Switzerland</option>                           
-                        <option value="TH">Thailand</option>
-                        <option value="TR">Turkey</option>
-                        <option value="UA">Ukraine</option>
-                        <option value="GB">United Kingdom</option>                           
-                        <option value="VN">Vietnam</option>
-                        <option value="ZA">South Africa</option>
-                    </select>
-                    <!-- <label id="lblCountry" class="field__label" for="country">Country</label> -->
-                    <div class="error-message" id="countryError"></div>
-                </div>            
-            </div>  
-            
-            <!-- BUSINESS TYPE -->
-            <div class="field">
-                <div>
-                    <legend class="field__legend">
-                        Business Type <span aria-hidden="true">*</span>
-                    </legend>
-                </div>                    
-                <div class="checkbox-group" id="businessType" role="group" aria-labelledby="business-type-label">
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="business1" name="businessType" value="Distributor / Reseller" class="checkbox">
-                        <label for="business1" class="checkbox__label">Distributor / Reseller</label>
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="business2" name="businessType" value="Educator / Academic Institution" class="checkbox">
-                        <label for="business2" class="checkbox__label">Educator / Academic Institution</label>
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="business3" name="businessType" value="End User / Manufacturer" class="checkbox">
-                        <label for="business3" class="checkbox__label">End User / Manufacturer</label>
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="business4" name="businessType" value="Service Provider / Contractor" class="checkbox">
-                        <label for="business4" class="checkbox__label">Service Provider / Contractor</label>
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="business5" name="businessType" value="Other" class="checkbox">
-                        <label for="business5" class="checkbox__label">Other</label>
-                    </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="business2" name="businessType" value="Educator / Academic Institution" class="checkbox">
+                    <label for="business2" class="checkbox__label">Educator / Academic Institution</label>
                 </div>
-                <div class="error-message" id="businessTypeError"></div>
-            </div>
-
-            <!-- PROCESS OF INTEREST -->
-            <div class="field">
-                <div>
-                    <legend class="field__legend">
-                        Processes of Interest <span aria-hidden="true">*</span>
-                    </legend>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="business3" name="businessType" value="End User / Manufacturer" class="checkbox">
+                    <label for="business3" class="checkbox__label">End User / Manufacturer</label>
                 </div>
-                <div class="checkbox-group" id="processInterestGroup">
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="process1" name="processInterest" value="Electron Beam Welding (EBW)" class="checkbox">
-                        <label for="process1" class="checkbox__label">Electron Beam Welding (EBW)</label>
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="process2" name="processInterest" value="Flux-Cored Arc Welding (FCAW)" class="checkbox">
-                        <label for="process2" class="checkbox__label">Flux-Cored Arc Welding (FCAW)</label>
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="process3" name="processInterest" value="Gas Metal Arc Welding (GMAW/MIG)" class="checkbox">
-                        <label for="process3" class="checkbox__label">Gas Metal Arc Welding (GMAW/MIG)</label>
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="process4" name="processInterest" value="Gas Tungsten Arc Welding (GTAW/TIG)" class="checkbox">
-                        <label for="process4" class="checkbox__label">Gas Tungsten Arc Welding (GTAW/TIG)</label>
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="process5" name="processInterest" value="Laser Beam Welding (LBW)" class="checkbox">
-                        <label for="process5" class="checkbox__label">Laser Beam Welding (LBW)</label>
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="process6" name="processInterest" value="Plasma Arc Welding (PAW)" class="checkbox">
-                        <label for="process6" class="checkbox__label">Plasma Arc Welding (PAW)</label>
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="process7" name="processInterest" value="Shielded Metal Arc Welding (SMAW/Stick)" class="checkbox">
-                        <label for="process7" class="checkbox__label">Shielded Metal Arc Welding (SMAW/Stick)</label>
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="process8" name="processInterest" value="Submerged Arc Welding (SAW)" class="checkbox">
-                        <label for="process8" class="checkbox__label">Submerged Arc Welding (SAW)</label>
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="process9" name="processInterest" value="Other" class="checkbox">
-                        <label for="process9" class="checkbox__label">Other</label>
-                    </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="business4" name="businessType" value="Service Provider / Contractor" class="checkbox">
+                    <label for="business4" class="checkbox__label">Service Provider / Contractor</label>
                 </div>
-                <div class="error-message" id="processInterestError"></div>
-            </div>
-
-            <!-- PRIVACY CONSENT -->
-            <div class="field">
-                <div>
-                    <legend class="field__legend">
-                        Consent <span aria-hidden="true">*</span>
-                    </legend>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="business5" name="businessType" value="Other" class="checkbox">
+                    <label for="business5" class="checkbox__label">Other</label>
                 </div>
-                <div class="checkbox-group" id="privacyConsentGroup">                                      
-                    <div class="checkbox-item">            
-                        <input class="checkbox" type="checkbox" id="privacy-consent" name="privacyConsent" value="Agreed upon" required>
-                        <label for="privacy-consent" class="checkbox__label text-body-sm">
-                            I agree to the <a href="/policies/privacy-policy" target="_blank">Privacy Policy</a> and <a href="/policies/terms-of-service" target="_blank">Terms of Service</a>
-                        </label>
-                    </div>
+            </div>
+            <div class="error-message" id="businessTypeError"></div>
+        </div>
+
+        <!-- PROCESS OF INTEREST -->
+        <div class="field">
+            <div>
+                <legend class="field__legend">
+                    Processes of Interest <span aria-hidden="true">*</span>
+                </legend>
+            </div>
+            <div class="checkbox-group" id="processInterestGroup">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="process1" name="processInterest" value="Electron Beam Welding (EBW)" class="checkbox">
+                    <label for="process1" class="checkbox__label">Electron Beam Welding (EBW)</label>
                 </div>
-                <div class="error-message" id="privacyConsentError"></div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="process2" name="processInterest" value="Flux-Cored Arc Welding (FCAW)" class="checkbox">
+                    <label for="process2" class="checkbox__label">Flux-Cored Arc Welding (FCAW)</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="process3" name="processInterest" value="Gas Metal Arc Welding (GMAW/MIG)" class="checkbox">
+                    <label for="process3" class="checkbox__label">Gas Metal Arc Welding (GMAW/MIG)</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="process4" name="processInterest" value="Gas Tungsten Arc Welding (GTAW/TIG)" class="checkbox">
+                    <label for="process4" class="checkbox__label">Gas Tungsten Arc Welding (GTAW/TIG)</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="process5" name="processInterest" value="Laser Beam Welding (LBW)" class="checkbox">
+                    <label for="process5" class="checkbox__label">Laser Beam Welding (LBW)</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="process6" name="processInterest" value="Plasma Arc Welding (PAW)" class="checkbox">
+                    <label for="process6" class="checkbox__label">Plasma Arc Welding (PAW)</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="process7" name="processInterest" value="Shielded Metal Arc Welding (SMAW/Stick)" class="checkbox">
+                    <label for="process7" class="checkbox__label">Shielded Metal Arc Welding (SMAW/Stick)</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="process8" name="processInterest" value="Submerged Arc Welding (SAW)" class="checkbox">
+                    <label for="process8" class="checkbox__label">Submerged Arc Welding (SAW)</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="process9" name="processInterest" value="Other" class="checkbox">
+                    <label for="process9" class="checkbox__label">Other</label>
+                </div>
             </div>
+            <div class="error-message" id="processInterestError"></div>
+        </div>
 
-            <!-- SUBMIT BUTTONS -->
-            <div class="text-center">              
-                <button type="submit" class="button button--primary" id="submitButton" aria-label="Submit registration form">
-                    <span id="buttonText">{{ btn_submit_account | default: 'Create Account' }}</span>
-                </button>
+        <!-- PRIVACY CONSENT -->
+        <div class="field">
+            <div>
+                <legend class="field__legend">
+                    Consent <span aria-hidden="true">*</span>
+                </legend>
             </div>
-
-            <div class="success-message" id="successMessage">
-                {{ section.settings.success_message | default: "Account request successful! You'll receive an activation email shortly." }}
+            <div class="checkbox-group" id="privacyConsentGroup">                                      
+                <div class="checkbox-item">            
+                    <input class="checkbox" type="checkbox" id="privacy-consent" name="privacyConsent" value="Agreed upon" required>
+                    <label for="privacy-consent" class="checkbox__label text-body-sm">
+                        I agree to the <a href="/policies/privacy-policy" target="_blank">Privacy Policy</a> and <a href="/policies/terms-of-service" target="_blank">Terms of Service</a>
+                    </label>
+                </div>
             </div>
+            <div class="error-message" id="privacyConsentError"></div>
+        </div>
 
-            <div class="error-banner" id="errorBanner">
-                There was an error creating your account. Please try again.
-            </div>
+        <!-- SUBMIT BUTTONS -->
+        <div class="text-center">              
+            <button type="submit" class="button button--primary" id="submitButton" aria-label="Submit registration form">
+                <span id="buttonText">{{ btn_submit_account | default: 'Create Account' }}</span>
+            </button>
+        </div>
 
-        </form>
-    </div>
+        <div class="success-message" id="successMessage">
+            {{ section.settings.success_message | default: "Account request successful! You'll receive an activation email shortly." }}
+        </div>
+
+        <div class="error-banner" id="errorBanner">
+            There was an error creating your account. Please try again.
+        </div>
+
+    </form>
 </div>

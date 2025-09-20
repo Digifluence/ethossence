@@ -76,9 +76,12 @@ ETHOSSENCE FEATURE: Allow customers to submit their cart for review/quote with a
 
 
           {%- when 'form' -%}
-            {%- comment -%} FORMS {%- endcomment -%}
+            {%- comment -%} 
+              FORM TO CREATE ACCOUNT OR SUBMIT REVIEW/QUOTE 
+              
+              FIRST THING: SET ANIMATION TYPE VARIABLE FOR JAVASCRIPT
+            {%- endcomment -%}
 
-            <pre>block.settings.animation_type {{ block.settings.animation_type }}</pre>
             {%- assign s_animation_type = block.settings.animation_type | default: 'slide_down' -%}             
 
             {%- style -%}
@@ -110,7 +113,10 @@ ETHOSSENCE FEATURE: Allow customers to submit their cart for review/quote with a
                 {% if block.settings.animation_type == 'slide_down' %}
                   <!-- SLIDE DOWN -->
                   <div id="registration-dropdown" class="form-dropdown">
-                    <div class="form-dropdown__content">               
+                    <div class="form-dropdown__content">              
+                      <{{ block.settings.heading_size }} class="form-title {{ block.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+                          {{ block.settings.heading_text }}
+                      </{{ block.settings.heading_size }}>                       
                       {% render 'ethossence-review-account-create' 
                           heading_text: block.settings.heading_text,
                           heading_size: block.settings.heading_size,
@@ -125,6 +131,9 @@ ETHOSSENCE FEATURE: Allow customers to submit their cart for review/quote with a
                   <!-- SLIDE OUR DRAWER -->
                   <div id="registration-drawer" class="drawer drawer--right">
                     <div class="drawer__header">
+                      <{{ block.settings.heading_size }} class="form-title {{ block.settings.heading_size }}">
+                          {{ block.settings.heading_text }}
+                      </{{ block.settings.heading_size }}>                      
                       <button type="button" class="drawer__close" id="close-registration" aria-label="Close registration form">×</button>
                     </div>
                     <div class="drawer__inner">
