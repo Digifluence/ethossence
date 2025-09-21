@@ -1,64 +1,112 @@
 (function() {
   'use strict';
   
-  // Registration Form Controller - Handles UI animations
-  class RegistrationFormController {
+  // FORM CONTROLLER - HANDLES UI ANIMATIONS FOR BOTH REGISTRATION AND REQUEST FORMS
+  class FormController {
     constructor(animationType) {
       this.animationType = animationType;
-      this.trigger = document.getElementById('register-trigger');
+      
+      // REGISTRATION FORM ELEMENTS (FOR NON-CUSTOMERS)
+      this.registerTrigger = document.getElementById('register-trigger');
       this.signinlink = document.getElementById('sign-in-link');
-      this.drawer = document.getElementById('registration-drawer');
-      this.dropdown = document.getElementById('registration-dropdown');
-      this.overlay = document.getElementById('registration-overlay');
+      this.registrationDrawer = document.getElementById('registration-drawer');
+      this.registrationDropdown = document.getElementById('registration-dropdown');
+      this.registrationOverlay = document.getElementById('registration-overlay');
+      
+      // REQUEST FORM ELEMENTS (FOR CUSTOMERS)
+      this.requestTrigger = document.getElementById('request-trigger');
+      this.requestDrawer = document.getElementById('request-drawer');
+      this.requestDropdown = document.getElementById('request-dropdown');
+      this.requestOverlay = document.getElementById('request-overlay');
+      
+      // DEBUG: LOG ELEMENT AVAILABILITY
+      console.log('Register trigger found:', this.registerTrigger);
+      console.log('Request trigger found:', this.requestTrigger);
+      console.log('Sign-in link found:', this.signinlink);
+      console.log('Animation type:', this.animationType);
       
       this.init();
     }
     
     init() {
-      // Open trigger
-      if (this.trigger) {
-        this.trigger.addEventListener('click', () => this.open());
+      // REGISTRATION FORM TRIGGERS (NON-CUSTOMERS)
+      if (this.registerTrigger) {
+        this.registerTrigger.addEventListener('click', () => this.openRegistration());
       }
       
-      // Close handlers
+      // REQUEST FORM TRIGGERS (CUSTOMERS)
+      if (this.requestTrigger) {
+        this.requestTrigger.addEventListener('click', () => this.openRequest());
+      }
+      
+      // CLOSE HANDLERS
       if (this.animationType === 'slide_down') {
-        const closeBtn = document.getElementById('close-dropdown');
-        if (closeBtn) {
-          closeBtn.addEventListener('click', () => this.close());
-        }
+        const closeBtns = document.querySelectorAll('#close-dropdown');
+        closeBtns.forEach(btn => {
+          btn.addEventListener('click', () => this.close());
+        });
       } else {
-        const closeBtn = document.getElementById('close-registration');
-        if (closeBtn) {
-          closeBtn.addEventListener('click', () => this.close());
+        const closeRegistrationBtn = document.getElementById('close-registration');
+        const closeRequestBtn = document.getElementById('close-request');
+        
+        if (closeRegistrationBtn) {
+          closeRegistrationBtn.addEventListener('click', () => this.close());
         }
-        if (this.overlay) {
-          this.overlay.addEventListener('click', () => this.close());
+        if (closeRequestBtn) {
+          closeRequestBtn.addEventListener('click', () => this.close());
+        }
+        
+        // OVERLAY CLICK HANDLERS
+        if (this.registrationOverlay) {
+          this.registrationOverlay.addEventListener('click', () => this.close());
+        }
+        if (this.requestOverlay) {
+          this.requestOverlay.addEventListener('click', () => this.close());
         }
       }
       
-      // Escape key handler
+      // ESCAPE KEY HANDLER
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') this.close();
       });
     }
     
-    open() {
+    openRegistration() {
       if (this.animationType === 'slide_down') {
-        if (this.dropdown) {
-          this.dropdown.classList.add('form-dropdown--active');
-          if (this.trigger) {
-            this.trigger.classList.add('hidden');
+        if (this.registrationDropdown) {
+          this.registrationDropdown.classList.add('form-dropdown--active');
+          if (this.registerTrigger) {
+            this.registerTrigger.classList.add('hidden');
           }
           if (this.signinlink) {
             this.signinlink.classList.add('hidden');
           }          
         }
       } else {
-        if (this.drawer) {
-          this.drawer.classList.add('drawer--active');
+        if (this.registrationDrawer) {
+          this.registrationDrawer.classList.add('drawer--active');
         }
-        if (this.overlay) {
-          this.overlay.classList.add('drawer__overlay--active');
+        if (this.registrationOverlay) {
+          this.registrationOverlay.classList.add('drawer__overlay--active');
+        }
+        document.body.classList.add('drawer-open');
+      }
+    }
+    
+    openRequest() {
+      if (this.animationType === 'slide_down') {
+        if (this.requestDropdown) {
+          this.requestDropdown.classList.add('form-dropdown--active');
+          if (this.requestTrigger) {
+            this.requestTrigger.classList.add('hidden');
+          }        
+        }
+      } else {
+        if (this.requestDrawer) {
+          this.requestDrawer.classList.add('drawer--active');
+        }
+        if (this.requestOverlay) {
+          this.requestOverlay.classList.add('drawer__overlay--active');
         }
         document.body.classList.add('drawer-open');
       }
@@ -66,22 +114,43 @@
     
     close() {
       if (this.animationType === 'slide_down') {
-        if (this.dropdown) {
-          this.dropdown.classList.remove('form-dropdown--active');
+        // CLOSE REGISTRATION DROPDOWN
+        if (this.registrationDropdown) {
+          this.registrationDropdown.classList.remove('form-dropdown--active');
         }
-        if (this.trigger) {
-          this.trigger.classList.remove('hidden');
+        // CLOSE REQUEST DROPDOWN
+        if (this.requestDropdown) {
+          this.requestDropdown.classList.remove('form-dropdown--active');
+        }
+        
+        // SHOW REGISTRATION TRIGGER AND SIGN-IN LINK
+        if (this.registerTrigger) {
+          this.registerTrigger.classList.remove('hidden');
         }
         if (this.signinlink) {
           this.signinlink.classList.remove('hidden');
+        }
+        // SHOW REQUEST TRIGGER
+        if (this.requestTrigger) {
+          this.requestTrigger.classList.remove('hidden');
         }        
       } else {
-        if (this.drawer) {
-          this.drawer.classList.remove('drawer--active');
+        // CLOSE REGISTRATION DRAWER
+        if (this.registrationDrawer) {
+          this.registrationDrawer.classList.remove('drawer--active');
         }
-        if (this.overlay) {
-          this.overlay.classList.remove('drawer__overlay--active');
+        if (this.registrationOverlay) {
+          this.registrationOverlay.classList.remove('drawer__overlay--active');
         }
+        
+        // CLOSE REQUEST DRAWER
+        if (this.requestDrawer) {
+          this.requestDrawer.classList.remove('drawer--active');
+        }
+        if (this.requestOverlay) {
+          this.requestOverlay.classList.remove('drawer__overlay--active');
+        }
+        
         document.body.classList.remove('drawer-open');
       }
     }
@@ -423,14 +492,15 @@
     }
   }
   
-  // Initialize function - called from the section with configuration
+  // INITIALIZE FUNCTION - CALLED FROM THE SECTION WITH CONFIGURATION
   window.initCustomerRegistration = function(config) {
     const animationType = config.animationType || 'slide_out';
     const webhookUrl = config.webhookUrl || '';
     
-    // Initialize controllers
-    new RegistrationFormController(animationType);
+    // INITIALIZE FORM CONTROLLER (HANDLES BOTH REGISTRATION AND REQUEST FORMS)
+    new FormController(animationType);
     
+    // INITIALIZE CUSTOMER REGISTRATION FORM HANDLER (ONLY NEEDED FOR REGISTRATION)
     if (webhookUrl) {
       new CustomerRegistrationForm(webhookUrl);
     }

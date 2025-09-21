@@ -1,4 +1,4 @@
-<pre>2025-09-20 i 014</pre>
+<pre>2025-09-21 i 015</pre>
 
 {%- comment -%}
   ETHOSSENCE FEATURE: Allow customers to submit their cart for review/quote with ability to create an account if not a customer.
@@ -77,7 +77,7 @@
 
           {%- when 'form' -%}
             {%- comment -%} 
-              FORM TO CREATE ACCOUNT OR SUBMIT REVIEW/QUOTE 
+              FORM FOR REVIEW/QUOTE WITH ABILITY TO CREATE ACCOUNT IF NOT LOGGED IN
               
               FIRST THING: SET ANIMATION TYPE VARIABLE FOR JAVASCRIPT
             {%- endcomment -%}
@@ -101,15 +101,18 @@
             <div class="block-{{ block.id }}-padding text-{{ block.settings.content_alignment }}">     
 
               {%- if customer == null -%}
-
+                <!-- NOT LOGGED IN - SHOW ABILITY TO CREATE ACCOUNT AND SUBMIT CART FOR REVIEW/QUOTE -->
                 <button type="button" id="register-trigger" class="button button--primary">
                   {{ block.settings.btn_trigger_account_form | default: 'Create Account to Request Review' }}
                 </button>
-
+                <!-- LINK TO SIGN IN IF ALREADY HAVE AN ACCOUNT -->
                 <div id="sign-in-link" class="margin-element-sm">
                   Already have an account? <a href="{{ routes.account_login_url }}?return_url={{ routes.cart_url | url_encode }}" title="Sign in to your existing account">sign in &raquo;</a>
                 </div>
-
+                <!-- REGISTRATION FORM - EITHER DROPDOWN OR DRAWER -->
+                {%- comment -%} 
+                  NOTE: The actual form is in the snippet ethossence-review-account-create.liquid
+                {%- endcomment -%}
                 {% if block.settings.animation_type == 'slide_down' %}
                   <!-- SLIDE DOWN -->
                   <div id="registration-dropdown" class="form-dropdown">
@@ -118,17 +121,15 @@
                           {{ block.settings.heading_text }}
                       </{{ block.settings.heading_size }}>                       
                       {% render 'ethossence-review-account-create' 
-                          heading_text: block.settings.heading_text,
-                          heading_size: block.settings.heading_size,
-                          bth_submit_account: block.settings.bth_submit_account
-                        %}
+                        bth_submit_account: block.settings.bth_submit_account
+                      %}
                     </div>
                     <div> 
                       <button type="button" class="button button--small button--secondary dropdown__close float-right" id="close-dropdown" aria-label="Close registration form">Cancel</button>
                     </div>               
                   </div>
                 {% else %}
-                  <!-- SLIDE OUR DRAWER -->
+                  <!-- SLIDE OUT DRAWER -->
                   <div id="registration-drawer" class="drawer drawer--right">
                     <div class="drawer__header">
                       <{{ block.settings.heading_size }} class="form-title {{ block.settings.heading_size }}">
@@ -138,10 +139,8 @@
                     </div>
                     <div class="drawer__inner">
                       {% render 'ethossence-review-account-create' 
-                          heading_text: block.settings.heading_text,
-                          heading_size: block.settings.heading_size,
-                          bth_submit_account: block.settings.bth_submit_account
-                        %}
+                        bth_submit_account: block.settings.bth_submit_account
+                      %}
                     </div>
                   </div>
                   <div class="drawer__overlay" id="registration-overlay"></div>
@@ -149,48 +148,42 @@
 
               {%- else -%}
 
-                <div class="cart-attributes" style="margin: 2rem 0;">
-                  <div class="form-group full">
-                    <label for="attributes[Needs description]" class="form-label">
-                      Solution Notes
-                    </label>
-                    <textarea 
-                      id="attributes[Needs description]"
-                      name="attributes[Needs description]"
-                      class="form-input"
-                      placeholder="Please describe how you plan to use the products..."
-                      rows="5"
-                    >{{ cart.attributes['Needs description'] }}</textarea>
-                  </div>
-                  <div class="form-group full" style="margin-top:10px;">
-                    <label for="attributes[Currently own/use MeltView system?]" class="form-label">
-                      Currently own/use MeltView system?
-                    </label>
-                    <select 
-                      id="attributes[Currently own/use MeltView system?]"
-                      name="attributes[Currently own/use MeltView system?]"
-                      class="form-input form-select"
-                    >
-                      <option value="">Please select...</option>
-                      <option value="true" {% if cart.attributes['Currently own/use MeltView system?'] == 'true' %}selected{% endif %}>
-                        Yes, I currently own/use MeltView system
-                      </option>
-                      <option value="false" {% if cart.attributes['Currently own/use MeltView system?'] == 'false' %}selected{% endif %}>
-                        No, I don't currently own/use MeltView system
-                      </option>
-                      <option value="unsure" {% if cart.attributes['Currently own/use MeltView system?'] == 'unsure' %}selected{% endif %}>
-                        Not sure / Need more information
-                      </option>
-                    </select>
-                  </div>
-                </div>
+                <button type="button" id="request-trigger" class="button button--primary">
+                  {{ block.settings.btn_trigger_request_form | default: 'Start Review Request' }}
+                </button>
 
-                <div class="cart-save-draft" style="margin: 2rem 0; text-align: center;">
-                  <button id="save-cart-draft" type="button" class="button" data-customer-id="{{ customer.id }}" data-customer-email="{{ customer.email }}">
-                    Submit for Review &raquo;
-                  </button>
-                  <div id="save-cart-message" style="margin-top: 1rem; display: none;"></div>
-                </div>
+                {% if block.settings.animation_type == 'slide_down' %}
+                  <!-- SLIDE DOWN -->
+                  <div id="request-dropdown" class="form-dropdown">
+                    <div class="form-dropdown__content">              
+                      <{{ block.settings.heading_size }} class="form-title {{ block.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+                          {{ block.settings.heading_text }}
+                      </{{ block.settings.heading_size }}>                       
+                        {%  render 'ethossence-review-cart-submit'
+                            btn_submit_request: block.settings.bth_submit_request
+                        %}
+                    </div>
+                    <div> 
+                      <button type="button" class="button button--small button--secondary dropdown__close float-right" id="close-dropdown" aria-label="Close request form">Cancel</button>
+                    </div>               
+                  </div>
+                {% else %}
+                  <!-- SLIDE OUT DRAWER -->
+                  <div id="request-drawer" class="drawer drawer--right">
+                    <div class="drawer__header">
+                      <{{ block.settings.heading_size }} class="form-title {{ block.settings.heading_size }}">
+                          {{ block.settings.heading_text }}
+                      </{{ block.settings.heading_size }}>                      
+                      <button type="button" class="drawer__close" id="close-request" aria-label="Close request form"><span class="text-xlarge">X</span></button>
+                    </div>
+                    <div class="drawer__inner">
+                      {%  render 'ethossence-review-cart-submit'
+                          btn_submit_request: block.settings.bth_submit_request
+                      %}
+                    </div>
+                  </div>
+                  <div class="drawer__overlay" id="request-overlay"></div>
+                {% endif %}                
 
               {%- endif -%}
 
@@ -374,7 +367,7 @@
       },    
       {
          "type": "form",
-         "name": "Form to create account",
+         "name": "Forms for review",
          "limit": 3,
          "settings": [
             {
@@ -465,6 +458,12 @@
               "label": "Button Text",
               "default": "Create Account &raquo;"
             },  
+            {
+              "type": "text",
+              "id": "btn_trigger_request_form",
+              "label": "Button Text",
+              "default": "Start Review Request"
+            },
             {
               "type": "text",
               "id": "bth_submit_request",

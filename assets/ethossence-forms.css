@@ -137,6 +137,7 @@
 
 /* BUTTON ANIMATION */
 #register-trigger.hidden,
+#request-trigger.hidden,
 #sign-in-link.hidden {
   display: none !important;
 }
