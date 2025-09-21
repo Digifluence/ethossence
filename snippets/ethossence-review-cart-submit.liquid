@@ -4,7 +4,7 @@
       <textarea 
          id="attributes[Needs description]"
          name="attributes[Needs description]"
-         class="field__input"
+         class="field__input cart-attribute"
          placeholder="Please describe how you plan to use the products..."
          rows="5"
       >{{ cart.attributes['Needs description'] }}</textarea>
@@ -19,7 +19,7 @@
       <select 
          id="attributes[Currently own/use MeltView system?]"
          name="attributes[Currently own/use MeltView system?]"
-         class="form-input form-select"
+         class="form-input form-select cart-attribute"
       >
          <option value="">Please select...</option>
          <option value="true" {% if cart.attributes['Currently own/use MeltView system?'] == 'true' %}selected{% endif %}>

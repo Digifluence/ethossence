@@ -9,8 +9,8 @@ document.addEventListener('DOMContentLoaded', function() {
       updateCartAttributes();
    });
    
-   // For text inputs and textareas, save on blur to avoid excessive API calls
-   if (field.type === 'text' || field.type === 'textarea') {
+   // FOR TEXT INPUTS AND TEXTAREAS, SAVE ON BLUR TO AVOID EXCESSIVE API CALLS
+   if (field.type === 'text' || field.tagName.toLowerCase() === 'textarea') {
       field.addEventListener('blur', function() {
          updateCartAttributes();
       });
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
    attributeFields.forEach(field => {
       if (field.type === 'checkbox') {
          formData.append(field.name, field.checked ? field.value : '');
-      } else if (field.value.trim() !== '') {
+      } else if (field.value && field.value.trim() !== '') {
          formData.append(field.name, field.value);
       }
    });
@@ -53,7 +53,10 @@ document.addEventListener('DOMContentLoaded', function() {
       button.innerHTML = 'Saving...';
       
       try {
-         // Get current cart data (includes attributes)
+         // UPDATE CART ATTRIBUTES FIRST TO ENSURE THEY'RE INCLUDED
+         await updateCartAttributes();
+         
+         // GET CURRENT CART DATA (INCLUDES ATTRIBUTES)
          const cartResponse = await fetch('/cart.js');
          const cartData = await cartResponse.json();
          
