@@ -1,42 +1,85 @@
-                <div class="cart-attributes" style="margin: 2rem 0;">
-                  <div class="form-group full">
-                    <label for="attributes[Needs description]" class="form-label">
-                      Solution Notes
-                    </label>
-                    <textarea 
-                      id="attributes[Needs description]"
-                      name="attributes[Needs description]"
-                      class="form-input"
-                      placeholder="Please describe how you plan to use the products..."
-                      rows="5"
-                    >{{ cart.attributes['Needs description'] }}</textarea>
-                  </div>
-                  <div class="form-group full" style="margin-top:10px;">
-                    <label for="attributes[Currently own/use MeltView system?]" class="form-label">
-                      Currently own/use MeltView system?
-                    </label>
-                    <select 
-                      id="attributes[Currently own/use MeltView system?]"
-                      name="attributes[Currently own/use MeltView system?]"
-                      class="form-input form-select"
-                    >
-                      <option value="">Please select...</option>
-                      <option value="true" {% if cart.attributes['Currently own/use MeltView system?'] == 'true' %}selected{% endif %}>
-                        Yes, I currently own/use MeltView system
-                      </option>
-                      <option value="false" {% if cart.attributes['Currently own/use MeltView system?'] == 'false' %}selected{% endif %}>
-                        No, I don't currently own/use MeltView system
-                      </option>
-                      <option value="unsure" {% if cart.attributes['Currently own/use MeltView system?'] == 'unsure' %}selected{% endif %}>
-                        Not sure / Need more information
-                      </option>
-                    </select>
-                  </div>
-                </div>
+<div class="contact ethossence-form cart-attributes">
 
-                <div class="cart-save-draft" style="margin: 2rem 0; text-align: center;">
-                  <button id="save-cart-draft" type="button" class="button" data-customer-id="{{ customer.id }}" data-customer-email="{{ customer.email }}">
-                    Submit for Review &raquo;
-                  </button>
-                  <div id="save-cart-message" style="margin-top: 1rem; display: none;"></div>
-                </div>
+   <div class="contact__fields">
+      <!-- FIRST NAME -->
+      <div class="field">
+            <input
+               class="field__input"
+               autocomplete="given-name"
+               type="text"
+               id="firstName"
+               name="firstName"
+               placeholder="First name"
+               required
+            >
+            <label class="field__label" for="firstName">First name <span aria-hidden="true">*</span></label>
+            <div class="error-message" id="firstNameError"></div>
+      </div>
+      <!-- LAST NAME -->
+      <div class="field">
+            <input
+               class="field__input"
+               autocomplete="family-name"
+               type="text"
+               id="lastName"
+               name="lastName"
+               placeholder="Last name"
+               required
+            >
+            <label class="field__label" for="lastName">Last name <span aria-hidden="true">*</span></label>
+            <div class="error-message" id="lastNameError"></div>
+      </div>
+   </div> 
+
+   <div class="field">
+      <textarea 
+         id="attributes[Needs description]"
+         name="attributes[Needs description]"
+         class="field__input"
+         placeholder="Please describe how you plan to use the products..."
+         rows="5"
+      >{{ cart.attributes['Needs description'] }}</textarea>
+      <label class="field__label" for="attributes[Needs description]">Needs description <span aria-hidden="true">*</span></label>
+      <div class="error-message" id="attributes[Needs description]error"></div>
+   </div>
+
+   {%  comment  %} 
+      <div class="form-group full">
+         <label for="attributes[Needs description]" class="form-label">
+            Solution Notes
+         </label>
+
+      </div>
+
+      <div class="form-group full" style="margin-top:10px;">
+         <label for="attributes[Currently own/use MeltView system?]" class="form-label">
+            Currently own/use MeltView system?
+         </label>
+         <select 
+            id="attributes[Currently own/use MeltView system?]"
+            name="attributes[Currently own/use MeltView system?]"
+            class="form-input form-select"
+         >
+            <option value="">Please select...</option>
+            <option value="true" {% if cart.attributes['Currently own/use MeltView system?'] == 'true' %}selected{% endif %}>
+            Yes, I currently own/use MeltView system
+            </option>
+            <option value="false" {% if cart.attributes['Currently own/use MeltView system?'] == 'false' %}selected{% endif %}>
+            No, I don't currently own/use MeltView system
+            </option>
+            <option value="unsure" {% if cart.attributes['Currently own/use MeltView system?'] == 'unsure' %}selected{% endif %}>
+            Not sure / Need more information
+            </option>
+         </select>
+      </div>
+
+       {% endcomment %} 
+
+   <div class="cart-save-draft" style="margin: 2rem 0; text-align: center;">
+      <button id="save-cart-draft" type="button" class="button" data-customer-id="{{ customer.id }}" data-customer-email="{{ customer.email }}">
+         {{ bth_submit_account |  default: 'Submit for Review' }}
+      </button>
+      <div id="save-cart-message" style="margin-top: 1rem; display: none;"></div>
+   </div>
+
+</div>
