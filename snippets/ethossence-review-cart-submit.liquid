@@ -12,37 +12,27 @@
       <div class="error-message" id="attributes[Needs description]error"></div>
    </div>
 
-   {%  comment  %} 
-      <div class="form-group full">
-         <label for="attributes[Needs description]" class="form-label">
-            Solution Notes
-         </label>
-
-      </div>
-
-      <div class="form-group full" style="margin-top:10px;">
-         <label for="attributes[Currently own/use MeltView system?]" class="form-label">
-            Currently own/use MeltView system?
-         </label>
-         <select 
-            id="attributes[Currently own/use MeltView system?]"
-            name="attributes[Currently own/use MeltView system?]"
-            class="form-input form-select"
-         >
-            <option value="">Please select...</option>
-            <option value="true" {% if cart.attributes['Currently own/use MeltView system?'] == 'true' %}selected{% endif %}>
-            Yes, I currently own/use MeltView system
-            </option>
-            <option value="false" {% if cart.attributes['Currently own/use MeltView system?'] == 'false' %}selected{% endif %}>
-            No, I don't currently own/use MeltView system
-            </option>
-            <option value="unsure" {% if cart.attributes['Currently own/use MeltView system?'] == 'unsure' %}selected{% endif %}>
-            Not sure / Need more information
-            </option>
-         </select>
-      </div>
-
-       {% endcomment %} 
+   <div class="form-group full" style="margin-top:10px;">
+      <label for="attributes[Currently own/use MeltView system?]" class="form-label">
+         Currently own/use MeltView system?
+      </label>
+      <select 
+         id="attributes[Currently own/use MeltView system?]"
+         name="attributes[Currently own/use MeltView system?]"
+         class="form-input form-select"
+      >
+         <option value="">Please select...</option>
+         <option value="true" {% if cart.attributes['Currently own/use MeltView system?'] == 'true' %}selected{% endif %}>
+         Yes, I currently own/use MeltView system
+         </option>
+         <option value="false" {% if cart.attributes['Currently own/use MeltView system?'] == 'false' %}selected{% endif %}>
+         No, I don't currently own/use MeltView system
+         </option>
+         <option value="unsure" {% if cart.attributes['Currently own/use MeltView system?'] == 'unsure' %}selected{% endif %}>
+         Not sure / Need more information
+         </option>
+      </select>
+   </div>
 
    <div class="cart-save-draft" style="margin: 2rem 0; text-align: center;">
       <button id="save-cart-draft" type="button" class="button" data-customer-id="{{ customer.id }}" data-customer-email="{{ customer.email }}">
