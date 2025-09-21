@@ -34,6 +34,18 @@
             "padding_bottom": 12
           }
         },
+        "content_zRahrX": {
+          "type": "content",
+          "settings": {
+            "page": "get-expert-guidance-before-you-buy-1",
+            "heading_hide": false,
+            "heading_size": "h1",
+            "content_audience": "accounts",
+            "authoriz_enabled": false,
+            "padding_top": 12,
+            "padding_bottom": 12
+          }
+        },
         "form_PfTBcg": {
           "type": "form",
           "settings": {
@@ -52,6 +64,7 @@
       },
       "block_order": [
         "content_ak6e3V",
+        "content_zRahrX",
         "form_PfTBcg"
       ],
       "name": "Review request",
