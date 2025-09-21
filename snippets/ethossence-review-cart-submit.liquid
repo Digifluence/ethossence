@@ -90,6 +90,93 @@
       <div class="field__text">Please indicate amps/KW and if welding is pulsed.</div>
    </div>
 
+   <div class="field">
+      <label class="field__label">Will your process emit large amounts of spatter?</label>
+      <div class="field__radio-group">
+         <label class="field__radio">
+            <input type="radio" name="attributes[wc_emit_spatter]" value="true" class="cart-attribute" 
+                   {% if cart.attributes['wc_emit_spatter'] == 'true' %}checked{% endif %}>
+            <span>Yes</span>
+         </label>
+         <label class="field__radio">
+            <input type="radio" name="attributes[wc_emit_spatter]" value="false" class="cart-attribute" 
+                   {% if cart.attributes['wc_emit_spatter'] == 'false' or cart.attributes['wc_emit_spatter'] == blank %}checked{% endif %}>
+            <span>No</span>
+         </label>
+      </div>
+   </div>
+
+   <div class="field">
+      <label class="field__label">Will your process emit large amounts of metal vapor?</label>
+      <div class="field__radio-group">
+         <label class="field__radio">
+            <input type="radio" name="attributes[wc_emit_metal_vapor]" value="true" class="cart-attribute" 
+                   {% if cart.attributes['wc_emit_metal_vapor'] == 'true' %}checked{% endif %}>
+            <span>Yes</span>
+         </label>
+         <label class="field__radio">
+            <input type="radio" name="attributes[wc_emit_metal_vapor]" value="false" class="cart-attribute" 
+                   {% if cart.attributes['wc_emit_metal_vapor'] == 'false' or cart.attributes['wc_emit_metal_vapor'] == blank %}checked{% endif %}>
+            <span>No</span>
+         </label>
+      </div>
+   </div>
+
+   <div class="field">
+      <label class="field__label">Is the material pre-heated?</label>
+      <div class="field__radio-group">
+         <label class="field__radio">
+            <input type="radio" name="attributes[wc_material_preheated]" value="true" class="cart-attribute" id="preheated-yes"
+                   {% if cart.attributes['wc_material_preheated'] == 'true' %}checked{% endif %}>
+            <span>Yes</span>
+         </label>
+         <label class="field__radio">
+            <input type="radio" name="attributes[wc_material_preheated]" value="false" class="cart-attribute" id="preheated-no"
+                   {% if cart.attributes['wc_material_preheated'] == 'false' or cart.attributes['wc_material_preheated'] == blank %}checked{% endif %}>
+            <span>No</span>
+         </label>
+      </div>
+   </div>
+
+   <div class="field" id="preheated-temp-field" style="{% unless cart.attributes['wc_material_preheated'] == 'true' %}display: none;{% endunless %}">
+      <input 
+         type="text"
+         id="attributes[wc_material_preheated_temp]"
+         name="attributes[wc_material_preheated_temp]"
+         class="field__input cart-attribute"
+         placeholder="Please indicate Fahrenheit or Celsius"
+         value="{{ cart.attributes['wc_material_preheated_temp'] }}"
+      >
+      <label class="field__label" for="attributes[wc_material_preheated_temp]">If so, to what temperature?</label>
+      <div class="field__text">Please indicate Fahrenheit or Celsius.</div>
+   </div>
+
+   <div class="field">
+      <input 
+         type="text"
+         id="attributes[wc_arc_on_item_avg]"
+         name="attributes[wc_arc_on_item_avg]"
+         class="field__input cart-attribute"
+         placeholder="Weld time minutes"
+         value="{{ cart.attributes['wc_arc_on_item_avg'] }}"
+      >
+      <label class="field__label" for="attributes[wc_arc_on_item_avg]">What is the average arc-on time?</label>
+      <div class="field__text">Weld time minutes.</div>
+   </div>
+
+   <div class="field">
+      <input 
+         type="text"
+         id="attributes[wc_traverse_speed]"
+         name="attributes[wc_traverse_speed]"
+         class="field__input cart-attribute"
+         placeholder="Please indicate inch/mm or mm/min"
+         value="{{ cart.attributes['wc_traverse_speed'] }}"
+      >
+      <label class="field__label" for="attributes[wc_traverse_speed]">What is the approximate traverse speed?</label>
+      <div class="field__text">Please indicate inch/mm or mm/min.</div>
+   </div>
+
    <div class="cart-save-draft" style="margin: 2rem 0; text-align: center;">
       <button id="save-cart-draft" type="button" class="button" data-customer-id="{{ customer.id }}" data-customer-email="{{ customer.email }}">
          {{ bth_submit_account |  default: 'Submit for Review' }}

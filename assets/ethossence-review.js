@@ -6,6 +6,9 @@ document.addEventListener('DOMContentLoaded', function() {
    // DEBUG: LOG HOW MANY ATTRIBUTE FIELDS WERE FOUND
    console.log('Found', attributeFields.length, 'cart attribute fields');
    
+   // SETUP CONDITIONAL FIELD DISPLAY
+   setupConditionalFields();
+   
    // AUTO-SAVE CART ATTRIBUTES WHEN THEY CHANGE
    attributeFields.forEach(field => {
    if (!field || !field.name) return; // SKIP INVALID FIELDS
@@ -33,6 +36,11 @@ document.addEventListener('DOMContentLoaded', function() {
       
       if (field.type === 'checkbox') {
          formData.append(field.name, field.checked ? field.value : '');
+      } else if (field.type === 'radio') {
+         // FOR RADIO BUTTONS, ONLY APPEND IF CHECKED
+         if (field.checked) {
+            formData.append(field.name, field.value);
+         }
       } else if (field.value && field.value.trim() !== '') {
          formData.append(field.name, field.value);
       }
@@ -118,5 +126,33 @@ document.addEventListener('DOMContentLoaded', function() {
          messageDiv.style.display = 'none';
       }, 5000);
    }
+   }
+
+   // SETUP CONDITIONAL FIELD DISPLAY LOGIC
+   function setupConditionalFields() {
+      const preheatedYes = document.getElementById('preheated-yes');
+      const preheatedNo = document.getElementById('preheated-no');
+      const tempField = document.getElementById('preheated-temp-field');
+
+      if (preheatedYes && preheatedNo && tempField) {
+         // HANDLE PREHEATED YES/NO RADIO BUTTONS
+         preheatedYes.addEventListener('change', function() {
+            if (this.checked) {
+               tempField.style.display = 'block';
+            }
+         });
+
+         preheatedNo.addEventListener('change', function() {
+            if (this.checked) {
+               tempField.style.display = 'none';
+               // CLEAR THE TEMPERATURE VALUE WHEN HIDING
+               const tempInput = document.getElementById('attributes[wc_material_preheated_temp]');
+               if (tempInput) {
+                  tempInput.value = '';
+                  updateCartAttributes(); // UPDATE CART TO CLEAR THE VALUE
+               }
+            }
+         });
+      }
    }
 });
