@@ -3,8 +3,13 @@ document.addEventListener('DOMContentLoaded', function() {
    const messageDiv = document.getElementById('save-cart-message');
    const attributeFields = document.querySelectorAll('.cart-attribute');
    
-   // Auto-save cart attributes when they change
+   // DEBUG: LOG HOW MANY ATTRIBUTE FIELDS WERE FOUND
+   console.log('Found', attributeFields.length, 'cart attribute fields');
+   
+   // AUTO-SAVE CART ATTRIBUTES WHEN THEY CHANGE
    attributeFields.forEach(field => {
+   if (!field || !field.name) return; // SKIP INVALID FIELDS
+   
    field.addEventListener('change', function() {
       updateCartAttributes();
    });
@@ -20,7 +25,12 @@ document.addEventListener('DOMContentLoaded', function() {
    async function updateCartAttributes() {
    const formData = new FormData();
    
-   attributeFields.forEach(field => {
+   // RE-QUERY ATTRIBUTE FIELDS IN CASE DOM HAS CHANGED
+   const currentAttributeFields = document.querySelectorAll('.cart-attribute');
+   
+   currentAttributeFields.forEach(field => {
+      if (!field || !field.name) return; // SKIP INVALID FIELDS
+      
       if (field.type === 'checkbox') {
          formData.append(field.name, field.checked ? field.value : '');
       } else if (field.value && field.value.trim() !== '') {
