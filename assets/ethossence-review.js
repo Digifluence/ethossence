@@ -59,6 +59,43 @@ document.addEventListener('DOMContentLoaded', function() {
       console.error('Error updating cart attributes:', error);
    }
    }
+
+   // NEW FUNCTION TO COLLECT DETAILED FIELD DATA FOR WEBHOOK
+   function collectFieldData() {
+      const fieldData = [];
+      const reviewRequestFields = document.querySelectorAll('#review-request-fields .cart-attribute');
+      
+      reviewRequestFields.forEach(field => {
+         if (!field || !field.name) return; // SKIP INVALID FIELDS
+         
+         let value = '';
+         let shouldInclude = false;
+         
+         if (field.type === 'checkbox') {
+            value = field.checked ? field.value : '';
+            shouldInclude = true; // INCLUDE ALL CHECKBOX FIELDS
+         } else if (field.type === 'radio') {
+            if (field.checked) {
+               value = field.value;
+               shouldInclude = true;
+            }
+         } else if (field.value && field.value.trim() !== '') {
+            value = field.value;
+            shouldInclude = true;
+         }
+         
+         if (shouldInclude) {
+            fieldData.push({
+               id: field.id || '',
+               name: field.name || '',
+               value: value,
+               type: field.type || field.tagName.toLowerCase()
+            });
+         }
+      });
+      
+      return fieldData;
+   }
    
    // Save Cart as Draft Order functionality
    if (saveCartBtn) {
@@ -86,7 +123,8 @@ document.addEventListener('DOMContentLoaded', function() {
          shop_domain: Shopify.shop,
          timestamp: new Date().toISOString(),
          currency: cartData.currency,
-         cart_attributes: cartData.attributes || {}
+         cart_attributes: cartData.attributes || {},
+         form_fields: collectFieldData() // ADD DETAILED FIELD DATA
          };
          
          // Send to Make webhook
