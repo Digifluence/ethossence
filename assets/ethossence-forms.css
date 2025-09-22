@@ -24,19 +24,45 @@
     line-height: 1.27;
   }
 
-  /* RADIO BUTTON GROUP STYLING */
-  .field__radio-group {
-    display: flex;
-    gap: 2rem;
-    margin-top: 0.8rem;
-  }
+/* Checkbox Layout */
+.checkbox-group, .field__radio-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.5rem;
+  margin: 1.5rem 0;
+  text-align: left;
+}
 
+.field.checkbox-field {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.field.checkbox-field .field__label {
+  flex-shrink: 0;
+  min-width: 150px;
+  margin-top: 0.5rem;
+}
+
+.field.checkbox-field .checkbox-group {
+  flex: 1;
+  margin-top: 0;
+}
+
+.checkbox-item {
+  margin-bottom: 0.25rem;
+}  
+
+  /* RADIO BUTTON GROUP STYLING */
   .field__radio {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 0.5rem;
     cursor: pointer;
     font-size: 1.4rem;
+    min-width: 150px;
+    margin-top: 0.5rem;    
   }
 
   .field__radio input[type="radio"] {
@@ -177,35 +203,7 @@
   display: none !important;
 }
 
-/* Checkbox Layout */
-.checkbox-group {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 0.5rem;
-  margin: 1.5rem 0;
-  text-align: left;
-}
 
-.field.checkbox-field {
-  display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-}
-
-.field.checkbox-field .field__label {
-  flex-shrink: 0;
-  min-width: 150px;
-  margin-top: 0.5rem;
-}
-
-.field.checkbox-field .checkbox-group {
-  flex: 1;
-  margin-top: 0;
-}
-
-.checkbox-item {
-  margin-bottom: 0.25rem;
-}
 
 /* Form Messages */
 .field__legend {
