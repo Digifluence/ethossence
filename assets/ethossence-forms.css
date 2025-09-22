@@ -25,12 +25,19 @@
   }
 
 /* Checkbox Layout */
-.checkbox-group, .field__radio-group {
+.checkbox-group {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 0.5rem;
   margin: 1.5rem 0;
   text-align: left;
+}
+
+/* RADIO BUTTON GROUP LAYOUT */
+.field__radio-group {
+  display: flex;
+  gap: 2rem;
+  margin-top: 0.8rem;
 }
 
 .field.checkbox-field {
