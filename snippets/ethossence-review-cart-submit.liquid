@@ -129,8 +129,6 @@
             <input type="radio" name="attributes[wc_material_preheated]" value="true" class="cart-attribute" id="preheated-yes"
                    {% if cart.attributes['wc_material_preheated'] == 'true' %}checked{% endif %}>
             <span>Yes</span>
-         </label>
-         <label class="field__radio">
             <input type="radio" name="attributes[wc_material_preheated]" value="false" class="cart-attribute" id="preheated-no"
                    {% if cart.attributes['wc_material_preheated'] == 'false' or cart.attributes['wc_material_preheated'] == blank %}checked{% endif %}>
             <span>No</span>
