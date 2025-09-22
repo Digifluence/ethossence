@@ -1,5 +1,3 @@
-<pre>2025-09-22 i 028</pre>
-
 {%- comment -%}
   ETHOSSENCE FEATURE: Allow customers to submit their cart for review/quote with ability to create an account if not a customer.
 {%- endcomment -%}
@@ -118,7 +116,7 @@
                   <div id="registration-dropdown" class="form-dropdown">
                     <div class="form-dropdown__content">              
                       <{{ block.settings.heading_size }} class="form-title {{ block.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-                          {{ block.settings.heading_text }}
+                          {{ block.settings.create_account_head_text }}
                       </{{ block.settings.heading_size }}>                       
                       {% render 'ethossence-review-account-create' 
                         bth_submit_account: block.settings.bth_submit_account
@@ -133,7 +131,7 @@
                   <div id="registration-drawer" class="drawer drawer--right">
                     <div class="drawer__header">
                       <{{ block.settings.heading_size }} class="form-title {{ block.settings.heading_size }}">
-                          {{ block.settings.heading_text }}
+                          {{ block.settings.create_account_head_text }}
                       </{{ block.settings.heading_size }}>                      
                       <button type="button" class="drawer__close" id="close-registration" aria-label="Close registration form"><span class="text-xlarge">X</span></button>
                     </div>
@@ -157,7 +155,7 @@
                   <div id="request-dropdown" class="form-dropdown">
                     <div class="form-dropdown__content">              
                       <{{ block.settings.heading_size }} class="form-title {{ block.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-                          {{ block.settings.heading_text }}
+                          {{ block.settings.submit_cart_head_text }}
                       </{{ block.settings.heading_size }}>                       
                         {%  render 'ethossence-review-cart-submit'
                             btn_submit_request: block.settings.bth_submit_request
@@ -172,7 +170,7 @@
                   <div id="request-drawer" class="drawer drawer--right">
                     <div class="drawer__header">
                       <{{ block.settings.heading_size }} class="form-title {{ block.settings.heading_size }}">
-                          {{ block.settings.heading_text }}
+                          {{ block.settings.submit_cart_head_text }}
                       </{{ block.settings.heading_size }}>                      
                       <button type="button" class="drawer__close" id="close-request" aria-label="Close request form"><span class="text-xlarge">X</span></button>
                     </div>
@@ -406,14 +404,20 @@
             },                
             {
                "type": "header",
-               "content": "Form header"
+               "content": "Form headers"
             },                     
             {
                "type": "inline_richtext",
-               "id": "heading_text",
+               "id": "create_account_head_text",
                "default": "Create Your Account",
                "label": "Header text"
             },
+            {
+               "type": "inline_richtext",
+               "id": "submit_cart_head_text",
+               "default": "Review Request",
+               "label": "Header text"
+            },            
             {
                "type": "select",
                "id": "heading_size",
