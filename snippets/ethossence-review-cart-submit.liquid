@@ -2,14 +2,14 @@
 
    <div class="field">
       <textarea 
-         id="attributes[Needs description]"
-         name="attributes[Needs description]"
+         id="attributes[project_description_from_customer]"
+         name="attributes[project_description_from_customer]"
          class="field__input cart-attribute"
-         placeholder="Please describe how you plan to use the products..."
+         placeholder="Please describe project."
          rows="5"
-      >{{ cart.attributes['Needs description'] }}</textarea>
-      <label class="field__label" for="attributes[Needs description]">Please describe project.<span aria-hidden="true">*</span></label>
-      <div class="error-message" id="attributes[Needs description]error"></div>
+      >{{ cart.attributes['Project description from customer'] }}</textarea>
+      <label class="field__label" for="attributes[project_description_from_customer]">Please describe project.<span aria-hidden="true">*</span></label>
+      <div class="error-message" id="attributes[project_description_from_customer]error"></div>
    </div>
 
    <div class="field">
@@ -19,7 +19,7 @@
          name="attributes[wc_machine_type]"
          class="field__input cart-attribute"
          placeholder="e.g. Column and boom, tube mill, orbital, carriage, robot, etc."
-         value="{{ cart.attributes['wc_machine_type'] }}"
+         value="{{ cart.attributes['What is the type of machine?'] }}"
       >
       <label class="field__label" for="attributes[wc_machine_type]">What is the type of machine?</label>
       <div class="field__text">e.g. Column and boom, tube mill, orbital, carriage, robot, etc.</div>

@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function() {
          });
          
          if (webhookResponse.ok) {
-         showMessage('Cart saved successfully with all details! 💾', 'success');
+         showMessage('Review request submitted successfully!', 'success');
          } else {
          throw new Error('Failed to save cart');
          }
