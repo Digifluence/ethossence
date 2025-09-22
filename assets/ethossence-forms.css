@@ -50,7 +50,7 @@
 .field--radio .field__radio-group {
   display: flex;
   gap: 2rem;
-  margin-top: 0 !important;
+  margin-top: 1 !important;
   flex: 1;
 }
 
@@ -235,6 +235,10 @@
   content: "*";
   color: #ef4444;
   margin-left: 0.25rem;
+}
+
+.field--radio .field__legend {
+  padding-bottom: 2rem;
 }
 
 .error-message {
