@@ -34,10 +34,22 @@
 }
 
 /* RADIO BUTTON GROUP LAYOUT */
+.field--radio {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.field--radio .field__label {
+  margin-bottom: 0;
+  flex-shrink: 0;
+  min-width: 200px;
+}
+
 .field__radio-group {
   display: flex;
   gap: 2rem;
-  margin-top: 0.8rem;
+  margin-top: 0;
 }
 
 .field.checkbox-field {
@@ -215,7 +227,6 @@
 .field__legend {
   font-size: 1.6rem;
   padding: 1.5rem 4.5rem 0 1.5rem;
-  font-weight: 500;
 }
 
 .field__legend.required::after {
