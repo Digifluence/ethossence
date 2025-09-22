@@ -2,91 +2,91 @@
 
    <div class="field">
       <textarea 
-         id="attributes[project_description_from_customer]"
+         id="project_description_from_customer"
          name="attributes[Project description from customer]"
          class="field__input cart-attribute"
          placeholder="Please describe project."
          rows="5"
       >{{ cart.attributes['Project description from customer'] }}</textarea>
-      <label class="field__label" for="attributes[project_description_from_customer]">Please describe project.<span aria-hidden="true">*</span></label>
-      <div class="error-message" id="attributes[project_description_from_customer]error"></div>
+      <label class="field__label" for="project_description_from_customer">Please describe project.<span aria-hidden="true">*</span></label>
+      <div class="error-message" id="project_description_from_customer_error"></div>
    </div>
 
    <div class="field">
       <input 
          type="text"
-         id="attributes[wc_machine_type]"
-         name="attributes[What is the type of machine?]"
+         id="wc_machine_type"
+         name="attributes[Type of machine]"
          class="field__input cart-attribute"
-         placeholder="e.g. Column and boom, tube mill, orbital, carriage, robot, etc."
-         value="{{ cart.attributes['What is the type of machine?'] }}"
+         placeholder=""
+         value="{{ cart.attributes['Type of machine'] }}"
       >
-      <label class="field__label" for="attributes[wc_machine_type]">What is the type of machine?</label>
+      <label class="field__label" for="wc_machine_type">What is the type of machine?</label>
       <div class="field__text">e.g. Column and boom, tube mill, orbital, carriage, robot, etc.</div>
    </div>
 
    <div class="field">
       <input 
          type="text"
-         id="attributes[wc_materials_welded]"
-         name="attributes[What material(s) will be welded?]"
+         id="wc_materials_welded"
+         name="attributes[Material(s)]"
          class="field__input cart-attribute"
-         placeholder="e.g. Steel, stainless steel, titanium, aluminum, alloys, etc."
-         value="{{ cart.attributes['What material(s) will be welded?'] }}"
+         placeholder=""
+         value="{{ cart.attributes['Material(s)]'] }}"
       >
-      <label class="field__label" for="attributes[wc_materials_welded]">What material(s) will be welded?</label>
+      <label class="field__label" for="wc_materials_welded">What material(s) will be welded?</label>
       <div class="field__text">e.g. Steel, stainless steel, titanium, aluminum, alloys, etc.</div>
    </div>
 
    <div class="field">
       <input 
          type="text"
-         id="attributes[wc_materials_thickness]"
-         name="attributes[What is the thickness of the material(s)?]"
+         id="wc_materials_thickness"
+         name="attributes[Material thickness]"
          class="field__input cart-attribute"
          placeholder="Welding applications only, please indicate if inches or mm"
-         value="{{ cart.attributes['What is the thickness of the material(s)?'] }}"
+         value="{{ cart.attributes['Material thickness'] }}"
       >
-      <label class="field__label" for="attributes[wc_materials_thickness]">What is the thickness of the material(s)?</label>
+      <label class="field__label" for="wc_materials_thickness">What is the thickness of the material(s)?</label>
       <div class="field__text">Welding applications only, please indicate if inches or mm.</div>
    </div>
 
    <div class="field">
       <input 
          type="text"
-         id="attributes[wc_shielding_gases]"
+         id="wc_shielding_gases"
          name="attributes[Which shielding gases are used?]"
          class="field__input cart-attribute"
          placeholder="e.g. argon, oxygen, CO2, etc."
          value="{{ cart.attributes['Which shielding gases are used?'] }}"
       >
-      <label class="field__label" for="attributes[wc_shielding_gases]">Which shielding gases are used?</label>
+      <label class="field__label" for="wc_shielding_gases">Which shielding gases are used?</label>
       <div class="field__text">e.g. argon, oxygen, CO2, etc.</div>
    </div>
 
    <div class="field">
       <input 
          type="text"
-         id="attributes[wc_power_avg]"
+         id="wc_power_avg"
          name="attributes[What is the average welding power?]"
          class="field__input cart-attribute"
          placeholder="Please indicate amps/KW and if welding is pulsed"
          value="{{ cart.attributes['What is the average welding power?'] }}"
       >
-      <label class="field__label" for="attributes[wc_power_avg]">What is the average welding power?</label>
+      <label class="field__label" for="wc_power_avg">What is the average welding power?</label>
       <div class="field__text">Please indicate amps/KW and if welding is pulsed.</div>
    </div>
 
    <div class="field">
       <input 
          type="text"
-         id="attributes[wc_power_peak]"
+         id="wc_power_peak"
          name="attributes[What is the peak welding power?]"
          class="field__input cart-attribute"
          placeholder="Please indicate amps/KW and if welding is pulsed"
          value="{{ cart.attributes['What is the peak welding power?'] }}"
       >
-      <label class="field__label" for="attributes[wc_power_peak]">What is the peak welding power?</label>
+      <label class="field__label" for="wc_power_peak">What is the peak welding power?</label>
       <div class="field__text">Please indicate amps/KW and if welding is pulsed.</div>
    </div>
 
@@ -150,42 +150,42 @@
       </div>
    </div>
 
-   <div class="field" id="preheated-temp-field" style="{% unless cart.attributes['wc_material_preheated'] == 'true' %}display: none;{% endunless %}">
+   <div class="field" id="preheated-temp-field" style="{% unless cart.attributes['Is the material pre-heated? '] == 'true' %}display: none;{% endunless %}">
       <input 
          type="text"
-         id="attributes[wc_material_preheated_temp]"
+         id="wc_material_preheated_temp"
          name="attributes[If pre-heated, to what temperature?]"
          class="field__input cart-attribute"
          placeholder="Please indicate Fahrenheit or Celsius"
          value="{{ cart.attributes['If pre-heated, to what temperature?'] }}"
       >
-      <label class="field__label" for="attributes[If pre-heated, to what temperature?]">If pre-heated, to what temperature?</label>
+      <label class="field__label" for="wc_material_preheated_temp">If pre-heated, to what temperature?</label>
       <div class="field__text">Please indicate Fahrenheit or Celsius.</div>
    </div>
 
    <div class="field">
       <input 
          type="text"
-         id="attributes[wc_arc_on_item_avg]"
+         id="wc_arc_on_item_avg"
          name="attributes[What is the average arc-on time?]"
          class="field__input cart-attribute"
          placeholder="Weld time minutes"
          value="{{ cart.attributes['What is the average arc-on time?'] }}"
       >
-      <label class="field__label" for="attributes[wc_arc_on_item_avg]">What is the average arc-on time?</label>
+      <label class="field__label" for="wc_arc_on_item_avg">What is the average arc-on time?</label>
       <div class="field__text">Weld time minutes.</div>
    </div>
 
    <div class="field">
       <input 
          type="text"
-         id="attributes[wc_traverse_speed]"
+         id="wc_traverse_speed"
          name="attributes[What is the approximate traverse speed?]"
          class="field__input cart-attribute"
          placeholder="Please indicate inch/mm or mm/min"
          value="{{ cart.attributes['What is the approximate traverse speed?'] }}"
       >
-      <label class="field__label" for="attributes[What is the approximate traverse speed?]">What is the approximate traverse speed?</label>
+      <label class="field__label" for="wc_traverse_speed">What is the approximate traverse speed?</label>
       <div class="field__text">Please indicate inch/mm or mm/min.</div>
    </div>
 

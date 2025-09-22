@@ -184,7 +184,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (this.checked) {
                tempField.style.display = 'none';
                // CLEAR THE TEMPERATURE VALUE WHEN HIDING
-               const tempInput = document.getElementById('attributes[wc_material_preheated_temp]');
+               const tempInput = document.getElementById('wc_material_preheated_temp');
                if (tempInput) {
                   tempInput.value = '';
                   updateCartAttributes(); // UPDATE CART TO CLEAR THE VALUE
