@@ -17,11 +17,11 @@
 
   /* FIELD HELP TEXT STYLING */
   .field__text {
-    font-size: 1rem;
+    font-size: 1.1rem;
     color: rgba(var(--color-foreground), 0.7);
-    margin-top: 0.4rem;
+    margin-top: 0.74rem;
     font-style: italic;
-    line-height: 1.2;
+    line-height: 1.27;
   }
 
   /* RADIO BUTTON GROUP STYLING */
