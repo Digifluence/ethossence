@@ -2,33 +2,45 @@
 
    <div class="field">
       <textarea 
-         id="project_description_from_customer"
+         id="title_from_customer"
+         name="attributes[Project title from customer]"
+         class="field__input cart-attribute"
+         placeholder="Please provide the project a title."
+         rows="5"
+      >{{ cart.attributes["Project title from customer"] }}</textarea>
+      <label class="field__label" for="title_from_customer">Please provide a title for this project.<span aria-hidden="true">*</span></label>
+      <div class="error-message" id="title_from_customer_error"></div>
+   </div>
+
+   <div class="field">
+      <textarea 
+         id="description_from_customer"
          name="attributes[Project description from customer]"
          class="field__input cart-attribute"
          placeholder="Please describe project."
          rows="5"
-      >{{ cart.attributes['Project description from customer'] }}</textarea>
-      <label class="field__label" for="project_description_from_customer">Please describe project.<span aria-hidden="true">*</span></label>
-      <div class="error-message" id="project_description_from_customer_error"></div>
+      >{{ cart.attributes["Project description from customer"] }}</textarea>
+      <label class="field__label" for="description_from_customer">Please describe project.<span aria-hidden="true">*</span></label>
+      <div class="error-message" id="description_from_customer_error"></div>
    </div>
 
    <div class="field">
       <input 
          type="text"
-         id="wc_machine_type"
+         id="wc_type_of_machine"
          name="attributes[Type of machine]"
          class="field__input cart-attribute"
          placeholder=""
          value="{{ cart.attributes['Type of machine'] }}"
       >
-      <label class="field__label" for="wc_machine_type">What is the type of machine?</label>
+      <label class="field__label" for="wc_type_of_machine">What is the type of machine?</label>
       <div class="field__text">e.g. Column and boom, tube mill, orbital, carriage, robot, etc.</div>
    </div>
 
    <div class="field">
       <input 
          type="text"
-         id="wc_materials_welded"
+         id="wc_materials"
          name="attributes[Material(s)]"
          class="field__input cart-attribute"
          placeholder=""
@@ -98,12 +110,12 @@
       </div>      
       <div class="field__radio-group">
          <label class="field__radio">
-            <input type="radio" name="attributes[Will your process emit large amounts of spatter?]" value="true" class="cart-attribute" 
+            <input id="wc_emit_splatter-true" type="radio" name="attributes[Will your process emit large amounts of spatter?]" value="true" class="cart-attribute" 
                    {% if cart.attributes['Will your process emit large amounts of spatter?'] == 'true' %}checked{% endif %}>
             <span>Yes</span>
          </label>
          <label class="field__radio">
-            <input type="radio" name="attributes[Will your process emit large amounts of spatter?]" value="false" class="cart-attribute" 
+            <input id="wc_emit_splatter-false" type="radio" name="attributes[Will your process emit large amounts of spatter?]" value="false" class="cart-attribute" 
                    {% if cart.attributes['Will your process emit large amounts of spatter?'] == 'false' or cart.attributes['Will your process emit large amounts of spatter?'] == blank %}checked{% endif %}>
             <span>No</span>
          </label>
@@ -118,12 +130,12 @@
       </div>
       <div class="field__radio-group">
          <label class="field__radio">
-            <input type="radio" name="attributes[Will your process emit large amounts of metal vapor?]" value="true" class="cart-attribute" 
+            <input id="wc_emit_metal_vapor-true" type="radio" name="attributes[Will your process emit large amounts of metal vapor?]" value="true" class="cart-attribute" 
                    {% if cart.attributes['Will your process emit large amounts of metal vapor?'] == 'true' %}checked{% endif %}>
             <span>Yes</span>
          </label>
          <label class="field__radio">
-            <input type="radio" name="attributes[Will your process emit large amounts of metal vapor?]" value="false" class="cart-attribute" 
+            <input id="wc_emit_metal_vapor-false" type="radio" name="attributes[Will your process emit large amounts of metal vapor?]" value="false" class="cart-attribute" 
                    {% if cart.attributes['Will your process emit large amounts of metal vapor?'] == 'false' or cart.attributes['Will your process emit large amounts of metal vapor?'] == blank %}checked{% endif %}>
             <span>No</span>
          </label>
@@ -138,12 +150,12 @@
       </div>
       <div class="field__radio-group">
          <label class="field__radio">
-            <input type="radio" name="attributes[Is the material pre-heated? ]" value="true" class="cart-attribute" id="preheated-yes"
+            <input id="wc_material_preheated-true" type="radio" name="attributes[Is the material pre-heated? ]" value="true" class="cart-attribute"
                    {% if cart.attributes['Is the material pre-heated? '] == 'true' %}checked{% endif %}>
             <span>Yes</span>
          </label>
          <label class="field__radio">
-            <input type="radio" name="attributes[Is the material pre-heated? ]" value="false" class="cart-attribute" id="preheated-no"
+            <input id="wc_material_preheated-false" type="radio" name="attributes[Is the material pre-heated? ]" value="false" class="cart-attribute"
                    {% if cart.attributes['Is the material pre-heated? '] == 'false' or cart.attributes['Is the material pre-heated? '] == blank %}checked{% endif %}>
             <span>No</span>
          </label>

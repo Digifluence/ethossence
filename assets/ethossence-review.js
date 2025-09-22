@@ -123,8 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
          shop_domain: Shopify.shop,
          timestamp: new Date().toISOString(),
          currency: cartData.currency,
-         cart_attributes: cartData.attributes || {},
-         form_fields: collectFieldData() // ADD DETAILED FIELD DATA
+         ethossence_review_inputs: collectFieldData() // STRUCTURED FORM DATA
          };
          
          // Send to Make webhook
