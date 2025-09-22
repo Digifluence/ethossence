@@ -31,40 +31,6 @@
     border-color: rgb(var(--color-foreground));
   }
 
-  /* FIELD HELP TEXT STYLING */
-  .field__text {
-    font-size: 0.9rem;
-    color: rgba(var(--color-foreground), 0.7);
-    margin-top: 0.4rem;
-    font-style: italic;
-    line-height: 1.2;
-  }
-
-  /* RADIO BUTTON GROUP STYLING */
-  .field__radio-group {
-    display: flex;
-    gap: 2rem;
-    margin-top: 0.8rem;
-  }
-
-  .field__radio {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
-    font-size: 1.4rem;
-  }
-
-  .field__radio input[type="radio"] {
-    margin: 0;
-    width: 1.6rem;
-    height: 1.6rem;
-    accent-color: rgb(var(--color-foreground));
-  }
-
-  .field__radio span {
-    color: rgb(var(--color-foreground));
-  }
 
   .cart-attributes .form-select {
     appearance: none;
