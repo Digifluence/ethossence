@@ -5,6 +5,13 @@
   padding: 2rem;
 }
 
+/* Textarea Height Fix */
+.ethossence-form textarea.field__input[rows="5"] {
+  height: auto !important;
+  min-height: calc(1.3rem * 1.5 * 5 + 3rem) !important;
+  resize: vertical;
+}
+
 /* Form Title */
 .form-title {
   font-size: calc(var(--font-heading-scale) * 2rem);
