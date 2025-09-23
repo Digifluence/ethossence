@@ -1,309 +1,85 @@
 <div id="review-request-fields" class="contact ethossence-form cart-attributes">
 
-{%  comment  %}  
-  https://hook.us2.make.com/qlomn3r4q8lhetra9irfer8o611xppav';
-{% endcomment %}
-
   <!-- Add this to your Shopify template -->
-<div id="dynamic-content-container">
-  <div class="loading-spinner">Loading...</div>
-</div>
+   <div id="dynamic-content-container">
+      <div class="loading-spinner">Loading...</div>
+   </div>
 
-<script>
-(function() {
-  const MAKE_WEBHOOK_URL = 'https://hook.us2.make.com/qlomn3r4q8lhetra9irfer8o611xppav';
-  
-  async function loadDynamicContent() {
-    const container = document.getElementById('dynamic-content-container');
-    
-    try {
-      // Get cart data using Shopify Ajax API
-      const cartResponse = await fetch('/cart.js');
-      const cartData = await cartResponse.json();
+   <script>
+      (function() {
+      const MAKE_WEBHOOK_URL = 'https://hook.us2.make.com/qlomn3r4q8lhetra9irfer8o611xppav';
       
-      // Transform cart attributes into array of objects
-      const formattedAttributes = [];
-      
-      if (cartData.attributes) {
-        for (const [name, value] of Object.entries(cartData.attributes)) {
-          formattedAttributes.push({
-            name: name,
-            value: value
-          });
-        }
+      async function loadDynamicContent() {
+         const container = document.getElementById('dynamic-content-container');
+         
+         try {
+            // Get cart data using Shopify Ajax API
+            const cartResponse = await fetch('/cart.js');
+            const cartData = await cartResponse.json();
+            
+            // Transform cart attributes into array of objects
+            const formattedAttributes = [];
+            
+            if (cartData.attributes) {
+            for (const [name, value] of Object.entries(cartData.attributes)) {
+               formattedAttributes.push({
+                  name: name,
+                  value: value
+               });
+            }
+            }
+            
+            // Send formatted data to Make
+            const requestData = {
+            pageUrl: window.location.href,
+            shopDomain: Shopify.shop || '',
+            customerId: window.ShopifyAnalytics?.meta?.customerId || null,
+            timestamp: new Date().toISOString(),
+            // Send both formats - choose what works best
+            cart: {
+               // Original format (if you still need it)
+               attributes: cartData.attributes || {},
+               // New formatted array
+               formattedAttributes: formattedAttributes,
+               // Other cart data
+               itemCount: cartData.item_count,
+               totalPrice: cartData.total_price,
+            }
+            };
+            
+            // Fetch HTML from Make webhook
+            const response = await fetch(MAKE_WEBHOOK_URL, {
+            method: 'POST',
+            headers: {
+               'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestData)
+            });
+            
+            if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            // Get HTML content
+            const htmlContent = await response.text();
+            
+            // Insert HTML into container
+            container.innerHTML = htmlContent;
+            
+         } catch (error) {
+            console.error('Error loading dynamic content:', error);
+            container.innerHTML = '<div class="error-message">Failed to load content. Please try again later.</div>';
+         }
       }
       
-      // Send formatted data to Make
-      const requestData = {
-        pageUrl: window.location.href,
-        shopDomain: Shopify.shop || '',
-        customerId: window.ShopifyAnalytics?.meta?.customerId || null,
-        timestamp: new Date().toISOString(),
-        // Send both formats - choose what works best
-        cart: {
-          // Original format (if you still need it)
-          attributes: cartData.attributes || {},
-          // New formatted array
-          formattedAttributes: formattedAttributes,
-          // Other cart data
-          itemCount: cartData.item_count,
-          totalPrice: cartData.total_price,
-        }
-      };
-      
-      // Fetch HTML from Make webhook
-      const response = await fetch(MAKE_WEBHOOK_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestData)
-      });
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      // Load content when DOM is ready
+      if (document.readyState === 'loading') {
+         document.addEventListener('DOMContentLoaded', loadDynamicContent);
+      } else {
+         loadDynamicContent();
       }
-      
-      // Get HTML content
-      const htmlContent = await response.text();
-      
-      // Insert HTML into container
-      container.innerHTML = htmlContent;
-      
-    } catch (error) {
-      console.error('Error loading dynamic content:', error);
-      container.innerHTML = '<div class="error-message">Failed to load content. Please try again later.</div>';
-    }
-  }
-  
-  // Load content when DOM is ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', loadDynamicContent);
-  } else {
-    loadDynamicContent();
-  }
-})();
-</script>
-
-<style>
-.loading-spinner {
-  text-align: center;
-  padding: 20px;
-  color: #666;
-}
-
-.error-message {
-  text-align: center;
-  padding: 20px;
-  color: #d32f2f;
-  background-color: #ffebee;
-  border-radius: 4px;
-}
-</style>
-   {%- comment -%}
-
-   <div class="field">
-      <textarea 
-         id="title_from_customer"
-         name="attributes[Project title from customer]"
-         class="field__input cart-attribute"
-         placeholder="Please provide the project a title."
-         rows="5"
-      >{{ cart.attributes["Project title from customer"] }}</textarea>
-      <label class="field__label" for="title_from_customer">Please provide a title for this project.<span aria-hidden="true">*</span></label>
-      <div class="error-message" id="title_from_customer_error"></div>
-   </div>
-
-   <div class="field">
-      <textarea 
-         id="description_from_customer"
-         name="attributes[Project description from customer]"
-         class="field__input cart-attribute"
-         placeholder="Please describe project."
-         rows="5"
-      >{{ cart.attributes["Project description from customer"] }}</textarea>
-      <label class="field__label" for="description_from_customer">Please describe project.<span aria-hidden="true">*</span></label>
-      <div class="error-message" id="description_from_customer_error"></div>
-   </div>
-
-   <div class="field">
-      <input 
-         type="text"
-         id="wc_type_of_machine"
-         name="attributes[Type of machine]"
-         class="field__input cart-attribute"
-         placeholder=""
-         value="{{ cart.attributes['Type of machine'] }}"
-      >
-      <label class="field__label" for="wc_type_of_machine">What is the type of machine?</label>
-      <div class="field__text">e.g. Column and boom, tube mill, orbital, carriage, robot, etc.</div>
-   </div>
-
-   <div class="field">
-      <input 
-         type="text"
-         id="wc_materials"
-         name="attributes[Material(s)]"
-         class="field__input cart-attribute"
-         placeholder=""
-         value="{{ cart.attributes['Material(s)]'] }}"
-      >
-      <label class="field__label" for="wc_materials_welded">What material(s) will be welded?</label>
-      <div class="field__text">e.g. Steel, stainless steel, titanium, aluminum, alloys, etc.</div>
-   </div>
-
-   <div class="field">
-      <input 
-         type="text"
-         id="wc_materials_thickness"
-         name="attributes[Material thickness]"
-         class="field__input cart-attribute"
-         placeholder="Welding applications only, please indicate if inches or mm"
-         value="{{ cart.attributes['Material thickness'] }}"
-      >
-      <label class="field__label" for="wc_materials_thickness">What is the thickness of the material(s)?</label>
-      <div class="field__text">Welding applications only, please indicate if inches or mm.</div>
-   </div>
-
-   <div class="field">
-      <input 
-         type="text"
-         id="wc_shielding_gases"
-         name="attributes[Which shielding gases are used?]"
-         class="field__input cart-attribute"
-         placeholder="e.g. argon, oxygen, CO2, etc."
-         value="{{ cart.attributes['Which shielding gases are used?'] }}"
-      >
-      <label class="field__label" for="wc_shielding_gases">Which shielding gases are used?</label>
-      <div class="field__text">e.g. argon, oxygen, CO2, etc.</div>
-   </div>
-
-   <div class="field">
-      <input 
-         type="text"
-         id="wc_power_avg"
-         name="attributes[What is the average welding power?]"
-         class="field__input cart-attribute"
-         placeholder="Please indicate amps/KW and if welding is pulsed"
-         value="{{ cart.attributes['What is the average welding power?'] }}"
-      >
-      <label class="field__label" for="wc_power_avg">What is the average welding power?</label>
-      <div class="field__text">Please indicate amps/KW and if welding is pulsed.</div>
-   </div>
-
-   <div class="field">
-      <input 
-         type="text"
-         id="wc_power_peak"
-         name="attributes[What is the peak welding power?]"
-         class="field__input cart-attribute"
-         placeholder="Please indicate amps/KW and if welding is pulsed"
-         value="{{ cart.attributes['What is the peak welding power?'] }}"
-      >
-      <label class="field__label" for="wc_power_peak">What is the peak welding power?</label>
-      <div class="field__text">Please indicate amps/KW and if welding is pulsed.</div>
-   </div>
-
-   <div class="field field--radio">
-      <div>
-         <legend class="field__legend">
-            Will your process emit large amounts of spatter? <span aria-hidden="true">*</span>
-         </legend>
-      </div>      
-      <div class="field__radio-group">
-         <label class="field__radio">
-            <input id="wc_emit_splatter-true" type="radio" name="attributes[Will your process emit large amounts of spatter?]" value="true" class="cart-attribute" 
-                   {% if cart.attributes['Will your process emit large amounts of spatter?'] == 'true' %}checked{% endif %}>
-            <span>Yes</span>
-         </label>
-         <label class="field__radio">
-            <input id="wc_emit_splatter-false" type="radio" name="attributes[Will your process emit large amounts of spatter?]" value="false" class="cart-attribute" 
-                   {% if cart.attributes['Will your process emit large amounts of spatter?'] == 'false' or cart.attributes['Will your process emit large amounts of spatter?'] == blank %}checked{% endif %}>
-            <span>No</span>
-         </label>
-      </div>
-   </div>
-
-   <div class="field field--radio">
-      <div>
-         <legend class="field__legend">
-            Will your process emit large amounts of metal vapor? <span aria-hidden="true">*</span>
-         </legend>
-      </div>
-      <div class="field__radio-group">
-         <label class="field__radio">
-            <input id="wc_emit_metal_vapor-true" type="radio" name="attributes[Will your process emit large amounts of metal vapor?]" value="true" class="cart-attribute" 
-                   {% if cart.attributes['Will your process emit large amounts of metal vapor?'] == 'true' %}checked{% endif %}>
-            <span>Yes</span>
-         </label>
-         <label class="field__radio">
-            <input id="wc_emit_metal_vapor-false" type="radio" name="attributes[Will your process emit large amounts of metal vapor?]" value="false" class="cart-attribute" 
-                   {% if cart.attributes['Will your process emit large amounts of metal vapor?'] == 'false' or cart.attributes['Will your process emit large amounts of metal vapor?'] == blank %}checked{% endif %}>
-            <span>No</span>
-         </label>
-      </div>
-   </div>
-
-   <div class="field field--radio">
-      <div>
-         <legend class="field__legend">
-            Is the material pre-heated? <span aria-hidden="true">*</span>
-         </legend>
-      </div>
-      <div class="field__radio-group">
-         <label class="field__radio">
-            <input id="wc_material_preheated-true" type="radio" name="attributes[Is the material pre-heated? ]" value="true" class="cart-attribute"
-                   {% if cart.attributes['Is the material pre-heated? '] == 'true' %}checked{% endif %}>
-            <span>Yes</span>
-         </label>
-         <label class="field__radio">
-            <input id="wc_material_preheated-false" type="radio" name="attributes[Is the material pre-heated? ]" value="false" class="cart-attribute"
-                   {% if cart.attributes['Is the material pre-heated? '] == 'false' or cart.attributes['Is the material pre-heated? '] == blank %}checked{% endif %}>
-            <span>No</span>
-         </label>
-      </div>
-   </div>
-
-   <div class="field" id="preheated-temp-field" style="{% unless cart.attributes['Is the material pre-heated? '] == 'true' %}display: none;{% endunless %}">
-      <input 
-         type="text"
-         id="wc_material_preheated_temp"
-         name="attributes[If pre-heated, to what temperature?]"
-         class="field__input cart-attribute"
-         placeholder="Please indicate Fahrenheit or Celsius"
-         value="{{ cart.attributes['If pre-heated, to what temperature?'] }}"
-      >
-      <label class="field__label" for="wc_material_preheated_temp">If pre-heated, to what temperature?</label>
-      <div class="field__text">Please indicate Fahrenheit or Celsius.</div>
-   </div>
-
-   <div class="field">
-      <input 
-         type="text"
-         id="wc_arc_on_item_avg"
-         name="attributes[What is the average arc-on time?]"
-         class="field__input cart-attribute"
-         placeholder="Weld time minutes"
-         value="{{ cart.attributes['What is the average arc-on time?'] }}"
-      >
-      <label class="field__label" for="wc_arc_on_item_avg">What is the average arc-on time?</label>
-      <div class="field__text">Weld time minutes.</div>
-   </div>
-
-   <div class="field">
-      <input 
-         type="text"
-         id="wc_traverse_speed"
-         name="attributes[What is the approximate traverse speed?]"
-         class="field__input cart-attribute"
-         placeholder="Please indicate inch/mm or mm/min"
-         value="{{ cart.attributes['What is the approximate traverse speed?'] }}"
-      >
-      <label class="field__label" for="wc_traverse_speed">What is the approximate traverse speed?</label>
-      <div class="field__text">Please indicate inch/mm or mm/min.</div>
-   </div>
-
-   {% endcomment %}
+      })();
+   </script>
 
    <div class="cart-save-draft" style="margin: 2rem 0; text-align: center;">
       <button id="save-cart-draft" type="button" class="button" data-customer-id="{{ customer.id }}" data-customer-email="{{ customer.email }}">

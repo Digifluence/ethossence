@@ -115,11 +115,14 @@ document.addEventListener('DOMContentLoaded', function() {
          const cartResponse = await fetch('/cart.js');
          const cartData = await cartResponse.json();
          
+         // REMOVE ATTRIBUTES FROM CART DATA TO AVOID DUPLICATION
+         const { attributes, ...cartWithoutAttributes } = cartData;
+         
          // Prepare data for webhook
          const webhookData = {
          customer_id: button.dataset.customerId,
          customer_email: button.dataset.customerEmail,
-         cart: cartData,
+         cart: cartWithoutAttributes,
          shop_domain: Shopify.shop,
          timestamp: new Date().toISOString(),
          currency: cartData.currency,
