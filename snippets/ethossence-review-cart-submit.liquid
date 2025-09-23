@@ -1,18 +1,18 @@
 <div id="review-request-fields" class="contact ethossence-form cart-attributes">
 
-<!-- Add this to your Shopify template where you want the content to appear -->
+{%  comment  %}  
+  https://hook.us2.make.com/qlomn3r4q8lhetra9irfer8o611xppav';
+{% endcomment %}
+
+  <!-- Add this to your Shopify template -->
 <div id="dynamic-content-container">
-  <!-- Content will be loaded here -->
   <div class="loading-spinner">Loading...</div>
 </div>
 
 <script>
-// Shopify + Make.com Integration Script
 (function() {
-  // Replace with your actual Make webhook URL
   const MAKE_WEBHOOK_URL = 'https://hook.us2.make.com/qlomn3r4q8lhetra9irfer8o611xppav';
   
-  // Function to fetch and display content
   async function loadDynamicContent() {
     const container = document.getElementById('dynamic-content-container');
     
@@ -21,18 +21,33 @@
       const cartResponse = await fetch('/cart.js');
       const cartData = await cartResponse.json();
       
-      // Send cart data to Make
+      // Transform cart attributes into array of objects
+      const formattedAttributes = [];
+      
+      if (cartData.attributes) {
+        for (const [name, value] of Object.entries(cartData.attributes)) {
+          formattedAttributes.push({
+            name: name,
+            value: value
+          });
+        }
+      }
+      
+      // Send formatted data to Make
       const requestData = {
         pageUrl: window.location.href,
         shopDomain: Shopify.shop || '',
         customerId: window.ShopifyAnalytics?.meta?.customerId || null,
         timestamp: new Date().toISOString(),
-        // Include cart attributes
+        // Send both formats - choose what works best
         cart: {
+          // Original format (if you still need it)
           attributes: cartData.attributes || {},
+          // New formatted array
+          formattedAttributes: formattedAttributes,
+          // Other cart data
           itemCount: cartData.item_count,
           totalPrice: cartData.total_price,
-          // Add any other cart data you need
         }
       };
       
@@ -55,46 +70,22 @@
       // Insert HTML into container
       container.innerHTML = htmlContent;
       
-      // Optional: Execute any scripts that came with the HTML
-      executeContainerScripts(container);
-      
     } catch (error) {
       console.error('Error loading dynamic content:', error);
       container.innerHTML = '<div class="error-message">Failed to load content. Please try again later.</div>';
     }
   }
   
-  // Helper function to execute scripts in dynamically loaded HTML
-  function executeContainerScripts(container) {
-    const scripts = container.querySelectorAll('script');
-    scripts.forEach(oldScript => {
-      const newScript = document.createElement('script');
-      
-      // Copy attributes
-      Array.from(oldScript.attributes).forEach(attr => {
-        newScript.setAttribute(attr.name, attr.value);
-      });
-      
-      // Copy content
-      newScript.appendChild(document.createTextNode(oldScript.innerHTML));
-      
-      // Replace old script with new one to execute it
-      oldScript.parentNode.replaceChild(newScript, oldScript);
-    });
-  }
-  
   // Load content when DOM is ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', loadDynamicContent);
   } else {
-    // DOM is already loaded
     loadDynamicContent();
   }
 })();
 </script>
 
 <style>
-/* Basic styling for loading and error states */
 .loading-spinner {
   text-align: center;
   padding: 20px;
@@ -108,12 +99,7 @@
   background-color: #ffebee;
   border-radius: 4px;
 }
-
-#dynamic-content-container {
-  min-height: 50px;
-}
 </style>
-
    {%- comment -%}
 
    <div class="field">
