@@ -17,13 +17,23 @@
     const container = document.getElementById('dynamic-content-container');
     
     try {
-      // Optional: Send data to Make (e.g., customer info, page details)
+      // Get cart data using Shopify Ajax API
+      const cartResponse = await fetch('/cart.js');
+      const cartData = await cartResponse.json();
+      
+      // Send cart data to Make
       const requestData = {
         pageUrl: window.location.href,
         shopDomain: Shopify.shop || '',
-        // Add any other data you want to send to Make
         customerId: window.ShopifyAnalytics?.meta?.customerId || null,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        // Include cart attributes
+        cart: {
+          attributes: cartData.attributes || {},
+          itemCount: cartData.item_count,
+          totalPrice: cartData.total_price,
+          // Add any other cart data you need
+        }
       };
       
       // Fetch HTML from Make webhook
