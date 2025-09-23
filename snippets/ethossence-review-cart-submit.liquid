@@ -1,113 +1,108 @@
 <div id="review-request-fields" class="contact ethossence-form cart-attributes">
 
-<div class="field">
-   
-      <input id="title_from_customer" class="field__input cart-attribute" type="text" name="attributes[Title from customer]" placeholder="Title from customer" value="{{ cart.attributes["Title from customer"] }}">
-      <label class="field__label" for="title_from_customer">Title from customer </label>
-      <div class="field__text"></div>
-      <div class="error-message" id="title_from_customer_error"></div>
-
+<!-- Add this to your Shopify template where you want the content to appear -->
+<div id="dynamic-content-container">
+  <!-- Content will be loaded here -->
+  <div class="loading-spinner">Loading...</div>
 </div>
 
-<!-- FIELD: DESCRIPTION FROM CUSTOMER  -->  
-<div class="field">
-   <!-- NOT A INPUT TEXT -->
-</div>
+<script>
+// Shopify + Make.com Integration Script
+(function() {
+  // Replace with your actual Make webhook URL
+  const MAKE_WEBHOOK_URL = 'https://hook.us2.make.com/qlomn3r4q8lhetra9irfer8o611xppav';
+  
+  // Function to fetch and display content
+  async function loadDynamicContent() {
+    const container = document.getElementById('dynamic-content-container');
+    
+    try {
+      // Optional: Send data to Make (e.g., customer info, page details)
+      const requestData = {
+        pageUrl: window.location.href,
+        shopDomain: Shopify.shop || '',
+        // Add any other data you want to send to Make
+        customerId: window.ShopifyAnalytics?.meta?.customerId || null,
+        timestamp: new Date().toISOString()
+      };
+      
+      // Fetch HTML from Make webhook
+      const response = await fetch(MAKE_WEBHOOK_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData)
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      // Get HTML content
+      const htmlContent = await response.text();
+      
+      // Insert HTML into container
+      container.innerHTML = htmlContent;
+      
+      // Optional: Execute any scripts that came with the HTML
+      executeContainerScripts(container);
+      
+    } catch (error) {
+      console.error('Error loading dynamic content:', error);
+      container.innerHTML = '<div class="error-message">Failed to load content. Please try again later.</div>';
+    }
+  }
+  
+  // Helper function to execute scripts in dynamically loaded HTML
+  function executeContainerScripts(container) {
+    const scripts = container.querySelectorAll('script');
+    scripts.forEach(oldScript => {
+      const newScript = document.createElement('script');
+      
+      // Copy attributes
+      Array.from(oldScript.attributes).forEach(attr => {
+        newScript.setAttribute(attr.name, attr.value);
+      });
+      
+      // Copy content
+      newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+      
+      // Replace old script with new one to execute it
+      oldScript.parentNode.replaceChild(newScript, oldScript);
+    });
+  }
+  
+  // Load content when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadDynamicContent);
+  } else {
+    // DOM is already loaded
+    loadDynamicContent();
+  }
+})();
+</script>
 
-<!-- FIELD: WHAT IS THE TYPE OF MACHINE?  -->  
-<div class="field">
-   
-      <input id="wc_type_of_machine" class="field__input cart-attribute" type="text" name="attributes[What is the type of machine?]" placeholder="What is the type of machine?" value="{{ cart.attributes["What is the type of machine?"] }}">
-      <label class="field__label" for="wc_type_of_machine">What is the type of machine? </label>
-      <div class="field__text">e.g. Column and boom, tube mill, orbital, carriage, robot, etc.</div>
-      <div class="error-message" id="wc_type_of_machine_error"></div>
+<style>
+/* Basic styling for loading and error states */
+.loading-spinner {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
 
-</div>
+.error-message {
+  text-align: center;
+  padding: 20px;
+  color: #d32f2f;
+  background-color: #ffebee;
+  border-radius: 4px;
+}
 
-<!-- FIELD: WHAT MATERIAL(S) WILL BE WELDED?  -->  
-<div class="field">
-   
-      <input id="wc_materials" class="field__input cart-attribute" type="text" name="attributes[What material(s) will be welded?]" placeholder="What material(s) will be welded?" value="{{ cart.attributes["What material(s) will be welded?"] }}">
-      <label class="field__label" for="wc_materials">What material(s) will be welded? </label>
-      <div class="field__text">e.g. Steel, stainless steel, titanium, aluminum, alloys, etc.</div>
-      <div class="error-message" id="wc_materials_error"></div>
-
-</div>
-
-<!-- FIELD: WHAT IS THE THICKNESS OF THE MATERIAL(S)?  -->  
-<div class="field">
-   
-      <input id="wc_materials_thickness" class="field__input cart-attribute" type="text" name="attributes[What is the thickness of the material(s)?]" placeholder="What is the thickness of the material(s)?" value="{{ cart.attributes["What is the thickness of the material(s)?"] }}">
-      <label class="field__label" for="wc_materials_thickness">What is the thickness of the material(s)? </label>
-      <div class="field__text">Welding applications only, please indicate if inches or mm.</div>
-      <div class="error-message" id="wc_materials_thickness_error"></div>
-
-</div>
-
-<!-- FIELD: WHICH SHIELDING GASES ARE USED?  -->  
-<div class="field">
-   
-      <input id="wc_shielding_gases" class="field__input cart-attribute" type="text" name="attributes[Which shielding gases are used?]" placeholder="Which shielding gases are used?" value="{{ cart.attributes["Which shielding gases are used?"] }}">
-      <label class="field__label" for="wc_shielding_gases">Which shielding gases are used? </label>
-      <div class="field__text">e.g. argon, oxygen, CO2, etc.</div>
-      <div class="error-message" id="wc_shielding_gases_error"></div>
-
-</div>
-
-<!-- FIELD: WHAT IS THE AVERAGE WELDING POWER?  -->  
-<div class="field">
-   
-      <input id="wc_power_avg" class="field__input cart-attribute" type="text" name="attributes[What is the average welding power?]" placeholder="What is the average welding power?" value="{{ cart.attributes["What is the average welding power?"] }}">
-      <label class="field__label" for="wc_power_avg">What is the average welding power? </label>
-      <div class="field__text">Please indicate amps/KW and if welding is pulsed.</div>
-      <div class="error-message" id="wc_power_avg_error"></div>
-
-</div>
-
-<!-- FIELD: WHAT IS THE PEAK WELDING POWER?  -->  
-<div class="field">
-   
-      <input id="wc_power_peak" class="field__input cart-attribute" type="text" name="attributes[What is the peak welding power?]" placeholder="What is the peak welding power?" value="{{ cart.attributes["What is the peak welding power?"] }}">
-      <label class="field__label" for="wc_power_peak">What is the peak welding power? </label>
-      <div class="field__text">Please indicate amps/KW and if welding is pulsed.</div>
-      <div class="error-message" id="wc_power_peak_error"></div>
-
-</div>
-
-<!-- FIELD: WILL YOUR PROCESS EMIT LARGE AMOUNTS OF SPATTER?  -->  
-<div class="field">
-   <!-- NOT A INPUT TEXT -->
-</div>
-
-<!-- FIELD: WILL YOUR PROCESS EMIT LARGE AMOUNTS OF METAL VAPOR?  -->  
-<div class="field">
-   <!-- NOT A INPUT TEXT -->
-</div>
-
-<!-- FIELD: IS THE MATERIAL PRE-HEATED?  -->  
-<div class="field">
-   <!-- NOT A INPUT TEXT -->
-</div>
-
-<!-- FIELD: IF PRE-HEATED, TO WHAT TEMPERATURE?  -->  
-<div class="field">
-   
-      <input id="wc_material_preheated_temp" class="field__input cart-attribute" type="text" name="attributes[If pre-heated, to what temperature?]" placeholder="If pre-heated, to what temperature?" value="{{ cart.attributes["If pre-heated, to what temperature?"] }}">
-      <label class="field__label" for="wc_material_preheated_temp">If pre-heated, to what temperature? </label>
-      <div class="field__text">Please indicate Fahrenheit or Celsius.</div>
-      <div class="error-message" id="wc_material_preheated_temp_error"></div>
-
-</div>
-
-<!-- FIELD: WHAT IS THE APPROXIMATE TRAVERSE SPEED?  -->  
-<div class="field">
-   
-      <input id="wc_traverse_speed" class="field__input cart-attribute" type="text" name="attributes[What is the approximate traverse speed?]" placeholder="What is the approximate traverse speed?" value="{{ cart.attributes["What is the approximate traverse speed?"] }}">
-      <label class="field__label" for="wc_traverse_speed">What is the approximate traverse speed? </label>
-      <div class="field__text">Please indicate inch/mm or mm/min.</div>
-      <div class="error-message" id="wc_traverse_speed_error"></div>
-
-</div>
+#dynamic-content-container {
+  min-height: 50px;
+}
+</style>
 
    {%- comment -%}
 
