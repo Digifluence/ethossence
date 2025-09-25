@@ -1,3 +1,185 @@
+{%- liquid
+
+  EHTOSSENCE ~ MOD: Added authorization logic to control collection visibility based on customer metafields and collection metafields.
+
+  assign products_to_display = section.settings.collection.all_products_count
+
+  if section.settings.collection.all_products_count > section.settings.products_to_show
+    assign products_to_display = section.settings.products_to_show
+    assign more_in_collection = true
+  endif
+
+  assign columns_mobile_int = section.settings.columns_mobile | plus: 0
+  assign show_mobile_slider = false
+  if section.settings.swipe_on_mobile and products_to_display > columns_mobile_int
+    assign show_mobile_slider = true
+  endif
+
+  assign show_desktop_slider = false
+  if section.settings.enable_desktop_slider and products_to_display > section.settings.columns_desktop
+    assign show_desktop_slider = true
+  endif
+
+  # ETHOSSENCE FEATURE
+  # AUTHORIZATION SHOW: FEATURED COLLECTION ACCESS
+
+  # Get the featured collection from section settings
+  assign featured_collection = section.settings.collection
+
+  # Initialize authorization variables
+  assign display_collection = true
+  assign collection_has_authorization = false
+  assign collection_required_levels = blank
+
+  # Only check authorization if collection exists and authorization is enabled
+  if featured_collection and section.settings.authoriz_enabled
+
+    # GET CUSTOMER AUTHORIZATION LEVELS FROM METAFIELD
+    assign customer_authorization_levels = blank
+    
+    # Debug output
+    # echo customer | prepend: "<br>customer: "
+    
+    if customer
+      # Access the metafield - this returns a MetaobjectDrop or list of MetaobjectDrops
+      assign customer_auth_metaobject = customer.metafields.ethossence.authorization_show.value
+      
+      # echo customer_auth_metaobject | prepend: "<br>customer authorization metaobject: "
+      
+      if customer_auth_metaobject
+        assign temp_levels = blank
+        
+        # First try to access as a single metaobject
+        if customer_auth_metaobject.level
+          # Direct access to the level field of the metaobject
+          assign level_value = customer_auth_metaobject.level
+          # echo level_value | prepend: "<br>customer level (single): "
+          if level_value != blank
+            assign temp_levels = level_value
+          endif
+        else
+          # Try as an array of metaobjects
+          for auth_obj in customer_auth_metaobject
+            # echo auth_obj | prepend: "<br>customer auth_obj in loop: "
+            if auth_obj.level
+              assign level_value = auth_obj.level
+              # echo level_value | prepend: "<br>customer level in loop: "
+              if level_value != blank
+                if temp_levels == blank
+                  assign temp_levels = level_value
+                else
+                  assign temp_levels = temp_levels | append: ',' | append: level_value
+                endif
+              endif
+            endif
+          endfor
+        endif
+        
+        # Also try with .value accessor in case it's needed
+        if temp_levels == blank and customer_auth_metaobject.level.value
+          assign temp_levels = customer_auth_metaobject.level.value
+          # echo temp_levels | prepend: "<br>customer level with .value: "
+        endif
+        
+        if temp_levels != blank
+          assign customer_authorization_levels = temp_levels | downcase | split: ','
+        endif
+        
+        # echo customer_authorization_levels | join: ', ' | prepend: "<br>customer_authorization_levels final: "
+      endif
+    endif
+    
+    # GET COLLECTION AUTHORIZATION REQUIREMENTS
+    if featured_collection.metafields.ethossence.authorization_show
+      assign collection_auth_metaobject = featured_collection.metafields.ethossence.authorization_show.value
+      
+      # echo collection_auth_metaobject | prepend: "<br>collection authorization metaobject: "
+      
+      if collection_auth_metaobject
+        assign temp_levels = blank
+        
+        # First try to access as a single metaobject
+        if collection_auth_metaobject.level
+          # Direct access to the level field of the metaobject
+          assign level_value = collection_auth_metaobject.level
+          # echo level_value | prepend: "<br>collection level (single): "
+          if level_value != blank
+            assign collection_has_authorization = true
+            assign temp_levels = level_value
+          endif
+        else
+          # Try as an array of metaobjects
+          for auth_obj in collection_auth_metaobject
+            # echo auth_obj | prepend: "<br>collection auth_obj in loop: "
+            if auth_obj.level
+              assign level_value = auth_obj.level
+              # echo level_value | prepend: "<br>collection level in loop: "
+              if level_value != blank
+                assign collection_has_authorization = true
+                if temp_levels == blank
+                  assign temp_levels = level_value
+                else
+                  assign temp_levels = temp_levels | append: ',' | append: level_value
+                endif
+              endif
+            endif
+          endfor
+        endif
+        
+        # Also try with .value accessor in case it's needed
+        if temp_levels == blank and collection_auth_metaobject.level.value
+          assign temp_levels = collection_auth_metaobject.level.value
+          assign collection_has_authorization = true
+          # echo temp_levels | prepend: "<br>collection level with .value: "
+        endif
+        
+        if temp_levels != blank
+          assign collection_required_levels = temp_levels | downcase | split: ','
+        endif
+        
+        # echo collection_required_levels | join: ', ' | prepend: "<br>collection_required_levels final: "
+      endif
+    endif
+    
+    # DETERMINE AUTHORIZATION
+    # echo collection_has_authorization | prepend: "<br>collection_has_authorization: "
+    # echo collection_required_levels | prepend: "<br>collection_required_levels check: "
+    
+    if collection_has_authorization and collection_required_levels != blank   
+      assign display_collection = false
+      
+      # echo "Authorization check required" | prepend: "<br>"
+      
+      if customer_authorization_levels != blank
+        for required_level in collection_required_levels
+          assign required_level_clean = required_level | strip
+          
+          for customer_level in customer_authorization_levels
+            assign customer_level_clean = customer_level | strip
+            if customer_level_clean == required_level_clean
+              assign display_collection = true
+              # echo "Match found: " | append: customer_level_clean | prepend: "<br>"
+              break
+            endif
+          endfor
+          
+          if display_collection
+            break
+          endif
+        endfor
+      else
+        # echo "No customer authorization levels found" | prepend: "<br>"
+      endif
+    else
+      # echo "No authorization required - collection is public" | prepend: "<br>"
+    endif
+    
+    # echo display_collection | prepend: "<br>display_collection final: "
+
+  endif
+
+-%}
+
 {{ 'component-card.css' | asset_url | stylesheet_tag }}
 {{ 'component-price.css' | asset_url | stylesheet_tag }}
 
@@ -37,32 +219,6 @@
     }
   }
 {%- endstyle -%}
-
-{%- liquid
-  assign products_to_display = section.settings.collection.all_products_count
-
-  if section.settings.collection.all_products_count > section.settings.products_to_show
-    assign products_to_display = section.settings.products_to_show
-    assign more_in_collection = true
-  endif
-
-  assign columns_mobile_int = section.settings.columns_mobile | plus: 0
-  assign columns_desktop_int = section.settings.columns_desktop | plus: 0
-  assign show_mobile_slider = false
-  if section.settings.swipe_on_mobile and products_to_display > columns_mobile_int
-    assign show_mobile_slider = true
-  endif
-
-  assign max_columns_to_show = columns_mobile_int
-  if columns_desktop_int > columns_mobile_int
-    assign max_columns_to_show = columns_desktop_int
-  endif
-
-  assign show_desktop_slider = false
-  if section.settings.enable_desktop_slider and products_to_display > section.settings.columns_desktop
-    assign show_desktop_slider = true
-  endif
--%}
 
 <div
   class="color-{{ section.settings.color_scheme }} isolate gradient"

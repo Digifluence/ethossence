@@ -1,52 +1,90 @@
 {% liquid
-  # AUTHORIZATION SHOW: COLLECTIONS
+  # ETHOSSENCE FEATURE
+  # AUTHORIZATION SHOW: COLLECTIONS WITH REDIRECT
+  
+  # Initialize authorization variables
+  assign collection_authorized = true
+  assign customer_authorization_levels = blank
+  assign collection_has_authorization = false
+  assign collection_required_levels = blank
   
   # GET CUSTOMER AUTHORIZATION LEVELS FROM METAFIELD
-  assign customer_authorization_levels = blank
-  if customer and customer.metafields.ethossence.authorization_show
-    assign customer_auth_list = customer.metafields.ethossence.authorization_show.value
-    assign temp_levels = blank
-    for auth_metaobject in customer_auth_list
-      if auth_metaobject.level
-        if temp_levels == blank
-          assign temp_levels = auth_metaobject.level
-        else
-          assign temp_levels = temp_levels | append: ',' | append: auth_metaobject.level
+  if customer
+    # Access the metafield - this returns a MetaobjectDrop or list of MetaobjectDrops
+    assign customer_auth_metaobject = customer.metafields.ethossence.authorization_show.value
+    
+    if customer_auth_metaobject
+      assign temp_levels = blank
+      
+      # First try to access as a single metaobject
+      if customer_auth_metaobject.level
+        # Direct access to the level field of the metaobject
+        assign level_value = customer_auth_metaobject.level
+        if level_value != blank
+          assign temp_levels = level_value
         endif
+      else
+        # Try as an array of metaobjects
+        for auth_obj in customer_auth_metaobject
+          if auth_obj.level
+            assign level_value = auth_obj.level
+            if level_value != blank
+              if temp_levels == blank
+                assign temp_levels = level_value
+              else
+                assign temp_levels = temp_levels | append: ',' | append: level_value
+              endif
+            endif
+          endif
+        endfor
       endif
-    endfor
-    if temp_levels != blank
-      assign customer_authorization_levels = temp_levels | downcase | split: ','
+      
+      if temp_levels != blank
+        assign customer_authorization_levels = temp_levels | downcase | split: ','
+      endif
     endif
   endif
   
   # GET COLLECTION AUTHORIZATION REQUIREMENTS
-  assign collection_has_authorization = false
-  assign collection_required_levels = blank
-  
   if collection.metafields.ethossence.authorization_show
-    assign collection_auth_list = collection.metafields.ethossence.authorization_show.value
-    assign temp_levels = blank
+    assign collection_auth_metaobject = collection.metafields.ethossence.authorization_show.value
     
-    # Try to loop through metaobjects - if loop executes, we have requirements
-    for auth_metaobject in collection_auth_list
-      if auth_metaobject.level
-        assign collection_has_authorization = true
-        if temp_levels == blank
-          assign temp_levels = auth_metaobject.level
-        else
-          assign temp_levels = temp_levels | append: ',' | append: auth_metaobject.level
+    if collection_auth_metaobject
+      assign temp_levels = blank
+      
+      # First try to access as a single metaobject
+      if collection_auth_metaobject.level
+        # Direct access to the level field of the metaobject
+        assign level_value = collection_auth_metaobject.level
+        if level_value != blank
+          assign collection_has_authorization = true
+          assign temp_levels = level_value
         endif
+      else
+        # Try as an array of metaobjects
+        for auth_obj in collection_auth_metaobject
+          if auth_obj.level
+            assign level_value = auth_obj.level
+            if level_value != blank
+              assign collection_has_authorization = true
+              if temp_levels == blank
+                assign temp_levels = level_value
+              else
+                assign temp_levels = temp_levels | append: ',' | append: level_value
+              endif
+            endif
+          endif
+        endfor
       endif
-    endfor
-    
-    if temp_levels != blank
-      assign collection_required_levels = temp_levels | downcase | split: ','
+      
+      if temp_levels != blank
+        assign collection_required_levels = temp_levels | downcase | split: ','
+      endif
     endif
   endif
   
   # DETERMINE AUTHORIZATION
-  # Default to authorized (dtc collections)
+  # Default to authorized (public collections)
   assign collection_authorized = true
   
   if collection_has_authorization and collection_required_levels != blank
@@ -54,10 +92,19 @@
     assign collection_authorized = false
     
     if customer_authorization_levels != blank
+      # Check if any customer level matches any required level
       for required_level in collection_required_levels
         assign required_level_clean = required_level | strip
-        if customer_authorization_levels contains required_level_clean
-          assign collection_authorized = true
+        
+        for customer_level in customer_authorization_levels
+          assign customer_level_clean = customer_level | strip
+          if customer_level_clean == required_level_clean
+            assign collection_authorized = true
+            break
+          endif
+        endfor
+        
+        if collection_authorized
           break
         endif
       endfor
@@ -66,15 +113,37 @@
   
   # REDIRECT IF NOT AUTHORIZED
   unless collection_authorized
-    # JavaScript redirect (immediate)
-    echo '<script>window.location.href="/pages/no-access";</script>'
+    # Build the redirect URL - you can customize this
+    assign redirect_url = '/pages/no-access'
     
-    # Meta refresh (backup)
-    echo '<meta http-equiv="refresh" content="0;url=/pages/no-access">'
+    # Optional: Pass the attempted collection info as URL parameters
+    assign redirect_with_params = redirect_url | append: '?from=' | append: collection.handle
     
-    # Stop further processing
+    # JavaScript redirect (primary method - executes immediately)
+    echo '<script type="text/javascript">'
+    echo 'window.location.replace("' | append: redirect_with_params | append: '");'
+    echo '</script>'
+    
+    # Meta refresh (backup method for when JavaScript is disabled)
+    echo '<meta http-equiv="refresh" content="0;url=' | append: redirect_with_params | append: '">'
+    
+    # Fallback message and link (for when both JavaScript and meta refresh fail)
+    echo '<div style="padding: 40px; text-align: center;">'
+    echo '<h2>Access Restricted</h2>'
+    echo '<p>You do not have permission to view this collection.</p>'
+    echo '<a href="' | append: redirect_url | append: '" style="display: inline-block; padding: 12px 24px; background: #000; color: #fff; text-decoration: none; margin-top: 20px;">Continue</a>'
+    echo '</div>'
+    
+    # Stop processing the rest of the template
     break
   endunless
+  
+  # Optional: Debug output (remove in production)
+  comment
+    echo 'Customer levels: ' | append: customer_authorization_levels | join: ', '
+    echo '<br>Collection levels: ' | append: collection_required_levels | join: ', '
+    echo '<br>Authorized: ' | append: collection_authorized
+  endcomment
 %}
 
 {{ 'template-collection.css' | asset_url | stylesheet_tag }}
@@ -236,10 +305,43 @@
               {% assign skip_card_product_styles = false %}
 
                   {%- for product in collection.products -%}
-                     {% assign lazy_load = false %}
-                     {%- if forloop.index > 2 -%}
-                        {%- assign lazy_load = true -%}
-                     {%- endif -%}                     
+                    {%- liquid 
+
+                      assign display_product = true
+                        
+                      # Get levels
+                      assign c_auth = customer.metafields.ethossence.authorization_show.value
+                      assign p_auth = product.metafields.ethossence.authorization_show.value
+                      
+                      # Extract customer levels
+                      assign c_levels = blank
+                      if c_auth.level
+                        assign c_levels = c_auth.level | downcase
+                      endif
+                      
+                      # Extract product levels  
+                      assign p_levels = blank
+                      if p_auth.level
+                        assign p_levels = p_auth.level | downcase
+                      endif
+                      
+                      # Check authorization
+                      if p_levels != blank
+                        if c_levels == blank or c_levels != p_levels
+                          assign display_product = false
+                        endif
+                      endif
+
+                      if display_product == false
+                        continue
+                      endif
+                      
+                      assign lazy_load = false 
+                    
+                      if forloop.index > 2
+                        assign lazy_load = true
+                      endif 
+                    -%}                      
                      <li
                         class="grid__item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
                         {% if settings.animations_reveal_on_scroll %}

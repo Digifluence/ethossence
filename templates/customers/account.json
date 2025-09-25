@@ -1,10 +1,53 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
-      "type": "main-account"
+      "type": "main-account",
+      "settings": {
+        "color_scheme": "",
+        "show_line_separator": true,
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "menu": "wholesale-portal-menu",
+        "color_scheme_menu": "scheme-1"
+      }
+    },
+    "page_MewBk9": {
+      "type": "page",
+      "name": "t:sections.page.presets.name",
+      "settings": {
+        "page": "welcome-wholesale",
+        "heading_hide": false,
+        "heading_size": "h1",
+        "color_scheme": "",
+        "padding_top": 12,
+        "padding_bottom": 8,
+        "authoriz_enabled": true,
+        "authoriz_require_msg": ""
+      }
+    },
+    "ethossence_account_orders_pBkaRa": {
+      "type": "ethossence-account-orders",
+      "name": "Order history",
+      "settings": {
+        "show_line_separator": true,
+        "color_scheme": "",
+        "padding_top": 8,
+        "padding_bottom": 8
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "page_MewBk9",
+    "ethossence_account_orders_pBkaRa"
   ]
 }

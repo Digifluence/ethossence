@@ -68,276 +68,276 @@
 
                   {%- for childlink in link.links -%}
 
-{%- liquid
-  # AUTHORIZATION SHOW : CHILD LINKS (METAFIELD VERSION - HANDLES BOTH CASES)
-  # ASSIGN DEFAULTS
-  assign childlinks_size_all = childlink.links.size
-  assign childlinks_size_auths = 0
-  assign customer_authorized = false
-  assign childlink_authorized = false
-  assign authorization_levels_array = blank
-  
-  if childlinks_size_all > 0
-    # CASE 1: CHILDLINK HAS GRANDCHILD LINKS - CHECK GRANDCHILD AUTHORIZATION
-    
-    # CHECK IF CHILD LINKS HAVE AUTHORIZATION METAFIELDS
-    for grandchildlink in childlink.links
-      
-        # DETERMINE RESOURCE TYPE AND GET METAFIELD
-        assign resource_authorization_levels = blank
-        
-        # EXTRACT HANDLE FROM URL TO IDENTIFY RESOURCE
-        assign url_segments = grandchildlink.url | remove: 'https://' | remove: 'http://' | split: '/'
+                    {%- liquid
+                      # AUTHORIZATION SHOW : CHILD LINKS (METAFIELD VERSION - HANDLES BOTH CASES)
+                      # ASSIGN DEFAULTS
+                      assign childlinks_size_all = childlink.links.size
+                      assign childlinks_size_auths = 0
+                      assign customer_authorized = false
+                      assign childlink_authorized = false
+                      assign authorization_levels_array = blank
+                      
+                      if childlinks_size_all > 0
+                        # CASE 1: CHILDLINK HAS GRANDCHILD LINKS - CHECK GRANDCHILD AUTHORIZATION
+                        
+                        # CHECK IF CHILD LINKS HAVE AUTHORIZATION METAFIELDS
+                        for grandchildlink in childlink.links
+                          
+                            # DETERMINE RESOURCE TYPE AND GET METAFIELD
+                            assign resource_authorization_levels = blank
+                            
+                            # EXTRACT HANDLE FROM URL TO IDENTIFY RESOURCE
+                            assign url_segments = grandchildlink.url | remove: 'https://' | remove: 'http://' | split: '/'
 
-        # CHECK COLLECTIONS
-        if url_segments contains 'collections' and url_segments.size >= 3
-          assign collection_handle = url_segments[2]
-          assign target_collection = collections[collection_handle]
-          if target_collection and target_collection.metafields.ethossence.authorization_show
-            assign auth_list = target_collection.metafields.ethossence.authorization_show.value
-            assign temp_levels = blank
-            for auth_metaobject in auth_list
-              if auth_metaobject.level
-                assign childlinks_size_auths = childlinks_size_auths | plus: 1  
-                if temp_levels == blank
-                  assign temp_levels = auth_metaobject.level
-                else
-                  assign temp_levels = temp_levels | append: ',' | append: auth_metaobject.level
-                endif
-              endif
-            endfor
-            assign resource_authorization_levels = temp_levels | downcase | split: ','
-          endif
-        endif  
+                            # CHECK COLLECTIONS
+                            if url_segments contains 'collections' and url_segments.size >= 3
+                              assign collection_handle = url_segments[2]
+                              assign target_collection = collections[collection_handle]
+                              if target_collection and target_collection.metafields.ethossence.authorization_show
+                                assign auth_list = target_collection.metafields.ethossence.authorization_show.value
+                                assign temp_levels = blank
+                                for auth_metaobject in auth_list
+                                  if auth_metaobject.level
+                                    assign childlinks_size_auths = childlinks_size_auths | plus: 1  
+                                    if temp_levels == blank
+                                      assign temp_levels = auth_metaobject.level
+                                    else
+                                      assign temp_levels = temp_levels | append: ',' | append: auth_metaobject.level
+                                    endif
+                                  endif
+                                endfor
+                                assign resource_authorization_levels = temp_levels | downcase | split: ','
+                              endif
+                            endif  
 
-        # CHECK PRODUCTS  
-        if url_segments contains 'products' and url_segments.size >= 3
-          assign product_handle = url_segments[2]
-          assign target_product = all_products[product_handle]
-          if target_product and target_product.metafields.ethossence.authorization_show
-            assign auth_list = target_product.metafields.ethossence.authorization_show.value
-            assign temp_levels = blank
-            for auth_metaobject in auth_list
-              if auth_metaobject.level
-                assign childlinks_size_auths = childlinks_size_auths | plus: 1
-                if temp_levels == blank
-                  assign temp_levels = auth_metaobject.level
-                else
-                  assign temp_levels = temp_levels | append: ',' | append: auth_metaobject.level
-                endif
-              endif
-            endfor
-            assign resource_authorization_levels = temp_levels | downcase | split: ','
-          endif
-        endif
-        
-        # CHECK PAGES
-        if url_segments contains 'pages' and url_segments.size >= 3
-          assign page_handle = url_segments[2]
-          assign target_page = pages[page_handle]
-          if target_page and target_page.metafields.ethossence.authorization_show
-            assign auth_list = target_page.metafields.ethossence.authorization_show.value
-            assign temp_levels = blank
-            for auth_metaobject in auth_list
-              if auth_metaobject.level
-                assign childlinks_size_auths = childlinks_size_auths | plus: 1
-                if temp_levels == blank
-                  assign temp_levels = auth_metaobject.level
-                else
-                  assign temp_levels = temp_levels | append: ',' | append: auth_metaobject.level
-                endif
-              endif
-            endfor
-            assign resource_authorization_levels = temp_levels | downcase | split: ','
-          endif
-        endif
-        
-        # CHECK ARTICLES/BLOGS
-        if url_segments contains 'blogs' and url_segments.size >= 4
-          assign blog_handle = url_segments[2]
-          assign article_handle = url_segments[3]
-          assign target_blog = blogs[blog_handle]
-          if target_blog
-            for article in target_blog.articles
-              if article.handle == article_handle and article.metafields.ethossence.authorization_show
-                assign auth_list = article.metafields.ethossence.authorization_show.value
-                assign temp_levels = blank
-                for auth_metaobject in auth_list
-                  if auth_metaobject.level
-                    assign childlinks_size_auths = childlinks_size_auths | plus: 1
-                    if temp_levels == blank
-                      assign temp_levels = auth_metaobject.level
-                    else
-                      assign temp_levels = temp_levels | append: ',' | append: auth_metaobject.level
-                    endif
-                  endif
-                endfor
-                assign resource_authorization_levels = temp_levels | downcase | split: ','
-                break
-              endif
-            endfor
-          endif
-        endif
-        
-        # ADD TO AUTHORIZATION LEVELS ARRAY
-        if resource_authorization_levels != blank
-          assign resource_levels_joined = resource_authorization_levels | join: ','
-          if authorization_levels_array == blank
-            assign authorization_levels_array = resource_levels_joined
-          else
-            assign authorization_levels_array = authorization_levels_array | append: ',' | append: resource_levels_joined
-          endif
-        endif
-    endfor
-    
-    # CREATE AUTHORIZATION LEVELS LIST
-    assign authorization_levels_list = authorization_levels_array | split: ','
-    
-    # DETERMINE AUTHORIZATION LOGIC FOR GRANDCHILD LINKS
-    if childlinks_size_all == childlinks_size_auths
-      # ALL childlinks have access requirements - check customer authorization
-      if customer_authorization_levels != blank and authorization_levels_list != blank
-        for required_level in authorization_levels_list
-          assign required_level_lower = required_level | downcase | strip | remove: '["' | remove: '"]'
-          if customer_authorization_levels contains required_level_lower
-            assign customer_authorized = true
-            break
-          endif
-        endfor
-      endif
-      # ONLY IF CUSTOMER IS AUTHORIZED, ALLOW CHILDLINK
-      assign childlink_authorized = customer_authorized
-    else
-      # NOT all childlinks have access requirements - show childlink by default
-      assign childlink_authorized = true
-    endif
-    
-  else
-    # CASE 2: CHILDLINK HAS NO GRANDCHILD LINKS - CHECK CHILDLINK ITSELF
-    
-    # EXTRACT HANDLE FROM CHILDLINK URL TO IDENTIFY RESOURCE
-    assign childlink_url_segments = childlink.url | remove: 'https://' | remove: 'http://' | split: '/'
-    assign childlink_has_authorization = false
-    assign childlink_required_levels = blank
-    
-    # CHECK COLLECTIONS
-    if childlink_url_segments contains 'collections' and childlink_url_segments.size >= 3
-      assign collection_handle = childlink_url_segments[2]
-      assign target_collection = collections[collection_handle]
-      if target_collection and target_collection.metafields.ethossence.authorization_show
-        assign auth_list = target_collection.metafields.ethossence.authorization_show.value
-        assign temp_levels = blank
-        for auth_metaobject in auth_list
-          if auth_metaobject.level
-            assign childlink_has_authorization = true
-            if temp_levels == blank
-              assign temp_levels = auth_metaobject.level
-            else
-              assign temp_levels = temp_levels | append: ',' | append: auth_metaobject.level
-            endif
-          endif
-        endfor
-        if temp_levels != blank
-          assign childlink_required_levels = temp_levels | downcase | split: ','
-        endif
-      endif
-    endif
-    
-    # CHECK PRODUCTS  
-    if childlink_url_segments contains 'products' and childlink_url_segments.size >= 3
-      assign product_handle = childlink_url_segments[2]
-      assign target_product = all_products[product_handle]
-      if target_product and target_product.metafields.ethossence.authorization_show
-        assign auth_list = target_product.metafields.ethossence.authorization_show.value
-        assign temp_levels = blank
-        for auth_metaobject in auth_list
-          if auth_metaobject.level
-            assign childlink_has_authorization = true
-            if temp_levels == blank
-              assign temp_levels = auth_metaobject.level
-            else
-              assign temp_levels = temp_levels | append: ',' | append: auth_metaobject.level
-            endif
-          endif
-        endfor
-        if temp_levels != blank
-          assign childlink_required_levels = temp_levels | downcase | split: ','
-        endif
-      endif
-    endif
-    
-    # CHECK PAGES
-    if childlink_url_segments contains 'pages' and childlink_url_segments.size >= 3
-      assign page_handle = childlink_url_segments[2]
-      assign target_page = pages[page_handle]
-      if target_page and target_page.metafields.ethossence.authorization_show
-        assign auth_list = target_page.metafields.ethossence.authorization_show.value
-        assign temp_levels = blank
-        for auth_metaobject in auth_list
-          if auth_metaobject.level
-            assign childlink_has_authorization = true
-            if temp_levels == blank
-              assign temp_levels = auth_metaobject.level
-            else
-              assign temp_levels = temp_levels | append: ',' | append: auth_metaobject.level
-            endif
-          endif
-        endfor
-        if temp_levels != blank
-          assign childlink_required_levels = temp_levels | downcase | split: ','
-        endif
-      endif
-    endif
-    
-    # CHECK ARTICLES/BLOGS
-    if childlink_url_segments contains 'blogs' and childlink_url_segments.size >= 4
-      assign blog_handle = childlink_url_segments[2]
-      assign article_handle = childlink_url_segments[3]
-      assign target_blog = blogs[blog_handle]
-      if target_blog
-        for article in target_blog.articles
-          if article.handle == article_handle and article.metafields.ethossence.authorization_show
-            assign auth_list = article.metafields.ethossence.authorization_show.value
-            assign temp_levels = blank
-            for auth_metaobject in auth_list
-              if auth_metaobject.level
-                assign childlink_has_authorization = true
-                if temp_levels == blank
-                  assign temp_levels = auth_metaobject.level
-                else
-                  assign temp_levels = temp_levels | append: ',' | append: auth_metaobject.level
-                endif
-              endif
-            endfor
-            if temp_levels != blank
-              assign childlink_required_levels = temp_levels | downcase | split: ','
-            endif
-            break
-          endif
-        endfor
-      endif
-    endif
-    
-    # DETERMINE AUTHORIZATION FOR CHILDLINK ITSELF
-    assign childlink_authorized = true
-    
-    if childlink_has_authorization and childlink_required_levels != blank
-      # Childlink has authorization requirements - check customer authorization
-      assign childlink_authorized = false
-      
-      if customer_authorization_levels != blank
-        for required_level in childlink_required_levels
-          assign required_level_clean = required_level | strip
-          if customer_authorization_levels contains required_level_clean
-            assign childlink_authorized = true
-            break
-          endif
-        endfor
-      endif
-    endif
-    
-  endif
--%}
+                            # CHECK PRODUCTS  
+                            if url_segments contains 'products' and url_segments.size >= 3
+                              assign product_handle = url_segments[2]
+                              assign target_product = all_products[product_handle]
+                              if target_product and target_product.metafields.ethossence.authorization_show
+                                assign auth_list = target_product.metafields.ethossence.authorization_show.value
+                                assign temp_levels = blank
+                                for auth_metaobject in auth_list
+                                  if auth_metaobject.level
+                                    assign childlinks_size_auths = childlinks_size_auths | plus: 1
+                                    if temp_levels == blank
+                                      assign temp_levels = auth_metaobject.level
+                                    else
+                                      assign temp_levels = temp_levels | append: ',' | append: auth_metaobject.level
+                                    endif
+                                  endif
+                                endfor
+                                assign resource_authorization_levels = temp_levels | downcase | split: ','
+                              endif
+                            endif
+                            
+                            # CHECK PAGES
+                            if url_segments contains 'pages' and url_segments.size >= 3
+                              assign page_handle = url_segments[2]
+                              assign target_page = pages[page_handle]
+                              if target_page and target_page.metafields.ethossence.authorization_show
+                                assign auth_list = target_page.metafields.ethossence.authorization_show.value
+                                assign temp_levels = blank
+                                for auth_metaobject in auth_list
+                                  if auth_metaobject.level
+                                    assign childlinks_size_auths = childlinks_size_auths | plus: 1
+                                    if temp_levels == blank
+                                      assign temp_levels = auth_metaobject.level
+                                    else
+                                      assign temp_levels = temp_levels | append: ',' | append: auth_metaobject.level
+                                    endif
+                                  endif
+                                endfor
+                                assign resource_authorization_levels = temp_levels | downcase | split: ','
+                              endif
+                            endif
+                            
+                            # CHECK ARTICLES/BLOGS
+                            if url_segments contains 'blogs' and url_segments.size >= 4
+                              assign blog_handle = url_segments[2]
+                              assign article_handle = url_segments[3]
+                              assign target_blog = blogs[blog_handle]
+                              if target_blog
+                                for article in target_blog.articles
+                                  if article.handle == article_handle and article.metafields.ethossence.authorization_show
+                                    assign auth_list = article.metafields.ethossence.authorization_show.value
+                                    assign temp_levels = blank
+                                    for auth_metaobject in auth_list
+                                      if auth_metaobject.level
+                                        assign childlinks_size_auths = childlinks_size_auths | plus: 1
+                                        if temp_levels == blank
+                                          assign temp_levels = auth_metaobject.level
+                                        else
+                                          assign temp_levels = temp_levels | append: ',' | append: auth_metaobject.level
+                                        endif
+                                      endif
+                                    endfor
+                                    assign resource_authorization_levels = temp_levels | downcase | split: ','
+                                    break
+                                  endif
+                                endfor
+                              endif
+                            endif
+                            
+                            # ADD TO AUTHORIZATION LEVELS ARRAY
+                            if resource_authorization_levels != blank
+                              assign resource_levels_joined = resource_authorization_levels | join: ','
+                              if authorization_levels_array == blank
+                                assign authorization_levels_array = resource_levels_joined
+                              else
+                                assign authorization_levels_array = authorization_levels_array | append: ',' | append: resource_levels_joined
+                              endif
+                            endif
+                        endfor
+                        
+                        # CREATE AUTHORIZATION LEVELS LIST
+                        assign authorization_levels_list = authorization_levels_array | split: ','
+                        
+                        # DETERMINE AUTHORIZATION LOGIC FOR GRANDCHILD LINKS
+                        if childlinks_size_all == childlinks_size_auths
+                          # ALL childlinks have access requirements - check customer authorization
+                          if customer_authorization_levels != blank and authorization_levels_list != blank
+                            for required_level in authorization_levels_list
+                              assign required_level_lower = required_level | downcase | strip | remove: '["' | remove: '"]'
+                              if customer_authorization_levels contains required_level_lower
+                                assign customer_authorized = true
+                                break
+                              endif
+                            endfor
+                          endif
+                          # ONLY IF CUSTOMER IS AUTHORIZED, ALLOW CHILDLINK
+                          assign childlink_authorized = customer_authorized
+                        else
+                          # NOT all childlinks have access requirements - show childlink by default
+                          assign childlink_authorized = true
+                        endif
+                        
+                      else
+                        # CASE 2: CHILDLINK HAS NO GRANDCHILD LINKS - CHECK CHILDLINK ITSELF
+                        
+                        # EXTRACT HANDLE FROM CHILDLINK URL TO IDENTIFY RESOURCE
+                        assign childlink_url_segments = childlink.url | remove: 'https://' | remove: 'http://' | split: '/'
+                        assign childlink_has_authorization = false
+                        assign childlink_required_levels = blank
+                        
+                        # CHECK COLLECTIONS
+                        if childlink_url_segments contains 'collections' and childlink_url_segments.size >= 3
+                          assign collection_handle = childlink_url_segments[2]
+                          assign target_collection = collections[collection_handle]
+                          if target_collection and target_collection.metafields.ethossence.authorization_show
+                            assign auth_list = target_collection.metafields.ethossence.authorization_show.value
+                            assign temp_levels = blank
+                            for auth_metaobject in auth_list
+                              if auth_metaobject.level
+                                assign childlink_has_authorization = true
+                                if temp_levels == blank
+                                  assign temp_levels = auth_metaobject.level
+                                else
+                                  assign temp_levels = temp_levels | append: ',' | append: auth_metaobject.level
+                                endif
+                              endif
+                            endfor
+                            if temp_levels != blank
+                              assign childlink_required_levels = temp_levels | downcase | split: ','
+                            endif
+                          endif
+                        endif
+                        
+                        # CHECK PRODUCTS  
+                        if childlink_url_segments contains 'products' and childlink_url_segments.size >= 3
+                          assign product_handle = childlink_url_segments[2]
+                          assign target_product = all_products[product_handle]
+                          if target_product and target_product.metafields.ethossence.authorization_show
+                            assign auth_list = target_product.metafields.ethossence.authorization_show.value
+                            assign temp_levels = blank
+                            for auth_metaobject in auth_list
+                              if auth_metaobject.level
+                                assign childlink_has_authorization = true
+                                if temp_levels == blank
+                                  assign temp_levels = auth_metaobject.level
+                                else
+                                  assign temp_levels = temp_levels | append: ',' | append: auth_metaobject.level
+                                endif
+                              endif
+                            endfor
+                            if temp_levels != blank
+                              assign childlink_required_levels = temp_levels | downcase | split: ','
+                            endif
+                          endif
+                        endif
+                        
+                        # CHECK PAGES
+                        if childlink_url_segments contains 'pages' and childlink_url_segments.size >= 3
+                          assign page_handle = childlink_url_segments[2]
+                          assign target_page = pages[page_handle]
+                          if target_page and target_page.metafields.ethossence.authorization_show
+                            assign auth_list = target_page.metafields.ethossence.authorization_show.value
+                            assign temp_levels = blank
+                            for auth_metaobject in auth_list
+                              if auth_metaobject.level
+                                assign childlink_has_authorization = true
+                                if temp_levels == blank
+                                  assign temp_levels = auth_metaobject.level
+                                else
+                                  assign temp_levels = temp_levels | append: ',' | append: auth_metaobject.level
+                                endif
+                              endif
+                            endfor
+                            if temp_levels != blank
+                              assign childlink_required_levels = temp_levels | downcase | split: ','
+                            endif
+                          endif
+                        endif
+                        
+                        # CHECK ARTICLES/BLOGS
+                        if childlink_url_segments contains 'blogs' and childlink_url_segments.size >= 4
+                          assign blog_handle = childlink_url_segments[2]
+                          assign article_handle = childlink_url_segments[3]
+                          assign target_blog = blogs[blog_handle]
+                          if target_blog
+                            for article in target_blog.articles
+                              if article.handle == article_handle and article.metafields.ethossence.authorization_show
+                                assign auth_list = article.metafields.ethossence.authorization_show.value
+                                assign temp_levels = blank
+                                for auth_metaobject in auth_list
+                                  if auth_metaobject.level
+                                    assign childlink_has_authorization = true
+                                    if temp_levels == blank
+                                      assign temp_levels = auth_metaobject.level
+                                    else
+                                      assign temp_levels = temp_levels | append: ',' | append: auth_metaobject.level
+                                    endif
+                                  endif
+                                endfor
+                                if temp_levels != blank
+                                  assign childlink_required_levels = temp_levels | downcase | split: ','
+                                endif
+                                break
+                              endif
+                            endfor
+                          endif
+                        endif
+                        
+                        # DETERMINE AUTHORIZATION FOR CHILDLINK ITSELF
+                        assign childlink_authorized = true
+                        
+                        if childlink_has_authorization and childlink_required_levels != blank
+                          # Childlink has authorization requirements - check customer authorization
+                          assign childlink_authorized = false
+                          
+                          if customer_authorization_levels != blank
+                            for required_level in childlink_required_levels
+                              assign required_level_clean = required_level | strip
+                              if customer_authorization_levels contains required_level_clean
+                                assign childlink_authorized = true
+                                break
+                              endif
+                            endfor
+                          endif
+                        endif
+                        
+                      endif
+                    -%}
 
                     {% if childlink_authorized %}
 
@@ -535,9 +535,9 @@
 
         {%- else -%}
 
-          <a id="HeaderMenu-{{ link.handle }}" href="{{ link.url }}" class="header__menu-item list-menu__item link link--text focus-inset" {% if link.current %} aria-current="page" {% endif %}>
+          <a id="HeaderMenu-{{ link.handle }}" href="{{ link.url }}" {% if link.title contains '^' %} target="_blank"{% endif %} class="header__menu-item list-menu__item link link--text focus-inset" {% if link.current %} aria-current="page" {% endif %}>
             <span {%- if link.current %} class="header__active-menu-item"{% endif %}>
-              {{- link.title | escape -}}
+              {{- link.title | escape | remove: '^' -}}
             </span>
           </a>
         {%- endif -%}

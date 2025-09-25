@@ -3,6 +3,8 @@
 
   Usage:
   {% render 'header-drawer' %}
+
+  ETHOSSENCE - MODS: Added target="_blank" to links with ^ in title and then remove ^ from title
 {% endcomment %}
 
 <header-drawer data-breakpoint="{% if section.settings.menu_type_desktop == 'drawer' %}desktop{% else %}tablet{% endif %}">
@@ -29,7 +31,7 @@
                         id="HeaderDrawer-{{ link.handle }}"
                         class="menu-drawer__menu-item list-menu__item link link--text focus-inset{% if link.child_active %} menu-drawer__menu-item--active{% endif %}"
                       >
-                        {{ link.title | escape }}
+                        {{ link.title | escape | remove: '^' }}
                         <span class="svg-wrapper">
                           {{- 'icon-arrow.svg' | inline_asset_content -}}
                         </span>
@@ -38,7 +40,7 @@
                         </span>
                       </summary>
                       <div
-                        id="link-{{ link.handle | escape }}"
+                        id="link-{{ link.handle | escape | remove: '^' }}"
                         class="menu-drawer__submenu has-submenu gradient motion-reduce"
                         tabindex="-1"
                       >
@@ -47,7 +49,7 @@
                             <span class="svg-wrapper">
                               {{- 'icon-arrow.svg' | inline_asset_content -}}
                             </span>
-                            {{ link.title | escape }}
+                            {{ link.title | escape | remove: '^' }}
                           </button>
                           <ul class="menu-drawer__menu list-menu" role="list" tabindex="-1">
                             {%- for childlink in link.links -%}
@@ -60,8 +62,9 @@
                                     {% if childlink.current %}
                                       aria-current="page"
                                     {% endif %}
+                                    {% if childlink.title contains '^' %} target="_blank"{% endif %}
                                   >
-                                    {{ childlink.title | escape }}
+                                    {{ childlink.title | escape | remove: '^' }}
                                   </a>
                                 {%- else -%}
                                   <details id="Details-menu-drawer-{{ link.handle }}-{{ childlink.handle }}">
@@ -69,7 +72,7 @@
                                       id="HeaderDrawer-{{ link.handle }}-{{ childlink.handle }}"
                                       class="menu-drawer__menu-item link link--text list-menu__item focus-inset"
                                     >
-                                      {{ childlink.title | escape }}
+                                      {{ childlink.title | escape | remove: '^' }}
                                       <span class="svg-wrapper">
                                         {{- 'icon-arrow.svg' | inline_asset_content -}}
                                       </span>
@@ -78,7 +81,7 @@
                                       </span>
                                     </summary>
                                     <div
-                                      id="childlink-{{ childlink.handle | escape }}"
+                                      id="childlink-{{ childlink.handle | escape | remove: '^' }}"
                                       class="menu-drawer__submenu has-submenu gradient motion-reduce"
                                     >
                                       <button
@@ -88,7 +91,7 @@
                                         <span class="svg-wrapper">
                                           {{- 'icon-arrow.svg' | inline_asset_content -}}
                                         </span>
-                                        {{ childlink.title | escape }}
+                                        {{ childlink.title | escape | remove: '^' }}
                                       </button>
                                       <ul
                                         class="menu-drawer__menu list-menu"
@@ -104,8 +107,9 @@
                                               {% if grandchildlink.current %}
                                                 aria-current="page"
                                               {% endif %}
+                                              {% if grandchildlink.title contains '^' %} target="_blank"{% endif %}
                                             >
-                                              {{ grandchildlink.title | escape }}
+                                              {{ grandchildlink.title | escape | remove: '^' }}
                                             </a>
                                           </li>
                                         {%- endfor -%}
@@ -127,8 +131,9 @@
                       {% if link.current %}
                         aria-current="page"
                       {% endif %}
+                      {% if link.title contains '^' %} target="_blank"{% endif %}
                     >
-                      {{ link.title | escape }}
+                      {{ link.title | escape | remove: '^' }}
                     </a>
                   {%- endif -%}
                 </li>

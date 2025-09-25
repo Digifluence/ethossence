@@ -1,61 +1,90 @@
-{%- comment -%}
-<!-- SHOW QUANITY INPUT \\\ START /// -->
-{%- assign s_quantity_display = true -%}          
-{%- if template contains 'service' or template contains 'person' or s_price_display == false or s_checkout_allow == false -%}
-	{%- assign s_quantity_display = false -%}
-{%- endif -%}
-<!-- SHOW QUANITY INPUT /// END \\\ -->
- {%- endcomment -%}
-
 {% liquid
-  # AUTHORIZATION SHOW: PRODUCTS
+  # ETHOSSENCE FEATURE
+  # AUTHORIZATION SHOW: PRODUCTS WITH REDIRECT
   
-  # GET CUSTOMER AUTHORIZATION LEVELS FROM METAFIELD
+  # Initialize authorization variables
+  assign product_authorized = true
   assign customer_authorization_levels = blank
-  if customer and customer.metafields.ethossence.authorization_show
-    assign customer_auth_list = customer.metafields.ethossence.authorization_show.value
-    assign temp_levels = blank
-    for auth_metaobject in customer_auth_list
-      if auth_metaobject.level
-        if temp_levels == blank
-          assign temp_levels = auth_metaobject.level
-        else
-          assign temp_levels = temp_levels | append: ',' | append: auth_metaobject.level
-        endif
-      endif
-    endfor
-    if temp_levels != blank
-      assign customer_authorization_levels = temp_levels | downcase | split: ','
-    endif
-  endif
-
- # GET PRODUCT AUTHORIZATION REQUIREMENTS
   assign product_has_authorization = false
   assign product_required_levels = blank
   
-  if product.metafields.ethossence.authorization_show
-    assign product_auth_list = product.metafields.ethossence.authorization_show.value
-    assign temp_levels = blank
+  # GET CUSTOMER AUTHORIZATION LEVELS FROM METAFIELD
+  if customer
+    # Access the metafield - this returns a MetaobjectDrop or list of MetaobjectDrops
+    assign customer_auth_metaobject = customer.metafields.ethossence.authorization_show.value
     
-    # Try to loop through metaobjects - if loop executes, we have requirements
-    for auth_metaobject in product_auth_list
-      if auth_metaobject.level
-        assign product_has_authorization = true
-        if temp_levels == blank
-          assign temp_levels = auth_metaobject.level
-        else
-          assign temp_levels = temp_levels | append: ',' | append: auth_metaobject.level
+    if customer_auth_metaobject
+      assign temp_levels = blank
+      
+      # First try to access as a single metaobject
+      if customer_auth_metaobject.level
+        # Direct access to the level field of the metaobject
+        assign level_value = customer_auth_metaobject.level
+        if level_value != blank
+          assign temp_levels = level_value
         endif
+      else
+        # Try as an array of metaobjects
+        for auth_obj in customer_auth_metaobject
+          if auth_obj.level
+            assign level_value = auth_obj.level
+            if level_value != blank
+              if temp_levels == blank
+                assign temp_levels = level_value
+              else
+                assign temp_levels = temp_levels | append: ',' | append: level_value
+              endif
+            endif
+          endif
+        endfor
       endif
-    endfor
+      
+      if temp_levels != blank
+        assign customer_authorization_levels = temp_levels | downcase | split: ','
+      endif
+    endif
+  endif
+
+  # GET PRODUCT AUTHORIZATION REQUIREMENTS
+  if product.metafields.ethossence.authorization_show
+    assign product_auth_metaobject = product.metafields.ethossence.authorization_show.value
     
-    if temp_levels != blank
-      assign product_required_levels = temp_levels | downcase | split: ','
+    if product_auth_metaobject
+      assign temp_levels = blank
+      
+      # First try to access as a single metaobject
+      if product_auth_metaobject.level
+        # Direct access to the level field of the metaobject
+        assign level_value = product_auth_metaobject.level
+        if level_value != blank
+          assign product_has_authorization = true
+          assign temp_levels = level_value
+        endif
+      else
+        # Try as an array of metaobjects
+        for auth_obj in product_auth_metaobject
+          if auth_obj.level
+            assign level_value = auth_obj.level
+            if level_value != blank
+              assign product_has_authorization = true
+              if temp_levels == blank
+                assign temp_levels = level_value
+              else
+                assign temp_levels = temp_levels | append: ',' | append: level_value
+              endif
+            endif
+          endif
+        endfor
+      endif
+      
+      if temp_levels != blank
+        assign product_required_levels = temp_levels | downcase | split: ','
+      endif
     endif
   endif
   
   # DETERMINE AUTHORIZATION
-  # Default to authorized (dtc products)
+  # Default to authorized (public products)
   assign product_authorized = true
   
   if product_has_authorization and product_required_levels != blank
@@ -63,10 +92,19 @@
     assign product_authorized = false
     
     if customer_authorization_levels != blank
+      # Check if any customer level matches any required level
       for required_level in product_required_levels
         assign required_level_clean = required_level | strip
-        if customer_authorization_levels contains required_level_clean
-          assign product_authorized = true
+        
+        for customer_level in customer_authorization_levels
+          assign customer_level_clean = customer_level | strip
+          if customer_level_clean == required_level_clean
+            assign product_authorized = true
+            break
+          endif
+        endfor
+        
+        if product_authorized
           break
         endif
       endfor
@@ -75,16 +113,38 @@
   
   # REDIRECT IF NOT AUTHORIZED
   unless product_authorized
-    # JavaScript redirect (immediate)
-    echo '<script>window.location.href="/pages/no-access";</script>'
+    # Build the redirect URL - you can customize this
+    assign redirect_url = '/pages/no-access'
     
-    # Meta refresh (backup)
-    echo '<meta http-equiv="refresh" content="0;url=/pages/no-access">'
+    # Optional: Pass the attempted product info as URL parameters
+    assign redirect_with_params = redirect_url | append: '?from=product&handle=' | append: product.handle
     
-    # Stop further processing
+    # JavaScript redirect (primary method - executes immediately)
+    echo '<script type="text/javascript">'
+    echo 'window.location.replace("' | append: redirect_with_params | append: '");'
+    echo '</script>'
+    
+    # Meta refresh (backup method for when JavaScript is disabled)
+    echo '<meta http-equiv="refresh" content="0;url=' | append: redirect_with_params | append: '">'
+    
+    # Fallback message and link (for when both JavaScript and meta refresh fail)
+    echo '<div style="padding: 40px; text-align: center;">'
+    echo '<h2>Access Restricted</h2>'
+    echo '<p>You do not have permission to view this product.</p>'
+    echo '<a href="' | append: redirect_url | append: '" style="display: inline-block; padding: 12px 24px; background: #000; color: #fff; text-decoration: none; margin-top: 20px;">Continue</a>'
+    echo '</div>'
+    
+    # Stop processing the rest of the template
     break
   endunless
-%}  
+  
+  # Optional: Debug output (remove in production)
+  comment
+    echo 'Customer levels: ' | append: customer_authorization_levels | join: ', '
+    echo '<br>Product levels: ' | append: product_required_levels | join: ', '
+    echo '<br>Authorized: ' | append: product_authorized
+  endcomment
+%}
 
 
 {% style %}
