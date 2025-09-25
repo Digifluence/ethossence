@@ -155,7 +155,71 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
-{%- endstyle -%}
+
+      
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    }
+  
+    @media (max-width: 749px) {
+      .button-column,
+      .text-column,
+      .grid__item {
+        flex-basis: 100% !important;
+        max-width: 100% !important;
+      }
+      .custom-columns {
+        flex-direction: column;
+        column-gap: 30px;
+      }
+    }
+
+    @media (min-width: 750px) {
+      .custom-columns {
+        display: flex;
+        gap: 0;
+      }
+      .button-column {
+        flex-basis: {{ button_column_width }}%;
+        max-width: {{ button_column_width }}%;
+        flex-grow: 0;
+        flex-shrink: 0;
+        width: auto;        
+      }
+      .text-column {
+        flex-basis: {{ text_column_width }}%;
+        max-width: {{ text_column_width }}%;
+        flex-grow: 0;
+        flex-shrink: 0;
+        width: auto;        
+      }
+      .section-{{ section.id }}-padding {
+        padding-top: {{ section.settings.padding_top }}px;
+        padding-bottom: {{ section.settings.padding_bottom }}px;
+      }      
+    }
+    
+    .text-row {
+      margin: 7px;
+      min-height: calc(2.5rem + var(--buttons-border-width) * 2);
+    }    
+
+    .button-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .preheader-button {
+      justify-self: end;
+      margin: 7px 0;
+      min-height: calc(2.5rem + var(--buttons-border-width) * 2);
+      white-space: nowrap;
+    }    
+
+  {%- endstyle -%}
 
 <div class="color-{{ section.settings.color_scheme }} gradient">
    <div class="page-width section-{{ section.id }}-padding">
