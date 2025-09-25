@@ -58,10 +58,29 @@
       "name": "t:sections.page.presets.name",
       "settings": {
         "page": "oem-benefits",
+        "heading_hide": false,
         "heading_size": "h1",
         "color_scheme": "",
         "padding_top": 36,
-        "padding_bottom": 36
+        "padding_bottom": 36,
+        "authoriz_enabled": false,
+        "authoriz_require_msg": ""
+      }
+    },
+    "page_column_two_ypG9fm": {
+      "type": "page-column-two",
+      "name": "t:sections.page.presets.name",
+      "settings": {
+        "page_col_1": "appointment-booking-general-purpose",
+        "page_title_hide_col_1": false,
+        "page_col_2": "appointment-booking-live-remote-demonstration",
+        "page_title_hide_col_2": false,
+        "heading_size": "h1",
+        "color_scheme": "",
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "authoriz_enabled": false,
+        "authoriz_require_msg": ""
       }
     }
   },
@@ -70,6 +89,7 @@
     "main",
     "174017485838edd9b6",
     "ethossence_gallery_image_K67Adk",
-    "page_wTabCW"
+    "page_wTabCW",
+    "page_column_two_ypG9fm"
   ]
 }
