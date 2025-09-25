@@ -1,147 +1,149 @@
 <!-- MELTTOOLS -->
 
 {% comment %}
-{% assign display_content = [content_type].metafields.iqx.content_ext.value %}
+{% assign display_content = [content_type].metafields.ethossence.content.value %}
 item.header v. item.header_text
 item.paragraph v. item.paragraph_text
 {% endcomment %}
 
-{%- if template contains 'page' -%}{% assign content_type = 'page' %}{% assign display_content = [content_type].metafields.iqx.content_ext.value %}
-{%- elsif template contains 'blog' -%}{% assign content_type = 'blog' %}{% assign display_content = [content_type].metafields.iqx.content_ext.value %}
-{%- elsif template contains 'article' -%}{% assign content_type = 'article' %}{% assign display_content = article.metafields.digifluence.content_ext.value %}
-{%- elsif template contains 'collection' -%}{% assign content_type = 'collection' %}{% assign display_content = [content_type].metafields.iqx.content_ext.value %}
-{%- elsif template contains 'product' -%}{% assign content_type = 'product' %}{% assign display_content = [content_type].metafields.iqx.content_ext.value %}  
+{%- if template contains 'page' -%}{% assign content_type = 'page' %}{% assign display_content = [content_type].metafields.ethossence.content.value %}
+{%- elsif template contains 'blog' -%}{% assign content_type = 'blog' %}{% assign display_content = [content_type].metafields.ethossence.content.value %}
+{%- elsif template contains 'article' -%}{% assign content_type = 'article' %}{% assign display_content = article.metafields.ethossence.content.value %}
+{%- elsif template contains 'collection' -%}{% assign content_type = 'collection' %}{% assign display_content = [content_type].metafields.ethossence.content.value %}
+{%- elsif template contains 'product' -%}{% assign content_type = 'product' %}{% assign display_content = [content_type].metafields.ethossence.content.value %}  
 {%- endif -%}
 
+{%- style -%}
+  /* Section Padding - Requires Liquid variables */
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
 
-<div class="
-  {{ section.settings.bck }} {{ section.settings.bck_color }} {{ section.settings.bck_color_span}} 
-  {{ section.settings.border }} {% if section.settings.border_round %} {{ section.settings.bck | replace: 'bck', 'frame' }} {{ section.settings.border | replace: 'border', 'frame' }} {% endif %}
-  {{ section.settings.bck_border }} {% if section.settings.bck_border_round %} {{ section.settings.bck_color | replace: 'bck', 'frame' }} {{ section.settings.bck_border | replace: 'border', 'frame' }} {% endif %}
-  " 
-  style="
-    {{ section.settings.m_top | times: 0.125 | prepend: 'margin-top:' | append: 'em;' }} 
-    {{ section.settings.m_bottom | times: 0.125 | prepend: 'margin-bottom:' | append: 'em;' }} 
-    {{ section.settings.p_top | times: 0.125 | prepend: 'padding-top:' | append: 'em;' }} 
-    {{ section.settings.p_right | times: 0.125 | prepend: 'padding-right:' | append: 'em;' }} 
-    {{ section.settings.p_bottom | times: 0.125 | prepend: 'padding-bottom:' | append: 'em;' }} 
-    {{ section.settings.p_left | times: 0.125 | prepend: 'padding-left:' | append: 'em;' }}
-">
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient {%if section.settings.full_width %}page-width {% endif %}section-{{ section.id }}-padding">
   
-<div class="color-{{ section.settings.color_scheme }} gradient">
-    <div class="extended-content-section section-{{ section.id }}-padding">
-        <div class="page-width">
-            <div class="grid">            
+  <div class="color-{{ section.settings.color_scheme }} gradient">
+      <div class="extended-content-section section-{{ section.id }}-padding">
+          <div class="page-width">
+              <div class="grid">            
 
-            {% for item in display_content %}     
+              {% for item in display_content %}     
 
-                {% if item.header != null %}
-                    {% capture display_header %}
-                        {%- liquid 
-                            if item.header == 'Regular'
-                                assign set_header = "<div>"
-                            else
-                                assign header_number = item.header_treat | slice: 7, 1
-                                assign set_header = header_number | prepend: "<h" | append: ">" 
-                            endif 
+                  {% if item.header != null %}
+                      {% capture display_header %}
+                          {%- liquid 
+                              if item.header == 'Regular'
+                                  assign set_header = "<div>"
+                              else
+                                  assign header_number = item.header_treat | slice: 7, 1
+                                  assign set_header = header_number | prepend: "<h" | append: ">" 
+                              endif 
 
-                            assign set_class = item.header_align | downcase
-                        -%}  
-                        <div class="text-{{ set_class | default: 'left' }}">{{ set_header }}{{ item.header }}{{ set_header | replace: "<", "</" }}</div>
-                    {% endcapture %}
-                {% endif %}      
+                              assign set_class = item.header_align | downcase
+                          -%}  
+                          <div class="text-{{ set_class | default: 'left' }}">{{ set_header }}{{ item.header }}{{ set_header | replace: "<", "</" }}</div>
+                      {% endcapture %}
+                  {% endif %}      
 
-                {%- assign pp_text = item.paragraph | metafield_tag -%}        
-                
- 
-                    <div class="grid__item grid__item--{{ item.grid_cell_lg }}-12">
+                  {%- assign pp_text = item.paragraph | metafield_tag -%}        
+                  
+  
+                      <div class="grid__item grid__item--{{ item.grid_cell_lg }}-12">
 
-                        <div style="{{ item.margin_top | times: 0.125 | prepend: 'margin-top:' | append: 'em;' }}{{ item.margin_bottom | times: 0.125 | prepend: 'margin-bottom:' | append: 'em;' }}; {% if item.grid_cell_lg != 12 -%}padding: 0 1em;{% endif %}">
-                    
-                            {% if item.vertical_placement == 'Header => paragraph => media' or item.vertical_placement == 'Header => media => paragraph' %}           
-                            {{ display_header }}
-                            {% endif %}
+                          <div style="{{ item.margin_top | times: 0.125 | prepend: 'margin-top:' | append: 'em;' }}{{ item.margin_bottom | times: 0.125 | prepend: 'margin-bottom:' | append: 'em;' }}; {% if item.grid_cell_lg != 12 -%}padding: 0 1em;{% endif %}">
+                      
+                              {% if item.vertical_placement == 'Header => paragraph => media' or item.vertical_placement == 'Header => media => paragraph' %}           
+                              {{ display_header }}
+                              {% endif %}
 
-                            {% if item.vertical_placement == 'Header => paragraph => media' or item.vertical_placement == 'Paragraph => header => media' %}  
-                                {% unless pp_text == '<div class="metafield-rich_text_field"></div>' %}
-                                    <div class="text-{{ item.paragraph_align | default: 'left' | downcase }}">
-                                        {% if pp_text contains 'BUTTON:' %}{{ item.paragraph | metafield_tag | replace: '<a', '<a class="button"' | remove: 'BUTTON:' }}
-                                        {% else %}{{ item.paragraph | metafield_tag }}
-                                        {% endif %}
-                                    </div>
-                                    {% if item.embed_scripts != null %}
-                                        <div>{{ item.embed_scripts }}</div>
-                                    {% endif %} 
-                                {% endunless %}
-                            {% endif %}
+                              {% if item.vertical_placement == 'Header => paragraph => media' or item.vertical_placement == 'Paragraph => header => media' %}  
+                                  {% unless pp_text == '<div class="metafield-rich_text_field"></div>' %}
+                                      <div class="text-{{ item.paragraph_align | default: 'left' | downcase }}">
+                                          {% if pp_text contains 'BUTTON:' %}{{ item.paragraph | metafield_tag | replace: '<a', '<a class="button"' | remove: 'BUTTON:' }}
+                                          {% else %}{{ item.paragraph | metafield_tag }}
+                                          {% endif %}
+                                      </div>
+                                      {% if item.embed_scripts != null %}
+                                          <div>{{ item.embed_scripts }}</div>
+                                      {% endif %} 
+                                  {% endunless %}
+                              {% endif %}
 
-                            {% if item.vertical_placement == 'Paragraph => header => media' %}               
-                            {{ display_header }}
-                            {% endif %}          
-                            
-                            {% if item.media_img_vid %}
-                                <div class="{{ item.media_align | default: 'left' | downcase | prepend: 'text-' }}">
-                                    {% if item.media_img_file_magnify != null %}
-                                        {%- assign s_modal = 'modalGallery_' | append: forloop.index -%}
-                                        {{ item.media_img_vid.value | image_url: width: 600 | image_tag: alt: item.media_alt_txt, loading: 'lazy', data-open: s_modal, style: 'cursor: zoom-in;' }} 
-                                        <div class="large reveal text-center" id="{{ s_modal }}" data-reveal>
-                                            {{ item.media_img_file_magnify.value | image_url: width: 800 | image_tag }} 
-                                            X
-                                        </div>    
-                                    {% else %}
-                                        {%  if item.media_img_link_url != null %}
-                                            <a href="{{ item.media_img_link_url }} " title="{{ item.media_img_link_title }}">
-                                        {% endif %}
-                                            {{ item.media_img_vid.value | image_url: width: 600 | image_tag: alt: item.media_alt_txt, loading: 'lazy' }}
-                                        {%  if item.media_img_link_url != null %}
-                                            </a>
-                                        {% endif %} 
-                                    {% endif %}
-                                </div>  
-                            {% endif %}
-                            
-                            {% if item.video_platform_url != null %}
-                                <div class="{{ item.media_align | default: 'left' | downcase | prepend: 'text-' }}">
-                                    {% render 'block-video' for item.video_platform_url as vid_url %}
-                                </div>
-                            {% endif %}            
+                              {% if item.vertical_placement == 'Paragraph => header => media' %}               
+                              {{ display_header }}
+                              {% endif %}          
+                              
+                              {% if item.media_img_vid %}
+                                  <div class="{{ item.media_align | default: 'left' | downcase | prepend: 'text-' }}">
+                                      {% if item.media_img_file_magnify != null %}
+                                          {%- assign s_modal = 'modalGallery_' | append: forloop.index -%}
+                                          {{ item.media_img_vid.value | image_url: width: 600 | image_tag: alt: item.media_alt_txt, loading: 'lazy', data-open: s_modal, style: 'cursor: zoom-in;' }} 
+                                          <div class="large reveal text-center" id="{{ s_modal }}" data-reveal>
+                                              {{ item.media_img_file_magnify.value | image_url: width: 800 | image_tag }} 
+                                              X
+                                          </div>    
+                                      {% else %}
+                                          {%  if item.media_img_link_url != null %}
+                                              <a href="{{ item.media_img_link_url }} " title="{{ item.media_img_link_title }}">
+                                          {% endif %}
+                                              {{ item.media_img_vid.value | image_url: width: 600 | image_tag: alt: item.media_alt_txt, loading: 'lazy' }}
+                                          {%  if item.media_img_link_url != null %}
+                                              </a>
+                                          {% endif %} 
+                                      {% endif %}
+                                  </div>  
+                              {% endif %}
+                              
+                              {% if item.video_platform_url != null %}
+                                  <div class="{{ item.media_align | default: 'left' | downcase | prepend: 'text-' }}">
+                                      {% render 'block-video' for item.video_platform_url as vid_url %}
+                                  </div>
+                              {% endif %}            
 
-                            {% if item.vertical_placement == 'Media => header => paragraph' %}  
-                                {{ display_header }}
-                            {% endif %}
+                              {% if item.vertical_placement == 'Media => header => paragraph' %}  
+                                  {{ display_header }}
+                              {% endif %}
 
-                            {% if item.vertical_placement == 'Header => media => paragraph' or item.vertical_placement == 'Media => header => paragraph' %}  
-                                {% unless pp_text == '<div class="metafield-rich_text_field"></div>' %}
-                                    <div class="text-{{ item.paragraph_align | default: 'left' | downcase }}">
-                                        {% if pp_text contains 'BUTTON:' %}{{ item.paragraph | metafield_tag | replace: '<a', '<a class="button"' | remove: 'BUTTON:' }}
-                                        {% else %}{{ item.paragraph | metafield_tag }}
-                                        {% endif %}
-                                    </div>
-                                    {% if item.embed_scripts != null %}            
-                                        <div>{{ item.embed_scripts }}</div>
-                                    {% endif %}  
-                                {% endunless %}
-                            {% endif %}
+                              {% if item.vertical_placement == 'Header => media => paragraph' or item.vertical_placement == 'Media => header => paragraph' %}  
+                                  {% unless pp_text == '<div class="metafield-rich_text_field"></div>' %}
+                                      <div class="text-{{ item.paragraph_align | default: 'left' | downcase }}">
+                                          {% if pp_text contains 'BUTTON:' %}{{ item.paragraph | metafield_tag | replace: '<a', '<a class="button"' | remove: 'BUTTON:' }}
+                                          {% else %}{{ item.paragraph | metafield_tag }}
+                                          {% endif %}
+                                      </div>
+                                      {% if item.embed_scripts != null %}            
+                                          <div>{{ item.embed_scripts }}</div>
+                                      {% endif %}  
+                                  {% endunless %}
+                              {% endif %}
 
-                            {%- if item.header != null -%}
-                                {%- assign display_header = '' -%}
-                            {%-  endif -%}
-                            
-                        </div>
-                    </div>
-                
-            {% endfor %}        
+                              {%- if item.header != null -%}
+                                  {%- assign display_header = '' -%}
+                              {%-  endif -%}
+                              
+                          </div>
+                      </div>
+                  
+              {% endfor %}        
 
-            </div>            
-        </div>
-    </div>
-</div>   
+              </div>            
+          </div>
+      </div>
+  </div>   
 
 </div>     
 
 {% schema %}
 {
-  "name": "Exteneded Content",
+  "name": "Extended Content",
   "tag": "section",
   "class": "section",
   "disabled_on": {
@@ -149,14 +151,24 @@ item.paragraph v. item.paragraph_text
   },
   "settings": [
     {
+      "type": "header",
+      "content": "Appearance"
+    },    
+    {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Color scheme",
-      "default": "background-1"
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "default": true,
+      "label": "t:sections.rich-text.settings.full_width.label"
     },
     {
       "type": "header",
-      "content": "Section padding"
+      "content": "t:sections.all.padding.section_padding_heading"
     },
     {
       "type": "range",
@@ -165,8 +177,8 @@ item.paragraph v. item.paragraph_text
       "max": 100,
       "step": 4,
       "unit": "px",
-      "label": "Padding top",
-      "default": 36
+      "label": "t:sections.all.padding.padding_top",
+      "default": 40
     },
     {
       "type": "range",
@@ -175,224 +187,9 @@ item.paragraph v. item.paragraph_text
       "max": 100,
       "step": 4,
       "unit": "px",
-      "label": "Padding bottom",
-      "default": 36
-    },
-
-
-            {
-              "type": "header",
-              "content": "Content layout"
-            },
-            {
-              "id": "content_ext_contain",
-              "type": "select",
-              "label": "Grid container",
-              "options":
-              [
-                {
-                  "value": "grid-container",
-                  "label": "Apply"
-                },
-                {
-                  "value": "full-span",
-                  "label": "Span edge-to-edge"
-                }
-              ],
-              "default": "grid-container"
-            },
-            {
-              "id": "content_ext_m_top",
-              "type": "range",
-              "label": "Top margin",
-              "min": 0,
-              "max": 50,
-              "step": 1,
-              "default": 10
-            },
-            {
-              "id": "content_ext_m_bottom",
-              "type": "range",
-              "label": "Bottom margin",
-              "min": 0,
-              "max": 50,
-              "step": 1,
-              "default": 10
-            },
-            {
-              "id": "content_ext_p_top",
-              "type": "range",
-              "label": "Top padding",
-              "min": 0,
-              "max": 50,
-              "step": 1,
-              "default": 0
-            },
-            {
-              "id": "content_ext_p_bottom",
-              "type": "range",
-              "label": "Bottom padding",
-              "min": 0,
-              "max": 50,
-              "step": 1,
-              "default": 0
-            },
-            {
-              "id": "content_ext_p_left",
-              "type": "range",
-              "label": "Left padding",
-              "min": 0,
-              "max": 50,
-              "step": 1,
-              "default": 0
-            },
-            {
-              "id": "content_ext_p_right",
-              "type": "range",
-              "label": "Right padding",
-              "min": 0,
-              "max": 50,
-              "step": 1,
-              "default": 0
-            },
-            {
-              "type": "header",
-              "content": "."
-            },
-            {
-              "type": "header",
-              "content": "Appearance"
-            },
-            {
-              "id": "content_ext_bck",
-              "type": "select",
-              "label": "Background color",
-              "options":
-              [
-                {
-                  "value": "none",
-                  "label": "None"
-                },
-                {
-                  "value": "bck-brand-1",
-                  "label": "Brand 1"
-                },
-                {
-                  "value": "bck-brand-2",
-                  "label": "Brand 2"
-                },
-                {
-                  "value": "bck-brand-3",
-                  "label": "Brand 3"
-                },
-                {
-                  "value": "bck-brand-4",
-                  "label": "Brand 4"
-                },
-                {
-                  "value": "bck-brand-5",
-                  "label": "Brand 5"
-                },
-                {
-                  "value": "bck-black",
-                  "label": "Black"
-                },
-                {
-                  "value": "bck-gray",
-                  "label": "Gray"
-                },
-                {
-                  "value": "bck-gray-dark",
-                  "label": "Gray, dark"
-                },
-                {
-                  "value": "bck-gray-light",
-                  "label": "Gray, light"
-                },
-                {
-                  "value": "bck-white",
-                  "label": "White"
-                }
-              ],
-              "default": "none"
-            },
-            {
-              "id": "content_ext_bck_span",
-              "type": "select",
-              "label": "Background span",
-              "options":
-                [
-                  {
-                    "value": "grid-container",
-                    "label": "Within container"
-                  },
-                  {
-                    "value": "full",
-                    "label": "Full span"
-                  }
-                ],
-                "default": "full"
-            },
-            {
-              "id": "content_ext_border",
-              "type": "select",
-              "label": "Border",
-              "options":
-              [
-                {
-                  "value": "none",
-                  "label": "None"
-                },
-                {
-                  "value": "border-brand-1",
-                  "label": "Brand 1"
-                },
-                {
-                  "value": "border-brand-2",
-                  "label": "Brand 2"
-                },
-                {
-                  "value": "border-brand-3",
-                  "label": "Brand 3"
-                },
-                {
-                  "value": "border-brand-4",
-                  "label": "Brand 4"
-                },
-                {
-                  "value": "border-brand-5",
-                  "label": "Brand 5"
-                },
-                {
-                  "value": "border-black",
-                  "label": "Black"
-                },
-                {
-                  "value": "border-gray",
-                  "label": "Gray"
-                },
-                {
-                  "value": "border-gray-dark",
-                  "label": "Gray, dark"
-                },
-                {
-                  "value": "border-gray-light",
-                  "label": "Gray, light"
-                },
-                {
-                  "value": "border-white",
-                  "label": "White"
-                }
-              ],
-              "default": "none"
-            },
-            {
-              "id": "content_ext_border_round",
-              "type": "checkbox",
-              "label": "Round border corners",
-              "default": false
-            }
-
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 52
+    }
   ],
   "presets": [
     {

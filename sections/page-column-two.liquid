@@ -1,0 +1,339 @@
+{%- liquid 
+  # ETHOSSENCE ~ MOD: Added authorization logic to control page visibility based on customer metafields and page metafields.
+
+   # Get the selected page from section settings
+   assign selected_page = pages[section.settings.page_col_1]
+   assign selected_page_2 = pages[section.settings.page_col_2]
+
+  # Initialize display_content to true (default to showing content)
+  assign display_content = true
+  
+  if section.settings.authoriz_enabled and selected_page
+    # Initialize authorization variables
+    assign customer_authorization_levels = blank
+    assign page_has_authorization = false
+    assign page_required_levels = blank
+    
+    # GET CUSTOMER AUTHORIZATION LEVELS FROM METAFIELD
+    if customer
+      # Access the metafield - this returns a MetaobjectDrop or list of MetaobjectDrops
+      assign customer_auth_metaobject = customer.metafields.ethossence.authorization_show.value
+      
+      if customer_auth_metaobject
+        assign temp_levels = blank
+        
+        # First try to access as a single metaobject
+        if customer_auth_metaobject.level
+          # Direct access to the level field of the metaobject
+          assign level_value = customer_auth_metaobject.level
+          if level_value != blank
+            assign temp_levels = level_value
+          endif
+        else
+          # Try as an array of metaobjects
+          for auth_obj in customer_auth_metaobject
+            if auth_obj.level
+              assign level_value = auth_obj.level
+              if level_value != blank
+                if temp_levels == blank
+                  assign temp_levels = level_value
+                else
+                  assign temp_levels = temp_levels | append: ',' | append: level_value
+                endif
+              endif
+            endif
+          endfor
+        endif
+        
+        if temp_levels != blank
+          assign customer_authorization_levels = temp_levels | downcase | split: ','
+        endif
+      endif
+    endif
+    
+    # GET PAGE AUTHORIZATION REQUIREMENTS
+    if selected_page.metafields.ethossence.authorization_show
+      assign page_auth_metaobject = selected_page.metafields.ethossence.authorization_show.value
+      
+      if page_auth_metaobject
+        assign temp_levels = blank
+        
+        # First try to access as a single metaobject
+        if page_auth_metaobject.level
+          # Direct access to the level field of the metaobject
+          assign level_value = page_auth_metaobject.level
+          if level_value != blank
+            assign page_has_authorization = true
+            assign temp_levels = level_value
+          endif
+        else
+          # Try as an array of metaobjects
+          for auth_obj in page_auth_metaobject
+            if auth_obj.level
+              assign level_value = auth_obj.level
+              if level_value != blank
+                assign page_has_authorization = true
+                if temp_levels == blank
+                  assign temp_levels = level_value
+                else
+                  assign temp_levels = temp_levels | append: ',' | append: level_value
+                endif
+              endif
+            endif
+          endfor
+        endif
+        
+        if temp_levels != blank
+          assign page_required_levels = temp_levels | downcase | split: ','
+        endif
+      endif
+    endif
+  
+    # DETERMINE AUTHORIZATION
+    # If page has no authorization requirements, display it (public page)
+    # If page has authorization requirements, check customer levels
+    if page_has_authorization and page_required_levels != blank
+      # Page has authorization requirements - check customer authorization
+      assign display_content = false
+      
+      if customer_authorization_levels != blank
+        # Check if any customer level matches any required level
+        for required_level in page_required_levels
+          assign required_level_clean = required_level | strip
+          
+          for customer_level in customer_authorization_levels
+            assign customer_level_clean = customer_level | strip
+            if customer_level_clean == required_level_clean
+              assign display_content = true
+              break
+            endif
+          endfor
+          
+          if display_content
+            break
+          endif
+        endfor
+      endif
+    else
+      # No authorization requirements - page is public
+      assign display_content = true
+    endif
+
+  endif
+
+  # Get the hero image class (unchanged from your original code)
+  assign img_hero_class = selected_page.metafields.ethossence.img_hero_placement | prepend: 'img-' | replace: ' ', '-' | replace: '-|-', ' img-' | downcase | strip
+
+  # Optional: Debug output (remove in production)
+  comment
+    echo 'Customer levels: ' | append: customer_authorization_levels | join: ', '
+    echo '<br>Page levels: ' | append: page_required_levels | join: ', '
+    echo '<br>Page has authorization: ' | append: page_has_authorization
+    echo '<br>Display content: ' | append: display_content
+  endcomment
+
+-%}
+
+{%- comment -%}
+{%- unless display_content -%}
+  <script>window.location.replace("/pages/no-access?from={{ selected_page.handle }}");</script>
+  <meta http-equiv="refresh" content="0;url=/pages/no-access?from={{ selected_page.handle }}">
+{%- endunless -%}
+{%- endcomment -%}
+
+{{ 'section-main-page.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+   <div class="page-width section-{{ section.id }}-padding">
+      <div class="custom-columns grid grid--2-col-tablet-down">
+
+         {%- if section.settings.authoriz_enabled and display_content != true -%}
+            <div class="rte">
+            <p>{{ section.settings.authoriz_require_msg }}</p>
+            </div>
+         {%- else -%}
+            {%- if section.settings.page_title_hide_col_1 != true -%}
+            <h2 class="page-title {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+               {%- if selected_page.title != blank -%}
+                  {{ selected_page.title | escape }}
+               {%- else -%}
+                  {{ 'sections.page.title' | t }}
+               {%- endif -%}
+            </h2>
+            {%- endif -%}
+            <div class="rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+            {%- if selected_page.content != blank -%}
+               {%- if selected_page.metafields.ethossence.img_hero != blank -%}      
+                  {{ selected_page.metafields.ethossence.img_hero | image_url: width: 600 | image_tag: loading: 'lazy', class: img_hero_class }}
+               {%- endif -%}          
+               {{ selected_page.content }}
+            {%- else -%}
+               <div class="page-placeholder-wrapper placeholder">
+                  {{ 'page' | placeholder_svg_tag: 'page-placeholder' }}
+               </div>
+            {%- endif -%}
+            </div>
+         {%- endif -%}
+
+      </div> 
+      <div class="custom-columns grid grid--2-col-tablet-down">
+
+         {%- if section.settings.authoriz_enabled and display_content != true -%}
+            <div class="rte">
+            <p>{{ section.settings.authoriz_require_msg }}</p>
+            </div>
+         {%- else -%}
+            {%- if section.settings.page_title_hide_col_2 != true -%}
+            <h2 class="page-title {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+               {%- if selected_page_2.title != blank -%}
+                  {{ selected_page_2.title | escape }}
+               {%- else -%}
+                  {{ 'sections.page.title' | t }}
+               {%- endif -%}
+            </h2>
+            {%- endif -%}
+            <div class="rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+            {%- if selected_page_2.content != blank -%}
+               {%- if selected_page_2.metafields.ethossence.img_hero != blank -%}      
+                  {{ selected_page_2.metafields.ethossence.img_hero | image_url: width: 600 | image_tag: loading: 'lazy', class: img_hero_class }}
+               {%- endif -%}          
+               {{ selected_page_2.content }}
+            {%- else -%}
+               <div class="page-placeholder-wrapper placeholder">
+                  {{ 'page' | placeholder_svg_tag: 'page-placeholder' }}
+               </div>
+            {%- endif -%}
+            </div>
+         {%- endif -%}
+
+      </div>         
+   </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.page.name",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "page",
+      "id": "page_col_1",
+      "label": "t:sections.page.settings.page.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "page_title_hide_col_1",
+      "default": false,
+      "label": "Hide page title"
+    },   
+    {
+      "type": "page",
+      "id": "page_col_2",
+      "label": "t:sections.page.settings.page.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "page_title_hide_col_2",
+      "default": false,
+      "label": "Hide page title"
+    },        
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_size.options__1.label"
+        },
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_size.options__2.label"
+        },
+        {
+          "value": "h0",
+          "label": "t:sections.all.heading_size.options__3.label"
+        },
+        {
+          "value": "hxl",
+          "label": "t:sections.all.heading_size.options__4.label"
+        },
+        {
+          "value": "hxxl",
+          "label": "t:sections.all.heading_size.options__5.label"
+        }
+      ],
+      "default": "h1",
+      "label": "t:sections.all.heading_size.label"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    },
+    {
+      "type": "header",
+      "content": "Display settings"
+    },    
+    {
+      "type": "checkbox",
+      "id": "authoriz_enabled",
+      "default": false,
+      "label": "Enforce authorization to view."
+    },
+    {
+      "type": "richtext",
+      "id": "authoriz_require_msg",
+      "label": "Authorization required message",
+      "info": "Message to display when authorization is required but not met"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.page.presets.name"
+    }
+  ]
+}
+{% endschema %}
