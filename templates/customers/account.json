@@ -16,22 +16,8 @@
         "show_line_separator": true,
         "padding_top": 36,
         "padding_bottom": 36,
-        "menu": "wholesale-portal-menu",
-        "color_scheme_menu": "scheme-1"
-      }
-    },
-    "page_MewBk9": {
-      "type": "page",
-      "name": "t:sections.page.presets.name",
-      "settings": {
-        "page": "welcome-wholesale",
-        "heading_hide": false,
-        "heading_size": "h1",
-        "color_scheme": "",
-        "padding_top": 12,
-        "padding_bottom": 8,
-        "authoriz_enabled": true,
-        "authoriz_require_msg": ""
+        "menu": "",
+        "color_scheme_menu": ""
       }
     },
     "ethossence_account_orders_pBkaRa": {
@@ -47,7 +33,6 @@
   },
   "order": [
     "main",
-    "page_MewBk9",
     "ethossence_account_orders_pBkaRa"
   ]
 }
