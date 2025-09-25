@@ -1,4 +1,5 @@
 {{ 'customer.css' | asset_url | stylesheet_tag }}
+{{ 'ethossence.css' | asset_url | stylesheet_tag }}
 
 {%- style -%}
   .section-{{ section.id }}-padding {
@@ -12,148 +13,349 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+
+  /* Reduce spacing between title and buttons */
+  .customer__title {
+    margin-bottom: 1rem;
+  }
+
+  /* Account Grid Layout */
+  .account-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--grid-desktop-horizontal-spacing, 2rem);
+    margin-bottom: 2rem;
+    margin-top: 0;
+  }
+
+  .account-grid__item {
+    flex: 1;
+    min-width: 300px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .account-grid {
+      flex-direction: column;
+      gap: 2rem;
+    }
+    
+    .account-grid__item {
+      min-width: auto;
+    }
+  }
+
+  /* Account Section Styling */
+  #account-header,
+  #account-details,
+  #account-menu {
+    background: rgb(var(--color-background));
+    padding: 0;
+    margin-top: 0;
+    overflow: hidden;
+  }
+
+  .customer .customer .account-dropdown-toggle,
+  .customer .account-dropdown-toggle.account-dropdown-toggle {
+    width: 100%;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    cursor: pointer;
+    text-align: left;
+    padding: 1rem 0;
+    transition: color 0.3s ease;
+    font-family: inherit;
+    font-size: inherit;
+    margin: 0 !important;
+    box-shadow: none !important;
+    outline: none !important;
+    --shadow-visible: 0;
+    --shadow-horizontal-offset: 0;
+    --shadow-vertical-offset: 0;
+    --shadow-blur-radius: 0;
+    --shadow-opacity: 0;
+    --border-offset: 0;
+    --border-opacity: 0;
+  }
+
+  .customer .customer .account-dropdown-toggle:hover,
+  .customer .account-dropdown-toggle.account-dropdown-toggle:hover {
+    color: rgb(var(--color-link));
+    background: transparent !important;
+    border: transparent !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    outline: none !important;
+  }
+
+  .customer .customer .account-dropdown-toggle:focus,
+  .customer .account-dropdown-toggle.account-dropdown-toggle:focus {
+    background: transparent !important;
+    border: transparent !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    outline: none !important;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;    
+  }
+
+  .customer .customer .account-dropdown-toggle:focus-visible,
+  .customer .account-dropdown-toggle.account-dropdown-toggle:focus-visible {
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    outline: none !important;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;    
+  }
+
+  .customer .customer .account-dropdown-toggle:active,
+  .customer .account-dropdown-toggle.account-dropdown-toggle:active {
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    outline: none !important;
+  }
+
+  .account-dropdown-toggle h4 {
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: rgb(var(--color-foreground));
+    text-decoration: underline;
+    text-underline-offset: 0.3rem;
+    transition: color 0.3s ease;
+  }
+
+  .account-dropdown-toggle:hover h4 {
+    color: rgb(var(--color-link));
+  }
+
+  .account-dropdown-toggle .svg-wrapper-small {
+    transition: transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  .account-dropdown-toggle[aria-expanded="true"] .svg-wrapper-small {
+    transform: rotate(180deg);
+  }
+
+  /* Dropdown Container Styling */
+  .account-dropdown-container {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+    padding: 0 1rem;
+    background: rgba(var(--color-foreground), 0.02);
+    border-top: 0.1rem solid rgba(var(--color-foreground), 0.08);
+  }
+
+  .account-dropdown-container.is-open {
+    max-height: 500px;
+    padding: 1.5rem 1rem;
+  }
+
+  .account-dropdown-container a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgb(var(--color-foreground));
+    text-decoration: none;
+    font-weight: 400;
+    margin-top: 0.5rem;
+  }
+
+  .account-dropdown-container a:hover {
+    color: rgb(var(--color-link));
+    text-decoration: underline;
+  }
+
+  #account-details-container p {
+    margin-bottom: 1rem;
+    line-height: 1.5;
+    color: rgb(var(--color-foreground));
+  }
+
+  #account-details-container a {
+    color: rgb(var(--color-link));
+    text-decoration: underline;
+  }
+
+  #account-menu-container > div {
+    width: 100%;
+  }
+
+  /* Animation for smooth opening/closing */
+  @media (prefers-reduced-motion: no-preference) {
+    .account-dropdown-container {
+      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                  padding 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  }
+
+  .svg-wrapper-small {
+    width: 13px;
+    height: 13px;
+    margin-left: 10px;
+    margin-top: -2px;
+  }
+  
 {%- endstyle -%}
 
 <div class="customer account section-{{ section.id }}-padding">
-  <div>
+
+  <div class="page-width">
+
     <h1 class="customer__title">{{ 'customer.account.title' | t }}</h1>
-    <a href="{{ routes.account_logout_url }}">
-      <span class="svg-wrapper">
-        {{- 'icon-account.svg' | inline_asset_content -}}
-      </span>
-      {{ 'customer.log_out' | t }}
-    </a>
-  </div>
 
-  <div>
-    <div>
-      <h2>{{ 'customer.orders.title' | t }}</h2>
+    <div class="account-grid grid">
 
-      {% paginate customer.orders by 20 %}
-        {%- if customer.orders.size > 0 -%}
-          <table role="table" class="order-history">
-            <caption class="visually-hidden">
-              {{ 'customer.orders.title' | t }}
-            </caption>
-            <thead role="rowgroup">
-              <tr role="row">
-                <th id="ColumnOrder" scope="col" role="columnheader">{{ 'customer.orders.order_number' | t }}</th>
-                <th id="ColumnDate" scope="col" role="columnheader">{{ 'customer.orders.date' | t }}</th>
-                <th id="ColumnPayment" scope="col" role="columnheader">{{ 'customer.orders.payment_status' | t }}</th>
-                <th id="ColumnFulfillment" scope="col" role="columnheader">
-                  {{ 'customer.orders.fulfillment_status' | t }}
-                </th>
-                <th id="ColumnTotal" scope="col" role="columnheader">{{ 'customer.orders.total' | t }}</th>
-              </tr>
-            </thead>
-            <tbody role="rowgroup">
-              {%- for order in customer.orders -%}
-                <tr role="row">
-                  <td
-                    id="RowOrder"
-                    role="cell"
-                    headers="ColumnOrder"
-                    data-label="{{ 'customer.orders.order_number' | t }}"
-                  >
-                    <a
-                      href="{{ order.customer_url }}"
-                      aria-label="{{ 'customer.orders.order_number_link' | t: number: order.name }}"
-                    >
-                      {{ order.name }}
-                    </a>
-                  </td>
-                  <td headers="RowOrder ColumnDate" role="cell" data-label="{{ 'customer.orders.date' | t }}">
-                    {{ order.created_at | time_tag: format: 'date' }}
-                  </td>
-                  <td
-                    headers="RowOrder ColumnPayment"
-                    role="cell"
-                    data-label="{{ 'customer.orders.payment_status' | t }}"
-                  >
-                    {{ order.financial_status_label }}
-                  </td>
-                  <td
-                    headers="RowOrder ColumnFulfillment"
-                    role="cell"
-                    data-label="{{ 'customer.orders.fulfillment_status' | t }}"
-                  >
-                    {{ order.fulfillment_status_label }}
-                  </td>
-                  <td headers="RowOrder ColumnTotal" role="cell" data-label="{{ 'customer.orders.total' | t }}">
-                    {{ order.total_net_amount | money_with_currency }}
-                  </td>
-                </tr>
-              {%- endfor -%}
-            </tbody>
-          </table>
-        {%- else -%}
-          <p>{{ 'customer.orders.none' | t }}</p>
-        {%- endif -%}
+      <div id="account-menu" class="account-grid__item grid__item grid__item--4-12">
+        <button 
+          class="account-dropdown-toggle" 
+          aria-expanded="false" 
+          aria-controls="account-menu-container"
+          data-target="account-menu-container"
+          type="button"
+        >
+          <h4>
+            Portal Menu
+            <span class="svg-wrapper-small">
+              {{- 'icon-caret.svg' | inline_asset_content -}}
+            </span>
+          </h4>
+        </button>
+        <div id="account-menu-container" class="account-dropdown-container">
+          {%  render 'ethossence-account-menu' 
+            menu: section.settings.menu 
+            color_scheme: section.settings.color_scheme_menu
+          %}
+        </div>
+      </div>    
+      
+      <div id="account-details" class="account-grid__item grid__item grid__item--4-12">
+        <button 
+          class="account-dropdown-toggle" 
+          aria-expanded="false" 
+          aria-controls="account-details-container"
+          data-target="account-details-container"
+          type="button"
+        >
+          <h4>
+            {{ 'customer.account.details' | t }}
+            <span class="svg-wrapper-small">
+              {{- 'icon-caret.svg' | inline_asset_content -}}
+            </span>
+          </h4>
+        </button>
+        <div id="account-details-container" class="account-dropdown-container">
+          {{ customer.default_address | format_address }}
+          <a href="{{ routes.account_addresses_url }}">
+            {{ 'customer.account.view_addresses' | t }} ({{ customer.addresses_count }})
+          </a>
+        </div>
+      </div>
 
-        {%- if paginate.pages > 1 -%}
-          {%- if paginate.parts.size > 0 -%}
-            <nav class="pagination" role="navigation" aria-label="{{ 'general.pagination.label' | t }}">
-              <ul role="list">
-                {%- if paginate.previous -%}
-                  <li>
-                    <a href="{{ paginate.previous.url }}" aria-label="{{ 'general.pagination.previous' | t }}">
-                      <span class="svg-wrapper">
-                        {{- 'icon-caret.svg' | inline_asset_content -}}
-                      </span>
-                    </a>
-                  </li>
-                {%- endif -%}
+      <div id="account-header" class="account-grid__item grid__item grid__item--4-12">
+        <button 
+          class="account-dropdown-toggle" 
+          aria-expanded="false" 
+          aria-controls="account-logout-container"
+          data-target="account-logout-container"
+          type="button"
+        >
+          <h4>
+            Log out
+            <span class="svg-wrapper-small">
+              {{- 'icon-caret.svg' | inline_asset_content -}}
+            </span>
+          </h4>
+        </button>
+        <div id="account-logout-container" class="account-dropdown-container">
+          <a href="{{ routes.account_logout_url }}">
+            <span class="svg-wrapper">
+              {{- 'icon-account.svg' | inline_asset_content -}}
+            </span>
+            Are you sure you want to log out?
+          </a>
+        </div>
+      </div>      
 
-                {%- for part in paginate.parts -%}
-                  <li>
-                    {%- if part.is_link -%}
-                      <a href="{{ part.url }}" aria-label="{{ 'general.pagination.page' | t: number: part.title }}">
-                        {{- part.title -}}
-                      </a>
-                    {%- else -%}
-                      {%- if part.title == paginate.current_page -%}
-                        <span aria-current="page" aria-label="{{ 'general.pagination.page' | t: number: part.title }}">
-                          {{- part.title -}}
-                        </span>
-                      {%- else -%}
-                        <span>{{ part.title }}</span>
-                      {%- endif -%}
-                    {%- endif -%}
-                  </li>
-                {%- endfor -%}
-
-                {%- if paginate.next -%}
-                  <li>
-                    <a href="{{ paginate.next.url }}" aria-label="{{ 'general.pagination.next' | t }}">
-                      <span class="svg-wrapper">
-                        {{- 'icon-caret.svg' | inline_asset_content -}}
-                      </span>
-                    </a>
-                  </li>
-                {%- endif -%}
-              </ul>
-            </nav>
-          {%- endif -%}
-        {%- endif -%}
-      {% endpaginate %}
-    </div>
-
-    <div>
-      <h2>{{ 'customer.account.details' | t }}</h2>
-
-      {{ customer.default_address | format_address }}
-
-      <a href="{{ routes.account_addresses_url }}">
-        {{ 'customer.account.view_addresses' | t }} ({{ customer.addresses_count }})
-      </a>
     </div>
   </div>
+
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const toggleButtons = document.querySelectorAll('.account-dropdown-toggle');
+  
+  toggleButtons.forEach((button, buttonIndex) => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const targetId = this.getAttribute('data-target');
+      const targetContainer = document.getElementById(targetId);
+      const isExpanded = this.getAttribute('aria-expanded') === 'true';
+      
+      if (!targetContainer) {
+        console.error('Target container not found:', targetId);
+        return;
+      }
+      
+      // Close all other dropdowns
+      toggleButtons.forEach(otherButton => {
+        if (otherButton !== this) {
+          const otherTargetId = otherButton.getAttribute('data-target');
+          const otherContainer = document.getElementById(otherTargetId);
+          otherButton.setAttribute('aria-expanded', 'false');
+          if (otherContainer) {
+            otherContainer.classList.remove('is-open');
+          }
+        }
+      });
+      
+      // Toggle current dropdown
+      if (isExpanded) {
+        this.setAttribute('aria-expanded', 'false');
+        targetContainer.classList.remove('is-open');
+      } else {
+        this.setAttribute('aria-expanded', 'true');
+        targetContainer.classList.add('is-open');
+      }
+    });
+  });
+});
+</script>
 
 {% schema %}
 {
   "name": "t:sections.main-account.name",
   "settings": [
+    {
+      "type": "header",
+      "content": "Display"
+    },    
+    {
+        "type": "color_scheme",
+        "id": "color_scheme",
+        "label": "t:sections.all.colors.label",
+        "default": "scheme-1"
+    },   
+    {
+        "type": "checkbox",
+        "id": "show_line_separator",
+        "default": true,
+        "label": "t:sections.header.settings.show_line_separator.label"
+    },    
     {
       "type": "header",
       "content": "t:sections.all.padding.section_padding_heading"
@@ -177,7 +379,26 @@
       "unit": "px",
       "label": "t:sections.all.padding.padding_bottom",
       "default": 36
-    }
+    },
+    {
+      "type": "header",
+      "content": "Portal menu"
+    },    
+    {
+        "type": "link_list",
+        "id": "menu",
+        "label": "t:sections.header.settings.menu.label"
+    },
+    {
+        "type": "header",
+        "content": "t:sections.header.settings.header__1.content"
+    },
+    {
+        "type": "color_scheme",
+        "id": "color_scheme_menu",
+        "label": "t:sections.all.colors.label",
+        "default": "scheme-1"
+    }    
   ]
 }
 {% endschema %}
