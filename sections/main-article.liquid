@@ -73,60 +73,94 @@
 {% comment %}
   Column Grid Parser for Dawn Theme
   Parses [[ COL X/6 ]] syntax and wraps content in grid column divs
+  Removes <p> tags around column markers and cleans up empty tags
 {% endcomment %}
 
 {%- liquid
   assign content = article.content
-  assign grid_wrapper_open = false
   
   comment
-    Split content by the column markers
+    Clean up <p> tags around column markers
   endcomment
-  assign sections = content | split: '[[ COL '
+  assign content = content | replace: '<p>[[ COL ', '[[ COL '
+  assign content = content | replace: ' ]]</p>', ' ]]'
+  assign content = content | replace: ' ]]<br></p>', ' ]]'
   
   comment
-    Initialize output
+    Remove empty <p> tags that may be left after removal
   endcomment
-  assign processed_content = ''
+  assign content = content | replace: '<p></p>', ''
+  assign content = content | replace: '<p> </p>', ''
+  
+  comment
+    Check if content contains any column markers
+  endcomment
+  assign has_columns = false
+  if content contains '[[ COL '
+    assign has_columns = true
+  endif
 -%}
 
-{% for section in sections %}
-  {% if forloop.first %}
-    {%- comment -%}First section is before any column marker{%- endcomment -%}
-    {%- if section != '' -%}
-      {%- assign processed_content = section -%}
-    {%- endif -%}
-  {% else %}
-    {%- comment -%}Extract the column size{%- endcomment -%}
-    {%- assign parts = section | split: ' ]]' -%}
-    {%- assign col_definition = parts[0] -%}
-    {%- assign remaining_content = parts[1] -%}
+{% if has_columns %}
+  {%- liquid
+    comment
+      Split content by column markers
+    endcomment
+    assign sections = content | split: '[[ COL '
     
-    {%- comment -%}Parse column size (e.g., "3/6"){%- endcomment -%}
-    {%- assign col_parts = col_definition | split: '/' -%}
-    {%- assign col_size = col_parts[0] | times: 1 -%}
+    comment
+      Start grid wrapper
+    endcomment
+    assign output = '<div class="article-grid grid grid--6-col">'
     
-    {%- comment -%}Open grid wrapper on first column marker{%- endcomment -%}
-    {%- unless grid_wrapper_open -%}
-      {%- assign processed_content = processed_content | append: '<div class="article-grid grid grid--6-col">' -%}
-      {%- assign grid_wrapper_open = true -%}
-    {%- endunless -%}
+    comment
+      Process each section
+    endcomment
+    for section in sections
+      if forloop.first
+        comment
+          Content before first column marker - wrap in full-width column
+        endcomment
+        if section != '' and section != ' '
+          assign output = output | append: '<div class="grid__item grid__item--6-col">'
+          assign output = output | append: section
+          assign output = output | append: '</div>'
+        endif
+      else
+        comment
+          Extract column size and content
+        endcomment
+        assign parts = section | split: ' ]]'
+        assign col_definition = parts[0]
+        assign remaining_content = parts[1]
+        
+        comment
+          Parse column size (e.g., "3/6")
+        endcomment
+        assign col_parts = col_definition | split: '/'
+        assign col_size = col_parts[0] | times: 1
+        
+        comment
+          Add column div with content
+        endcomment
+        assign col_class = 'grid__item grid__item--' | append: col_size | append: '-col'
+        assign output = output | append: '<div class="' | append: col_class | append: '">'
+        assign output = output | append: remaining_content
+        assign output = output | append: '</div>'
+      endif
+    endfor
     
-    {%- comment -%}Add the column div{%- endcomment -%}
-    {%- assign col_class = 'grid__item grid__item--' | append: col_size | append: '-col' -%}
-    {%- assign processed_content = processed_content | append: '<div class="' | append: col_class | append: '">' -%}
-    {%- assign processed_content = processed_content | append: remaining_content -%}
-    {%- assign processed_content = processed_content | append: '</div>' -%}
-  {% endif %}
-{% endfor %}
-
-{%- comment -%}Close grid wrapper if it was opened{%- endcomment -%}
-{%- if grid_wrapper_open -%}
-  {%- assign processed_content = processed_content | append: '</div>' -%}
-{%- endif -%}
-
-{%- comment -%}Output the processed content{%- endcomment -%}
-{{ processed_content }}
+    comment
+      Close grid wrapper
+    endcomment
+    assign output = output | append: '</div>'
+  -%}
+  
+  {{ output }}
+{% else %}
+  {%- comment -%}No column markers found, output content as-is{%- endcomment -%}
+  {{ content }}
+{% endif %}
 
 <style>
   .article-grid {
