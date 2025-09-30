@@ -68,7 +68,99 @@
           class="article-template__content page-width page-width--narrow rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
           {{ block.shopify_attributes }}
         >
-          {{ article.content }}
+
+        
+{% comment %}
+  Column Grid Parser for Dawn Theme
+  Parses [[ COL X/6 ]] syntax and wraps content in grid column divs
+{% endcomment %}
+
+{%- liquid
+  assign content = article.content
+  assign grid_wrapper_open = false
+  
+  comment
+    Split content by the column markers
+  endcomment
+  assign sections = content | split: '[[ COL '
+  
+  comment
+    Initialize output
+  endcomment
+  assign processed_content = ''
+-%}
+
+{% for section in sections %}
+  {% if forloop.first %}
+    {%- comment -%}First section is before any column marker{%- endcomment -%}
+    {%- if section != '' -%}
+      {%- assign processed_content = section -%}
+    {%- endif -%}
+  {% else %}
+    {%- comment -%}Extract the column size{%- endcomment -%}
+    {%- assign parts = section | split: ' ]]' -%}
+    {%- assign col_definition = parts[0] -%}
+    {%- assign remaining_content = parts[1] -%}
+    
+    {%- comment -%}Parse column size (e.g., "3/6"){%- endcomment -%}
+    {%- assign col_parts = col_definition | split: '/' -%}
+    {%- assign col_size = col_parts[0] | times: 1 -%}
+    
+    {%- comment -%}Open grid wrapper on first column marker{%- endcomment -%}
+    {%- unless grid_wrapper_open -%}
+      {%- assign processed_content = processed_content | append: '<div class="article-grid grid grid--6-col">' -%}
+      {%- assign grid_wrapper_open = true -%}
+    {%- endunless -%}
+    
+    {%- comment -%}Add the column div{%- endcomment -%}
+    {%- assign col_class = 'grid__item grid__item--' | append: col_size | append: '-col' -%}
+    {%- assign processed_content = processed_content | append: '<div class="' | append: col_class | append: '">' -%}
+    {%- assign processed_content = processed_content | append: remaining_content -%}
+    {%- assign processed_content = processed_content | append: '</div>' -%}
+  {% endif %}
+{% endfor %}
+
+{%- comment -%}Close grid wrapper if it was opened{%- endcomment -%}
+{%- if grid_wrapper_open -%}
+  {%- assign processed_content = processed_content | append: '</div>' -%}
+{%- endif -%}
+
+{%- comment -%}Output the processed content{%- endcomment -%}
+{{ processed_content }}
+
+<style>
+  .article-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: var(--grid-gap, 2rem);
+    margin: 2rem 0;
+  }
+  
+  .grid__item--1-col { grid-column: span 1; }
+  .grid__item--2-col { grid-column: span 2; }
+  .grid__item--3-col { grid-column: span 3; }
+  .grid__item--4-col { grid-column: span 4; }
+  .grid__item--5-col { grid-column: span 5; }
+  .grid__item--6-col { grid-column: span 6; }
+  
+  @media screen and (max-width: 749px) {
+    .article-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .grid__item--1-col,
+    .grid__item--2-col,
+    .grid__item--3-col,
+    .grid__item--4-col,
+    .grid__item--5-col,
+    .grid__item--6-col {
+      grid-column: span 2;
+    }
+  }
+</style>        
+
+
+
         </div>
 
       {%- when 'share' -%}
