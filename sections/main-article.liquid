@@ -73,23 +73,18 @@
 {% comment %}
   Column Grid Parser for Dawn Theme
   Parses [[ COL X/6 ]] syntax and wraps content in grid column divs
-  Removes <p> tags around column markers and cleans up empty tags
+  Properly closes any open tags before starting new columns
 {% endcomment %}
 
 {%- liquid
   assign content = article.content
   
   comment
-    Clean up <p> tags around column markers
+    Clean up <p> tags around column markers and extra whitespace
   endcomment
   assign content = content | replace: '<p>[[ COL ', '[[ COL '
   assign content = content | replace: ' ]]</p>', ' ]]'
   assign content = content | replace: ' ]]<br></p>', ' ]]'
-  
-  comment
-    Remove empty <p> tags that may be left after removal
-  endcomment
-  assign content = content | replace: '<p></p>', ''
   assign content = content | replace: '<p> </p>', ''
   
   comment
@@ -109,56 +104,70 @@
     assign sections = content | split: '[[ COL '
     
     comment
-      Start grid wrapper
+      Start output with grid wrapper
     endcomment
     assign output = '<div class="article-grid grid grid--6-col">'
     
     comment
-      Process each section
+      Track if we're in the first section
     endcomment
-    for section in sections
-      if forloop.first
-        comment
-          Content before first column marker - wrap in full-width column
-        endcomment
-        if section != '' and section != ' '
-          assign output = output | append: '<div class="grid__item grid__item--6-col">'
-          assign output = output | append: section
-          assign output = output | append: '</div>'
-        endif
-      else
-        comment
-          Extract column size and content
-        endcomment
-        assign parts = section | split: ' ]]'
-        assign col_definition = parts[0]
-        assign remaining_content = parts[1]
-        
-        comment
-          Parse column size (e.g., "3/6")
-        endcomment
-        assign col_parts = col_definition | split: '/'
-        assign col_size = col_parts[0] | times: 1
-        
-        comment
-          Add column div with content
-        endcomment
-        assign col_class = 'grid__item grid__item--' | append: col_size | append: '-col'
-        assign output = output | append: '<div class="' | append: col_class | append: '">'
-        assign output = output | append: remaining_content
-        assign output = output | append: '</div>'
-      endif
-    endfor
-    
-    comment
-      Close grid wrapper
-    endcomment
-    assign output = output | append: '</div>'
+    assign first_section = true
   -%}
+  
+  {% for section in sections %}
+    {% if first_section %}
+      {%- comment -%}Content before first column marker{%- endcomment -%}
+      {%- assign first_section = false -%}
+      {%- assign trimmed = section | strip -%}
+      {%- if trimmed != '' -%}
+        {%- assign output = output | append: '<div class="grid__item grid__item--6-col">' -%}
+        {%- assign output = output | append: section -%}
+        {%- assign output = output | append: '</div>' -%}
+      {%- endif -%}
+    {% else %}
+      {%- comment -%}Process column marker and content{%- endcomment -%}
+      {%- assign parts = section | split: ' ]]' -%}
+      {%- assign col_definition = parts[0] -%}
+      
+      {%- comment -%}Get everything after the marker{%- endcomment -%}
+      {%- assign parts_size = parts | size -%}
+      {%- assign remaining_content = '' -%}
+      {%- for part in parts offset: 1 -%}
+        {%- if forloop.first -%}
+          {%- assign remaining_content = part -%}
+        {%- else -%}
+          {%- assign remaining_content = remaining_content | append: ' ]]' | append: part -%}
+        {%- endif -%}
+      {%- endfor -%}
+      
+      {%- comment -%}Parse column size{%- endcomment -%}
+      {%- assign col_parts = col_definition | split: '/' -%}
+      {%- assign col_size = col_parts[0] | strip | times: 1 -%}
+      
+      {%- comment -%}Clean up remaining content{%- endcomment -%}
+      {%- assign remaining_content = remaining_content | replace: '<p></p>', '' -%}
+      
+      {%- comment -%}Only add column if there's actual content or it's needed for structure{%- endcomment -%}
+      {%- assign trimmed_content = remaining_content | strip -%}
+      {%- if trimmed_content != '' or col_size > 0 -%}
+        {%- assign col_class = 'grid__item grid__item--' | append: col_size | append: '-col' -%}
+        {%- assign output = output | append: '<div class="' | append: col_class | append: '">' -%}
+        {%- assign output = output | append: remaining_content -%}
+        {%- assign output = output | append: '</div>' -%}
+      {%- endif -%}
+    {% endif %}
+  {% endfor %}
+  
+  {%- comment -%}Close grid wrapper{%- endcomment -%}
+  {%- assign output = output | append: '</div>' -%}
+  
+  {%- comment -%}Final cleanup of any remaining empty paragraphs{%- endcomment -%}
+  {%- assign output = output | replace: '<p></p>', '' -%}
+  {%- assign output = output | replace: '<p> </p>', '' -%}
   
   {{ output }}
 {% else %}
-  {%- comment -%}No column markers found, output content as-is{%- endcomment -%}
+  {%- comment -%}No column markers found{%- endcomment -%}
   {{ content }}
 {% endif %}
 
@@ -168,6 +177,16 @@
     grid-template-columns: repeat(6, 1fr);
     gap: var(--grid-gap, 2rem);
     margin: 2rem 0;
+  }
+  
+  .article-grid .grid__item {
+    min-width: 0; /* Prevent grid blowout */
+  }
+  
+  /* Prevent nested grids from breaking layout */
+  .article-grid .grid__item .grid__item {
+    display: block;
+    grid-column: auto;
   }
   
   .grid__item--1-col { grid-column: span 1; }
