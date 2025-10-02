@@ -167,6 +167,51 @@
         "padding_bottom": 36
       }
     },
+    "multicolumn_kdDXd3": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_QjFMtV": {
+          "type": "column",
+          "settings": {
+            "title": "BROWSE OUR PRODUCTS",
+            "text": "<h3>SUPPORTED BY A DEDICATED TEAM</h3>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_iRHULH": {
+          "type": "column",
+          "settings": {
+            "title": "TRY OUR CAMERA FINDER",
+            "text": "",
+            "link_label": "Camera Quiz",
+            "link": "/pages/meltview-camera-finder"
+          }
+        }
+      },
+      "block_order": [
+        "column_QjFMtV",
+        "column_iRHULH"
+      ],
+      "disabled": true,
+      "name": "t:sections.multicolumn.presets.name",
+      "settings": {
+        "title": "",
+        "heading_size": "h1",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "button_label": "",
+        "button_link": "",
+        "columns_desktop": 2,
+        "column_alignment": "center",
+        "background_style": "none",
+        "color_scheme": "",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
     "featured_collection_4M6g6r": {
       "type": "featured-collection",
       "name": "t:sections.featured-collection.presets.name",
@@ -234,7 +279,7 @@
         "heading": "INSIGHT ARTICLES",
         "heading_size": "h1",
         "columns_desktop": 4,
-        "show_view_all": true,
+        "show_view_all": false,
         "show_image": true,
         "show_date": false,
         "show_author": false,
@@ -280,7 +325,7 @@
       "settings": {
         "desktop_content_position": "left",
         "content_alignment": "center",
-        "color_scheme": "scheme-3",
+        "color_scheme": "scheme-2",
         "full_width": true,
         "padding_top": 12,
         "padding_bottom": 64
@@ -291,6 +336,7 @@
     "slideshow_e4ETwU",
     "rich_text_wEaLJi",
     "multicolumn_ErTmg8",
+    "multicolumn_kdDXd3",
     "featured_collection_4M6g6r",
     "featured_collection_TwmbK7",
     "featured_blog_LWT6zN",
