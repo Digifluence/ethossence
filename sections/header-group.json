@@ -25,6 +25,7 @@
       "block_order": [
         "announcement-bar-0"
       ],
+      "disabled": true,
       "settings": {
         "auto_rotate": false,
         "change_slides_speed": 5,
@@ -35,6 +36,36 @@
         "enable_language_selector": false
       }
     },
+    "ethossence_preheader_xUNMqz": {
+      "type": "ethossence-preheader",
+      "blocks": {
+        "buttons_McxK3t": {
+          "type": "buttons",
+          "settings": {
+            "color_scheme": "",
+            "buttons_alignment": "flex-end",
+            "show_btn_appointment": true,
+            "show_btn_product_finder": true,
+            "show_btn_wholesale": false,
+            "show_btn_quote": false,
+            "btn_custom_label": "",
+            "btn_custom_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "buttons_McxK3t"
+      ],
+      "name": "Preheader",
+      "settings": {
+        "color_scheme": "scheme-4",
+        "show_line_separator": true,
+        "padding_top": 8,
+        "padding_bottom": 0,
+        "show_social": false,
+        "show_search": false
+      }
+    },
     "header": {
       "type": "header",
       "settings": {
@@ -43,7 +74,7 @@
         "menu": "main-menu",
         "menu_type_desktop": "dropdown",
         "sticky_header_type": "on-scroll-up",
-        "show_line_separator": true,
+        "show_line_separator": false,
         "color_scheme": "scheme-1",
         "menu_color_scheme": "",
         "enable_country_selector": false,
@@ -57,6 +88,7 @@
   },
   "order": [
     "announcement-bar",
+    "ethossence_preheader_xUNMqz",
     "header"
   ]
 }
