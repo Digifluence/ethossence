@@ -6,7 +6,8 @@
   // ============================================================================
   const WEBHOOKS = {
     loadForm: 'https://hook.us2.make.com/qlomn3r4q8lhetra9irfer8o611xppav',
-    submitForm: 'https://hook.us2.make.com/al800p8lmsn9c1rmouswa6ogtsmdrgvc'
+    submitAccountCreation: 'https://hook.us2.make.com/weeau8ogy96lpvkl4d8wlnfm5warbaer',
+    submitCartReview: 'https://hook.us2.make.com/al800p8lmsn9c1rmouswa6ogtsmdrgvc'
   };
 
   const SHOPIFY_GRAPHQL_VERSION = '2025-07';
@@ -355,8 +356,15 @@
           
           console.log('Submitting review request for:', customerData.metaobjectType);
           
-          // Send to Make webhook
-          const webhookResponse = await fetch(WEBHOOKS.submitForm, {
+          // Determine which webhook to use based on customer status
+          const submitWebhook = customerData.isCustomer 
+            ? WEBHOOKS.submitCartReview 
+            : WEBHOOKS.submitAccountCreation;
+          
+          console.log('Using webhook:', customerData.isCustomer ? 'submitCartReview' : 'submitAccountCreation');
+          
+          // Send to appropriate Make webhook
+          const webhookResponse = await fetch(submitWebhook, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -365,9 +373,12 @@
           });
           
           if (webhookResponse.ok) {
-            this.showMessage(messageDiv, 'Review request submitted successfully!', 'success');
+            const successMessage = customerData.isCustomer 
+              ? 'Review request submitted successfully!' 
+              : 'Account created successfully! Check your email for login instructions.';
+            this.showMessage(messageDiv, successMessage, 'success');
           } else {
-            throw new Error('Failed to save cart');
+            throw new Error('Failed to submit form');
           }
           
         } catch (error) {
