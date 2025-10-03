@@ -386,17 +386,71 @@
               ? 'Review request submitted successfully!' 
               : 'Account created successfully! Check your email for login instructions.';
             this.showMessage(messageDiv, successMessage, 'success');
+            
+            // Optionally clear form on success
+            if (!customerData.isCustomer) {
+              // Clear account creation form fields
+              this.clearAccountForm();
+            }
           } else {
-            throw new Error('Failed to submit form');
+            // Handle error response
+            const errorData = await webhookResponse.text();
+            this.handleSubmissionError(messageDiv, errorData, customerData.isCustomer);
           }
           
         } catch (error) {
-          console.error('Error saving cart:', error);
-          this.showMessage(messageDiv, 'Failed to save cart. Please try again.', 'error');
+          console.error('Error submitting form:', error);
+          this.showMessage(messageDiv, 'An unexpected error occurred. Please try again.', 'error');
         } finally {
           // Re-enable button
           button.disabled = false;
           button.innerHTML = originalText;
+        }
+      });
+    }
+    
+    handleSubmissionError(messageDiv, errorText, isCustomer) {
+      let errorMessage = '';
+      
+      // Try to parse error text to identify specific issues
+      const lowerError = errorText.toLowerCase();
+      
+      if (lowerError.includes('email') && (lowerError.includes('taken') || lowerError.includes('exists') || lowerError.includes('already'))) {
+        errorMessage = 'This email address is already registered. <a href="' + window.Shopify.routes.root + 'account/login" class="error-link">Please log in</a> or use a different email address.';
+      } else if (lowerError.includes('phone') && (lowerError.includes('taken') || lowerError.includes('exists') || lowerError.includes('already'))) {
+        errorMessage = 'This phone number is already registered. <a href="' + window.Shopify.routes.root + 'account/login" class="error-link">Please log in</a> or use a different phone number.';
+      } else if (lowerError.includes('email') && lowerError.includes('phone') && (lowerError.includes('taken') || lowerError.includes('exists') || lowerError.includes('already'))) {
+        errorMessage = 'This email address and/or phone number is already registered. <a href="' + window.Shopify.routes.root + 'account/login" class="error-link">Please log in</a> or use different contact information.';
+      } else if (lowerError.includes('invalid email') || lowerError.includes('email format')) {
+        errorMessage = 'Please enter a valid email address.';
+      } else if (lowerError.includes('invalid phone') || lowerError.includes('phone format')) {
+        errorMessage = 'Please enter a valid phone number with country code (11 digits).';
+      } else if (isCustomer) {
+        errorMessage = 'Failed to submit review request. Please try again or contact support if the issue persists.';
+      } else {
+        errorMessage = 'Failed to create account. Please check your information and try again. If you already have an account, <a href="' + window.Shopify.routes.root + 'account/login" class="error-link">please log in</a>.';
+      }
+      
+      this.showMessage(messageDiv, errorMessage, 'error', true);
+    }
+    
+    clearAccountForm() {
+      const fieldIds = ['firstName', 'lastName', 'email', 'phone', 'company', 'country'];
+      
+      fieldIds.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        if (field) {
+          field.value = '';
+        }
+      });
+      
+      // Clear any additional dynamic fields
+      const dynamicFields = document.querySelectorAll('#dynamic-content-container .cart-attribute');
+      dynamicFields.forEach(field => {
+        if (field.type === 'checkbox' || field.type === 'radio') {
+          field.checked = false;
+        } else {
+          field.value = '';
         }
       });
     }
@@ -453,16 +507,21 @@
       return fieldData;
     }
     
-    showMessage(messageDiv, text, type) {
+    showMessage(messageDiv, text, type, allowHTML = false) {
       if (messageDiv) {
-        messageDiv.textContent = text;
+        if (allowHTML) {
+          messageDiv.innerHTML = text;
+        } else {
+          messageDiv.textContent = text;
+        }
         messageDiv.className = type === 'success' ? 'color-success' : 'color-error';
         messageDiv.style.display = 'block';
         
-        // Hide message after 5 seconds
+        // Hide message after 10 seconds for errors with links, 5 seconds otherwise
+        const hideDelay = (type === 'error' && allowHTML) ? 10000 : 5000;
         setTimeout(() => {
           messageDiv.style.display = 'none';
-        }, 5000);
+        }, hideDelay);
       }
     }
   }
