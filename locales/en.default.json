@@ -37,7 +37,7 @@
         "tiktok": "TikTok"
       }
     },
-    "continue_shopping": "Continue shopping",
+    "continue_shopping": "Find products",
     "pagination": {
       "label": "Pagination",
       "page": "Page {{ number }}",
@@ -540,7 +540,15 @@
   "shopify": {
     "checkout": {
       "throttle": {
-        "cart_summary_heading": "Your system"
+        "cart_summary_heading": "Your system",
+        "inventory": {
+          "sold_out": {
+            "storefront_body": "Go back to the store to find products"
+          }
+        }
+      },
+      "thank_you": {
+        "return_to_store_link_label": "Find products"
       }
     }
   }
