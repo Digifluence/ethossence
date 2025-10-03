@@ -156,7 +156,7 @@
     }
   }
   
-  // Customer Registration Form Handler - Handles validation and submission
+  // Form Handler - Handles validation and submission
   class CustomerRegistrationForm {
     constructor(webhookUrl) {
       this.webhookUrl = webhookUrl;

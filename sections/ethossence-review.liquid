@@ -1,7 +1,6 @@
-<pre>045</pre>
-
 {%- comment -%}
   ETHOSSENCE FEATURE: Allow customers to submit their cart for review/quote with ability to create an account if not a customer.
+  BOTH forms are dynamically generated via Make webhook based on metaobject definitions.
 {%- endcomment -%}
 
 {{ 'ethossence-forms.css' | asset_url | stylesheet_tag }}
@@ -30,7 +29,7 @@
         {%- case block.type -%}                            
 
           {%- when 'content' -%}
-            {%- comment -%} CONTENT ADDED BY PAGE {%- endcomment -%}
+            {%- comment -%} CONTENT ADDED BY PAGE - UNCHANGED {%- endcomment -%}
             {%- liquid 
               assign selected_page = pages[block.settings.page]
               assign img_hero_class = selected_page.metafields.ethossence.img_hero_placement | prepend: 'img-' | replace: ' ', '-' | replace: '-|-', ' img-' | downcase | strip
@@ -77,9 +76,8 @@
 
           {%- when 'form' -%}
             {%- comment -%} 
-              FORM FOR REVIEW/QUOTE WITH ABILITY TO CREATE ACCOUNT IF NOT LOGGED IN
-              
-              FIRST THING: SET ANIMATION TYPE VARIABLE FOR JAVASCRIPT
+              DYNAMICALLY LOADED FORMS FOR BOTH GUESTS AND CUSTOMERS
+              Forms are loaded via webhook when user clicks trigger button
             {%- endcomment -%}
 
             {%- assign s_animation_type = block.settings.animation_type | default: 'slide_down' -%}             
@@ -101,91 +99,82 @@
             <div class="block-{{ block.id }}-padding text-{{ block.settings.content_alignment }}">     
 
               {%- if customer == null -%}
-                <!-- NOT LOGGED IN - SHOW ABILITY TO CREATE ACCOUNT AND SUBMIT CART FOR REVIEW/QUOTE -->
-                <button type="button" id="register-trigger" class="button button--primary">
+                
+                {%- comment -%} GUEST USER - TRIGGER FOR ACCOUNT CREATION FORM {%- endcomment -%}
+                <button type="button" id="review-form-trigger" class="button button--primary" 
+                        data-is-customer="false"
+                        data-customer-id=""
+                        data-customer-email="">
                   {{ block.settings.btn_trigger_account_form | default: 'Create Account to Request Review' }}
                 </button>
+                
                 <!-- LINK TO SIGN IN IF ALREADY HAVE AN ACCOUNT -->
                 <div id="sign-in-link" class="margin-element-sm">
                   Already have an account? <a href="{{ routes.account_login_url }}?return_url={{ routes.cart_url | url_encode }}" title="Sign in to your existing account">sign in &raquo;</a>
                 </div>
-                <!-- REGISTRATION FORM - EITHER DROPDOWN OR DRAWER -->
-                {%- comment -%} 
-                  NOTE: The actual form is in the snippet ethossence-review-account-create.liquid
-                {%- endcomment -%}
-                {% if block.settings.animation_type == 'slide_down' %}
-                  <!-- SLIDE DOWN -->
-                  <div id="registration-dropdown" class="form-dropdown">
-                    <div class="form-dropdown__content">              
-                      <{{ block.settings.heading_size }} class="form-title {{ block.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-                          {{ block.settings.create_account_head_text }}
-                      </{{ block.settings.heading_size }}>                       
-                      {% render 'ethossence-review-account-create' 
-                        bth_submit_account: block.settings.bth_submit_account
-                      %}
-                    </div>
-                    <div> 
-                      <button type="button" class="button button--small button--secondary dropdown__close float-right" id="close-dropdown" aria-label="Close registration form">Cancel</button>
-                    </div>               
-                  </div>
-                {% else %}
-                  <!-- SLIDE OUT DRAWER -->
-                  <div id="registration-drawer" class="drawer drawer--right">
-                    <div class="drawer__header">
-                      <{{ block.settings.heading_size }} class="form-title {{ block.settings.heading_size }}">
-                          {{ block.settings.create_account_head_text }}
-                      </{{ block.settings.heading_size }}>                      
-                      <button type="button" class="drawer__close" id="close-registration" aria-label="Close registration form"><span class="text-xlarge">X</span></button>
-                    </div>
-                    <div class="drawer__inner">
-                      {% render 'ethossence-review-account-create' 
-                        bth_submit_account: block.settings.bth_submit_account
-                      %}
-                    </div>
-                  </div>
-                  <div class="drawer__overlay" id="registration-overlay"></div>
-                {% endif %}
 
               {%- else -%}
 
-                <button type="button" id="request-trigger" class="button button--primary">
+                {%- comment -%} LOGGED IN CUSTOMER - TRIGGER FOR CART REVIEW FORM {%- endcomment -%}
+                <button type="button" id="review-form-trigger" class="button button--primary"
+                        data-is-customer="true"
+                        data-customer-id="{{ customer.id }}"
+                        data-customer-email="{{ customer.email }}">
                   {{ block.settings.btn_trigger_request_form | default: 'Start Review Request' }}
                 </button>
 
-                {% if block.settings.animation_type == 'slide_down' %}
-                  <!-- SLIDE DOWN -->
-                  <div id="request-dropdown" class="form-dropdown">
-                    <div class="form-dropdown__content">              
-                      <{{ block.settings.heading_size }} class="form-title {{ block.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-                          {{ block.settings.submit_cart_head_text }}
-                      </{{ block.settings.heading_size }}>                       
-                        {%  render 'ethossence-review-cart-submit'
-                            btn_submit_request: block.settings.bth_submit_request
-                        %}
-                    </div>
-                    <div> 
-                      <button type="button" class="button button--small button--secondary dropdown__close float-right" id="close-dropdown" aria-label="Close request form">Cancel</button>
-                    </div>               
-                  </div>
-                {% else %}
-                  <!-- SLIDE OUT DRAWER -->
-                  <div id="request-drawer" class="drawer drawer--right">
-                    <div class="drawer__header">
-                      <{{ block.settings.heading_size }} class="form-title {{ block.settings.heading_size }}">
-                          {{ block.settings.submit_cart_head_text }}
-                      </{{ block.settings.heading_size }}>                      
-                      <button type="button" class="drawer__close" id="close-request" aria-label="Close request form"><span class="text-xlarge">X</span></button>
-                    </div>
-                    <div class="drawer__inner">
-                      {%  render 'ethossence-review-cart-submit'
-                          btn_submit_request: block.settings.bth_submit_request
-                      %}
-                    </div>
-                  </div>
-                  <div class="drawer__overlay" id="request-overlay"></div>
-                {% endif %}                
-
               {%- endif -%}
+
+              {%- comment -%} DYNAMIC FORM CONTAINER - WORKS FOR BOTH GUESTS AND CUSTOMERS {%- endcomment -%}
+              {% if block.settings.animation_type == 'slide_down' %}
+                <!-- SLIDE DOWN DROPDOWN -->
+                <div id="review-form-dropdown" class="form-dropdown">
+                  <div class="form-dropdown__content">              
+                    <{{ block.settings.heading_size }} class="form-title {{ block.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" id="form-heading">
+                      {%- if customer == null -%}
+                        {{ block.settings.create_account_head_text }}
+                      {%- else -%}
+                        {{ block.settings.submit_cart_head_text }}
+                      {%- endif -%}
+                    </{{ block.settings.heading_size }}>
+                    
+                    <!-- DYNAMIC CONTENT CONTAINER -->
+                    <div id="dynamic-content-container"
+                         data-is-customer="{% if customer %}true{% else %}false{% endif %}"
+                         data-customer-id="{% if customer %}{{ customer.id }}{% endif %}"
+                         data-customer-email="{% if customer %}{{ customer.email }}{% endif %}">
+                      <div class="loading-spinner">Loading form...</div>
+                    </div>
+                  </div>
+                  <div> 
+                    <button type="button" class="button button--small button--secondary dropdown__close float-right" id="close-form-dropdown" aria-label="Close form">Cancel</button>
+                  </div>               
+                </div>
+              {% else %}
+                <!-- SLIDE OUT DRAWER -->
+                <div id="review-form-drawer" class="drawer drawer--right">
+                  <div class="drawer__header">
+                    <{{ block.settings.heading_size }} class="form-title {{ block.settings.heading_size }}" id="form-heading">
+                      {%- if customer == null -%}
+                        {{ block.settings.create_account_head_text }}
+                      {%- else -%}
+                        {{ block.settings.submit_cart_head_text }}
+                      {%- endif -%}
+                    </{{ block.settings.heading_size }}>                      
+                    <button type="button" class="drawer__close" id="close-form-drawer" aria-label="Close form"><span class="text-xlarge">X</span></button>
+                  </div>
+                  <div class="drawer__inner">
+                    <!-- DYNAMIC CONTENT CONTAINER -->
+                    <div id="dynamic-content-container"
+                         data-is-customer="{% if customer %}true{% else %}false{% endif %}"
+                         data-customer-id="{% if customer %}{{ customer.id }}{% endif %}"
+                         data-customer-email="{% if customer %}{{ customer.email }}{% endif %}">
+                      <div class="loading-spinner">Loading form...</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="drawer__overlay" id="review-form-overlay"></div>
+              {% endif %}
 
             </div>
 
@@ -195,14 +184,15 @@
     </div>
   </div>
 
-  <script src="{{ 'ethossence-forms.js' | asset_url }}" defer></script>
+  <!-- UNIFIED JAVASCRIPT FOR DYNAMIC FORM LOADING -->
+  <script src="{{ 'ethossence-review-forms.js' | asset_url }}" defer></script>
   <script>
-    // PASS LIQUID CONFIGURATION TO THE EXTERNAL JAVASCRIPT
+    // PASS LIQUID CONFIGURATION TO JAVASCRIPT
     document.addEventListener('DOMContentLoaded', function() {
-      if (typeof initCustomerRegistration === 'function') {
-        initCustomerRegistration({
+      if (typeof initEthossenceReviewForms === 'function') {
+        initEthossenceReviewForms({
           animationType: '{{ s_animation_type }}',
-          webhookUrl: 'https://hook.us2.make.com/weeau8ogy96lpvkl4d8wlnfm5warbaer'
+          isCustomer: {% if customer %}true{% else %}false{% endif %}
         });
       }
     });
@@ -412,13 +402,13 @@
                "type": "inline_richtext",
                "id": "create_account_head_text",
                "default": "Create Your Account",
-               "label": "Header text"
+               "label": "Account creation header"
             },
             {
                "type": "inline_richtext",
                "id": "submit_cart_head_text",
                "default": "Review Request",
-               "label": "Header text"
+               "label": "Cart review header"
             },            
             {
                "type": "select",
@@ -455,41 +445,18 @@
             {
               "type": "text",
               "id": "btn_trigger_account_form",
-              "label": "Button Text",
+              "label": "Guest trigger button",
               "default": "Create Account to Request Review &raquo;"
             },            
             {
               "type": "text",
-              "id": "bth_submit_account",
-              "label": "Button Text",
-              "default": "Create Account &raquo;"
-            },  
-            {
-              "type": "text",
               "id": "btn_trigger_request_form",
-              "label": "Button Text",
+              "label": "Customer trigger button",
               "default": "Start Review Request"
             },
             {
-              "type": "text",
-              "id": "bth_submit_request",
-              "label": "Button Text",
-              "default": "Request Review &raquo;"
-            },                       
-            {
                "type": "header",
-               "content": "On-screen notification messages"
-            },             
-            {
-              "type": "textarea",
-              "id": "success_message",
-              "label": "Success Message",
-              "default": "Account created successfully! You'll receive a confirmation email shortly.",
-              "info": "Message displayed when account is created successfully"
-            },   
-            {
-              "type": "header",
-              "content": "t:sections.all.padding.section_padding_heading"
+               "content": "t:sections.all.padding.section_padding_heading"
             },
             {
               "type": "range",
