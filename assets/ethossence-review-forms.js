@@ -324,8 +324,10 @@
         button.innerHTML = 'Saving...';
         
         try {
-          // Update cart attributes first
-          await this.updateCartAttributes();
+          // Update cart attributes first (if customer)
+          if (customerData.isCustomer) {
+            await this.updateCartAttributes();
+          }
           
           // Get current cart data
           const cartResponse = await fetch('/cart.js');
@@ -334,7 +336,7 @@
           // Remove attributes from cart data to avoid duplication
           const { attributes, ...cartWithoutAttributes } = cartData;
           
-          // Prepare data for webhook
+          // Prepare base webhook data
           const webhookData = {
             shopDomain: Shopify.shop,
             timestamp: new Date().toISOString(),
@@ -348,11 +350,18 @@
             metaobjectType: customerData.metaobjectType,
             
             // Cart data
-            cart: cartWithoutAttributes,
-            
-            // Structured form data
-            ethossence_review_inputs: this.collectFieldData()
+            cart: cartWithoutAttributes
           };
+          
+          // Add appropriate form data based on customer status
+          if (customerData.isCustomer) {
+            // For customers: include cart review form data
+            webhookData.ethossence_review_inputs = this.collectFieldData();
+          } else {
+            // For guests: include account creation fields AND additional fields
+            webhookData.account_fields = this.collectAccountCreationFields();
+            webhookData.additional_fields = this.collectFieldData();
+          }
           
           console.log('Submitting review request for:', customerData.metaobjectType);
           
@@ -390,6 +399,22 @@
           button.innerHTML = originalText;
         }
       });
+    }
+    
+    collectAccountCreationFields() {
+      // Collect required fields for account creation (non-cart-attribute fields)
+      const accountFields = {};
+      
+      const fieldIds = ['firstName', 'lastName', 'email', 'phone', 'company', 'country'];
+      
+      fieldIds.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        if (field) {
+          accountFields[fieldId] = field.value.trim();
+        }
+      });
+      
+      return accountFields;
     }
     
     collectFieldData() {
