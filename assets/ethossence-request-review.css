@@ -509,7 +509,7 @@ button .loading-spinner {
 }
 
 .ethossence-select {
-  color: rgb(var(--color-foreground));
+  color: rgba(var(--color-foreground), 0.8) !important;
   font-size:1.5rem;
   padding-top:1.2rem;
 }
