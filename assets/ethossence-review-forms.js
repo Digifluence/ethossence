@@ -443,15 +443,15 @@
       }
       // Check for email already exists
       else if (lowerError.includes('email') && (lowerError.includes('taken') || lowerError.includes('exists') || lowerError.includes('already'))) {
-        errorMessage = 'This email address is already registered. <a href="' + window.Shopify.routes.root + 'account/login" class="error-link">Please log in</a> or use a different email address.';
+        errorMessage = 'This email address is already registered. <a href="' + window.Shopify.routes.root + 'account/login?return_url=%2Fcart" class="error-link">Please log in</a> or use a different email address.';
       }
       // Check for phone already exists
       else if (lowerError.includes('phone') && (lowerError.includes('taken') || lowerError.includes('exists') || lowerError.includes('already'))) {
-        errorMessage = 'This phone number is already registered. <a href="' + window.Shopify.routes.root + 'account/login" class="error-link">Please log in</a> or use a different phone number.';
+        errorMessage = 'This phone number is already registered. <a href="' + window.Shopify.routes.root + 'account/login?return_url=%2Fcart" class="error-link">Please log in</a> or use a different phone number.';
       }
       // Check for both email and phone exist
       else if (lowerError.includes('email') && lowerError.includes('phone') && (lowerError.includes('taken') || lowerError.includes('exists') || lowerError.includes('already'))) {
-        errorMessage = 'This email address and/or phone number is already registered. <a href="' + window.Shopify.routes.root + 'account/login" class="error-link">Please log in</a> or use different contact information.';
+        errorMessage = 'This email address and/or phone number is already registered. <a href="' + window.Shopify.routes.root + 'account/login?return_url=%2Fcart" class="error-link">Please log in</a> or use different contact information.';
       }
       // Check for invalid email format
       else if (lowerError.includes('invalid email') || lowerError.includes('email format')) {
@@ -468,9 +468,9 @@
         // Extract any error details from the response
         if (errorText.includes('Error(s):')) {
           // Parse and clean up the error message
-          errorMessage = 'Failed to create account. ' + errorText.replace(/\n/g, '<br>') + '<br><br>If you already have an account, <a href="' + window.Shopify.routes.root + 'account/login" class="error-link">please log in</a>.';
+          errorMessage = 'Failed to create account. ' + errorText.replace(/\n/g, '<br>') + '<br><br>If you already have an account, <a href="' + window.Shopify.routes.root + 'account/login?return_url=%2Fcart" class="error-link">please log in</a>.';
         } else {
-          errorMessage = 'Failed to create account. Please check your information and try again. If you already have an account, <a href="' + window.Shopify.routes.root + 'account/login" class="error-link">please log in</a>.';
+          errorMessage = 'Failed to create account. Please check your information and try again. If you already have an account, <a href="' + window.Shopify.routes.root + 'account/login?return_url=%2Fcart" class="error-link">please log in</a>.';
         }
       }
       
