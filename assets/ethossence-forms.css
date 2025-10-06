@@ -398,3 +398,12 @@
   margin-top: 1rem !important;
   display: inline-block;
 }
+
+.field--error {
+  border-color: rgb(var(--color-error)) !important;
+  background-color: rgba(var(--color-error), 0.05);
+}
+
+.field--error:focus {
+  box-shadow: 0 0 0 2px rgba(var(--color-error), 0.2);
+}

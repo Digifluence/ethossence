@@ -1,6 +1,6 @@
 // ============================================================================
 // ETHOSSENCE Request Review Feature
-// Version: 8
+// Version: 9
 // ============================================================================
 
 (function() {
@@ -324,6 +324,21 @@
         const originalText = button.innerHTML;
         const customerData = this.getCustomerData();
         
+        // Clear any existing error messages
+        if (messageDiv) {
+          messageDiv.style.display = 'none';
+          messageDiv.innerHTML = '';
+        }
+        
+        // Validate form before submission
+        if (!customerData.isCustomer) {
+          // For guests, validate required account creation fields
+          const validationResult = this.validateAccountCreationForm(messageDiv);
+          if (!validationResult.isValid) {
+            return; // Stop submission if validation fails
+          }
+        }
+        
         // Disable button and show loading
         button.disabled = true;
         button.innerHTML = 'Saving...';
@@ -497,6 +512,107 @@
       });
       
       return accountFields;
+    }
+    
+    validateAccountCreationForm(messageDiv) {
+      const result = {
+        isValid: true,
+        errors: []
+      };
+      
+      // Get all required fields
+      const firstName = document.getElementById('firstName');
+      const lastName = document.getElementById('lastName');
+      const email = document.getElementById('email');
+      const phone = document.getElementById('phone');
+      const company = document.getElementById('company');
+      const country = document.getElementById('country');
+      
+      // Validate firstName
+      if (!firstName || !firstName.value.trim()) {
+        result.isValid = false;
+        result.errors.push('First name is required');
+        if (firstName) this.highlightField(firstName, true);
+      } else {
+        if (firstName) this.highlightField(firstName, false);
+      }
+      
+      // Validate lastName
+      if (!lastName || !lastName.value.trim()) {
+        result.isValid = false;
+        result.errors.push('Last name is required');
+        if (lastName) this.highlightField(lastName, true);
+      } else {
+        if (lastName) this.highlightField(lastName, false);
+      }
+      
+      // Validate email
+      if (!email || !email.value.trim()) {
+        result.isValid = false;
+        result.errors.push('Email is required');
+        if (email) this.highlightField(email, true);
+      } else if (!this.isValidEmail(email.value.trim())) {
+        result.isValid = false;
+        result.errors.push('Please enter a valid email address');
+        if (email) this.highlightField(email, true);
+      } else {
+        if (email) this.highlightField(email, false);
+      }
+      
+      // Validate phone (optional but if provided must be valid)
+      if (phone && phone.value.trim()) {
+        const phoneDigits = phone.value.replace(/\D/g, '');
+        if (phoneDigits.length !== 11) {
+          result.isValid = false;
+          result.errors.push('Phone number must include country code (11 digits total)');
+          this.highlightField(phone, true);
+        } else {
+          this.highlightField(phone, false);
+        }
+      }
+      
+      // Validate company
+      if (!company || !company.value.trim()) {
+        result.isValid = false;
+        result.errors.push('Company name is required');
+        if (company) this.highlightField(company, true);
+      } else {
+        if (company) this.highlightField(company, false);
+      }
+      
+      // Validate country
+      if (!country || !country.value || country.value === '') {
+        result.isValid = false;
+        result.errors.push('Please select a country');
+        if (country) this.highlightField(country, true);
+      } else {
+        if (country) this.highlightField(country, false);
+      }
+      
+      // Display errors if validation failed
+      if (!result.isValid) {
+        const errorMessage = '<strong>Please correct the following:</strong><br>' + 
+                           result.errors.map(err => '• ' + err).join('<br>');
+        this.showMessage(messageDiv, errorMessage, 'error', true);
+      }
+      
+      return result;
+    }
+    
+    isValidEmail(email) {
+      // Basic email validation regex
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+    
+    highlightField(field, hasError) {
+      if (hasError) {
+        field.classList.add('field--error');
+        field.setAttribute('aria-invalid', 'true');
+      } else {
+        field.classList.remove('field--error');
+        field.removeAttribute('aria-invalid');
+      }
     }
     
     collectFieldData() {
