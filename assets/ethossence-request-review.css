@@ -418,7 +418,7 @@ select.field__input:focus,
 }
 
 .error-dismiss-btn {
-  margin-top: 1rem auto !important;
+  margin: 1rem auto !important;
   display: block;
 }
 
