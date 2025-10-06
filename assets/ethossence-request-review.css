@@ -18,6 +18,15 @@
   margin: 2rem 0;
 }
 
+#dynamic-content-container {
+  text-align: center;
+}
+
+#dynamic-content-container .field,
+#dynamic-content-container .contact__fields {
+  text-align: left;
+}
+
 /* ============================================================================
    FORM TITLE
    ============================================================================ */
@@ -161,27 +170,53 @@
 /* ============================================================================
    SELECT/DROPDOWN STYLING
    ============================================================================ */
+/* Apply consistent styling to ALL select elements within forms */
+.cart-attributes select,
+.ethossence-form select,
+.field select,
+select.field__input,
 .cart-attributes .form-select {
+  width: 100%;
   appearance: none;
+  background-color: rgb(var(--color-background));
   background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3E%3C/svg%3E");
   background-position: right 1rem center;
   background-repeat: no-repeat;
   background-size: 1.5rem 1.5rem;
-  padding-right: 3rem;
+  padding: 1rem 3rem 1rem 1.5rem;
+  border: 0.1rem solid rgba(var(--color-foreground), 0.2);
+  border-radius: 0.5rem;
+  font-family: inherit;
+  font-size: 1.4rem;
+  color: rgb(var(--color-foreground));
+  cursor: pointer;
+  line-height: 1.5;
+}
+
+/* Focus state for all select elements */
+.cart-attributes select:focus,
+.ethossence-form select:focus,
+.field select:focus,
+select.field__input:focus,
+.cart-attributes .form-select:focus {
+  outline: 0.2rem solid rgba(var(--color-foreground), 0.5);
+  outline-offset: 0.1rem;
+  border-color: rgb(var(--color-foreground));
 }
 
 /* Country Field Specific Styling */
-#fieldCountry .field__input {
-  padding: 1rem 1.5rem 1.5rem 1.5rem;
+#fieldCountry .field__input,
+#country.field__input {
+  padding: 1rem 3rem 1.5rem 1.5rem;
 }
 
 #fieldCountry .field__input:focus,
 #fieldCountry .field__input:not(:placeholder-shown),
 #fieldCountry .field__input:-webkit-autofill,
-#fieldCountry .customer .field input:focus,
-#fieldCountry .customer .field input:not(:placeholder-shown),
-#fieldCountry .customer .field input:-webkit-autofill {
-  padding: 1rem 1.5rem 1.5rem 1.5rem;
+#country.field__input:focus,
+#country.field__input:not(:placeholder-shown),
+#country.field__input:-webkit-autofill {
+  padding: 1rem 3rem 1.5rem 1.5rem;
 }
 
 /* ============================================================================
