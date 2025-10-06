@@ -411,13 +411,15 @@ select.field__input:focus,
 
 #save-cart-message.color-error {
   background-color: rgba(239, 68, 68, 0.1);
-  color: rgb(239, 68, 68);
   border: 0.1rem solid rgba(239, 68, 68, 0.2);
+  color: rgb(239, 68, 68);
+  margin: 0 auto;
+  max-width: 600px;
 }
 
 .error-dismiss-btn {
-  margin-top: 1rem !important;
-  display: inline-block;
+  margin-top: 1rem auto !important;
+  display: block;
 }
 
 /* ============================================================================
