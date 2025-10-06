@@ -393,3 +393,8 @@
    background-color: #ffebee;
    border-radius: 4px;
    }
+
+   .error-dismiss-btn {
+  margin-top: 1rem !important;
+  display: inline-block;
+}
