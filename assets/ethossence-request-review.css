@@ -1,0 +1,529 @@
+/* ============================================================================
+   ETHOSSENCE REVIEW FORMS - Consolidated Styles
+   Version: 1.0
+   Description: Unified styles for dynamic review request forms supporting
+                both guest account creation and customer cart review
+   ============================================================================ */
+
+/* ============================================================================
+   BASE FORM CONTAINER
+   ============================================================================ */
+.ethossence-form {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.cart-attributes {
+  margin: 2rem 0;
+}
+
+/* ============================================================================
+   FORM TITLE
+   ============================================================================ */
+.form-title {
+  font-size: calc(var(--font-heading-scale) * 2rem);
+  margin-bottom: 2rem;
+  color: rgb(var(--color-foreground));
+  font-family: var(--font-heading-family);
+  font-weight: var(--font-heading-weight);
+  line-height: calc(1 + 0.3 / var(--font-body-scale));
+}
+
+/* ============================================================================
+   FIELD STYLING
+   ============================================================================ */
+.field {
+  margin-bottom: 1.5rem;
+}
+
+.field__text {
+  font-size: 1.1rem;
+  color: rgba(var(--color-foreground), 0.7);
+  margin-top: 0.74rem;
+  font-style: italic;
+  line-height: 1.27;
+}
+
+.field__legend {
+  font-size: 1.6rem;
+  padding: 1.5rem 4.5rem 0 1.5rem;
+}
+
+.field__legend.required::after {
+  content: "*";
+  color: #ef4444;
+  margin-left: 0.25rem;
+}
+
+.field--radio .field__legend {
+  padding-bottom: 1rem;
+}
+
+.field-help {
+  font-size: 1.2rem;
+  color: rgba(var(--color-foreground), 0.7);
+  margin-top: 0.25rem;
+}
+
+/* Error State for Fields */
+.field--error {
+  border-color: rgb(var(--color-error)) !important;
+  background-color: rgba(var(--color-error), 0.05);
+}
+
+.field--error:focus {
+  box-shadow: 0 0 0 2px rgba(var(--color-error), 0.2);
+}
+
+/* ============================================================================
+   TEXTAREA STYLING
+   ============================================================================ */
+.ethossence-form textarea.field__input[rows="5"] {
+  height: auto !important;
+  min-height: calc(1.3rem * 1.5 * 5 + 3rem) !important;
+  resize: vertical;
+}
+
+/* ============================================================================
+   CHECKBOX STYLING
+   ============================================================================ */
+.checkbox-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.5rem;
+  margin: 1.5rem 0;
+  text-align: left;
+}
+
+.checkbox-item {
+  margin-bottom: 0.25rem;
+}
+
+.field.checkbox-field {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.field.checkbox-field .field__label {
+  flex-shrink: 0;
+  min-width: 150px;
+  margin-top: 0.5rem;
+}
+
+.field.checkbox-field .checkbox-group {
+  flex: 1;
+  margin-top: 0;
+}
+
+/* ============================================================================
+   RADIO BUTTON STYLING
+   ============================================================================ */
+.field--radio {
+  display: flex !important;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: nowrap;
+}
+
+.field--radio .field__label {
+  margin-bottom: 0 !important;
+  flex-shrink: 0;
+  min-width: 200px;
+}
+
+.field--radio .field__radio-group {
+  display: flex;
+  gap: 2rem;
+  margin-top: 1rem !important;
+  flex: 1;
+}
+
+.field__radio {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.field__radio input[type="radio"] {
+  margin: 0;
+  width: 1.6rem;
+  height: 1.6rem;
+  accent-color: rgb(var(--color-foreground));
+}
+
+.field__radio span {
+  color: rgb(var(--color-foreground));
+}
+
+/* ============================================================================
+   SELECT/DROPDOWN STYLING
+   ============================================================================ */
+.cart-attributes .form-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3E%3C/svg%3E");
+  background-position: right 1rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5rem 1.5rem;
+  padding-right: 3rem;
+}
+
+/* Country Field Specific Styling */
+#fieldCountry .field__input {
+  padding: 1rem 1.5rem 1.5rem 1.5rem;
+}
+
+#fieldCountry .field__input:focus,
+#fieldCountry .field__input:not(:placeholder-shown),
+#fieldCountry .field__input:-webkit-autofill,
+#fieldCountry .customer .field input:focus,
+#fieldCountry .customer .field input:not(:placeholder-shown),
+#fieldCountry .customer .field input:-webkit-autofill {
+  padding: 1rem 1.5rem 1.5rem 1.5rem;
+}
+
+/* ============================================================================
+   FORM INPUT STYLING
+   ============================================================================ */
+.cart-attributes .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.cart-attributes .form-group.full {
+  width: 100%;
+}
+
+.cart-attributes .form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: rgb(var(--color-foreground));
+}
+
+.cart-attributes .form-input {
+  width: 100%;
+  padding: 1rem;
+  border: 0.1rem solid rgba(var(--color-foreground), 0.2);
+  border-radius: 0.5rem;
+  font-family: inherit;
+  font-size: 1.4rem;
+  background-color: rgb(var(--color-background));
+  color: rgb(var(--color-foreground));
+}
+
+.cart-attributes .form-input:focus {
+  outline: 0.2rem solid rgba(var(--color-foreground), 0.5);
+  outline-offset: 0.1rem;
+  border-color: rgb(var(--color-foreground));
+}
+
+/* ============================================================================
+   DROPDOWN ANIMATION (SLIDE DOWN)
+   ============================================================================ */
+.form-dropdown {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.4s ease-in-out, opacity 0.3s ease-in-out;
+  background: rgb(var(--color-background));
+  border: 0.1rem solid rgba(var(--color-foreground), 0.1);
+  border-radius: 0.8rem;
+  margin: 1rem 0;
+}
+
+.form-dropdown--active {
+  max-height: 200vh;
+  opacity: 1;
+}
+
+.form-dropdown__header {
+  padding: 1.5rem 2rem 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form-dropdown__content {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease-in-out 0.1s, transform 0.3s ease-in-out 0.1s;
+}
+
+.form-dropdown--active .form-dropdown__content {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================================================
+   DRAWER ANIMATION (SLIDE OUT)
+   ============================================================================ */
+.drawer {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 100%;
+  max-width: 500px;
+  height: 100vh;
+  background: rgb(var(--color-background));
+  z-index: 1000;
+  transition: right 0.3s ease-in-out;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+}
+
+.drawer--active {
+  right: 0;
+}
+
+.drawer__header {
+  padding: 2rem;
+  border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.drawer__heading {
+  margin: 0;
+  font-size: 2.4rem;
+}
+
+.drawer__inner {
+  padding: 2rem;
+}
+
+.drawer__overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+.drawer__overlay--active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.drawer-open {
+  overflow: hidden;
+}
+
+/* ============================================================================
+   CLOSE BUTTONS (DRAWER & DROPDOWN)
+   ============================================================================ */
+.drawer__close,
+.dropdown__close {
+  background: none;
+  border: none;
+  float: right;
+  font-size: 1.27rem;
+  cursor: pointer;
+  color: rgb(var(--color-foreground));
+  padding: 0.5rem;
+  line-height: 1;
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 2.25rem 2.25rem 0;
+  transition: opacity 0.2s, background-color 0.2s;
+  min-height: calc(2.25rem + var(--buttons-border-width) * 2);
+}
+
+.drawer__close:hover,
+.dropdown__close:hover {
+  opacity: 0.7;
+  background-color: rgba(var(--color-foreground), 0.1);
+  border-radius: 0.3rem;
+}
+
+/* ============================================================================
+   BUTTON VISIBILITY CONTROLS
+   ============================================================================ */
+#register-trigger.hidden,
+#request-trigger.hidden,
+#sign-in-link.hidden {
+  display: none !important;
+}
+
+/* ============================================================================
+   SUBMIT BUTTON & MESSAGES
+   ============================================================================ */
+.cart-save-draft {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+#save-cart-message {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+}
+
+#save-cart-message.color-success {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: rgb(16, 185, 129);
+  border: 0.1rem solid rgba(16, 185, 129, 0.2);
+}
+
+#save-cart-message.color-error {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: rgb(239, 68, 68);
+  border: 0.1rem solid rgba(239, 68, 68, 0.2);
+}
+
+.error-dismiss-btn {
+  margin-top: 1rem !important;
+  display: inline-block;
+}
+
+/* ============================================================================
+   ERROR & SUCCESS MESSAGES
+   ============================================================================ */
+.error-message {
+  color: #ef4444;
+  font-size: 1.2rem;
+  margin: 0.25rem 0 0.25rem 1rem;
+}
+
+.success-message,
+.error-banner {
+  display: none;
+  padding: 1rem;
+  border-radius: var(--border-radius, 0.5rem);
+  margin-top: 1rem;
+}
+
+.success-message {
+  background-color: #10b981;
+  color: white;
+  text-align: center;
+}
+
+.error-banner {
+  background-color: #ef4444;
+  color: white;
+  text-align: left;
+}
+
+.error-login-link {
+  color: white;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.error-login-link:hover {
+  opacity: 0.8;
+}
+
+/* ============================================================================
+   LOADING SPINNER
+   ============================================================================ */
+.loading-spinner {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
+
+/* Button Loading Spinner */
+button .loading-spinner {
+  display: none;
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-right: 0.5rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ============================================================================
+   SHOPIFY CONTACT FORM COMPATIBILITY
+   ============================================================================ */
+.contact img {
+  max-width: 100%;
+}
+
+.contact .form__message {
+  align-items: flex-start;
+}
+
+.contact .icon-success {
+  margin-top: 0.2rem;
+}
+
+.contact .field {
+  margin-bottom: 1.5rem;
+}
+
+.contact__button {
+  margin-top: 3rem;
+}
+
+/* ============================================================================
+   RESPONSIVE DESIGN
+   ============================================================================ */
+
+/* Tablet and Desktop */
+@media screen and (min-width: 750px) {
+  .contact .field {
+    margin-bottom: 2rem;
+  }
+
+  .contact__button {
+    margin-top: 4rem;
+  }
+
+  .contact__fields {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-column-gap: 2rem;
+  }
+}
+
+/* Tablet Range */
+@media screen and (min-width: 750px) and (max-width: 989px) {
+  .cart-attributes {
+    margin: 2rem 2rem !important;
+  }
+}
+
+/* Mobile */
+@media screen and (max-width: 749px) {
+  .drawer {
+    width: 100%;
+    max-width: none;
+  }
+  
+  .form-dropdown__header {
+    padding: 1rem 1.5rem;
+  }
+  
+  .form-dropdown__content {
+    padding: 1.5rem;
+  }
+
+  .ethossence-form {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+
+  .cart-attributes {
+    margin: 1rem 0 !important;
+  }
+}

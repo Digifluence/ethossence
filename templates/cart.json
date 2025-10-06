@@ -20,7 +20,7 @@
       }
     },
     "ethossence_review_PFGKWW": {
-      "type": "ethossence-review",
+      "type": "ethossence-request-review",
       "blocks": {
         "content_ak6e3V": {
           "type": "content",

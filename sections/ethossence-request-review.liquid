@@ -3,7 +3,7 @@
   BOTH forms are dynamically generated via Make webhook based on metaobject definitions.
 {%- endcomment -%}
 
-{{ 'ethossence-forms.css' | asset_url | stylesheet_tag }}
+{{ 'ethossence-request-reveiw.css' | asset_url | stylesheet_tag }}
 
 {%- style -%}
   /* Section Padding - Requires Liquid variables */
@@ -185,7 +185,7 @@
   </div>
 
   <!-- UNIFIED JAVASCRIPT FOR DYNAMIC FORM LOADING -->
-  <script src="{{ 'ethossence-review-forms.js' | asset_url }}" defer></script>
+  <script src="{{ 'ethossence-request-review.js' | asset_url }}" defer></script>
   <script>
     // PASS LIQUID CONFIGURATION TO JAVASCRIPT
     document.addEventListener('DOMContentLoaded', function() {
