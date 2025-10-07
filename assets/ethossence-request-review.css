@@ -3,19 +3,6 @@
    Version: 1.2.0
    ============================================================================ */
 
-.ethossence-select {
-  color: rgba(var(--color-foreground), 0.8) !important;
-  font-size:1.6rem !important;
-  padding-top:1.2rem !important;
-}
-
-/* ============================================================================
-   ETHOSSENCE REVIEW FORMS - Consolidated Styles
-   Version: 1.0
-   Description: Unified styles for dynamic review request forms supporting
-                both guest account creation and customer cart review
-   ============================================================================ */
-
 /* ============================================================================
    BASE FORM CONTAINER
    ============================================================================ */
@@ -594,4 +581,13 @@ button .loading-spinner {
   .cart-attributes {
     margin: 1rem 0 !important;
   }
+}
+
+
+
+
+.ethossence-select {
+  color: rgba(var(--color-foreground), 0.8) !important;
+  font-size:1.6rem !important;
+  padding-top:1.2rem !important;
 }
