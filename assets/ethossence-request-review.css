@@ -71,6 +71,7 @@
   font-size: 1.2rem;
   color: rgba(var(--color-foreground), 0.7);
   margin-top: 0.25rem;
+  margin-right: 0.5rem
 }
 
 /* Error State for Fields */
