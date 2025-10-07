@@ -1,6 +1,6 @@
 // ============================================================================
 // ETHOSSENCE Request Review Feature
-// Version: 12.0
+// Version: 14.0
 // ============================================================================
 
 (function() {
@@ -646,9 +646,9 @@
             type: field.type || field.tagName.toLowerCase()
           };
           
-          // Add metaobject key if present
-          if (field.dataset.metaobjectKey) {
-            fieldInfo.metaobject_key = field.dataset.metaobjectKey;
+          // Add metafield key if present
+          if (field.dataset.metafieldKey) {
+            fieldInfo.metaobject_key = field.dataset.metafieldKey;
             
             // Check if this is a list-type metafield that needs JSON formatting
             const metafieldType = field.dataset.metafieldType;
