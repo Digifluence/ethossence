@@ -1,5 +1,6 @@
 {%- comment -%}
-  ETHOSSENCE FEATURE: Allow customers to submit their cart for review/quote with ability to create an account if not a customer.
+  ETHOSSENCE Request Review Feature
+  Allow customers to submit their cart for review/quote with ability to create an account if not a customer.
   BOTH forms are dynamically generated via Make webhook based on metaobject definitions.
 {%- endcomment -%}
 
@@ -75,10 +76,6 @@
 
 
           {%- when 'form' -%}
-            {%- comment -%} 
-              DYNAMICALLY LOADED FORMS FOR BOTH GUESTS AND CUSTOMERS
-              Forms are loaded via webhook when user clicks trigger button
-            {%- endcomment -%}
 
             {%- assign s_animation_type = block.settings.animation_type | default: 'slide_down' -%}             
 

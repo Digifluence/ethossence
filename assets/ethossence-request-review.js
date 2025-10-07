@@ -1,6 +1,6 @@
 // ============================================================================
 // ETHOSSENCE Request Review Feature
-// Version: 14.0
+// Version: 15.0
 // ============================================================================
 
 (function() {
@@ -225,6 +225,9 @@
       // Setup conditional field display
       this.setupConditionalFields();
       
+      // Setup "Other" field conditional logic
+      this.setupOtherFieldLogic();
+      
       // Auto-save cart attributes when they change
       attributeFields.forEach(field => {
         if (!field || !field.name) return;
@@ -308,6 +311,53 @@
           tempFieldContainer.style.display = 'none';
         }
       }
+    }
+    
+    setupOtherFieldLogic() {
+      // Find all select fields that might have "Other" option
+      const selectFields = document.querySelectorAll('select.cart-attribute[data-metafield-key]');
+      
+      selectFields.forEach(selectField => {
+        const metafieldKey = selectField.dataset.metafieldKey;
+        if (!metafieldKey) return;
+        
+        // Look for corresponding "_other" field
+        const otherFieldKey = metafieldKey + '_other';
+        const otherField = document.querySelector(`[data-metafield-key="${otherFieldKey}"]`);
+        
+        if (otherField) {
+          const otherFieldContainer = otherField.closest('.field');
+          
+          // Function to show/hide other field based on selection
+          const toggleOtherField = () => {
+            const selectedValue = selectField.value;
+            
+            if (selectedValue && selectedValue.toLowerCase() === 'other') {
+              // Show the other field
+              if (otherFieldContainer) {
+                otherFieldContainer.style.display = 'block';
+              }
+            } else {
+              // Hide the other field and clear its value
+              if (otherFieldContainer) {
+                otherFieldContainer.style.display = 'none';
+              }
+              if (otherField) {
+                otherField.value = '';
+                this.updateCartAttributes();
+              }
+            }
+          };
+          
+          // Set up event listener
+          selectField.addEventListener('change', toggleOtherField);
+          
+          // Set initial state on page load
+          toggleOtherField();
+          
+          console.log(`Set up "Other" field logic for ${metafieldKey} -> ${otherFieldKey}`);
+        }
+      });
     }
     
     setupSubmitButton() {
