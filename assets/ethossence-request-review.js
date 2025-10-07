@@ -1,6 +1,6 @@
 // ============================================================================
 // ETHOSSENCE Request Review Feature
-// Version: 16.0
+// Version: 17.0
 // ============================================================================
 
 (function() {
@@ -589,8 +589,8 @@
     }
     
     clearAccountForm() {
-      const fieldIds = ['firstName', 'lastName', 'email', 'phone', 'company'];
-      // , 'country'
+      const fieldIds = ['firstName', 'lastName', 'email', 'phone', 'company', 'country'];
+      
       fieldIds.forEach(fieldId => {
         const field = document.getElementById(fieldId);
         if (field) {
@@ -613,8 +613,8 @@
       // Collect required fields for account creation (non-cart-attribute fields)
       const accountFields = {};
       
-      const fieldIds = ['firstName', 'lastName', 'email', 'phone', 'company'];
-      // 'country'
+      const fieldIds = ['firstName', 'lastName', 'email', 'phone', 'company', 'country'];
+      
       fieldIds.forEach(fieldId => {
         const field = document.getElementById(fieldId);
         if (field) {
@@ -637,7 +637,6 @@
       const email = document.getElementById('email');
       const phone = document.getElementById('phone');
       const company = document.getElementById('company');
-      // const country = document.getElementById('country');
       
       // Validate firstName
       if (!firstName || !firstName.value.trim()) {
@@ -691,15 +690,7 @@
         if (company) this.highlightField(company, false);
       }
       
-      /* Validate country
-      if (!country || !country.value || country.value === '') {
-        result.isValid = false;
-        result.errors.push('Please select a country');
-        if (country) this.highlightField(country, true);
-      } else {
-        if (country) this.highlightField(country, false);
-      }
-      */  
+      // Country is now optional - no validation needed
       
       // Display errors if validation failed
       if (!result.isValid) {
