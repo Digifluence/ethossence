@@ -589,8 +589,8 @@
     }
     
     clearAccountForm() {
-      const fieldIds = ['firstName', 'lastName', 'email', 'phone'];
-      // 'company', 'country'
+      const fieldIds = ['firstName', 'lastName', 'email', 'phone', 'company'];
+      // , 'country'
       fieldIds.forEach(fieldId => {
         const field = document.getElementById(fieldId);
         if (field) {
@@ -613,8 +613,8 @@
       // Collect required fields for account creation (non-cart-attribute fields)
       const accountFields = {};
       
-      const fieldIds = ['firstName', 'lastName', 'email', 'phone'];
-      // 'company', 'country'
+      const fieldIds = ['firstName', 'lastName', 'email', 'phone', 'company'];
+      // 'country'
       fieldIds.forEach(fieldId => {
         const field = document.getElementById(fieldId);
         if (field) {
@@ -636,7 +636,7 @@
       const lastName = document.getElementById('lastName');
       const email = document.getElementById('email');
       const phone = document.getElementById('phone');
-      // const company = document.getElementById('company');
+      const company = document.getElementById('company');
       // const country = document.getElementById('country');
       
       // Validate firstName
@@ -682,7 +682,7 @@
         }
       }
       
-      /* Validate company
+      // Validate company
       if (!company || !company.value.trim()) {
         result.isValid = false;
         result.errors.push('Company name is required');
@@ -691,7 +691,7 @@
         if (company) this.highlightField(company, false);
       }
       
-      // Validate country
+      /* Validate country
       if (!country || !country.value || country.value === '') {
         result.isValid = false;
         result.errors.push('Please select a country');
