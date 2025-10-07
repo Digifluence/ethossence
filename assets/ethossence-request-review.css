@@ -1,6 +1,19 @@
 /* ============================================================================
    ETHOSSENCE REVIEW REQUEST
-   Version: 1.1.0
+   Version: 1.2.0
+   ============================================================================ */
+
+.ethossence-select {
+  color: rgba(var(--color-foreground), 0.8) !important;
+  font-size:1.6rem !important;
+  padding-top:1.2rem !important;
+}
+
+/* ============================================================================
+   ETHOSSENCE REVIEW FORMS - Consolidated Styles
+   Version: 1.0
+   Description: Unified styles for dynamic review request forms supporting
+                both guest account creation and customer cart review
    ============================================================================ */
 
 /* ============================================================================
@@ -90,6 +103,28 @@
   height: auto !important;
   min-height: calc(1.3rem * 1.5 * 5 + 3rem) !important;
   resize: vertical;
+}
+
+/* Floating label support for textarea (Dawn theme pattern) */
+.field textarea.field__input {
+  padding-top: 2rem;
+  padding-bottom: 1rem;
+}
+
+.field textarea.field__input:focus ~ .field__label,
+.field textarea.field__input:not(:placeholder-shown) ~ .field__label {
+  top: 0.5rem;
+  font-size: 1rem;
+  opacity: 1;
+}
+
+.field textarea.field__input::placeholder {
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.field textarea.field__input:focus::placeholder {
+  opacity: 0.5;
 }
 
 /* ============================================================================
@@ -411,15 +446,13 @@ select.field__input:focus,
 
 #save-cart-message.color-error {
   background-color: rgba(239, 68, 68, 0.1);
-  border: 0.1rem solid rgba(239, 68, 68, 0.2);
   color: rgb(239, 68, 68);
-  margin: 0 auto;
-  max-width: 600px;
+  border: 0.1rem solid rgba(239, 68, 68, 0.2);
 }
 
 .error-dismiss-btn {
-  margin: 1rem auto !important;
-  display: block;
+  margin-top: 1rem !important;
+  display: inline-block;
 }
 
 /* ============================================================================
@@ -508,12 +541,6 @@ button .loading-spinner {
 
 .contact__button {
   margin-top: 3rem;
-}
-
-.ethossence-select {
-  color: rgba(var(--color-foreground), 0.8) !important;
-  font-size:1.6rem !important;
-  padding-top:1.2rem !important;
 }
 
 /* ============================================================================
