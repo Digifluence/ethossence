@@ -1,6 +1,6 @@
 // ============================================================================
 // ETHOSSENCE Request Review Feature
-// Version: 15.0.0
+// Version: 16.0
 // ============================================================================
 
 (function() {
@@ -228,6 +228,9 @@
       // Setup "Other" field conditional logic
       this.setupOtherFieldLogic();
       
+      // Setup "Reseller" field conditional logic
+      this.setupResellerFieldLogic();
+      
       // Auto-save cart attributes when they change
       attributeFields.forEach(field => {
         if (!field || !field.name) return;
@@ -358,6 +361,64 @@
           console.log(`Set up "Other" field logic for ${metafieldKey} -> ${otherFieldKey}`);
         }
       });
+    }
+    
+    setupResellerFieldLogic() {
+      // Find the business_type field
+      const businessTypeField = document.querySelector('[data-metafield-key="business_type"]');
+      
+      if (!businessTypeField) {
+        console.log('Business type field not found');
+        return;
+      }
+      
+      // Find all reseller-related fields (keys starting with business_type_reseller_)
+      const resellerFields = document.querySelectorAll('[data-metafield-key^="business_type_reseller_"]');
+      
+      if (resellerFields.length === 0) {
+        console.log('No reseller fields found');
+        return;
+      }
+      
+      // Function to show/hide reseller fields based on selection
+      const toggleResellerFields = () => {
+        const selectedValue = businessTypeField.value;
+        const isResellerSelected = selectedValue && selectedValue.toLowerCase().includes('reseller');
+        
+        resellerFields.forEach(field => {
+          const fieldContainer = field.closest('.field');
+          
+          if (isResellerSelected) {
+            // Show reseller field
+            if (fieldContainer) {
+              fieldContainer.style.display = 'block';
+            }
+          } else {
+            // Hide reseller field and clear its value
+            if (fieldContainer) {
+              fieldContainer.style.display = 'none';
+            }
+            if (field) {
+              if (field.type === 'checkbox' || field.type === 'radio') {
+                field.checked = false;
+              } else {
+                field.value = '';
+              }
+              this.updateCartAttributes();
+            }
+          }
+        });
+        
+        console.log(`Reseller fields ${isResellerSelected ? 'shown' : 'hidden'} based on selection: ${selectedValue}`);
+      };
+      
+      // Set up event listener
+      businessTypeField.addEventListener('change', toggleResellerFields);
+      
+      // Set initial state on page load
+      toggleResellerFields();
+      
+      console.log(`Set up reseller field logic for business_type (found ${resellerFields.length} reseller fields)`);
     }
     
     setupSubmitButton() {
