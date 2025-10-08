@@ -433,6 +433,8 @@
         return;
       }
       
+      console.log('Found customer_projects select field');
+      
       // Find the project-new container
       const projectNewContainer = document.getElementById('project-new');
       
@@ -441,10 +443,13 @@
         return;
       }
       
+      console.log('Found project-new container');
+      
       // Check if project data is available
       if (!window.customerProjects) {
-        console.log('No customer projects data found');
-        return;
+        console.log('No customer projects data found - will still allow new project creation');
+      } else {
+        console.log('Found customer projects data:', Object.keys(window.customerProjects).length, 'projects');
       }
       
       // Function to populate form fields with project data
