@@ -1,6 +1,6 @@
 // ============================================================================
 // ETHOSSENCE Request Review Feature
-// Version: 18.0
+// Version: 19.0
 // ============================================================================
 
 (function() {
@@ -231,6 +231,9 @@
       // Setup "Reseller" field conditional logic
       this.setupResellerFieldLogic();
       
+      // Setup "Customer Projects" selection logic (for customers only)
+      this.setupCustomerProjectsLogic();
+      
       // Auto-save cart attributes when they change
       attributeFields.forEach(field => {
         if (!field || !field.name) return;
@@ -419,6 +422,141 @@
       toggleResellerFields();
       
       console.log(`Set up reseller field logic for business_type (found ${resellerFields.length} reseller fields)`);
+    }
+    
+    setupCustomerProjectsLogic() {
+      // Find the customer_projects select field
+      const projectsSelect = document.getElementById('customer_projects');
+      
+      if (!projectsSelect) {
+        console.log('Customer projects field not found');
+        return;
+      }
+      
+      // Find the project-new container
+      const projectNewContainer = document.getElementById('project-new');
+      
+      if (!projectNewContainer) {
+        console.log('Project new container not found');
+        return;
+      }
+      
+      // Function to handle project selection
+      const handleProjectSelection = async () => {
+        const selectedValue = projectsSelect.value;
+        
+        if (!selectedValue) {
+          // No selection - hide project-new container
+          projectNewContainer.style.display = 'none';
+          return;
+        }
+        
+        if (selectedValue === '*new*') {
+          // "Enter new project" selected - show project-new container
+          projectNewContainer.style.display = 'block';
+          console.log('New project selected - showing form fields');
+        } else {
+          // Existing project selected - reload form with project data
+          projectNewContainer.style.display = 'none';
+          console.log('Existing project selected:', selectedValue);
+          
+          // Show loading indicator
+          if (this.container) {
+            this.container.innerHTML = '<div class="loading-spinner">Loading project details...</div>';
+          }
+          
+          // Reload the dynamic content with project information
+          await this.loadDynamicContentWithProject(selectedValue);
+        }
+      };
+      
+      // Set up event listener
+      projectsSelect.addEventListener('change', handleProjectSelection);
+      
+      // Set initial state on page load
+      handleProjectSelection();
+      
+      console.log('Set up customer projects selection logic');
+    }
+    
+    async loadDynamicContentWithProject(projectHandle) {
+      if (!this.container) {
+        console.error('Dynamic content container not found');
+        return;
+      }
+      
+      const customerData = this.getCustomerData();
+      
+      try {
+        // Get cart data using Shopify Ajax API
+        const cartResponse = await fetch('/cart.js');
+        const cartData = await cartResponse.json();
+        
+        // Transform cart attributes into array of objects
+        const formattedAttributes = [];
+        
+        if (cartData.attributes) {
+          for (const [name, value] of Object.entries(cartData.attributes)) {
+            formattedAttributes.push({
+              name: name,
+              value: value
+            });
+          }
+        }
+        
+        // Prepare request data for Make webhook with project information
+        const requestData = {
+          pageUrl: window.location.href,
+          shopDomain: Shopify.shop || '',
+          timestamp: new Date().toISOString(),
+          shopifyGraphQLVersion: SHOPIFY_GRAPHQL_VERSION,
+          
+          // Customer information
+          isCustomer: customerData.isCustomer,
+          customerId: customerData.customerId,
+          customerEmail: customerData.customerEmail,
+          metaobjectType: customerData.metaobjectType,
+          
+          // Project information
+          project_existing: true,
+          project_handle: projectHandle,
+          
+          // Cart data
+          cart: {
+            attributes: cartData.attributes || {},
+            formattedAttributes: formattedAttributes,
+            itemCount: cartData.item_count,
+            totalPrice: cartData.total_price,
+            currency: cartData.currency
+          }
+        };
+        
+        console.log('Loading dynamic form with existing project:', projectHandle);
+        
+        // Fetch HTML from Make webhook
+        const response = await fetch(WEBHOOKS.loadForm, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(requestData)
+        });
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        // Get HTML content and insert into container
+        const htmlContent = await response.text();
+        this.container.innerHTML = htmlContent;
+        
+        // Re-initialize form handlers for the new content
+        this.initializeFormHandlers();
+        
+      } catch (error) {
+        console.error('Error loading project content:', error);
+        this.container.innerHTML = '<div class="error-message">Failed to load project details. Please try again later.</div>';
+      }
     }
     
     setupSubmitButton() {
