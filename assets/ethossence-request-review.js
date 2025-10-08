@@ -1,6 +1,6 @@
 // ============================================================================
 // ETHOSSENCE Request Review Feature
-// Version: 19.0
+// Version: 20.0
 // ============================================================================
 
 (function() {
@@ -441,32 +441,90 @@
         return;
       }
       
+      // Check if project data is available
+      if (!window.customerProjects) {
+        console.log('No customer projects data found');
+        return;
+      }
+      
+      // Function to populate form fields with project data
+      const populateProjectFields = (projectData) => {
+        if (!projectData) return;
+        
+        // Iterate through all project data fields
+        for (const [fieldKey, fieldValue] of Object.entries(projectData)) {
+          // Find the corresponding input field
+          const field = document.querySelector(`[data-metafield-key="${fieldKey}"]`);
+          
+          if (field) {
+            if (field.type === 'checkbox') {
+              field.checked = fieldValue === 'true' || fieldValue === true;
+            } else if (field.type === 'radio') {
+              // Find the radio button with matching value
+              const radioGroup = document.querySelectorAll(`[data-metafield-key="${fieldKey}"]`);
+              radioGroup.forEach(radio => {
+                if (radio.value === fieldValue) {
+                  radio.checked = true;
+                }
+              });
+            } else if (field.tagName.toLowerCase() === 'select') {
+              field.value = fieldValue;
+            } else {
+              // Text input or textarea
+              field.value = fieldValue;
+            }
+            
+            console.log(`Populated field ${fieldKey} with value:`, fieldValue);
+          }
+        }
+        
+        // Trigger conditional logic after population
+        this.setupConditionalFields();
+        this.updateCartAttributes();
+      };
+      
+      // Function to clear all form fields
+      const clearProjectFields = () => {
+        const projectFields = document.querySelectorAll('#project-new .cart-attribute');
+        projectFields.forEach(field => {
+          if (field.type === 'checkbox' || field.type === 'radio') {
+            field.checked = false;
+          } else {
+            field.value = '';
+          }
+        });
+        
+        console.log('Cleared all project fields');
+      };
+      
       // Function to handle project selection
-      const handleProjectSelection = async () => {
+      const handleProjectSelection = () => {
         const selectedValue = projectsSelect.value;
         
         if (!selectedValue) {
           // No selection - hide project-new container
           projectNewContainer.style.display = 'none';
+          clearProjectFields();
           return;
         }
         
         if (selectedValue === '*new*') {
-          // "Enter new project" selected - show project-new container
+          // "Enter new project" selected - show empty form
           projectNewContainer.style.display = 'block';
-          console.log('New project selected - showing form fields');
+          clearProjectFields();
+          console.log('New project selected - showing empty form');
         } else {
-          // Existing project selected - reload form with project data
-          projectNewContainer.style.display = 'none';
-          console.log('Existing project selected:', selectedValue);
+          // Existing project selected - populate form with data
+          projectNewContainer.style.display = 'block';
           
-          // Show loading indicator
-          if (this.container) {
-            this.container.innerHTML = '<div class="loading-spinner">Loading project details...</div>';
+          const projectData = window.customerProjects[selectedValue];
+          if (projectData) {
+            populateProjectFields(projectData);
+            console.log('Existing project selected and populated:', selectedValue);
+          } else {
+            console.warn('Project data not found for handle:', selectedValue);
+            clearProjectFields();
           }
-          
-          // Reload the dynamic content with project information
-          await this.loadDynamicContentWithProject(selectedValue);
         }
       };
       
@@ -476,88 +534,10 @@
       // Set initial state on page load
       handleProjectSelection();
       
-      console.log('Set up customer projects selection logic');
+      console.log('Set up customer projects selection logic with', Object.keys(window.customerProjects || {}).length, 'projects');
     }
     
-    async loadDynamicContentWithProject(projectHandle) {
-      if (!this.container) {
-        console.error('Dynamic content container not found');
-        return;
-      }
-      
-      const customerData = this.getCustomerData();
-      
-      try {
-        // Get cart data using Shopify Ajax API
-        const cartResponse = await fetch('/cart.js');
-        const cartData = await cartResponse.json();
-        
-        // Transform cart attributes into array of objects
-        const formattedAttributes = [];
-        
-        if (cartData.attributes) {
-          for (const [name, value] of Object.entries(cartData.attributes)) {
-            formattedAttributes.push({
-              name: name,
-              value: value
-            });
-          }
-        }
-        
-        // Prepare request data for Make webhook with project information
-        const requestData = {
-          pageUrl: window.location.href,
-          shopDomain: Shopify.shop || '',
-          timestamp: new Date().toISOString(),
-          shopifyGraphQLVersion: SHOPIFY_GRAPHQL_VERSION,
-          
-          // Customer information
-          isCustomer: customerData.isCustomer,
-          customerId: customerData.customerId,
-          customerEmail: customerData.customerEmail,
-          metaobjectType: customerData.metaobjectType,
-          
-          // Project information
-          project_existing: true,
-          project_handle: projectHandle,
-          
-          // Cart data
-          cart: {
-            attributes: cartData.attributes || {},
-            formattedAttributes: formattedAttributes,
-            itemCount: cartData.item_count,
-            totalPrice: cartData.total_price,
-            currency: cartData.currency
-          }
-        };
-        
-        console.log('Loading dynamic form with existing project:', projectHandle);
-        
-        // Fetch HTML from Make webhook
-        const response = await fetch(WEBHOOKS.loadForm, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(requestData)
-        });
-        
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        // Get HTML content and insert into container
-        const htmlContent = await response.text();
-        this.container.innerHTML = htmlContent;
-        
-        // Re-initialize form handlers for the new content
-        this.initializeFormHandlers();
-        
-      } catch (error) {
-        console.error('Error loading project content:', error);
-        this.container.innerHTML = '<div class="error-message">Failed to load project details. Please try again later.</div>';
-      }
-    }
+    // Remove the old loadDynamicContentWithProject method as it's no longer needed
     
     setupSubmitButton() {
       const saveCartBtn = document.getElementById('save-cart-draft');
