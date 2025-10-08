@@ -1,6 +1,6 @@
 // ============================================================================
 // ETHOSSENCE Request Review Feature
-// Version: 21.0 - Client-side project population
+// Version: 22.0 - Client-side project population
 // ============================================================================
 
 (function() {
@@ -205,6 +205,23 @@
         // Get HTML content and insert into container
         const htmlContent = await response.text();
         this.container.innerHTML = htmlContent;
+        
+        // Execute any script tags that were inserted (innerHTML doesn't auto-execute them)
+        const scripts = this.container.querySelectorAll('script');
+        scripts.forEach(script => {
+          const newScript = document.createElement('script');
+          if (script.src) {
+            newScript.src = script.src;
+          } else {
+            newScript.textContent = script.textContent;
+          }
+          // Copy any attributes
+          Array.from(script.attributes).forEach(attr => {
+            newScript.setAttribute(attr.name, attr.value);
+          });
+          document.body.appendChild(newScript);
+          console.log('Executed script tag from webhook response');
+        });
         
         this.formLoaded = true;
         
@@ -508,8 +525,11 @@
       const handleProjectSelection = () => {
         const selectedValue = projectsSelect.value;
         
+        console.log('Project selection changed to:', selectedValue);
+        
         if (!selectedValue) {
           // No selection - hide project-new container
+          console.log('No project selected - hiding form');
           projectNewContainer.style.display = 'none';
           clearProjectFields();
           return;
@@ -517,17 +537,18 @@
         
         if (selectedValue === '*new*') {
           // "Enter new project" selected - show empty form
+          console.log('New project selected - showing empty form');
           projectNewContainer.style.display = 'block';
           clearProjectFields();
-          console.log('New project selected - showing empty form');
         } else {
           // Existing project selected - populate form with data from memory
+          console.log('Existing project selected:', selectedValue);
           projectNewContainer.style.display = 'block';
           
-          const projectData = window.customerProjects[selectedValue];
-          if (projectData) {
+          if (window.customerProjects && window.customerProjects[selectedValue]) {
+            const projectData = window.customerProjects[selectedValue];
+            console.log('Found project data, populating fields...');
             populateProjectFields(projectData);
-            console.log('Existing project selected and populated from memory:', selectedValue);
           } else {
             console.warn('Project data not found for handle:', selectedValue);
             clearProjectFields();
@@ -536,12 +557,14 @@
       };
       
       // Set up event listener
+      console.log('Setting up change event listener on customer_projects select');
       projectsSelect.addEventListener('change', handleProjectSelection);
       
       // Set initial state on page load
+      console.log('Running initial handleProjectSelection');
       handleProjectSelection();
       
-      console.log('Set up customer projects selection logic with', Object.keys(window.customerProjects || {}).length, 'projects');
+      console.log('Customer projects selection logic setup complete');
     }
     
     setupSubmitButton() {
