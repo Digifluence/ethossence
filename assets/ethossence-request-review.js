@@ -1,6 +1,6 @@
 // ============================================================================
 // ETHOSSENCE Request Review Feature
-// Version: 20.0
+// Version: 19.0
 // ============================================================================
 
 (function() {
@@ -231,9 +231,6 @@
       // Setup "Reseller" field conditional logic
       this.setupResellerFieldLogic();
       
-      // Setup "Customer Projects" selection logic (for customers only)
-      this.setupCustomerProjectsLogic();
-      
       // Auto-save cart attributes when they change
       attributeFields.forEach(field => {
         if (!field || !field.name) return;
@@ -423,121 +420,6 @@
       
       console.log(`Set up reseller field logic for business_type (found ${resellerFields.length} reseller fields)`);
     }
-    
-    setupCustomerProjectsLogic() {
-      // Find the customer_projects select field
-      const projectsSelect = document.getElementById('customer_projects');
-      
-      if (!projectsSelect) {
-        console.log('Customer projects field not found');
-        return;
-      }
-      
-      // Find the project-new container
-      const projectNewContainer = document.getElementById('project-new');
-      
-      if (!projectNewContainer) {
-        console.log('Project new container not found');
-        return;
-      }
-      
-      // Check if project data is available
-      if (!window.customerProjects) {
-        console.log('No customer projects data found');
-        return;
-      }
-      
-      // Function to populate form fields with project data
-      const populateProjectFields = (projectData) => {
-        if (!projectData) return;
-        
-        // Iterate through all project data fields
-        for (const [fieldKey, fieldValue] of Object.entries(projectData)) {
-          // Find the corresponding input field
-          const field = document.querySelector(`[data-metafield-key="${fieldKey}"]`);
-          
-          if (field) {
-            if (field.type === 'checkbox') {
-              field.checked = fieldValue === 'true' || fieldValue === true;
-            } else if (field.type === 'radio') {
-              // Find the radio button with matching value
-              const radioGroup = document.querySelectorAll(`[data-metafield-key="${fieldKey}"]`);
-              radioGroup.forEach(radio => {
-                if (radio.value === fieldValue) {
-                  radio.checked = true;
-                }
-              });
-            } else if (field.tagName.toLowerCase() === 'select') {
-              field.value = fieldValue;
-            } else {
-              // Text input or textarea
-              field.value = fieldValue;
-            }
-            
-            console.log(`Populated field ${fieldKey} with value:`, fieldValue);
-          }
-        }
-        
-        // Trigger conditional logic after population
-        this.setupConditionalFields();
-        this.updateCartAttributes();
-      };
-      
-      // Function to clear all form fields
-      const clearProjectFields = () => {
-        const projectFields = document.querySelectorAll('#project-new .cart-attribute');
-        projectFields.forEach(field => {
-          if (field.type === 'checkbox' || field.type === 'radio') {
-            field.checked = false;
-          } else {
-            field.value = '';
-          }
-        });
-        
-        console.log('Cleared all project fields');
-      };
-      
-      // Function to handle project selection
-      const handleProjectSelection = () => {
-        const selectedValue = projectsSelect.value;
-        
-        if (!selectedValue) {
-          // No selection - hide project-new container
-          projectNewContainer.style.display = 'none';
-          clearProjectFields();
-          return;
-        }
-        
-        if (selectedValue === '*new*') {
-          // "Enter new project" selected - show empty form
-          projectNewContainer.style.display = 'block';
-          clearProjectFields();
-          console.log('New project selected - showing empty form');
-        } else {
-          // Existing project selected - populate form with data
-          projectNewContainer.style.display = 'block';
-          
-          const projectData = window.customerProjects[selectedValue];
-          if (projectData) {
-            populateProjectFields(projectData);
-            console.log('Existing project selected and populated:', selectedValue);
-          } else {
-            console.warn('Project data not found for handle:', selectedValue);
-            clearProjectFields();
-          }
-        }
-      };
-      
-      // Set up event listener
-      projectsSelect.addEventListener('change', handleProjectSelection);
-      
-      // Set initial state on page load
-      handleProjectSelection();
-      
-      console.log('Set up customer projects selection logic with', Object.keys(window.customerProjects || {}).length, 'projects');
-    }
-    
-    // Remove the old loadDynamicContentWithProject method as it's no longer needed
     
     setupSubmitButton() {
       const saveCartBtn = document.getElementById('save-cart-draft');
