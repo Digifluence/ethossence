@@ -225,20 +225,6 @@ select.field__input:focus,
   border-color: rgb(var(--color-foreground));
 }
 
-/* Country Field Specific Styling */
-#fieldCountry .field__input,
-#country.field__input {
-  padding: 1rem 3rem 1.5rem 1.5rem;
-}
-
-#fieldCountry .field__input:focus,
-#fieldCountry .field__input:not(:placeholder-shown),
-#fieldCountry .field__input:-webkit-autofill,
-#country.field__input:focus,
-#country.field__input:not(:placeholder-shown),
-#country.field__input:-webkit-autofill {
-  padding: 1rem 3rem 1.5rem 1.5rem;
-}
 
 /* ============================================================================
    FORM INPUT STYLING
