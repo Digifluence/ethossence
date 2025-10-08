@@ -1,6 +1,6 @@
 // ============================================================================
 // ETHOSSENCE Request Review Feature
-// Version: 22.0 - Client-side project population
+// Version: 24.0 - Client-side project population
 // ============================================================================
 
 (function() {
@@ -208,20 +208,37 @@
         
         // Execute any script tags that were inserted (innerHTML doesn't auto-execute them)
         const scripts = this.container.querySelectorAll('script');
-        scripts.forEach(script => {
+        console.log(`Found ${scripts.length} script tags in webhook response`);
+        
+        scripts.forEach((oldScript, index) => {
           const newScript = document.createElement('script');
-          if (script.src) {
-            newScript.src = script.src;
+          
+          // Copy the script content
+          if (oldScript.src) {
+            newScript.src = oldScript.src;
+            console.log(`Script ${index + 1}: External script with src=${oldScript.src}`);
           } else {
-            newScript.textContent = script.textContent;
+            newScript.textContent = oldScript.textContent;
+            console.log(`Script ${index + 1}: Inline script with ${oldScript.textContent.length} characters`);
           }
+          
           // Copy any attributes
-          Array.from(script.attributes).forEach(attr => {
+          Array.from(oldScript.attributes).forEach(attr => {
             newScript.setAttribute(attr.name, attr.value);
           });
-          document.body.appendChild(newScript);
-          console.log('Executed script tag from webhook response');
+          
+          // Replace the old script with the new one to execute it
+          oldScript.parentNode.replaceChild(newScript, oldScript);
+          
+          console.log(`Executed script ${index + 1}`);
         });
+        
+        // Verify window.customerProjects was created
+        if (window.customerProjects) {
+          console.log('✓ window.customerProjects successfully created with', Object.keys(window.customerProjects).length, 'projects');
+        } else {
+          console.warn('✗ window.customerProjects was NOT created - check script content');
+        }
         
         this.formLoaded = true;
         
