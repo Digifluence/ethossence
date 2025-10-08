@@ -1,6 +1,6 @@
 // ============================================================================
 // ETHOSSENCE Request Review Feature
-// Version: 17.0
+// Version: 18.0
 // ============================================================================
 
 (function() {
@@ -489,9 +489,9 @@
             // For customers: include cart review form data
             webhookData.ethossence_review_inputs = this.collectFieldData();
           } else {
-            // For guests: include account creation fields AND additional fields
+            // For guests: include account creation fields AND metaobject fields
             webhookData.account_fields = this.collectAccountCreationFields();
-            webhookData.additional_fields = this.collectFieldData();
+            webhookData.metaobject_fields = this.collectFieldData();
           }
           
           console.log('Submitting review request for:', customerData.metaobjectType);
@@ -722,8 +722,16 @@
       const fieldData = [];
       const reviewRequestFields = document.querySelectorAll('#review-request-fields .cart-attribute, #dynamic-content-container .cart-attribute');
       
+      // Account creation field IDs that should be excluded from metaobject fields
+      const accountFieldIds = ['firstName', 'lastName', 'email', 'phone', 'company', 'country'];
+      
       reviewRequestFields.forEach(field => {
         if (!field || !field.name) return;
+        
+        // Skip account creation fields - they go in account_fields instead
+        if (accountFieldIds.includes(field.id)) {
+          return;
+        }
         
         let value = '';
         let shouldInclude = false;
