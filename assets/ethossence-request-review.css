@@ -179,6 +179,7 @@
 
 .field__radio__inline {
   display: inline-block;
+  padding-top: 1.5rem;
 }
 
 .field__radio input[type="radio"] {
