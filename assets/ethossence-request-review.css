@@ -177,6 +177,13 @@
   cursor: pointer;
 }
 
+.field__radio__inline {
+  display: inline-block;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
 .field__radio input[type="radio"] {
   margin: 0;
   width: 1.6rem;
