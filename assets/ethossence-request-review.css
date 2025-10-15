@@ -200,23 +200,6 @@ input[type="radio"].field__input {
   -moz-appearance: radio !important;
 }
 
-Add this to your `ethossence-request-review.css` file in the **RADIO BUTTON STYLING** section, right after the existing `.field__radio input[type="radio"]` rule.
-
-Now, for **testing the project selection**:
-
-The console shows the script is working and projects are loaded. Can you now:
-
-1. **Select "*new*"** from the dropdown - does the form appear?
-2. **Select "aircraft-carrier-1"** - does it populate the fields and show in console?
-3. Share any new console messages when you make these selections
-
-The key console message to look for when selecting an existing project should be:
-```
-Project selection changed to: aircraft-carrier-1
-Existing project selected: aircraft-carrier-1
-Found project data, populating fields...
-
-
 /* ============================================================================
    SELECT/DROPDOWN STYLING
    ============================================================================ */
