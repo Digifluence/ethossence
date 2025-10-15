@@ -1,6 +1,6 @@
 // ============================================================================
 // ETHOSSENCE Request Review Feature
-// Version: 24.0 - Client-side project population
+// Version: 25.0 - Client-side project population
 // ============================================================================
 
 (function() {
@@ -41,6 +41,11 @@
       }
       
       this.formLoaded = false;
+      
+      // Track selected project context
+      this.selectedProjectHandle = null;
+      this.isNewProject = true;
+      this.originalProjectData = null;
       
       console.log('EthossenceReviewController initialized', {
         animationType: this.animationType,
