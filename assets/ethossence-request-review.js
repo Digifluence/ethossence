@@ -1,6 +1,6 @@
 // ============================================================================
 // ETHOSSENCE Request Review Feature
-// Version: 25.0 - Client-side project population
+// Version: 26.0 - Project context tracking and change detection
 // ============================================================================
 
 (function() {
@@ -554,6 +554,9 @@
           console.log('No project selected - hiding form');
           projectNewContainer.style.display = 'none';
           clearProjectFields();
+          this.isNewProject = true;
+          this.selectedProjectHandle = null;
+          this.originalProjectData = null;
           return;
         }
         
@@ -562,6 +565,9 @@
           console.log('New project selected - showing empty form');
           projectNewContainer.style.display = 'block';
           clearProjectFields();
+          this.isNewProject = true;
+          this.selectedProjectHandle = null;
+          this.originalProjectData = null;
         } else {
           // Existing project selected - populate form with data from memory
           console.log('Existing project selected:', selectedValue);
@@ -570,10 +576,19 @@
           if (window.customerProjects && window.customerProjects[selectedValue]) {
             const projectData = window.customerProjects[selectedValue];
             console.log('Found project data, populating fields...');
+            
+            // Store project context for later comparison
+            this.isNewProject = false;
+            this.selectedProjectHandle = selectedValue;
+            this.originalProjectData = JSON.parse(JSON.stringify(projectData)); // Deep copy
+            
             populateProjectFields(projectData);
           } else {
             console.warn('Project data not found for handle:', selectedValue);
             clearProjectFields();
+            this.isNewProject = true;
+            this.selectedProjectHandle = null;
+            this.originalProjectData = null;
           }
         }
       };
@@ -654,8 +669,9 @@
           
           // Add appropriate form data based on customer status
           if (customerData.isCustomer) {
-            // For customers: include cart review form data
+            // For customers: include cart review form data AND project context
             webhookData.ethossence_review_inputs = this.collectFieldData();
+            webhookData.projectContext = this.buildProjectContext();
           } else {
             // For guests: include account creation fields AND metaobject fields
             webhookData.account_fields = this.collectAccountCreationFields();
@@ -943,6 +959,116 @@
       });
       
       return fieldData;
+    }
+    
+    buildProjectContext() {
+      const projectContext = {
+        isNewProject: this.isNewProject,
+        selectedProjectHandle: this.selectedProjectHandle,
+        modifiedFields: []
+      };
+      
+      // If this is an existing project, detect changes
+      if (!this.isNewProject && this.originalProjectData) {
+        console.log('Detecting field changes for existing project:', this.selectedProjectHandle);
+        
+        // Get current form values
+        const currentFormData = this.getCurrentFormValues();
+        
+        // Compare each field against original data
+        for (const [key, originalValue] of Object.entries(this.originalProjectData)) {
+          const currentValue = currentFormData[key];
+          
+          // Normalize values for comparison (handle empty strings, null, undefined)
+          const normalizedOriginal = this.normalizeValue(originalValue);
+          const normalizedCurrent = this.normalizeValue(currentValue);
+          
+          // Check if values are different
+          if (normalizedOriginal !== normalizedCurrent) {
+            projectContext.modifiedFields.push({
+              metaobject_key: key,
+              originalValue: originalValue,
+              newValue: currentValue || ''
+            });
+            
+            console.log(`Field modified: ${key}`, {
+              original: originalValue,
+              new: currentValue
+            });
+          }
+        }
+        
+        // Also check for new fields that weren't in original data
+        for (const [key, currentValue] of Object.entries(currentFormData)) {
+          if (!(key in this.originalProjectData)) {
+            const normalizedCurrent = this.normalizeValue(currentValue);
+            
+            // Only include if current value is not empty
+            if (normalizedCurrent !== '') {
+              projectContext.modifiedFields.push({
+                metaobject_key: key,
+                originalValue: '',
+                newValue: currentValue
+              });
+              
+              console.log(`New field added: ${key}`, {
+                original: '(empty)',
+                new: currentValue
+              });
+            }
+          }
+        }
+        
+        console.log(`Total modified fields: ${projectContext.modifiedFields.length}`);
+      }
+      
+      return projectContext;
+    }
+    
+    getCurrentFormValues() {
+      const formValues = {};
+      const reviewRequestFields = document.querySelectorAll('#review-request-fields .cart-attribute, #dynamic-content-container .cart-attribute');
+      
+      // Account creation field IDs that should be excluded
+      const accountFieldIds = ['firstName', 'lastName', 'email', 'phone', 'company', 'country'];
+      
+      reviewRequestFields.forEach(field => {
+        if (!field || !field.dataset.metafieldKey) return;
+        
+        // Skip account creation fields
+        if (accountFieldIds.includes(field.id)) {
+          return;
+        }
+        
+        const metafieldKey = field.dataset.metafieldKey;
+        let value = '';
+        
+        if (field.type === 'checkbox') {
+          value = field.checked ? field.value : '';
+        } else if (field.type === 'radio') {
+          if (field.checked) {
+            value = field.value;
+          } else {
+            return; // Skip unchecked radios
+          }
+        } else {
+          value = field.value || '';
+        }
+        
+        formValues[metafieldKey] = value;
+      });
+      
+      return formValues;
+    }
+    
+    normalizeValue(value) {
+      // Convert null, undefined, empty string to empty string for comparison
+      if (value === null || value === undefined || value === '') {
+        return '';
+      }
+      
+      // Convert to string and trim
+      return String(value).trim();
     }
     
     showMessage(messageDiv, text, type, allowHTML = false) {
