@@ -1,6 +1,6 @@
 // ============================================================================
 // ETHOSSENCE Request Review Feature
-// Version: 26.0 - Project context tracking and change detection
+// Version: 27.0 - Project context tracking and change detection
 // ============================================================================
 
 (function() {
@@ -697,18 +697,85 @@
           });
           
           if (webhookResponse.ok) {
-            const successMessage = customerData.isCustomer 
-              ? 'Review request submitted successfully!' 
-              : 'Account created successfully! Check your email for login instructions.';
-            this.showMessage(messageDiv, successMessage, 'success');
+            // Parse response to check for errors from Make scenario
+            let responseData;
+            const contentType = webhookResponse.headers.get('content-type');
             
-            // Optionally clear form on success
-            if (!customerData.isCustomer) {
-              // Clear account creation form fields
-              this.clearAccountForm();
+            if (contentType && contentType.includes('application/json')) {
+              responseData = await webhookResponse.json();
+            } else {
+              responseData = await webhookResponse.text();
+            }
+            
+            console.log('Webhook response:', responseData);
+            
+            // Check if response indicates an error
+            let hasError = false;
+            let errorMessage = '';
+            
+            if (typeof responseData === 'object') {
+              // Check for various error indicators in JSON response
+              if (responseData.success === false || 
+                  responseData.error || 
+                  responseData.errors ||
+                  responseData.userErrors ||
+                  (responseData.data && responseData.data.userErrors && responseData.data.userErrors.length > 0)) {
+                hasError = true;
+                
+                // Extract error message
+                if (responseData.message) {
+                  errorMessage = responseData.message;
+                } else if (responseData.error) {
+                  errorMessage = typeof responseData.error === 'string' ? responseData.error : JSON.stringify(responseData.error);
+                } else if (responseData.errors) {
+                  errorMessage = Array.isArray(responseData.errors) ? responseData.errors.join(', ') : JSON.stringify(responseData.errors);
+                } else if (responseData.userErrors) {
+                  errorMessage = Array.isArray(responseData.userErrors) 
+                    ? responseData.userErrors.map(e => e.message || JSON.stringify(e)).join(', ')
+                    : JSON.stringify(responseData.userErrors);
+                } else if (responseData.data && responseData.data.userErrors) {
+                  errorMessage = responseData.data.userErrors.map(e => e.message || JSON.stringify(e)).join(', ');
+                } else {
+                  errorMessage = 'An error occurred while processing your request.';
+                }
+              }
+            } else if (typeof responseData === 'string') {
+              // Check if text response contains error indicators
+              const lowerResponse = responseData.toLowerCase();
+              if (lowerResponse.includes('error') || 
+                  lowerResponse.includes('failed') || 
+                  lowerResponse.includes('invalid')) {
+                hasError = true;
+                errorMessage = responseData;
+              }
+            }
+            
+            if (hasError) {
+              // Show error message
+              this.showMessage(messageDiv, errorMessage, 'error', true);
+            } else {
+              // Success - show appropriate message
+              let successMessage = '';
+              
+              if (typeof responseData === 'object' && responseData.message) {
+                // Use custom success message from webhook if provided
+                successMessage = responseData.message;
+              } else if (customerData.isCustomer) {
+                successMessage = 'Review request submitted successfully!';
+              } else {
+                successMessage = 'Account created successfully! Check your email for login instructions.';
+              }
+              
+              this.showMessage(messageDiv, successMessage, 'success');
+              
+              // Optionally clear form on success
+              if (!customerData.isCustomer) {
+                // Clear account creation form fields
+                this.clearAccountForm();
+              }
             }
           } else {
-            // Handle error response
+            // HTTP error (non-200 status)
             const errorData = await webhookResponse.text();
             this.handleSubmissionError(messageDiv, errorData, customerData.isCustomer);
           }
