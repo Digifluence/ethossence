@@ -1,6 +1,6 @@
 // ============================================================================
 // ETHOSSENCE Request Review Feature
-// Version: 27.0 - Webhook response validation
+// Version: 27.1 - Webhook response validation
 // ============================================================================
 
 (function() {
@@ -708,6 +708,8 @@
             }
             
             console.log('Webhook response:', responseData);
+            console.log('Response type:', typeof responseData);
+            console.log('Has message property:', responseData && responseData.message);
             
             // Check if response indicates an error
             let hasError = false;
@@ -757,15 +759,19 @@
               // Success - show appropriate message
               let successMessage = '';
               
+              // Priority 1: Use custom message from webhook if provided
               if (typeof responseData === 'object' && responseData.message) {
-                // Use custom success message from webhook if provided
                 successMessage = responseData.message;
-              } else if (customerData.isCustomer) {
+                console.log('Using custom success message from webhook');
+              } 
+              // Priority 2: Use default messages based on customer status
+              else if (customerData.isCustomer) {
                 successMessage = 'Review request submitted successfully!';
               } else {
                 successMessage = 'Account created successfully! Check your email for login instructions.';
               }
               
+              console.log('Showing success message:', successMessage);
               this.showMessage(messageDiv, successMessage, 'success');
               
               // Optionally clear form on success
