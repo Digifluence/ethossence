@@ -1,6 +1,6 @@
 // ============================================================================
 // ETHOSSENCE Request Review Feature
-// Version: 27.0 - Project context tracking and change detection
+// Version: 27.0 - Webhook response validation
 // ============================================================================
 
 (function() {
@@ -47,7 +47,7 @@
       this.isNewProject = true;
       this.originalProjectData = null;
       
-      console.log('EthossenceReviewController initialized', {
+      console.log('EthossenceReviewController v27.0 initialized', {
         animationType: this.animationType,
         isCustomer: this.isCustomer
       });
