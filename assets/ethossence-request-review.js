@@ -1,6 +1,6 @@
 // ============================================================================
 // ETHOSSENCE Request Review Feature
-// Version: 27.1 - Webhook response validation
+// Version: 27.2 - Webhook response validation
 // ============================================================================
 
 (function() {
