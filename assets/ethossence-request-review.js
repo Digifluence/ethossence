@@ -1,6 +1,6 @@
 // ============================================================================
 // ETHOSSENCE Request Review Feature
-// Version: 27.2 - Webhook response validation
+// Version: 27.3 - Webhook response validation
 // ============================================================================
 
 (function() {
@@ -701,9 +701,20 @@
             let responseData;
             const contentType = webhookResponse.headers.get('content-type');
             
-            if (contentType && contentType.includes('application/json')) {
-              responseData = await webhookResponse.json();
-            } else {
+            try {
+              // Try to parse as JSON first
+              const responseText = await webhookResponse.text();
+              
+              if (responseText.trim().startsWith('{') || responseText.trim().startsWith('[')) {
+                // Looks like JSON, parse it
+                responseData = JSON.parse(responseText);
+              } else {
+                // Plain text response
+                responseData = responseText;
+              }
+            } catch (parseError) {
+              // If JSON parsing fails, treat as plain text
+              console.warn('Failed to parse response as JSON:', parseError);
               responseData = await webhookResponse.text();
             }
             
