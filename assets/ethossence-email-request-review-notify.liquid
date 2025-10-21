@@ -154,26 +154,26 @@
                   </div>
                   <div class="info-row">
                      <div class="info-label">Name:</div>
-                     <div class="info-value"><a href="{{{{trim(replace(56.id; "gid://shopify/Product/"; emptystring))}}}}" title="{{{{56.displayName}}}}">{{{{56.displayName}}}}</a></div>
+                     <div class="info-value"><a href="{{trim(replace(56.id; "gid://shopify/Product/"; emptystring))}}" title="{{56.displayName}}">{{56.displayName}}</a></div>
                   </div>
                   <div class="info-row">
                      <div class="info-label">Company:</div>
-                     <div class="info-value">{{{{56.defaultAddress.company}}}}</div>
+                     <div class="info-value">{{56.defaultAddress.company}}</div>
                   </div>
                   <div class="info-row">
                      <div class="info-label">Email:</div>
-                     <div class="info-value">{{{{56.defaultEmailAddress.emailAddress}}}}</div>
+                     <div class="info-value">{{56.defaultEmailAddress.emailAddress}}</div>
                   </div>                  
                   <div class="info-row">
                      <div class="info-label">Phone:</div>
-                     <div class="info-value">{{{{56.defaultPhoneNumber.phoneNumber}}}}</div>
+                     <div class="info-value">{{56.defaultPhoneNumber.phoneNumber}}</div>
                   </div>                    
                   <div class="info-row">
                      <div class="info-label">Location:</div>
                      <div class="info-value">
-                        {{{{56.defaultAddress.address1}}}} {{{{56.defaultAddress.address2}}}}<br />
-                        {{{{56.defaultAddress.city}}}}, {{{{56.defaultAddress.provinceCode}}}} &nbsp;{{{{56.defaultAddress.zip}}}}<br />
-                        {{{{56.defaultAddress.country}}}}
+                        {{56.defaultAddress.address1}} {{56.defaultAddress.address2}}<br />
+                        {{56.defaultAddress.city}}, {{56.defaultAddress.provinceCode}} &nbsp;{{56.defaultAddress.zip}}<br />
+                        {{56.defaultAddress.country}}
                      </div>
                   </div>
                </div>     
@@ -182,7 +182,7 @@
                   <div class="subsection-title">
                      Company Profile
                   </div>
-                  {{{{72.text}}}}
+                  {{72.text}}
                </div>
             </div>
          </div>
@@ -200,25 +200,25 @@
                   </div> 
                   <div class="info-row">
                      <div class="info-label">Draft Order #:</div>
-                     <div class="info-value"><a href="{{{{trim(replace(63.body.data.draftOrders[].id; "gid://shopify/Product/"; emptystring))}}}}" title="{{{{63.body.data.draftOrders[].name}}}}">{{{{63.body.data.draftOrders[].name}}}}</a></div>
+                     <div class="info-value"><a href="{{trim(replace(63.body.data.draftOrders[].id; "gid://shopify/Product/"; emptystring))}}" title="{{63.body.data.draftOrders[].name}}">{{63.body.data.draftOrders[].name}}</a></div>
                   </div>
                   <div class="info-row">
                      <div class="info-label">Item Count:</div>
-                     <div class="info-value">{{{{length(63.body.data.draftOrders[].lineItems)}}}}</div>
+                     <div class="info-value">{{length(63.body.data.draftOrders[].lineItems)}}</div>
                   </div>
                   <div class="info-row">
                      <div class="info-label">Total draft price:</div>
-                     <div class="info-value">${{{{formatNumber(63.body.data.draftOrders[].totalPrice; ","; "."; ",")}}}}</div>
+                     <div class="info-value">${{formatNumber(63.body.data.draftOrders[].totalPrice; ","; "."; ",")}}</div>
                   </div>
                   <!-- PRODUCT/VARIANT ITEMS -->
-                  {{{{76.text}}}}
+                  {{76.text}}
                </div>
                <!-- THIS PROJECT DETAILS -->
                <div class="info-frame">
                   <div class="subsection-title">
                      Project Details
                   </div> 
-                      {{{{84.text}}}}
+                      {{84.text}}
                </div>
                <!-- EXISTING PROJECT MODIFICATIONS SUMMARY
                <div class="info-frame">
@@ -250,7 +250,7 @@
                   </div> 
                   <div class="info-row">
                      <ul>
-                        {{{{86.text}}}}
+                        {{86.text}}
                      </ul>
                   </div>
                </div>
@@ -262,7 +262,7 @@
                   </div>
                   <div class="info-row">
                      <ul>
-                        {{{{80.text}}}}
+                        {{80.text}}
                      </ul>
                   </div>                  
                </div>
@@ -274,7 +274,7 @@
                   </div>
                   <div class="info-row">
                      <ul>
-                        {{{{62.text}}}}
+                        {{62.text}}
                      </ul>
                   </div>                  
                </div>
@@ -286,7 +286,7 @@
 
       <!-- Footer -->
       <div class="footer">
-         <p>&copy; {{{{formatDate(now; "YYYY")}}}} Review Request from Digifluence. All rights reserved.</p>
+         <p>&copy; {{formatDate(now; "YYYY")}} Review Request from Digifluence. All rights reserved.</p>
       </div>
 
    </div>
