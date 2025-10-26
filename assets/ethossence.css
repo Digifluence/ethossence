@@ -483,3 +483,11 @@
     opacity: 1;
   }
 }
+
+
+/* PRODUCT PAGE */
+
+.price__container {
+  margin: 0 auto;
+  text-align: center;
+}
