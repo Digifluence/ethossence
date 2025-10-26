@@ -40,6 +40,19 @@
   endif
 -%}
 
+{%  style  %} 
+.price__container,
+.price__container * {
+  text-align: center !important;
+}
+
+.price__regular,
+.price__sale {
+  display: block;
+  width: 100%;
+}
+{% endstyle %}
+
 {%- unless target == null and placeholder == null -%}
   <div
     class="
