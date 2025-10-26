@@ -54,24 +54,25 @@
       {%- if show_badges %} price--show-badge{% endif -%}
     "
   >
-<div class="price__container" style="text-align: center;">
+<div class="price__container">
   <style>
     .price__container {
       text-align: center !important;
     }
-    .price__container .price__regular,
-    .price__container .price__sale {
-      text-align: center !important;
-      display: block !important;
-      width: 100% !important;
-    }
-    .price__container .price-item,
-    .price__container span {
-      display: inline-block !important;
+    .price__regular,
+    .price__sale {
       text-align: center !important;
     }
-    .price__container .visually-hidden {
-      display: inline-block !important;
+    .price__regular span,
+    .price__sale span {
+      display: inline !important;
+    }
+    /* Hide the appropriate price display */
+    .price:not(.price--on-sale) .price__sale {
+      display: none;
+    }
+    .price--on-sale .price__regular {
+      display: none;
     }
   </style>
       {%- comment -%}
