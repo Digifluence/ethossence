@@ -487,7 +487,13 @@
 
 /* PRODUCT PAGE */
 
-.price__container {
-  margin: 0 auto;
-  text-align: center;
+.price__container,
+.price__container * {
+  text-align: center !important;
+}
+
+.price__regular,
+.price__sale {
+  display: block;
+  width: 100%;
 }
