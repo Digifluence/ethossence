@@ -40,18 +40,18 @@
   endif
 -%}
 
-{%  style  %} 
-.price__container,
-.price__container * {
-  text-align: center !important;
-}
+{% style %} 
+  .price__container, .price__container * {
+    text-align: center !important;
+  }
 
-.price__regular,
-.price__sale {
-  display: block;
-  width: 100%;
-}
+  .price__regular, .price__sale {
+    display: block;
+    width: 100%;
+  }
 {% endstyle %}
+
+<pre>LOOK HERE</pre>
 
 {%- unless target == null and placeholder == null -%}
   <div
