@@ -41,17 +41,25 @@
 -%}
 
 {% style %} 
-  .price__container, .price__container * {
-    text-align: center !important;
-  }
+.price__container {
+  margin: 0 auto;
+  text-align: center;
+}
 
-  .price__regular, .price__sale {
-    display: block;
-    width: 100%;
-  }
+.price__regular,
+.price__sale {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.price__regular > *,
+.price__sale > * {
+  text-align: center;
+}
 {% endstyle %}
 
-<pre>LOOK HERE</pre>
+<pre>ADD center align fix</pre>
 
 {%- unless target == null and placeholder == null -%}
   <div
