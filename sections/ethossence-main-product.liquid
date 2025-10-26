@@ -318,15 +318,15 @@
                   </div>
                 {%- endif -%}
 
-                {% comment %}
-                <div {{ block.shopify_attributes }}>
-                  {%- assign product_form_installment_id = 'product-form-installment-' | append: section.id -%}
-                  {%- form 'product', product, id: product_form_installment_id, class: 'installment caption-large' -%}
-                    <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-                    {{ form | payment_terms }}
-                  {%- endform -%}
-                </div>
-                {% endcomment %}
+                {% if settings.show_installment_options %}
+                  <div {{ block.shopify_attributes }}>
+                    {%- assign product_form_installment_id = 'product-form-installment-' | append: section.id -%}
+                    {%- form 'product', product, id: product_form_installment_id, class: 'installment caption-large' -%}
+                      <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                      {{ form | payment_terms }}
+                    {%- endform -%}
+                  </div>
+                {% endif %}
               
               {%- when 'inventory' -%}
                 <p
@@ -2412,6 +2412,16 @@
       "label": "t:sections.all.colors.label",
       "default": "scheme-1"
     },
+    {
+      "type": "header",
+      "content": "Pricing"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_installment_options",
+      "default": true,
+      "label": "Show installment options"
+    },  
     {
       "type": "header",
       "content": "t:sections.main-product.settings.header.content"
