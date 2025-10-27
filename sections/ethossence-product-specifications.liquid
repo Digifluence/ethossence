@@ -21,6 +21,12 @@
 <pre>specifications.size {{ specifications.size }}</pre>
 <pre>product.metafields.ethossence.specifications.value</pre>
 <pre>{{ product.metafields.ethossence.specifications.value }}</pre>
+<pre>
+   {% for spec in specifications %}
+      Label: {{ spec.label }}
+      Data: {{ spec.data }}
+   {% endfor %}
+</pre>
 
 <div class="color-{{ section.settings.color_scheme }} gradient">
   <div class="product-specifications page-width section-{{ section.id }}-padding isolate{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
