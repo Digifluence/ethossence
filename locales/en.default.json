@@ -171,7 +171,7 @@
       },
       "price": {
         "from_price_html": "From {{ price }}",
-        "regular_price": "Regular price",
+        "regular_price": "Price",
         "sale_price": "Sale price",
         "unit_price": "Unit price"
       },

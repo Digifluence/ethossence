@@ -69,9 +69,9 @@
       {%- endcomment -%}
 
       <div class="price__regular">
-        <legend class="form__label">
+        <label class="quantity__label form__label">
           {{ 'products.product.price.regular_price' | t }}
-        </legend>
+        </label>
         {%- if product.quantity_price_breaks_configured? -%}
           {%- if show_compare_at_price and compare_at_price -%}
             {%- unless product.price_varies == false and product.compare_at_price_varies %}
