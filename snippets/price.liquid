@@ -70,7 +70,7 @@
 
       <div class="price__regular">
         <label class="quantity__label form__label">
-          {{ 'products.product.price.regular_price' | t }}
+          Price: {{ 'products.product.price.regular_price' | t }}
         </label>
         {%- if product.quantity_price_breaks_configured? -%}
           {%- if show_compare_at_price and compare_at_price -%}
