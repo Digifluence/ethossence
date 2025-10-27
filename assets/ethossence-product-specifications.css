@@ -8,7 +8,7 @@
 
 .product-specifications__introduction {
   margin: 0 0 2rem;
-  max-width: 72rem;
+  max-width: 100%;
 }
 
 .product-specifications__grid {
@@ -54,12 +54,12 @@
   }
 
   .product-specifications__label {
-    flex: 0 0 calc(33.333% - 1.333rem);
+    flex: 0 0 calc(40% - 1.333rem);
     margin-bottom: 0;
   }
 
   .product-specifications__data {
-    flex: 0 0 calc(66.667% - 0.667rem);
+    flex: 0 0 calc(60% - 0.667rem);
   }
 }
 
