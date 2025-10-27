@@ -147,25 +147,6 @@
 %}
 
 
-{% style %}
-  
-  .product-form__input--pill input[type=radio]:disabled+label,
-  
-  .product-form__input--pill input[type=radio].disabled+label {
-    display: none;
-  }
-
-  .product-form__input--pill input[type=radio]:disabled {
-    display: none;
-  } 
-
-  .product-form__input--pill input[type="radio"].disabled + label.variant-frame {
-    display: none !important;
-  }  
-
-{% endstyle %}  
-
-
 <product-info
   id="MainProduct-{{ section.id }}"
   class="section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }}"
@@ -205,17 +186,20 @@
         padding-bottom: {{ section.settings.padding_bottom }}px;
       }
     }
-
-    .product-form__quantity {
-      text-align: center;
+  
+    .product-form__input--pill input[type=radio]:disabled+label,
+    
+    .product-form__input--pill input[type=radio].disabled+label {
+      display: none;
     }
 
-    quantity-input .quantity {
-      border-radius: var(--variant-pills-radius);
-      margin: 0 auto;
-      text-align: center;
-      width: 100%;
-    }
+    .product-form__input--pill input[type=radio]:disabled {
+      display: none;
+    } 
+
+    .product-form__input--pill input[type="radio"].disabled + label.variant-frame {
+      display: none !important;
+    }      
   {%- endstyle -%}
 
   <script src="{{ 'product-info.js' | asset_url }}" defer="defer"></script>
@@ -435,6 +419,18 @@
                 </div>
               
               {%- when 'quantity_selector' -%}
+                {%- style -%}
+                  .product-form__quantity {
+                    text-align: center;
+                  }
+
+                  .quantity {
+                    border-radius: var(--variant-pills-radius);
+                    margin: 0 auto;
+                    text-align: center;
+                    width: 100%;
+                  }
+                {%- endstyle -%}                
                 <div
                   id="Quantity-Form-{{ section.id }}"
                   class="product-form__input product-form__quantity{% if settings.inputs_shadow_vertical_offset != 0 and settings.inputs_shadow_vertical_offset < 0 %} product-form__quantity-top{% endif %}"
