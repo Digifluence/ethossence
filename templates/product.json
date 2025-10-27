@@ -112,6 +112,18 @@
     },
     "ethossence_product_desc_3FH7xM": {
       "type": "ethossence-product-description",
+      "blocks": {
+        "heading_p3LWnd": {
+          "type": "heading",
+          "settings": {
+            "heading": "Description",
+            "heading_size": "h1"
+          }
+        }
+      },
+      "block_order": [
+        "heading_p3LWnd"
+      ],
       "name": "Description",
       "settings": {
         "desktop_content_position": "left",
@@ -119,7 +131,19 @@
         "color_scheme": "",
         "full_width": true,
         "padding_top": 40,
-        "padding_bottom": 52
+        "padding_bottom": 16
+      }
+    },
+    "ethossence_product_specifications_eYJQ4A": {
+      "type": "ethossence-product-specifications",
+      "name": "Product Specifications",
+      "settings": {
+        "heading": "Specifications",
+        "heading_size": "h1",
+        "introduction": "",
+        "color_scheme": "scheme-1",
+        "padding_top": 16,
+        "padding_bottom": 16
       }
     },
     "ethossence_img_gallery_PQABqb": {
@@ -196,6 +220,7 @@
     "rich_text_d6Vjce",
     "main",
     "ethossence_product_desc_3FH7xM",
+    "ethossence_product_specifications_eYJQ4A",
     "ethossence_img_gallery_PQABqb",
     "ethossence_product_parts_pkkVnP",
     "related-products",
