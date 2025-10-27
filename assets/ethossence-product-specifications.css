@@ -73,7 +73,7 @@
 /* Large desktop spacing */
 @media screen and (min-width: 990px) {
   .product-specifications__row {
-    padding: 2rem;
+    padding: 0.5rem 1rem;
   }
 
   .product-specifications__heading {
