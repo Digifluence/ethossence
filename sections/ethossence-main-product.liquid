@@ -385,22 +385,20 @@
                   </div>
                 {%- endif -%}
               
-              {%- when 'sku' -%}
+              {%- when 'sku_and_bardcode' -%}
                 {% style %}
                   .product__sku {
-                    text-align:center;
+                    text-align: center;
                   }
                 {% endstyle %}
-                <p
-                  class="product__sku{% if block.settings.text_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.text_style == 'subtitle' %} subtitle{% endif %}{% if product.selected_or_first_available_variant.sku.size == 0 %} visibility-hidden{% endif %}"
+                <div
+                  class="product__sku{% if block.settings.text_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.text_style == 'subtitle' %} subtitle{% endif %}"
                   id="Sku-{{ section.id }}"
-                  role="status"
                   {{ block.shopify_attributes }}
                 >
-                  <pre>?Huh</pre>
-                  <div>SKU:&nbsp:&nbsp:{{- product.selected_or_first_available_variant.sku -}}</div>
-                  <div>Part Number:&nbsp:&nbsp:{{- product.selected_or_first_available_variant.barcode -}}</div>
-                </p>
+                  <div>SKU:&nbsp;&nbsp;{{- product.selected_or_first_available_variant.sku -}}</div>
+                  <div>Part Number:&nbsp;&nbsp;{{- product.selected_or_first_available_variant.barcode -}}</div>
+                </div>
               
               {%- when 'custom_liquid' -%}
                 {{ block.settings.custom_liquid }}
@@ -1049,7 +1047,7 @@
       "limit": 1
     },
     {
-      "type": "sku",
+      "type": "sku_and_bardcode",
       "name": "t:sections.main-product.blocks.sku.name",
       "limit": 1,
       "settings": [
