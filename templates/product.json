@@ -70,12 +70,6 @@
             "show_gift_card_recipient": true
           }
         },
-        "sku_MN6ETq": {
-          "type": "sku",
-          "settings": {
-            "text_style": "body"
-          }
-        },
         "popup_yxTwY6": {
           "type": "popup",
           "settings": {
@@ -90,7 +84,6 @@
         "quantity_selector",
         "price",
         "buy_buttons",
-        "sku_MN6ETq",
         "popup_yxTwY6"
       ],
       "settings": {
