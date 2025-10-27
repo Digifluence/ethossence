@@ -483,16 +483,3 @@
     opacity: 1;
   }
 }
-
-
-@media screen and (min-width: 990px) {
-  .rich-text__blocks {
-    max-width: 100%;
-  }
-}      
-
-@media screen and (min-width: 750px) {
-  .rich-text__blocks {
-    max-width: 100%;
-  }
-}
