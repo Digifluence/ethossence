@@ -122,6 +122,18 @@
         "padding_bottom": 52
       }
     },
+    "ethossence_product_specifications_CyBQRe": {
+      "type": "ethossence-product-specifications",
+      "name": "Product Specifications",
+      "settings": {
+        "heading": "Specifications",
+        "heading_size": "h1",
+        "introduction": "<p>This is a test, only a test.</p>",
+        "color_scheme": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
     "ethossence_specs_rows_ktCxiA": {
       "type": "ethossence-specs-rows",
       "name": "Specifications Previous",
@@ -206,6 +218,7 @@
     "rich_text_d6Vjce",
     "main",
     "ethossence_product_desc_3FH7xM",
+    "ethossence_product_specifications_CyBQRe",
     "ethossence_specs_rows_ktCxiA",
     "ethossence_img_gallery_PQABqb",
     "ethossence_product_parts_pkkVnP",
