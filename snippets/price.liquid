@@ -42,11 +42,14 @@
 
 <!-- ETHOSSENCE CUSTOMIZATION: ADD CENTER ALIGN FOR PRICING -->
 {% style %} 
-.price__container {
-  margin: 0 auto;
-  text-align: center;
-  width: 100%;
-}
+  .price__container {
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .price__regular {
+    text-align: center;    
+  }
 {% endstyle %}
 
 {%- unless target == null and placeholder == null -%}
@@ -68,10 +71,11 @@
           - div.price__sale: Displayed when a variant is a sale
       {%- endcomment -%}
 
+      <legend class="form__label">
+        {{ 'products.product.price.regular_price' | t }}
+      </legend>
+
       <div class="price__regular">
-        <legend class="form__label">
-          {{ 'products.product.price.regular_price' | t }}
-        </legend>
         {%- if product.quantity_price_breaks_configured? -%}
           {%- if show_compare_at_price and compare_at_price -%}
             {%- unless product.price_varies == false and product.compare_at_price_varies %}
