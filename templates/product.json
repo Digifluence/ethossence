@@ -122,6 +122,18 @@
         "padding_bottom": 52
       }
     },
+    "ethossence_product_specifications_ygEaQB": {
+      "type": "ethossence-product-specifications",
+      "name": "Product Specifications",
+      "settings": {
+        "heading": "Specifications",
+        "heading_size": "h1",
+        "introduction": "",
+        "color_scheme": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
     "ethossence_specs_rows_7ttYbk": {
       "type": "ethossence-specs-rows",
       "disabled": true,
@@ -135,6 +147,7 @@
     },
     "ethossence_img_gallery_PQABqb": {
       "type": "ethossence-media-gallery",
+      "disabled": true,
       "name": "Image gallery",
       "settings": {
         "color_scheme": "scheme-1",
@@ -149,6 +162,7 @@
     },
     "ethossence_product_parts_pkkVnP": {
       "type": "ethossence-product-parts",
+      "disabled": true,
       "name": "Replacement Parts",
       "settings": {
         "variants_per_page": 50,
@@ -162,6 +176,7 @@
     },
     "related-products": {
       "type": "related-products",
+      "disabled": true,
       "settings": {
         "heading": "You may also like",
         "heading_size": "h2",
@@ -194,20 +209,9 @@
       "block_order": [
         "judge_me_reviews_review_widget_eCQ7n8"
       ],
+      "disabled": true,
       "settings": {
         "include_margins": true
-      }
-    },
-    "ethossence_product_specifications_ygEaQB": {
-      "type": "ethossence-product-specifications",
-      "name": "Product Specifications",
-      "settings": {
-        "heading": "Specifications",
-        "heading_size": "h1",
-        "introduction": "",
-        "color_scheme": "",
-        "padding_top": 36,
-        "padding_bottom": 36
       }
     }
   },
