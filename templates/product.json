@@ -146,6 +146,18 @@
         "padding_bottom": 16
       }
     },
+    "melttools_welding_processes_Mhzzeh": {
+      "type": "melttools-welding-processes",
+      "name": "Welding processes",
+      "settings": {
+        "heading": "Welding processes",
+        "heading_size": "h1",
+        "introduction": "",
+        "color_scheme": "",
+        "padding_top": 0,
+        "padding_bottom": 16
+      }
+    },
     "ethossence_img_gallery_PQABqb": {
       "type": "ethossence-media-gallery",
       "disabled": true,
@@ -213,18 +225,6 @@
       "disabled": true,
       "settings": {
         "include_margins": true
-      }
-    },
-    "melttools_welding_processes_Mhzzeh": {
-      "type": "melttools-welding-processes",
-      "name": "Welding processes",
-      "settings": {
-        "heading": "Welding processes",
-        "heading_size": "h1",
-        "introduction": "",
-        "color_scheme": "",
-        "padding_top": 36,
-        "padding_bottom": 36
       }
     }
   },
