@@ -192,15 +192,16 @@
   height: 4rem;
   padding: 0;
   border: none;
-  background-color: rgba(var(--color-background), 0.9);
+  background-color: rgba(var(--color-background), 0.95);
   color: rgb(var(--color-foreground));
   border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 2;
+  z-index: 3;
   transition: background-color 0.2s ease;
+  box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.3);
 }
 
 .image-gallery-modal__close:hover {

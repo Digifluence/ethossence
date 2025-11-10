@@ -67,15 +67,6 @@
       <div class="image-gallery-modal__content">
         <button
           type="button"
-          class="image-gallery-modal__close"
-          data-gallery-close
-          aria-label="{{ 'accessibility.close' | t }}"
-        >
-          {{- 'icon-close.svg' | inline_asset_content -}}
-        </button>
-
-        <button
-          type="button"
           class="image-gallery-modal__nav image-gallery-modal__nav--prev"
           data-gallery-prev
           aria-label="{{ 'general.slider.previous_slide' | t }}"
@@ -84,6 +75,15 @@
         </button>
 
         <div class="image-gallery-modal__image-container">
+          <button
+            type="button"
+            class="image-gallery-modal__close"
+            data-gallery-close
+            aria-label="{{ 'accessibility.close' | t }}"
+          >
+            {{- 'icon-close.svg' | inline_asset_content -}}
+          </button>
+          
           <img
             class="image-gallery-modal__image"
             data-gallery-image
@@ -134,7 +134,7 @@
   "settings": [
     {
       "type": "inline_richtext",
-      "id": "Header",
+      "id": "title",
       "default": "Image Gallery",
       "label": "Heading"
     },
