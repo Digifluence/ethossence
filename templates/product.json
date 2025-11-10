@@ -212,9 +212,9 @@
         "include_margins": true
       }
     },
-    "ethossence_image_gallery_HQke63": {
+    "ethossence_image_gallery_8Txykq": {
       "type": "ethossence-image-gallery",
-      "name": "Image gallery (v11)",
+      "name": "Image gallery",
       "settings": {
         "title": "Image Gallery",
         "heading_size": "h1",
@@ -234,6 +234,6 @@
     "ethossence_product_parts_pkkVnP",
     "related-products",
     "17564162700878961e",
-    "ethossence_image_gallery_HQke63"
+    "ethossence_image_gallery_8Txykq"
   ]
 }
