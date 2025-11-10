@@ -1,3 +1,5 @@
+<pre>version 3</pre>
+
 {{ 'section-image-gallery.css' | asset_url | stylesheet_tag }}
 
 {%- style -%}
@@ -19,6 +21,15 @@
   assign desktop_columns = section.settings.desktop_columns
   assign mobile_columns = section.settings.mobile_columns
 -%}
+
+<pre>
+product.metafields.ethossence.collection_img_file.value
+{{ product.metafields.ethossence.collection_img_file.value }}
+
+{%- for image in gallery_images -%}
+  {{ image | image_url }}
+{%- endfor -%}
+</pre>
 
 {%- if gallery_images.size > 0 -%}
   <div class="image-gallery section-{{ section.id }}-padding">
@@ -205,6 +216,7 @@
   "presets": [
     {
       "name": "Image gallery (new)",
+      "category": "Media"
     }
   ]
 }
