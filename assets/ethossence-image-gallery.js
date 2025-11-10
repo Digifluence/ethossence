@@ -176,16 +176,3 @@ class ImageGallery extends HTMLElement {
 if (!customElements.get('image-gallery')) {
   customElements.define('image-gallery', ImageGallery);
 }
-
-// INITIALIZE GALLERIES ON PAGE LOAD
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('[data-gallery-id]').forEach(gallery => {
-    if (gallery.tagName.toLowerCase() !== 'image-gallery') {
-      // WRAP IN CUSTOM ELEMENT IF NOT ALREADY
-      const wrapper = document.createElement('image-gallery');
-      wrapper.dataset.galleryId = gallery.dataset.galleryId;
-      gallery.parentNode.insertBefore(wrapper, gallery);
-      wrapper.appendChild(gallery);
-    }
-  });
-});
