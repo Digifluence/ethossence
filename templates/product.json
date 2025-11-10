@@ -211,6 +211,18 @@
       "settings": {
         "include_margins": true
       }
+    },
+    "ethossence_image_gallery_HQke63": {
+      "type": "ethossence-image-gallery",
+      "name": "Image gallery (v11)",
+      "settings": {
+        "title": "Image Gallery",
+        "heading_size": "h1",
+        "desktop_columns": 4,
+        "mobile_columns": 2,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
     }
   },
   "order": [
@@ -221,6 +233,7 @@
     "melttools_welding_processes_Mhzzeh",
     "ethossence_product_parts_pkkVnP",
     "related-products",
-    "17564162700878961e"
+    "17564162700878961e",
+    "ethossence_image_gallery_HQke63"
   ]
 }
