@@ -1,5 +1,3 @@
-/* VERSION 2 */
-
 /* IMAGE GALLERY GRID */
 .image-gallery {
   width: 100%;
@@ -59,10 +57,6 @@
   .image-gallery__grid.grid--6-col-desktop {
     grid-template-columns: repeat(6, minmax(0, 1fr));
   }
-}
-
-.image-gallery__item {
-  position: relative;
 }
 
 .image-gallery__trigger {
@@ -170,11 +164,15 @@
   height: auto;
   object-fit: contain;
   display: block;
+  border: 0.2rem solid rgb(var(--color-background));
+  border-radius: 1.2rem;
+  box-shadow: 0 0 2rem rgba(0, 0, 0, 0.5);
 }
 
 @media screen and (min-width: 750px) {
   .image-gallery-modal__image {
     max-height: calc(90vh - 12rem);
+    border-width: 0.3rem;
   }
 }
 
