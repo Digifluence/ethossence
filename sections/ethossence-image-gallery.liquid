@@ -1,3 +1,5 @@
+<pre>v 8</pre> 
+
 {{ 'ethossence-image-gallery.css' | asset_url | stylesheet_tag }}
 
 {%- style -%}
@@ -21,8 +23,8 @@
 -%}
 
 {%- if gallery_images != blank -%}
-  <image-gallery class="image-gallery section-{{ section.id }}-padding color-{{ section.settings.color_scheme }} gradient" data-gallery-id="{{ section.id }}">
-    <div class="image-gallery__wrapper page-width">
+  <div class="image-gallery section-{{ section.id }}-padding">
+    <div class="page-width">
       {%- if section.settings.title != blank -%}
         <div class="title-wrapper-with-link title-wrapper--self-padded-mobile title-wrapper--no-top-margin">
           <h2 class="title inline-richtext {{ section.settings.heading_size }}">
@@ -30,34 +32,35 @@
           </h2>
         </div>
       {%- endif -%}
-    </div>
 
-    <div 
-      class="image-gallery__grid grid grid--{{ desktop_columns }}-col-desktop grid--{{ mobile_columns }}-col-tablet-down page-width"
-    >
-      {%- for image in gallery_images -%}
-        <div class="image-gallery__item grid__item">
-          <button
-            type="button"
-            class="image-gallery__trigger"
-            data-gallery-trigger
-            data-image-index="{{ forloop.index0 }}"
-            aria-label="{{ 'products.product.media.open_media' | t: index: forloop.index }}"
-          >
-            <div class="image-gallery__image-wrapper">
-              {{
-                image
-                | image_url: width: 800
-                | image_tag:
-                  loading: 'lazy',
-                  class: 'image-gallery__image',
-                  widths: '375, 550, 750, 1100, 1500',
-                  sizes: '(min-width: 750px) calc((100vw - 10rem) / ' | append: desktop_columns | append: '), calc((100vw - 3rem) / ' | append: mobile_columns | append: ')'
-              }}
-            </div>
-          </button>
-        </div>
-      {%- endfor -%}
+      <div 
+        class="image-gallery__grid grid grid--{{ desktop_columns }}-col-desktop grid--{{ mobile_columns }}-col-tablet-down"
+        data-gallery-id="{{ section.id }}"
+      >
+        {%- for image in gallery_images -%}
+          <div class="image-gallery__item grid__item">
+            <button
+              type="button"
+              class="image-gallery__trigger"
+              data-gallery-trigger
+              data-image-index="{{ forloop.index0 }}"
+              aria-label="View image {{ forloop.index }} of {{ gallery_images.size }}"
+            >
+              <div class="image-gallery__image-wrapper">
+                {{
+                  image
+                  | image_url: width: 800
+                  | image_tag:
+                    loading: 'lazy',
+                    class: 'image-gallery__image',
+                    widths: '375, 550, 750, 1100, 1500',
+                    sizes: '(min-width: 750px) calc((100vw - 10rem) / ' | append: desktop_columns | append: '), calc((100vw - 3rem) / ' | append: mobile_columns | append: ')'
+                }}
+              </div>
+            </button>
+          </div>
+        {%- endfor -%}
+      </div>
     </div>
 
     {%- comment -%} LIGHTBOX MODAL {%- endcomment -%}
@@ -118,14 +121,14 @@
         {%- endfor -%}
       ]
     </script>
-  </image-gallery>
+  </div>
 
-  <script src="{{ 'ethossence-gallery.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'ethossence-image-gallery.js' | asset_url }}" defer="defer"></script>
 {%- endif -%}
 
 {% schema %}
 {
-  "name": "Image gallery (vC)",
+  "name": "Image gallery (vB)",
   "tag": "section",
   "class": "section",
   "disabled_on": {
@@ -203,7 +206,7 @@
   ],
   "presets": [
     {
-      "name": "Image gallery (vC)",
+      "name": "Image gallery (vB)",
       "category": "Media"
     }
   ]
