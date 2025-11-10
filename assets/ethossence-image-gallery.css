@@ -11,6 +11,12 @@
   display: grid;
 }
 
+.image-gallery__item {
+  position: relative;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
 /* MOBILE/TABLET COLUMNS */
 .image-gallery__grid.grid--1-col-tablet-down {
   grid-template-columns: repeat(1, minmax(0, 1fr));
