@@ -20,11 +20,11 @@
 -%}
 
 <pre>
-Video resources 011
+Video resources 012
 video_resources.size {{ video_resources.size }}
 </pre>
 
-{%- if video_resources.size > 0 -%}
+{%- if video_resources.count > 0 -%}
   <div class="ethossence-video-resources section-{{ section.id }}-padding">
     <div class="ethossence-video-resources__wrapper page-width">
       {%- if section.settings.heading != blank -%}
