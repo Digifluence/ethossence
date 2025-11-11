@@ -6,14 +6,19 @@
   assign video_urls = product_metafield.value
 -%}
 
-<pre>
-version 6
-product.metafields.ethossence.collection_vid_gallery
-{{ product.metafields.ethossence.collection_vid_gallery }}
-video_urls: {{ video_urls }}
-video_urls.size: {{ video_urls.size }}
-section.settings.columns_desktop: {{ section.settings.columns_desktop }}
-</pre>
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
 
 {%- if video_urls.size > 0 -%}
   <div class="ethossence-video-gallery section-{{ section.id }}-padding">
@@ -116,7 +121,7 @@ section.settings.columns_desktop: {{ section.settings.columns_desktop }}
       "type": "inline_richtext",
       "id": "heading",
       "label": "Heading",
-      "default": "Video gallery"
+      "default": "Video Gallery"
     },
     {
       "type": "select",
@@ -124,19 +129,27 @@ section.settings.columns_desktop: {{ section.settings.columns_desktop }}
       "options": [
         {
           "value": "h2",
-          "label": "Small"
+          "label": "t:sections.all.heading_size.options__1.label"
         },
         {
           "value": "h1",
-          "label": "Medium"
+          "label": "t:sections.all.heading_size.options__2.label"
         },
         {
           "value": "h0",
-          "label": "Large"
+          "label": "t:sections.all.heading_size.options__3.label"
+        },
+        {
+          "value": "hxl",
+          "label": "t:sections.all.heading_size.options__4.label"
+        },
+        {
+          "value": "hxxl",
+          "label": "t:sections.all.heading_size.options__5.label"
         }
       ],
       "default": "h1",
-      "label": "Heading size"
+      "label": "t:sections.all.heading_size.label"
     },
     {
       "type": "range",
@@ -174,11 +187,11 @@ section.settings.columns_desktop: {{ section.settings.columns_desktop }}
       "type": "color",
       "id": "vimeo_color",
       "label": "Vimeo player color",
-      "default": "#00adef"
+      "default": "#000000"
     },
     {
       "type": "header",
-      "content": "Section padding"
+      "content": "t:sections.all.padding.section_padding_heading"
     },
     {
       "type": "range",
@@ -187,8 +200,8 @@ section.settings.columns_desktop: {{ section.settings.columns_desktop }}
       "max": 100,
       "step": 4,
       "unit": "px",
-      "label": "Top padding",
-      "default": 36
+      "label": "t:sections.all.padding.padding_top",
+      "default": 40
     },
     {
       "type": "range",
@@ -197,8 +210,8 @@ section.settings.columns_desktop: {{ section.settings.columns_desktop }}
       "max": 100,
       "step": 4,
       "unit": "px",
-      "label": "Bottom padding",
-      "default": 36
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 52
     }
   ],
   "presets": [

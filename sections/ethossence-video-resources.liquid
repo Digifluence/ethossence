@@ -1,0 +1,324 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{{ 'ethossence-video-resources.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'ethossence-video-resources.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign video_resources = product.metafields.ethossence.video_resources.value
+-%}
+
+{%- if video_resources.size > 0 -%}
+  <div class="ethossence-video-resources section-{{ section.id }}-padding">
+    <div class="ethossence-video-resources__wrapper page-width">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="ethossence-video-resources__heading {{ section.settings.heading_size }}">
+          {{ section.settings.heading }}
+        </h2>
+      {%- endif -%}
+
+      <div class="ethossence-video-resources__grid grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down">
+        {%- for resource in video_resources -%}
+          {%- liquid
+            assign resource_title = resource.title
+            assign resource_description = resource.description
+            assign resource_file = resource.file
+            assign resource_url = resource.url
+            
+            # DETERMINE IF WE HAVE A VIDEO TO DISPLAY
+            assign has_video = false
+            if resource_file != blank or resource_url != blank
+              assign has_video = true
+            endif
+          -%}
+
+          <div class="ethossence-video-resources__item">
+            {%- if has_video -%}
+              <div class="ethossence-video-resources__video-wrapper">
+                {%- if resource_file != blank -%}
+                  {%- comment %} SHOPIFY CDN VIDEO FILE {% endcomment -%}
+                  {%- if resource_file.media_type == 'video' -%}
+                    <video-section class="ethossence-video-resources__video-section">
+                      <deferred-media class="ethossence-video-resources__deferred-media" data-media-id="{{ resource_file.id }}">
+                        <button
+                          id="Deferred-Poster-Modal-{{ resource_file.id }}"
+                          class="ethossence-video-resources__poster"
+                          type="button"
+                          aria-label="Play video"
+                        >
+                          {%- if resource_file.preview_image != blank -%}
+                            <img
+                              src="{{ resource_file.preview_image | image_url: width: 1920 }}"
+                              srcset="
+                                {%- if resource_file.preview_image.width >= 375 -%}{{ resource_file.preview_image | image_url: width: 375 }} 375w,{%- endif -%}
+                                {%- if resource_file.preview_image.width >= 750 -%}{{ resource_file.preview_image | image_url: width: 750 }} 750w,{%- endif -%}
+                                {%- if resource_file.preview_image.width >= 1100 -%}{{ resource_file.preview_image | image_url: width: 1100 }} 1100w,{%- endif -%}
+                                {%- if resource_file.preview_image.width >= 1500 -%}{{ resource_file.preview_image | image_url: width: 1500 }} 1500w,{%- endif -%}
+                                {%- if resource_file.preview_image.width >= 1780 -%}{{ resource_file.preview_image | image_url: width: 1780 }} 1780w,{%- endif -%}
+                                {%- if resource_file.preview_image.width >= 2000 -%}{{ resource_file.preview_image | image_url: width: 2000 }} 2000w,{%- endif -%}
+                                {%- if resource_file.preview_image.width >= 3000 -%}{{ resource_file.preview_image | image_url: width: 3000 }} 3000w,{%- endif -%}
+                                {%- if resource_file.preview_image.width >= 3840 -%}{{ resource_file.preview_image | image_url: width: 3840 }} 3840w,{%- endif -%}
+                                {{ resource_file.preview_image | image_url }} {{ resource_file.preview_image.width }}w
+                              "
+                              sizes="(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 }}px, (min-width: 750px) calc(100vw - 10rem), 100vw"
+                              alt="{{ resource_file.alt | escape }}"
+                              loading="lazy"
+                              width="{{ resource_file.preview_image.width }}"
+                              height="{{ resource_file.preview_image.height }}"
+                            >
+                          {%- endif -%}
+                          <span class="ethossence-video-resources__play-button">
+                            <svg aria-hidden="true" focusable="false" class="icon icon-play" viewBox="0 0 18 18">
+                              <path d="M4.75 2.84a.75.75 0 0 0-1.125.65v11.02a.75.75 0 0 0 1.125.65l9.574-5.51a.75.75 0 0 0 0-1.3L4.75 2.84Z" />
+                            </svg>
+                          </span>
+                        </button>
+                        <template>
+                          <video
+                            controls
+                            playsinline
+                            preload="metadata"
+                            poster="{{ resource_file.preview_image | image_url: width: 1920 }}"
+                          >
+                            {%- for source in resource_file.sources -%}
+                              <source
+                                src="{{ source.url }}"
+                                type="{{ source.mime_type }}"
+                              >
+                            {%- endfor -%}
+                            Your browser does not support the video tag.
+                          </video>
+                        </template>
+                      </deferred-media>
+                    </video-section>
+                  {%- endif -%}
+
+                {%- elsif resource_url != blank -%}
+                  {%- comment %} EXTERNAL VIDEO URL (YOUTUBE/VIMEO) {% endcomment -%}
+                  {%- liquid
+                    # EXTRACT VIDEO ID AND DETERMINE PLATFORM
+                    assign s_vid_url_no_params = resource_url | split: '?'
+                    assign vid_id = ''
+                    assign vid_platform = ''
+                    assign vid_url_after_q = ''
+                    
+                    for vid_no_params in s_vid_url_no_params
+                      if forloop.first
+                        assign s_vid_url_parts = vid_no_params | split: '/'
+                        for vid_part in s_vid_url_parts
+                          if forloop.last
+                            assign vid_id = vid_part
+                          endif
+                        endfor
+                        
+                        # DETERMINE PLATFORM
+                        if vid_no_params contains 'vimeo'
+                          assign vid_platform = 'vimeo'
+                        elsif vid_no_params contains 'youtube' or vid_no_params contains 'youtu.be'
+                          assign vid_platform = 'youtube'
+                        endif
+                      elsif forloop.last
+                        assign vid_url_after_q = vid_no_params
+                      endif
+                    endfor
+                    
+                    # BUILD EMBED URL
+                    if vid_platform == 'vimeo'
+                      assign embed_url = 'https://player.vimeo.com/video/' | append: vid_id | append: '?title=false&byline=false&portrait=false&color=' | append: section.settings.vimeo_color
+                    elsif vid_platform == 'youtube'
+                      assign embed_url = 'https://www.youtube.com/embed/' | append: vid_id | append: '?rel=0'
+                    endif
+                  -%}
+
+                  {%- if vid_id != blank and vid_platform != blank -%}
+                    {%- if section.settings.lazy_load -%}
+                      <div class="ethossence-video-resources__placeholder" data-video-platform="{{ vid_platform }}" data-video-id="{{ vid_id }}" data-embed-url="{{ embed_url }}">
+                        <button type="button" class="ethossence-video-resources__play-button-overlay" aria-label="Play video">
+                          <svg aria-hidden="true" focusable="false" width="72" height="72" viewBox="0 0 72 72">
+                            <circle cx="36" cy="36" r="34" fill="rgba(0,0,0,0.6)"/>
+                            <path d="M28 48.5V23.5L52 36L28 48.5Z" fill="white"/>
+                          </svg>
+                        </button>
+                        {%- if vid_platform == 'youtube' -%}
+                          <img 
+                            src="https://img.youtube.com/vi/{{ vid_id }}/hqdefault.jpg" 
+                            alt="{{ resource_title | escape }}"
+                            loading="lazy"
+                            width="480"
+                            height="360"
+                          >
+                        {%- elsif vid_platform == 'vimeo' -%}
+                          <div class="ethossence-video-resources__vimeo-thumbnail" data-vimeo-id="{{ vid_id }}"></div>
+                        {%- endif -%}
+                      </div>
+                    {%- else -%}
+                      <iframe
+                        src="{{ embed_url }}"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen
+                        loading="lazy"
+                        class="ethossence-video-resources__iframe"
+                      ></iframe>
+                    {%- endif -%}
+                  {%- endif -%}
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+
+            <div class="ethossence-video-resources__content">
+              {%- if resource_title != blank -%}
+                <h3 class="ethossence-video-resources__title {{ section.settings.title_size }}">
+                  {{ resource_title }}
+                </h3>
+              {%- endif -%}
+
+              {%- if resource_description != blank -%}
+                <div class="ethossence-video-resources__description rte">
+                  {{ resource_description }}
+                </div>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Video resources",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Video resources"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "Small"
+        },
+        {
+          "value": "h1",
+          "label": "Medium"
+        },
+        {
+          "value": "h0",
+          "label": "Large"
+        }
+      ],
+      "default": "h1",
+      "label": "Heading size"
+    },
+    {
+      "type": "select",
+      "id": "title_size",
+      "options": [
+        {
+          "value": "h3",
+          "label": "Small"
+        },
+        {
+          "value": "h2",
+          "label": "Medium"
+        },
+        {
+          "value": "h1",
+          "label": "Large"
+        }
+      ],
+      "default": "h3",
+      "label": "Resource title size"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 2,
+      "label": "Number of columns on desktop"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 column"
+        },
+        {
+          "value": "2",
+          "label": "2 columns"
+        }
+      ],
+      "default": "1",
+      "label": "Number of columns on mobile"
+    },
+    {
+      "type": "checkbox",
+      "id": "lazy_load",
+      "label": "Enable lazy loading for external videos",
+      "info": "Shows YouTube/Vimeo thumbnails with play buttons. Videos load when clicked.",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "vimeo_color",
+      "label": "Vimeo player color",
+      "default": "#00adef"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 52
+    }
+  ],
+  "presets": [
+    {
+      "name": "Video resources"
+    }
+  ]
+}
+{% endschema %}
