@@ -118,3 +118,20 @@
     </deferred-media>
   {%- endif -%}
 {%- endif -%}
+
+
+{%- liquid 
+  assign s_vid_url_no_params = vid_url | split: '?'
+  for vid_no_params in s_vid_url_no_params
+    if forloop.first
+      assign s_vid_url_parts = vid_no_params | split: '/'
+      for vid_part in s_vid_url_parts
+        if forloop.last
+          assign s_vid_id = vid_part
+        endif
+      endfor
+    elsif forloop.last
+      assign s_vid_url_after_q = vid_no_params
+    endif
+  endfor 
+-%}
