@@ -25,9 +25,9 @@ product.metafields.ethossence.video_resources.value
 {{ product.metafields.ethossence.video_resources.value }}
 video_resources.size
 {{ video_resources.size }}
-</pre>>
+</pre>
 
-{%- if video_resources.size > 0 -%}
+{%- if video_resources.size != blank -%}
   <div class="ethossence-video-resources section-{{ section.id }}-padding">
     <div class="ethossence-video-resources__wrapper page-width">
       {%- if section.settings.heading != blank -%}
