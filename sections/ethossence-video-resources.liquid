@@ -19,6 +19,12 @@
   assign video_resources = product.metafields.ethossence.video_resources.value
 -%}
 
+<pre>
+  Video Resources v 5
+  product.metafields.ethossence.video_resources.value
+  {{ product.metafields.ethossence.video_resources.value }}
+</pre>
+
 {%- if video_resources.size > 0 -%}
   <div class="ethossence-video-resources section-{{ section.id }}-padding">
     <div class="ethossence-video-resources__wrapper page-width">
