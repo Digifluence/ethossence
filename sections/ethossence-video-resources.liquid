@@ -20,13 +20,11 @@
 -%}
 
 <pre>
-Video resources 014
+Video resources 015
 video_resources.count {{ video_resources.count }}
 {% for resource in video_resources limit: 1 %}
-  resource.file: {{ resource.file }}
-  resource.file.media_type: {{ resource.file.media_type }}
-  resource.file.sources: {{ resource.file.sources }}
-  resource.file.sources.size: {{ resource.file.sources.size }}
+  Full resource object:
+  {{ resource }}
 {% endfor %}
 </pre>
 
