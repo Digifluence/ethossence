@@ -20,7 +20,7 @@
 -%}
 
 <pre>
-Video resources 012
+Video resources 013
 video_resources.size {{ video_resources.size }}
 </pre>
 
@@ -37,7 +37,7 @@ video_resources.size {{ video_resources.size }}
         {%- for resource in video_resources -%}
           {%- liquid
             assign resource_title = resource.title
-            assign resource_description = resource.description
+            assign resource_description = resource.description | metafield_text
             assign resource_file = resource.file
             assign resource_url = resource.url
             
