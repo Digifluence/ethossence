@@ -20,12 +20,8 @@
 -%}
 
 <pre>
-Video resources 015
+Video resources 017
 video_resources.count {{ video_resources.count }}
-{% for resource in video_resources limit: 1 %}
-  Full resource object:
-  {{ resource }}
-{% endfor %}
 </pre>
 
 {%- if video_resources.count > 0 -%}
@@ -40,14 +36,10 @@ video_resources.count {{ video_resources.count }}
       <div class="ethossence-video-resources__grid grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down">
         {%- for resource in video_resources -%}
           {%- liquid
-            assign resource_title = resource.title
-            assign resource_description = resource.description | metafield_text
-            assign resource_file = resource.file
-            assign resource_url = resource.url
-
-            # DEBUG: Check file properties
-            assign file_type = resource_file.media_type
-            assign has_sources = resource_file.sources | default: false
+            assign resource_title = resource.title.value
+            assign resource_description = resource.description.value | metafield_text
+            assign resource_file = resource.file.value
+            assign resource_url = resource.url.value
 
             # DETERMINE IF WE HAVE A VIDEO TO DISPLAY
             assign has_video = false
@@ -98,20 +90,7 @@ video_resources.count {{ video_resources.count }}
                           </span>
                         </button>
                         <template>
-                          <video
-                            controls
-                            playsinline
-                            preload="metadata"
-                            poster="{{ resource_file.preview_image | image_url: width: 1920 }}"
-                          >
-                            {%- for source in resource_file.sources -%}
-                              <source
-                                src="{{ source.url }}"
-                                type="{{ source.mime_type }}"
-                              >
-                            {%- endfor -%}
-                            Your browser does not support the video tag.
-                          </video>
+                          {{ resource_file | media_tag: controls: true, preload: 'metadata' }}
                         </template>
                       </deferred-media>
                     </video-section>
