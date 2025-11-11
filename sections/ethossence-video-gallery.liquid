@@ -12,6 +12,7 @@ product.metafields.ethossence.collection_vid_gallery
 {{ product.metafields.ethossence.collection_vid_gallery }}
 video_urls: {{ video_urls }}
 video_urls.size: {{ video_urls.size }}
+section.settings.columns_desktop: {{ section.settings.columns_desktop }}
 </pre>
 
 {%- if video_urls.size > 0 -%}
@@ -23,7 +24,9 @@ video_urls.size: {{ video_urls.size }}
         </h2>
       {%- endif -%}
 
-      <div class="ethossence-video-gallery__grid grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down">
+      <div 
+        class="ethossence-video-gallery__grid grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down"
+      >
         {%- for vid_url in video_urls -%}
           {%- liquid
             # EXTRACT VIDEO ID AND DETERMINE PLATFORM
