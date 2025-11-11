@@ -16,17 +16,15 @@ section.settings.columns_desktop: {{ section.settings.columns_desktop }}
 </pre>
 
 {%- if video_urls.size > 0 -%}
-  <div class="ethossence-video-gallery page-width section-{{ section.id }}-padding">
-    <div class="ethossence-video-gallery__wrapper">
+  <div class="ethossence-video-gallery section-{{ section.id }}-padding">
+    <div class="ethossence-video-gallery__wrapper page-width">
       {%- if section.settings.heading != blank -%}
         <h2 class="ethossence-video-gallery__heading {{ section.settings.heading_size }}">
           {{ section.settings.heading }}
         </h2>
       {%- endif -%}
 
-      <div 
-        class="ethossence-video-gallery__grid grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down"
-      >
+      <div class="ethossence-video-gallery__grid grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down">
         {%- for vid_url in video_urls -%}
           {%- liquid
             # EXTRACT VIDEO ID AND DETERMINE PLATFORM
@@ -77,7 +75,7 @@ section.settings.columns_desktop: {{ section.settings.columns_desktop }}
                     {%- if vid_platform == 'youtube' -%}
                       <img 
                         src="https://img.youtube.com/vi/{{ vid_id }}/hqdefault.jpg" 
-                        alt="video thumbnail"
+                        alt="Video thumbnail"
                         loading="lazy"
                         width="480"
                         height="360"
@@ -205,8 +203,7 @@ section.settings.columns_desktop: {{ section.settings.columns_desktop }}
   ],
   "presets": [
     {
-      "name": "Video gallery",
-      "category": "Ethossence"
+      "name": "Video gallery"
     }
   ]
 }
