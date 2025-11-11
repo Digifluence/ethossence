@@ -20,14 +20,11 @@
 -%}
 
 <pre>
-Video resources 010
-product.metafields.ethossence.video_resources.value
-{{ product.metafields.ethossence.video_resources.value }}
-video_resources.size
-{{ video_resources.size }}
+Video resources 011
+video_resources.size {{ video_resources.size }}
 </pre>
 
-{%- if video_resources.size != blank -%}
+{%- if video_resources.size > 0 -%}
   <div class="ethossence-video-resources section-{{ section.id }}-padding">
     <div class="ethossence-video-resources__wrapper page-width">
       {%- if section.settings.heading != blank -%}
