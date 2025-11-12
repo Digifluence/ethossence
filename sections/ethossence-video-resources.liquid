@@ -172,7 +172,7 @@
 
             <div class="ethossence-video-resources__content">
               {%- if resource_title != blank and section.settings.include_video_title -%}
-                {{ section.settings.title_size | prepend: '<' | append: 'class="ethossence-video-resources__title" >' }}
+                {{ section.settings.title_size | prepend: '<' | append: '>' }}
                   {{ resource_title }}
                 {{ section.settings.title_size | prepend: '</' | append: '>' }}
               {%- endif -%}
