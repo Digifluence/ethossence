@@ -1,3 +1,6 @@
+{{ 'ethossence-video-resources.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'ethossence-video-resources.js' | asset_url }}" defer="defer"></script>
+
 {%- style -%}
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
@@ -12,9 +15,6 @@
   }
 {%- endstyle -%}
 
-{{ 'ethossence-video-resources.css' | asset_url | stylesheet_tag }}
-<script src="{{ 'ethossence-video-resources.js' | asset_url }}" defer="defer"></script>
-
 {%- liquid
   assign video_resources = product.metafields.ethossence.video_resources.value
 -%}
@@ -26,6 +26,7 @@ Video resources 018
 {%- if video_resources.count > 0 -%}
   <div class="ethossence-video-resources section-{{ section.id }}-padding">
     <div class="ethossence-video-resources__wrapper page-width">
+
       {%- if section.settings.heading != blank -%}
         <h2 class="ethossence-video-resources__heading {{ section.settings.heading_size }}">
           {{ section.settings.heading }}
@@ -126,7 +127,7 @@ Video resources 018
                     
                     # BUILD EMBED URL
                     if vid_platform == 'vimeo'
-                      assign embed_url = 'https://player.vimeo.com/video/' | append: vid_id | append: '?title=false&byline=false&portrait=false&color=' | append: section.settings.vimeo_color
+                      assign embed_url = 'https://player.vimeo.com/video/' | append: vid_id | append: '?title=false&byline=false&portrait=false&color=#000000'
                     elsif vid_platform == 'youtube'
                       assign embed_url = 'https://www.youtube.com/embed/' | append: vid_id | append: '?rel=0'
                     endif
@@ -170,9 +171,9 @@ Video resources 018
 
             <div class="ethossence-video-resources__content">
               {%- if resource_title != blank -%}
-                <h3 class="ethossence-video-resources__title {{ section.settings.title_size }}">
+                {{ section.settings.title_size | prepend: '<' | append: 'class="ethossence-video-resources__title" >' }}
                   {{ resource_title }}
-                </h3>
+                {{ section.settings.title_size | prepend: '</' | append: '>' }}
               {%- endif -%}
 
               {%- if resource_description != blank -%}
@@ -197,6 +198,10 @@ Video resources 018
     "groups": ["header", "footer"]
   },
   "settings": [
+    {
+      "type": "header",
+      "content": "Header"
+    },       
     {
       "type": "inline_richtext",
       "id": "heading",
@@ -233,7 +238,7 @@ Video resources 018
     },
     {
       "type": "header",
-      "content": "Content inclusion"
+      "content": "Video content"
     },   
     {
       "type": "checkbox",
@@ -247,26 +252,26 @@ Video resources 018
       "options": [
         {
           "value": "h2",
-          "label": "t:sections.all.heading_size.options__1.label"
+          "label": "Header 2"
         },
         {
-          "value": "h1",
-          "label": "t:sections.all.heading_size.options__2.label"
+          "value": "h3",
+          "label": "Header 3"
         },
         {
-          "value": "h0",
-          "label": "t:sections.all.heading_size.options__3.label"
+          "value": "h4",
+          "label": "Header 4"
         },
         {
-          "value": "hxl",
-          "label": "t:sections.all.heading_size.options__4.label"
+          "value": "h5",
+          "label": "Header 5"
         },
         {
-          "value": "hxxl",
-          "label": "t:sections.all.heading_size.options__5.label"
+          "value": "span",
+          "label": "Regular"
         }
       ],
-      "default": "h2",
+      "default": "h3",      
       "label": "Video title size"
     },
     {
@@ -274,7 +279,11 @@ Video resources 018
       "id": "include_video_description",
       "label": "Include video description",
       "default": true
-    },     
+    },
+    {
+      "type": "header",
+      "content": "Display settings"
+    },       
     {
       "type": "range",
       "id": "columns_desktop",
@@ -306,12 +315,6 @@ Video resources 018
       "label": "Enable lazy loading for external videos",
       "info": "Shows YouTube/Vimeo thumbnails with play buttons. Videos load when clicked.",
       "default": true
-    },
-    {
-      "type": "color",
-      "id": "vimeo_color",
-      "label": "Vimeo player color",
-      "default": "#000000"
     },
     {
       "type": "header",
