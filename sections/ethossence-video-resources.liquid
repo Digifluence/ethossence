@@ -44,6 +44,11 @@
             endif
           -%}
 
+          <pre>
+            resource_description
+            {{ resource_description }}
+          </pre>
+
           <div class="ethossence-video-resources__item">
             {%- if has_video -%}
               <div class="ethossence-video-resources__video-wrapper">
@@ -177,7 +182,7 @@
                   {{ resource_description }}
                 </div>
               {%- endif -%}
-              
+
             </div>
           </div>
         {%- endfor -%}
