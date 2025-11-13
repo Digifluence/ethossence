@@ -1,0 +1,515 @@
+{{ 'ethossence-image-resources.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'ethossence-image-resources.js' | asset_url }}" defer="defer"></script>
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign image_resources_unfiltered = product.metafields.ethossence.image_resources.value
+  assign image_resources = product.metafields.ethossence.image_resources.value
+
+  # ETHOSSENCE FEATURE: AUTHORIZATION FOR IMAGE RESOURCES
+  # FILTER IMAGE RESOURCES BASED ON CUSTOMER AUTHORIZATION
+
+  # GET CUSTOMER AUTHORIZATION LEVEL
+  assign customer_authorization_level = blank
+
+  if customer
+    assign customer_auth_metaobject = customer.metafields.ethossence.authorization_show.value
+
+    if customer_auth_metaobject
+      # ACCESS THE LEVEL FIELD OF THE METAOBJECT
+      if customer_auth_metaobject.level
+        assign level_value = customer_auth_metaobject.level
+        if level_value != blank
+          assign customer_authorization_level = level_value | downcase | strip
+        endif
+      endif
+    endif
+  endif
+
+  # FILTER AUTHORIZED IMAGE RESOURCES - BUILD ARRAY DYNAMICALLY
+  assign authorized_resources = ''
+  assign resource_count = 0
+
+  for resource in image_resources
+    assign resource_authorized = false
+    assign resource_has_authorization = false
+
+    # CHECK IF RESOURCE HAS AUTHORIZATION REQUIREMENTS
+    if resource.authorization.value
+      assign resource_auth_metaobject = resource.authorization.value
+      assign resource_has_authorization = true
+
+      # GET AUTHORIZATION LEVELS FOR THIS RESOURCE
+      assign resource_required_levels = blank
+
+      # TRY AS SINGLE METAOBJECT
+      if resource_auth_metaobject.level
+        assign level_value = resource_auth_metaobject.level
+        if level_value != blank
+          assign resource_required_levels = level_value | downcase | split: ','
+        endif
+      else
+        # TRY AS ARRAY OF METAOBJECTS
+        assign temp_levels = blank
+        for auth_obj in resource_auth_metaobject
+          if auth_obj.level
+            assign level_value = auth_obj.level
+            if level_value != blank
+              if temp_levels == blank
+                assign temp_levels = level_value
+              else
+                assign temp_levels = temp_levels | append: ',' | append: level_value
+              endif
+            endif
+          endif
+        endfor
+        if temp_levels != blank
+          assign resource_required_levels = temp_levels | downcase | split: ','
+        endif
+      endif
+
+      # CHECK IF CUSTOMER HAS MATCHING AUTHORIZATION
+      if customer_authorization_level != blank and resource_required_levels != blank
+        for required_level in resource_required_levels
+          assign required_level_clean = required_level | strip
+          if customer_authorization_level == required_level_clean
+            assign resource_authorized = true
+            break
+          endif
+        endfor
+      endif
+    else
+      # NO AUTHORIZATION REQUIRED - PUBLIC RESOURCE
+      assign resource_authorized = true
+    endif
+
+    # COUNT AUTHORIZED RESOURCES
+    if resource_authorized
+      assign resource_count = resource_count | plus: 1
+    endif
+  endfor
+
+  # Store filtered count for testing
+  assign filtered_resource_count = resource_count
+-%}
+
+{%- if filtered_resource_count > 0 -%}
+  <image-resource-gallery class="image-resource-gallery section-{{ section.id }}-padding" data-gallery-id="{{ section.id }}">
+    <div class="image-resource-gallery__wrapper page-width">
+
+      {%- if section.settings.heading != blank -%}
+        <h2 class="image-resource-gallery__heading {{ section.settings.heading_size }}">
+          {{ section.settings.heading }}
+        </h2>
+      {%- endif -%}
+
+      <div class="image-resource-gallery__grid grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down">
+        {%- for resource in image_resources -%}
+          {%- liquid
+            # RE-CHECK AUTHORIZATION FOR DISPLAY (to filter resources)
+            assign resource_authorized = false
+            assign resource_has_authorization = false
+
+            if resource.authorization.value
+              assign resource_auth_metaobject = resource.authorization.value
+              assign resource_has_authorization = true
+              assign resource_required_levels = blank
+
+              if resource_auth_metaobject.level
+                assign level_value = resource_auth_metaobject.level
+                if level_value != blank
+                  assign resource_required_levels = level_value | downcase | split: ','
+                endif
+              else
+                assign temp_levels = blank
+                for auth_obj in resource_auth_metaobject
+                  if auth_obj.level
+                    assign level_value = auth_obj.level
+                    if level_value != blank
+                      if temp_levels == blank
+                        assign temp_levels = level_value
+                      else
+                        assign temp_levels = temp_levels | append: ',' | append: level_value
+                      endif
+                    endif
+                  endif
+                endfor
+                if temp_levels != blank
+                  assign resource_required_levels = temp_levels | downcase | split: ','
+                endif
+              endif
+
+              if customer_authorization_level != blank and resource_required_levels != blank
+                for required_level in resource_required_levels
+                  assign required_level_clean = required_level | strip
+                  if customer_authorization_level == required_level_clean
+                    assign resource_authorized = true
+                    break
+                  endif
+                endfor
+              endif
+            else
+              assign resource_authorized = true
+            endif
+          -%}
+
+          {%- if resource_authorized -%}
+            {%- liquid
+              assign resource_title = resource.title.value
+              assign resource_description = resource.description | metafield_tag
+              assign resource_image = resource.file.value
+              assign resource_url = resource.url.value
+
+              # DETERMINE IF WE HAVE AN IMAGE TO DISPLAY
+              assign has_image = false
+              if resource_image != blank or resource_url != blank
+                assign has_image = true
+              endif
+            -%}
+
+            <div class="image-resource-gallery__item grid__item">
+              {%- if has_image -%}
+                <button
+                  type="button"
+                  class="image-resource-gallery__trigger"
+                  data-gallery-trigger
+                  data-image-index="{{ forloop.index0 }}"
+                  aria-label="{{ 'products.product.media.open_media' | t: index: forloop.index }}"
+                >
+                  <div class="image-resource-gallery__image-wrapper">
+                    {%- if resource_image != blank -%}
+                      {%- comment %} SHOPIFY CDN IMAGE FILE {% endcomment -%}
+                      {{
+                        resource_image
+                        | image_url: width: 800
+                        | image_tag:
+                          loading: 'lazy',
+                          class: 'image-resource-gallery__image',
+                          widths: '375, 550, 750, 1100, 1500',
+                          sizes: '(min-width: 750px) calc((100vw - 10rem) / ' | append: section.settings.columns_desktop | append: '), calc((100vw - 3rem) / ' | append: section.settings.columns_mobile | append: ')'
+                      }}
+                    {%- elsif resource_url != blank -%}
+                      {%- comment %} EXTERNAL IMAGE URL {% endcomment -%}
+                      <img
+                        src="{{ resource_url }}"
+                        alt="{{ resource_title | escape }}"
+                        loading="lazy"
+                        class="image-resource-gallery__image"
+                        width="800"
+                        height="800"
+                      >
+                    {%- endif -%}
+                  </div>
+                </button>
+              {%- endif -%}
+
+              {%- if resource_title != blank and section.settings.include_image_title -%}
+                <div class="image-resource-gallery__content">
+                  {{ section.settings.title_size | prepend: '<' | append: '>' }}
+                    {{ resource_title }}
+                  {{ section.settings.title_size | prepend: '</' | append: '>' }}
+                </div>
+              {%- endif -%}
+
+              {%- if resource_description != blank and section.settings.include_image_description -%}
+                <div class="image-resource-gallery__description rte">
+                  {{ resource_description }}
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+
+    {%- comment -%} LIGHTBOX MODAL {%- endcomment -%}
+    <div class="image-resource-gallery-modal" data-gallery-modal aria-hidden="true" role="dialog" aria-modal="true">
+      <div class="image-resource-gallery-modal__overlay" data-gallery-close></div>
+
+      <div class="image-resource-gallery-modal__content">
+        <button
+          type="button"
+          class="image-resource-gallery-modal__nav image-resource-gallery-modal__nav--prev"
+          data-gallery-prev
+          aria-label="{{ 'general.slider.previous_slide' | t }}"
+        >
+          {{- 'icon-caret.svg' | inline_asset_content -}}
+        </button>
+
+        <div class="image-resource-gallery-modal__image-container">
+          <button
+            type="button"
+            class="image-resource-gallery-modal__close"
+            data-gallery-close
+            aria-label="{{ 'accessibility.close' | t }}"
+          >
+            {{- 'icon-close.svg' | inline_asset_content -}}
+          </button>
+
+          <img
+            class="image-resource-gallery-modal__image"
+            data-gallery-image
+            src=""
+            alt=""
+            loading="lazy"
+            width="2048"
+            height="2048"
+          >
+          <div class="image-resource-gallery-modal__counter" data-gallery-counter></div>
+        </div>
+
+        <button
+          type="button"
+          class="image-resource-gallery-modal__nav image-resource-gallery-modal__nav--next"
+          data-gallery-next
+          aria-label="{{ 'general.slider.next_slide' | t }}"
+        >
+          {{- 'icon-caret.svg' | inline_asset_content -}}
+        </button>
+      </div>
+    </div>
+
+    {%- comment -%} GALLERY DATA FOR JAVASCRIPT {%- endcomment -%}
+    <script type="application/json" data-gallery-data="{{ section.id }}">
+      [
+        {%- for resource in image_resources -%}
+          {%- liquid
+            # RE-CHECK AUTHORIZATION FOR GALLERY DATA
+            assign resource_authorized = false
+            if resource.authorization.value
+              assign resource_auth_metaobject = resource.authorization.value
+              assign resource_required_levels = blank
+
+              if resource_auth_metaobject.level
+                assign level_value = resource_auth_metaobject.level
+                if level_value != blank
+                  assign resource_required_levels = level_value | downcase | split: ','
+                endif
+              else
+                assign temp_levels = blank
+                for auth_obj in resource_auth_metaobject
+                  if auth_obj.level
+                    assign level_value = auth_obj.level
+                    if level_value != blank
+                      if temp_levels == blank
+                        assign temp_levels = level_value
+                      else
+                        assign temp_levels = temp_levels | append: ',' | append: level_value
+                      endif
+                    endif
+                  endif
+                endfor
+                if temp_levels != blank
+                  assign resource_required_levels = temp_levels | downcase | split: ','
+                endif
+              endif
+
+              if customer_authorization_level != blank and resource_required_levels != blank
+                for required_level in resource_required_levels
+                  assign required_level_clean = required_level | strip
+                  if customer_authorization_level == required_level_clean
+                    assign resource_authorized = true
+                    break
+                  endif
+                endfor
+              endif
+            else
+              assign resource_authorized = true
+            endif
+          -%}
+
+          {%- if resource_authorized -%}
+            {%- liquid
+              assign resource_image = resource.file.value
+              assign resource_url = resource.url.value
+              assign resource_title = resource.title.value
+            -%}
+
+            {%- if resource_image != blank -%}
+              {
+                "url": {{ resource_image | image_url: width: 2048 | json }},
+                "alt": {{ resource_title | default: 'Image resource' | json }},
+                "width": {{ resource_image.width | json }},
+                "height": {{ resource_image.height | json }}
+              }{% unless forloop.last %},{% endunless %}
+            {%- elsif resource_url != blank -%}
+              {
+                "url": {{ resource_url | json }},
+                "alt": {{ resource_title | default: 'Image resource' | json }},
+                "width": 2048,
+                "height": 2048
+              }{% unless forloop.last %},{% endunless %}
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+      ]
+    </script>
+  </image-resource-gallery>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Image resources",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Header"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Image resources"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_size.options__1.label"
+        },
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_size.options__2.label"
+        },
+        {
+          "value": "h0",
+          "label": "t:sections.all.heading_size.options__3.label"
+        },
+        {
+          "value": "hxl",
+          "label": "t:sections.all.heading_size.options__4.label"
+        },
+        {
+          "value": "hxxl",
+          "label": "t:sections.all.heading_size.options__5.label"
+        }
+      ],
+      "default": "h2",
+      "label": "Heading size"
+    },
+    {
+      "type": "header",
+      "content": "Image content"
+    },
+    {
+      "type": "checkbox",
+      "id": "include_image_title",
+      "label": "Include image title",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "title_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "Header 2"
+        },
+        {
+          "value": "h3",
+          "label": "Header 3"
+        },
+        {
+          "value": "h4",
+          "label": "Header 4"
+        },
+        {
+          "value": "h5",
+          "label": "Header 5"
+        },
+        {
+          "value": "span",
+          "label": "Regular"
+        }
+      ],
+      "default": "h3",
+      "label": "Image title size"
+    },
+    {
+      "type": "checkbox",
+      "id": "include_image_description",
+      "label": "Include image description",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Display settings"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 4,
+      "label": "Number of columns on desktop"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 column"
+        },
+        {
+          "value": "2",
+          "label": "2 columns"
+        }
+      ],
+      "default": "2",
+      "label": "Number of columns on mobile"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 28
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image resources",
+      "category": "Ethossence"
+    }
+  ]
+}
+{% endschema %}
