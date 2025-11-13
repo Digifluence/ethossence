@@ -39,8 +39,9 @@
     endif
   endif
   
-  # FILTER AUTHORIZED VIDEO RESOURCES
-  assign authorized_resources = blank
+  # FILTER AUTHORIZED VIDEO RESOURCES - BUILD ARRAY DYNAMICALLY
+  assign authorized_resources = ''
+  assign resource_count = 0
 
   for resource in video_resources
     assign resource_authorized = false
@@ -95,27 +96,23 @@
       assign resource_authorized = true
     endif
 
-    # ADD TO AUTHORIZED RESOURCES ARRAY
+    # REBUILD AUTHORIZED RESOURCES BY RE-FILTERING IN DISPLAY SECTION
     if resource_authorized
-      if authorized_resources == blank
-        assign authorized_resources = resource | concat: blank
-      else
-        assign authorized_resources = authorized_resources | concat: resource | concat: blank
-      endif
+      assign resource_count = resource_count | plus: 1
     endif
   endfor
 
-  # USE AUTHORIZED RESOURCES FOR DISPLAY
-  assign video_resources = authorized_resources
+  # Store filtered count for testing
+  assign filtered_resource_count = resource_count
 -%}
 
 <pre>
-  With Authorization Text v036
-  {{ video_resources.count | prepend: 'Video resources count: ' }}
+  With Authorization Text v037
+  {{ filtered_resource_count | prepend: 'Video resources count: ' }}
   {{ video_resources_unfiltered.count | prepend: 'Unfiltered Video resources count: ' }}
 </pre>
 
-{%- if video_resources.count > 0 -%}
+{%- if filtered_resource_count > 0 -%}
   <div class="ethossence-video-resources section-{{ section.id }}-padding">
     <div class="ethossence-video-resources__wrapper page-width">
 
@@ -128,17 +125,66 @@
       <div class="ethossence-video-resources__grid grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down">
         {%- for resource in video_resources -%}
           {%- liquid
-            assign resource_title = resource.title.value
-            assign resource_description = resource.description | metafield_tag
-            assign resource_file = resource.file.value
-            assign resource_url = resource.url.value
+            # RE-CHECK AUTHORIZATION FOR DISPLAY (to filter resources)
+            assign resource_authorized = false
+            assign resource_has_authorization = false
 
-            # DETERMINE IF WE HAVE A VIDEO TO DISPLAY
-            assign has_video = false
-            if resource_file != blank or resource_url != blank
-              assign has_video = true
+            if resource.authorization.value
+              assign resource_auth_metaobject = resource.authorization.value
+              assign resource_has_authorization = true
+              assign resource_required_levels = blank
+
+              if resource_auth_metaobject.level
+                assign level_value = resource_auth_metaobject.level
+                if level_value != blank
+                  assign resource_required_levels = level_value | downcase | split: ','
+                endif
+              else
+                assign temp_levels = blank
+                for auth_obj in resource_auth_metaobject
+                  if auth_obj.level
+                    assign level_value = auth_obj.level
+                    if level_value != blank
+                      if temp_levels == blank
+                        assign temp_levels = level_value
+                      else
+                        assign temp_levels = temp_levels | append: ',' | append: level_value
+                      endif
+                    endif
+                  endif
+                endfor
+                if temp_levels != blank
+                  assign resource_required_levels = temp_levels | downcase | split: ','
+                endif
+              endif
+
+              if customer_authorization_level != blank and resource_required_levels != blank
+                for required_level in resource_required_levels
+                  assign required_level_clean = required_level | strip
+                  if customer_authorization_level == required_level_clean
+                    assign resource_authorized = true
+                    break
+                  endif
+                endfor
+              endif
+            else
+              assign resource_authorized = true
             endif
           -%}
+
+          {%- if resource_authorized -%}
+            {%- liquid
+              assign resource_title = resource.title.value
+              assign resource_description = resource.description | metafield_tag
+              assign resource_file = resource.file.value
+              assign resource_url = resource.url.value
+
+              # DETERMINE IF WE HAVE A VIDEO TO DISPLAY
+              assign has_video = false
+              if resource_file != blank or resource_url != blank
+                assign has_video = true
+              endif
+            -%}
 
           <div class="ethossence-video-resources__item">
             {%- if has_video -%}
@@ -276,6 +322,7 @@
 
             </div>
           </div>
+          {%- endif -%}
         {%- endfor -%}
       </div>
     </div>
