@@ -1,7 +1,10 @@
 {{ 'ethossence-video-resources.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'ethossence-video-resources.js' | asset_url }}" defer="defer"></script>
 
-<pre>With Authorization Text v030</pre>
+<pre>
+  With Authorization Text v031
+  {{ video_resources.count | prepend: 'Video resources count: ' }}
+</pre>
 
 {%- style -%}
   .section-{{ section.id }}-padding {
