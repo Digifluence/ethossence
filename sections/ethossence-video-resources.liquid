@@ -16,6 +16,7 @@
 {%- endstyle -%}
 
 {%- liquid
+  assign video_resources_unfiltered = product.metafields.ethossence.video_resources.value
   assign video_resources = product.metafields.ethossence.video_resources.value
   
   # ETHOSSENCE FEATURE: AUTHORIZATION FOR VIDEO RESOURCES
@@ -109,8 +110,9 @@
 -%}
 
 <pre>
-  With Authorization Text v035
+  With Authorization Text v036
   {{ video_resources.count | prepend: 'Video resources count: ' }}
+  {{ video_resources_unfiltered.count | prepend: 'Unfiltered Video resources count: ' }}
 </pre>
 
 {%- if video_resources.count > 0 -%}
