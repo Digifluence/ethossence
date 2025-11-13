@@ -17,6 +17,95 @@
 
 {%- liquid
   assign video_resources = product.metafields.ethossence.video_resources.value
+  
+  # ETHOSSENCE FEATURE: AUTHORIZATION FOR VIDEO RESOURCES
+  # FILTER VIDEO RESOURCES BASED ON CUSTOMER AUTHORIZATION
+  
+  # GET CUSTOMER AUTHORIZATION LEVEL
+  assign customer_authorization_level = blank
+  
+  if customer
+    assign customer_auth_metaobject = customer.metafields.ethossence.authorization_show.value
+    
+    if customer_auth_metaobject
+      # ACCESS THE LEVEL FIELD OF THE METAOBJECT
+      if customer_auth_metaobject.level
+        assign level_value = customer_auth_metaobject.level
+        if level_value != blank
+          assign customer_authorization_level = level_value | downcase | strip
+        endif
+      endif
+    endif
+  endif
+  
+  # FILTER AUTHORIZED VIDEO RESOURCES
+  assign authorized_resources = blank
+  
+  for resource in video_resources
+    assign resource_authorized = false
+    assign resource_has_authorization = false
+    
+    # CHECK IF RESOURCE HAS AUTHORIZATION REQUIREMENTS
+    if resource.authorization.value
+      assign resource_auth_metaobject = resource.authorization.value
+      assign resource_has_authorization = true
+      
+      # GET AUTHORIZATION LEVELS FOR THIS RESOURCE
+      assign resource_required_levels = blank
+      
+      # TRY AS SINGLE METAOBJECT
+      if resource_auth_metaobject.level
+        assign level_value = resource_auth_metaobject.level
+        if level_value != blank
+          assign resource_required_levels = level_value | downcase | split: ','
+        endif
+      else
+        # TRY AS ARRAY OF METAOBJECTS
+        assign temp_levels = blank
+        for auth_obj in resource_auth_metaobject
+          if auth_obj.level
+            assign level_value = auth_obj.level
+            if level_value != blank
+              if temp_levels == blank
+                assign temp_levels = level_value
+              else
+                assign temp_levels = temp_levels | append: ',' | append: level_value
+              endif
+            endif
+          endif
+        endfor
+        if temp_levels != blank
+          assign resource_required_levels = temp_levels | downcase | split: ','
+        endif
+      endif
+      
+      # CHECK IF CUSTOMER HAS MATCHING AUTHORIZATION
+      if customer_authorization_level != blank and resource_required_levels != blank
+        for required_level in resource_required_levels
+          assign required_level_clean = required_level | strip
+          if customer_authorization_level == required_level_clean
+            assign resource_authorized = true
+            break
+          endif
+        endfor
+      endif
+    else
+      # NO AUTHORIZATION REQUIRED - PUBLIC RESOURCE
+      assign resource_authorized = true
+    endif
+    
+    # ADD TO AUTHORIZED RESOURCES ARRAY
+    if resource_authorized
+      if authorized_resources == blank
+        assign authorized_resources = resource
+      else
+        assign authorized_resources = authorized_resources | concat: resource
+      endif
+    endif
+  endfor
+  
+  # USE AUTHORIZED RESOURCES FOR DISPLAY
+  assign video_resources = authorized_resources
 -%}
 
 {%- if video_resources.count > 0 -%}
