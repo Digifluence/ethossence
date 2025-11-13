@@ -106,12 +106,6 @@
   assign filtered_resource_count = resource_count
 -%}
 
-<pre>
-  With Authorization Text v037
-  {{ filtered_resource_count | prepend: 'Video resources count: ' }}
-  {{ video_resources_unfiltered.count | prepend: 'Unfiltered Video resources count: ' }}
-</pre>
-
 {%- if filtered_resource_count > 0 -%}
   <div class="ethossence-video-resources section-{{ section.id }}-padding">
     <div class="ethossence-video-resources__wrapper page-width">
