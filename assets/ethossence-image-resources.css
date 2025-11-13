@@ -114,9 +114,16 @@
   padding: 0;
 }
 
-.image-resource-gallery__description {
-  font-size: 0.9rem;
-  opacity: 0.8;
+.ethossence-image-resources__description {
+  margin: 0;
+}
+
+.ethossence-image-resources__description p {
+  margin-top: 0;
+}
+
+.ethossence-image-resources__description p:last-child {
+  margin-bottom: 0;
 }
 
 /* LIGHTBOX MODAL */
