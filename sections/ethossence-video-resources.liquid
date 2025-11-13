@@ -2,7 +2,7 @@
 <script src="{{ 'ethossence-video-resources.js' | asset_url }}" defer="defer"></script>
 
 <pre>
-  With Authorization Text v031
+  With Authorization Text v032
   {{ video_resources.count | prepend: 'Video resources count: ' }}
 </pre>
 
@@ -45,19 +45,19 @@
   
   # FILTER AUTHORIZED VIDEO RESOURCES
   assign authorized_resources = blank
-  
+
   for resource in video_resources
     assign resource_authorized = false
     assign resource_has_authorization = false
-    
+
     # CHECK IF RESOURCE HAS AUTHORIZATION REQUIREMENTS
     if resource.authorization.value
       assign resource_auth_metaobject = resource.authorization.value
       assign resource_has_authorization = true
-      
+
       # GET AUTHORIZATION LEVELS FOR THIS RESOURCE
       assign resource_required_levels = blank
-      
+
       # TRY AS SINGLE METAOBJECT
       if resource_auth_metaobject.level
         assign level_value = resource_auth_metaobject.level
@@ -83,7 +83,7 @@
           assign resource_required_levels = temp_levels | downcase | split: ','
         endif
       endif
-      
+
       # CHECK IF CUSTOMER HAS MATCHING AUTHORIZATION
       if customer_authorization_level != blank and resource_required_levels != blank
         for required_level in resource_required_levels
@@ -98,17 +98,17 @@
       # NO AUTHORIZATION REQUIRED - PUBLIC RESOURCE
       assign resource_authorized = true
     endif
-    
+
     # ADD TO AUTHORIZED RESOURCES ARRAY
     if resource_authorized
       if authorized_resources == blank
-        assign authorized_resources = resource
+        assign authorized_resources = resource | concat: blank
       else
-        assign authorized_resources = authorized_resources | concat: resource
+        assign authorized_resources = authorized_resources | concat: resource | concat: blank
       endif
     endif
   endfor
-  
+
   # USE AUTHORIZED RESOURCES FOR DISPLAY
   assign video_resources = authorized_resources
 -%}
