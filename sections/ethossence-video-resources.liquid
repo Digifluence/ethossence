@@ -1,11 +1,6 @@
 {{ 'ethossence-video-resources.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'ethossence-video-resources.js' | asset_url }}" defer="defer"></script>
 
-<pre>
-  With Authorization Text v032
-  {{ video_resources.count | prepend: 'Video resources count: ' }}
-</pre>
-
 {%- style -%}
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
@@ -112,6 +107,11 @@
   # USE AUTHORIZED RESOURCES FOR DISPLAY
   assign video_resources = authorized_resources
 -%}
+
+<pre>
+  With Authorization Text v032
+  {{ video_resources.count | prepend: 'Video resources count: ' }}
+</pre>
 
 {%- if video_resources.count > 0 -%}
   <div class="ethossence-video-resources section-{{ section.id }}-padding">
