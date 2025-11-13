@@ -223,6 +223,22 @@
       "settings": {
         "include_margins": true
       }
+    },
+    "ethossence_video_resources_QWP7UH": {
+      "type": "ethossence-video-resources",
+      "name": "Video resources",
+      "settings": {
+        "heading": "Video resources",
+        "heading_size": "h2",
+        "include_video_title": true,
+        "title_size": "h3",
+        "include_video_description": true,
+        "columns_desktop": 2,
+        "columns_mobile": "1",
+        "lazy_load": true,
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
     }
   },
   "order": [
@@ -232,6 +248,7 @@
     "ethossence_product_specifications_eYJQ4A",
     "melttools_welding_processes_Mhzzeh",
     "ethossence_image_gallery_mQHwfy",
+    "ethossence_video_resources_QWP7UH",
     "ethossence_product_parts_pkkVnP",
     "related-products",
     "17564162700878961e"
