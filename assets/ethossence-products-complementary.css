@@ -1,0 +1,210 @@
+.complementary-products {
+  display: block;
+}
+
+.complementary-products__heading {
+  margin: 0 0 1.5rem;
+}
+
+.complementary-products__description {
+  margin: 0 0 2rem;
+  max-width: 100%;
+}
+
+.complementary-products__list {
+  margin-top: 2rem;
+}
+
+.complementary-products__row {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.08);
+  align-items: flex-start;
+}
+
+.complementary-products__row:last-child {
+  border-bottom: none;
+}
+
+.complementary-products__row--white {
+  background-color: rgb(var(--color-background));
+}
+
+.complementary-products__row--grey {
+  background-color: rgba(var(--color-foreground), 0.04);
+}
+
+/* IMAGE SECTION */
+.complementary-products__image {
+  width: 100%;
+  max-width: 120px;
+  height: auto;
+  flex-shrink: 0;
+}
+
+.complementary-products__image-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 0.6rem;
+  background-color: rgba(var(--color-foreground), 0.04);
+}
+
+.complementary-products__image-placeholder {
+  width: 120px;
+  height: 120px;
+  background-color: rgba(var(--color-foreground), 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.6rem;
+}
+
+.complementary-products__image-placeholder svg {
+  width: 50%;
+  height: 50%;
+  opacity: 0.5;
+}
+
+/* CONTENT SECTION */
+.complementary-products__content {
+  width: 100%;
+}
+
+.complementary-products__product-title {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgb(var(--color-foreground));
+  line-height: 1.4;
+}
+
+.complementary-products__product-description {
+  font-size: 0.875rem;
+  color: rgba(var(--color-foreground), 0.75);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ACTIONS SECTION */
+.complementary-products__actions {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.complementary-products__view-link,
+.complementary-products__add-button {
+  font-size: 0.875rem;
+  padding: 0.75rem 1.5rem;
+  text-align: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.complementary-products__view-link {
+  display: inline-block;
+  background-color: rgba(var(--color-foreground), 0.08);
+  color: rgb(var(--color-foreground));
+  border: 0.1rem solid rgba(var(--color-foreground), 0.2);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.complementary-products__view-link:hover {
+  background-color: rgba(var(--color-foreground), 0.15);
+  text-decoration: none;
+}
+
+.complementary-products__add-form {
+  width: 100%;
+}
+
+.complementary-products__add-button {
+  width: 100%;
+}
+
+.complementary-products__add-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* TABLET AND DESKTOP LAYOUT */
+@media screen and (min-width: 750px) {
+  .complementary-products__row {
+    flex-direction: row;
+    gap: 2rem;
+    align-items: center;
+    padding: 1.5rem;
+  }
+
+  .complementary-products__image {
+    width: 140px;
+    min-width: 140px;
+    flex-shrink: 0;
+  }
+
+  .complementary-products__image-img {
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+  }
+
+  .complementary-products__image-placeholder {
+    width: 140px;
+    height: 140px;
+  }
+
+  .complementary-products__content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .complementary-products__actions {
+    flex-direction: row;
+    gap: 1rem;
+    min-width: 300px;
+  }
+
+  .complementary-products__view-link,
+  .complementary-products__add-button {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+/* LARGE DESKTOP SPACING */
+@media screen and (min-width: 990px) {
+  .complementary-products__row {
+    padding: 1.5rem 2rem;
+  }
+
+  .complementary-products__heading {
+    margin-bottom: 2rem;
+  }
+
+  .complementary-products__description {
+    margin-bottom: 3rem;
+  }
+
+  .complementary-products__image {
+    width: 160px;
+    min-width: 160px;
+  }
+
+  .complementary-products__image-img {
+    width: 160px;
+    height: 160px;
+  }
+
+  .complementary-products__image-placeholder {
+    width: 160px;
+    height: 160px;
+  }
+
+  .complementary-products__actions {
+    min-width: 350px;
+  }
+}
