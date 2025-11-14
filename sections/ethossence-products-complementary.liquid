@@ -19,7 +19,7 @@
 -%}
 
 <pre>
-  version 022
+  version 023
 </pre>
 
 <div class="color-{{ section.settings.color_scheme }} gradient">
@@ -82,9 +82,13 @@
               </div>
 
               <div class="complementary-products__actions">
-                <a href="{{ product.url }}" class="button button-primary complementary-products__view-link">
+                <button
+                  type="button"
+                  class="button button-secondary complementary-products__view-link"
+                  onclick="window.location.href='{{ product.url }}'"
+                >
                   View
-                </a>
+                </button>
 
                 <div class="complementary-products__add-form">
                   <button
