@@ -183,24 +183,20 @@
         "title_size": "h3",
         "include_video_description": true,
         "columns_desktop": 2,
-        "columns_mobile": "1",
+        "columns_mobile": "2",
         "lazy_load": true,
         "padding_top": 28,
         "padding_bottom": 28
       }
     },
-    "ethossence_product_parts_pkkVnP": {
-      "type": "ethossence-product-parts",
-      "disabled": true,
-      "name": "Replacement Parts",
+    "ethossence_products_complementary_VHVX4X": {
+      "type": "ethossence-products-complementary",
+      "name": "Complementary products",
       "settings": {
-        "variants_per_page": 50,
-        "show_image": true,
-        "show_sku": true,
-        "show_vendor": true,
+        "heading_size": "h2",
         "color_scheme": "",
-        "padding_top": 36,
-        "padding_bottom": 36
+        "padding_top": 40,
+        "padding_bottom": 52
       }
     },
     "related-products": {
@@ -252,7 +248,7 @@
     "melttools_welding_processes_Mhzzeh",
     "ethossence_image_resources_EJwUk6",
     "ethossence_video_resources_QWP7UH",
-    "ethossence_product_parts_pkkVnP",
+    "ethossence_products_complementary_VHVX4X",
     "related-products",
     "17564162700878961e"
   ]
