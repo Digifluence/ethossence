@@ -70,7 +70,7 @@
                 <h1>{{ extras.title }}</h1>
                 <p>{{ extras.description | metafield_tag }}</p>
                 {% if extras.collection.value %}
-                  {%- for product in extras.collection.value.products -%}
+                  
                     {%- for variant in product.variants -%}
                       {%- render 'ethossence-product-parts-list-row',
                           item: variant,
@@ -83,6 +83,7 @@
                           is_modal: is_modal
                       -%}
                     {%- endfor -%} 
+                  {%- for product in extras.collection.value.products -%}  
                   {%- endfor -%} 
                 {% else %}
                   <p>No collection assigned in metaobject.</p>
