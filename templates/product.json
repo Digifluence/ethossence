@@ -162,7 +162,7 @@
       "type": "ethossence-image-resources",
       "name": "Image resources",
       "settings": {
-        "heading": "Image resources",
+        "heading": "Image Resources",
         "heading_size": "h2",
         "include_image_title": true,
         "title_size": "h3",
@@ -177,7 +177,7 @@
       "type": "ethossence-video-resources",
       "name": "Video resources",
       "settings": {
-        "heading": "Video resources",
+        "heading": "Video Resources",
         "heading_size": "h2",
         "include_video_title": true,
         "title_size": "h3",
