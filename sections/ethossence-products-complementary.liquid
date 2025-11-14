@@ -19,10 +19,10 @@
 -%}
 
 <pre>
-  version 007
+  version 008
   complementary_data
   {{ complementary_data}}
-  {%- for product in complementary_data.product_list -%}
+  {%- for product in complementary_data.product_list.value -%}
     {{ product.title }}
   {%- endfor -%}
 </pre>
@@ -43,9 +43,9 @@
         </div>
       {%- endif -%}
 
-      {%- if complementary_data.product_list != blank -%}
+      {%- if complementary_data.product_list.value != blank -%}
         <div class="complementary-products__list">
-          {%- for product in complementary_data.product_list -%}
+          {%- for product in complementary_data.product_list.value -%}
             {%- liquid
               assign row_index = forloop.index0
               assign is_even = row_index | modulo: 2
