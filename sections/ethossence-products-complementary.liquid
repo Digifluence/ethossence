@@ -18,19 +18,6 @@
   assign complementary_data = product.metafields.ethossence.complementary_products.value
 -%}
 
-<pre>
-  version 011
-  complementary_data
-  OPTION I
-  {%- for product in complementary_data.product.value -%}
-    {{ product.title }}
-  {%- endfor -%}
-  OPTION II
-  {%- for product in complementary_data.product -%}
-    {{ product.title }}
-  {%- endfor -%}  
-</pre>
-
 <div class="color-{{ section.settings.color_scheme }} gradient">
   <div class="complementary-products page-width section-{{ section.id }}-padding isolate{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
 
@@ -47,9 +34,9 @@
         </div>
       {%- endif -%}
 
-      {%- if complementary_data.product_list.value != blank -%}
-        <div class="complementary-products__list">
-          {%- for product in complementary_data.product_list.value -%}
+      {%- if complementary_data.product_list != blank -%}
+        <div class="complementary-product_list">
+          {%- for product in complementary_data.product_list -%}
             {%- liquid
               assign row_index = forloop.index0
               assign is_even = row_index | modulo: 2
@@ -95,12 +82,13 @@
                   View
                 </a>
 
-                <form method="post" action="/cart/add" class="form complementary-products__add-form" id="product-form-{{ product.id }}">
-                  <input type="hidden" name="id" value="{{ product.first_available_variant.id }}">
+                <div class="complementary-products__add-form">
                   <button
-                    type="submit"
-                    name="add"
+                    type="button"
                     class="button button-secondary complementary-products__add-button"
+                    data-product-id="{{ product.id }}"
+                    data-variant-id="{{ product.first_available_variant.id }}"
+                    data-product-title="{{ product.title | escape }}"
                     {% if product.available == false %}disabled{% endif %}
                   >
                     {%- if product.available -%}
@@ -109,7 +97,7 @@
                       {{ 'products.product.sold_out' | t }}
                     {%- endif -%}
                   </button>
-                </form>
+                </div>
               </div>
             </div>
           {%- endfor -%}
@@ -118,6 +106,64 @@
     {% endif %}
   </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const addToCartButtons = document.querySelectorAll('.complementary-products__add-button');
+
+  addToCartButtons.forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+
+      const variantId = this.getAttribute('data-variant-id');
+      const productTitle = this.getAttribute('data-product-title');
+      const originalText = this.textContent;
+
+      // Disable button and show loading state
+      this.disabled = true;
+      this.textContent = 'Adding...';
+
+      // Send AJAX request to add to cart
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          items: [{
+            id: variantId,
+            quantity: 1
+          }]
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        // Success - update button text
+        this.textContent = 'Added!';
+
+        // Reset button after 2 seconds
+        setTimeout(() => {
+          this.textContent = originalText;
+          this.disabled = false;
+        }, 2000);
+
+        // Dispatch custom event for cart updates
+        document.dispatchEvent(new CustomEvent('cart:updated', { detail: data }));
+      })
+      .catch(error => {
+        console.error('Error adding to cart:', error);
+        this.textContent = 'Error - Try Again';
+        this.disabled = false;
+
+        // Reset after 3 seconds
+        setTimeout(() => {
+          this.textContent = originalText;
+        }, 3000);
+      });
+    });
+  });
+});
+</script>
 
 {% schema %}
 {
