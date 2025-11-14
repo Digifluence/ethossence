@@ -19,12 +19,13 @@
 -%}
 
 <pre>
-  version 009
+  version 010
   complementary_data
-  {{ complementary_data}}
+  OPTION I
   {%- for product in complementary_data.product.value -%}
     {{ product.title }}
   {%- endfor -%}
+  OPTION II
   {%- for product in complementary_data.product -%}
     {{ product.title }}
   {%- endfor -%}  
