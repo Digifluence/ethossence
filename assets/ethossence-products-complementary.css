@@ -75,10 +75,6 @@
 
 .complementary-products__product-title {
   margin: 0 0 0.5rem;
-  font-size: 0.875rem;
-  color: rgba(var(--color-foreground), 0.75);
-  line-height: 1.5;
-  font-weight: normal;
 }
 
 .complementary-products__product-description {
@@ -172,10 +168,12 @@
   .complementary-products__view-link {
     flex: 1;
     min-width: 0;
+    width: 50%;
   }
 
   .complementary-products__add-form {
     flex: 1;
+    width: 50%;
   }
 
   .complementary-products__add-button {
