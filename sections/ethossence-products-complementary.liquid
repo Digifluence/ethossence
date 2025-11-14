@@ -19,7 +19,7 @@
 -%}
 
 <pre>
-  version 016
+  version 020
 </pre>
 
 <div class="color-{{ section.settings.color_scheme }} gradient">
@@ -86,12 +86,12 @@
                   View
                 </a>
 
-                <form method="post" action="/cart/add" class="form complementary-products__add-form" id="product-form-{{ product.id }}">
-                  <input type="hidden" name="id" value="{{ product.first_available_variant.id }}">
+                <div class="complementary-products__add-form">
                   <button
-                    type="submit"
-                    name="add"
-                    class="button button-secondary complementary-products__add-button"
+                    type="button"
+                    class="button button-secondary complementary-products__add-button js-complementary-add-to-cart"
+                    data-product-variant-id="{{ product.first_available_variant.id }}"
+                    data-product-title="{{ product.title | escape }}"
                     {% if product.available == false %}disabled{% endif %}
                   >
                     {%- if product.available -%}
@@ -100,7 +100,7 @@
                       {{ 'products.product.sold_out' | t }}
                     {%- endif -%}
                   </button>
-                </form>
+                </div>
               </div>
             </div>
           {%- endfor -%}
@@ -109,6 +109,88 @@
     {% endif %}
   </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const buttons = document.querySelectorAll('.js-complementary-add-to-cart');
+
+    buttons.forEach(button => {
+      button.addEventListener('click', handleAddToCart);
+    });
+
+    function handleAddToCart(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const btn = e.currentTarget;
+      const variantId = btn.getAttribute('data-product-variant-id');
+      const productTitle = btn.getAttribute('data-product-title');
+      const originalText = btn.textContent.trim();
+
+      if (!variantId) {
+        console.error('Variant ID not found');
+        return;
+      }
+
+      // Disable button and show loading state
+      btn.disabled = true;
+      btn.textContent = 'Adding...';
+
+      // Use window.Shopify.routes.root for locale-aware URL
+      const cartUrl = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root)
+        ? window.Shopify.routes.root + 'cart/add.js'
+        : '/cart/add.js';
+
+      // Send AJAX request using Shopify Ajax API
+      fetch(cartUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          items: [{
+            id: parseInt(variantId),
+            quantity: 1
+          }]
+        })
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Success - update button text
+        btn.textContent = 'Added!';
+
+        // Reset button after 2 seconds
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.disabled = false;
+        }, 2000);
+
+        // Dispatch custom event for cart updates
+        document.dispatchEvent(new CustomEvent('cart:updated', {
+          detail: {
+            product: productTitle,
+            items: data
+          }
+        }));
+      })
+      .catch(error => {
+        console.error('Error adding to cart:', error);
+        btn.textContent = 'Error - Try Again';
+        btn.disabled = false;
+
+        // Reset after 3 seconds
+        setTimeout(() => {
+          btn.textContent = originalText;
+        }, 3000);
+      });
+    }
+  });
+</script>
 
 {% schema %}
 {
