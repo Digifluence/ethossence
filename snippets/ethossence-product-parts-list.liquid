@@ -69,7 +69,7 @@
               {% if extras %}
                 <h1>{{ extras.title }}</h1>
                 <p>{{ extras.description | metafield_tag }}</p>
-                {% if extras.collection.value %}
+                
                   
                     {%- for variant in product.variants -%}
                       {%- render 'ethossence-product-parts-list-row',
@@ -85,6 +85,7 @@
                     {%- endfor -%} 
                   {%- for product in extras.collection.value.products -%}  
                   {%- endfor -%} 
+                {% if extras.collection.value %}
                 {% else %}
                   <p>No collection assigned in metaobject.</p>
                 {% endif %}
