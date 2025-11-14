@@ -19,7 +19,7 @@
 -%}
 
 <pre>
-  version 013
+  version 014
 </pre>
 
 <div class="color-{{ section.settings.color_scheme }} gradient">
@@ -40,7 +40,7 @@
 
       {%- if complementary_data.product_list != blank -%}
         <div class="complementary-product_list">
-          {%- for product in complementary_data.product_list -%}
+          {%- for product in complementary_data.product_list.value -%}
             {%- liquid
               assign row_index = forloop.index0
               assign is_even = row_index | modulo: 2
