@@ -163,7 +163,7 @@
       "name": "Image resources",
       "settings": {
         "heading": "Image Resources",
-        "heading_size": "h2",
+        "heading_size": "h1",
         "include_image_title": true,
         "title_size": "h3",
         "include_image_description": true,
@@ -178,7 +178,7 @@
       "name": "Video resources",
       "settings": {
         "heading": "Video Resources",
-        "heading_size": "h2",
+        "heading_size": "h1",
         "include_video_title": true,
         "title_size": "h3",
         "include_video_description": false,
@@ -193,7 +193,7 @@
       "type": "ethossence-products-complementary",
       "name": "Complementary products",
       "settings": {
-        "heading_size": "h2",
+        "heading_size": "h1",
         "color_scheme": "",
         "padding_top": 28,
         "padding_bottom": 28
