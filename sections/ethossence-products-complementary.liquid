@@ -19,7 +19,7 @@
 -%}
 
 <pre>
-  version 014
+  version 016
 </pre>
 
 <div class="color-{{ section.settings.color_scheme }} gradient">
@@ -86,13 +86,12 @@
                   View
                 </a>
 
-                <div class="complementary-products__add-form">
+                <form method="post" action="/cart/add" class="form complementary-products__add-form" id="product-form-{{ product.id }}">
+                  <input type="hidden" name="id" value="{{ product.first_available_variant.id }}">
                   <button
-                    type="button"
+                    type="submit"
+                    name="add"
                     class="button button-secondary complementary-products__add-button"
-                    data-product-id="{{ product.id }}"
-                    data-variant-id="{{ product.first_available_variant.id }}"
-                    data-product-title="{{ product.title | escape }}"
                     {% if product.available == false %}disabled{% endif %}
                   >
                     {%- if product.available -%}
@@ -101,7 +100,7 @@
                       {{ 'products.product.sold_out' | t }}
                     {%- endif -%}
                   </button>
-                </div>
+                </form>
               </div>
             </div>
           {%- endfor -%}
@@ -110,77 +109,6 @@
     {% endif %}
   </div>
 </div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  const addToCartButtons = document.querySelectorAll('.complementary-products__add-button');
-
-  addToCartButtons.forEach(button => {
-    button.addEventListener('click', function(e) {
-      e.preventDefault();
-
-      const variantId = this.getAttribute('data-variant-id');
-      const productTitle = this.getAttribute('data-product-title');
-      const originalText = this.textContent.trim();
-
-      // Disable button and show loading state
-      this.disabled = true;
-      this.textContent = 'Adding...';
-
-      // Get locale from current URL or default to 'en'
-      const pathParts = window.location.pathname.split('/').filter(p => p.length > 0);
-      let locale = 'en';
-      if (pathParts[0] && pathParts[0].match(/^[a-z]{2}$/i)) {
-        locale = pathParts[0];
-      }
-
-      // Send AJAX request to add to cart using Shopify Cart API
-      fetch(`/${locale}/cart/add.js`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest'
-        },
-        body: JSON.stringify({
-          items: [{
-            id: parseInt(variantId),
-            quantity: 1
-          }]
-        })
-      })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        // Success - update button text
-        this.textContent = 'Added!';
-
-        // Reset button after 2 seconds
-        setTimeout(() => {
-          this.textContent = originalText;
-          this.disabled = false;
-        }, 2000);
-
-        // Dispatch custom event for cart updates (for mini-cart, etc.)
-        document.dispatchEvent(new CustomEvent('cart:updated', { detail: data }));
-      })
-      .catch(error => {
-        console.error('Error adding to cart:', error);
-        this.textContent = 'Error - Try Again';
-        this.disabled = false;
-
-        // Reset after 3 seconds
-        setTimeout(() => {
-          this.textContent = originalText;
-        }, 3000);
-      });
-    });
-  });
-});
-</script>
 
 {% schema %}
 {
