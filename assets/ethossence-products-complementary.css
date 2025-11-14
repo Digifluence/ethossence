@@ -141,8 +141,8 @@
   }
 
   .complementary-products__image {
-    width: 20%;
-    min-width: 120px;
+    width: 15%;
+    min-width: 100px;
     flex-shrink: 0;
   }
 
@@ -158,19 +158,19 @@
   }
 
   .complementary-products__content {
-    width: 40%;
+    width: 55%;
     min-width: 0;
   }
 
   .complementary-products__actions {
     flex-direction: row;
     gap: 1rem;
-    width: 40%;
+    width: 30%;
     display: flex;
   }
 
   .complementary-products__view-link {
-    flex: 1;
+    width: 50%;
     min-width: 0;
   }
 
@@ -180,7 +180,7 @@
   }
 
   .complementary-products__add-button {
-    flex: 1;
+    width: 100%;
     min-width: 0;
   }
 }
