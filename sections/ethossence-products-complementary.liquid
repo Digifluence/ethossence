@@ -30,7 +30,7 @@
 
       {%- if complementary_data.description != blank -%}
         <div class="complementary-products__description rte">
-          {{ complementary_data.description }}
+          {{ complementary_data.description | metafield_text }}
         </div>
       {%- endif -%}
 
@@ -79,7 +79,7 @@
 
               <div class="complementary-products__actions">
                 <a href="{{ product.url }}" class="button button-primary complementary-products__view-link">
-                  {{ 'products.product.view' | t: product: product.title }}
+                  View
                 </a>
 
                 <form method="post" action="/cart/add" class="form complementary-products__add-form" id="product-form-{{ product.id }}">
