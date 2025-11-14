@@ -67,6 +67,7 @@
             <tbody>
               {% assign extras = product.metafields.ethossence.complementary_products.value %}
               {% if extras %}
+                <pre>version 005</pre>
                 <h1>{{ extras.title }}</h1>
                 <p>{{ extras.description | metafield_tag }}</p>
                 
@@ -83,6 +84,9 @@
                           is_modal: is_modal
                       -%}
                     {%- endfor -%} 
+
+
+
                   {%- for product in extras.collection.value.products -%}  
                   {%- endfor -%} 
                 {% if extras.collection.value %}
