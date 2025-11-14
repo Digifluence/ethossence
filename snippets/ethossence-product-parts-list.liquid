@@ -65,7 +65,7 @@
             </thead>
 
             <tbody>
-              {% assign extras = product.metafields.ethossence.product_extras.value %}
+              {% assign extras = product.metafields.ethossence.complementary_products.value %}
               {% if extras %}
                 <h1>{{ extras.title }}</h1>
                 <p>{{ extras.description | metafield_tag }}</p>
