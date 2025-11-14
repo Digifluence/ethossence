@@ -19,9 +19,12 @@
 -%}
 
 <pre>
-  version 005
+  version 006
   complementary_data
   {{ complementary_data}}
+  {%- for product in complementary_data.product_list -%}
+    {{ product.title }}
+  {%- endfor -%}
 </pre>
 
 <div class="color-{{ section.settings.color_scheme }} gradient">
