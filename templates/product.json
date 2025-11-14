@@ -183,7 +183,7 @@
         "title_size": "h3",
         "include_video_description": true,
         "columns_desktop": 2,
-        "columns_mobile": "1",
+        "columns_mobile": "2",
         "lazy_load": true,
         "padding_top": 28,
         "padding_bottom": 28
