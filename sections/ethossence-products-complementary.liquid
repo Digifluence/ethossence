@@ -18,6 +18,10 @@
   assign complementary_data = product.metafields.ethossence.complementary_products.value
 -%}
 
+<pre>
+  version 012b - hello world
+</pre>
+
 <div class="color-{{ section.settings.color_scheme }} gradient">
   <div class="complementary-products page-width section-{{ section.id }}-padding isolate{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
 
@@ -54,8 +58,8 @@
                     src="{{ product.featured_image | image_url: width: 120 }}"
                     alt="{{ product.featured_image.alt | escape }}"
                     loading="lazy"
-                    width="120"
-                    height="120"
+                    width="100"
+                    height="100"
                     class="complementary-products__image-img"
                   >
                 {%- else -%}
@@ -82,13 +86,12 @@
                   View
                 </a>
 
-                <div class="complementary-products__add-form">
+                <form method="post" action="/cart/add" class="form complementary-products__add-form" id="product-form-{{ product.id }}">
+                  <input type="hidden" name="id" value="{{ product.first_available_variant.id }}">
                   <button
-                    type="button"
+                    type="submit"
+                    name="add"
                     class="button button-secondary complementary-products__add-button"
-                    data-product-id="{{ product.id }}"
-                    data-variant-id="{{ product.first_available_variant.id }}"
-                    data-product-title="{{ product.title | escape }}"
                     {% if product.available == false %}disabled{% endif %}
                   >
                     {%- if product.available -%}
@@ -97,7 +100,7 @@
                       {{ 'products.product.sold_out' | t }}
                     {%- endif -%}
                   </button>
-                </div>
+                </form>
               </div>
             </div>
           {%- endfor -%}
@@ -106,64 +109,6 @@
     {% endif %}
   </div>
 </div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  const addToCartButtons = document.querySelectorAll('.complementary-products__add-button');
-
-  addToCartButtons.forEach(button => {
-    button.addEventListener('click', function(e) {
-      e.preventDefault();
-
-      const variantId = this.getAttribute('data-variant-id');
-      const productTitle = this.getAttribute('data-product-title');
-      const originalText = this.textContent;
-
-      // Disable button and show loading state
-      this.disabled = true;
-      this.textContent = 'Adding...';
-
-      // Send AJAX request to add to cart
-      fetch('/cart/add.js', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          items: [{
-            id: variantId,
-            quantity: 1
-          }]
-        })
-      })
-      .then(response => response.json())
-      .then(data => {
-        // Success - update button text
-        this.textContent = 'Added!';
-
-        // Reset button after 2 seconds
-        setTimeout(() => {
-          this.textContent = originalText;
-          this.disabled = false;
-        }, 2000);
-
-        // Dispatch custom event for cart updates
-        document.dispatchEvent(new CustomEvent('cart:updated', { detail: data }));
-      })
-      .catch(error => {
-        console.error('Error adding to cart:', error);
-        this.textContent = 'Error - Try Again';
-        this.disabled = false;
-
-        // Reset after 3 seconds
-        setTimeout(() => {
-          this.textContent = originalText;
-        }, 3000);
-      });
-    });
-  });
-});
-</script>
 
 {% schema %}
 {
