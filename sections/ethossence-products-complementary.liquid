@@ -19,7 +19,7 @@
 -%}
 
 <pre>
-  version 020
+  version 021
 </pre>
 
 <div class="color-{{ section.settings.color_scheme }} gradient">
@@ -110,6 +110,49 @@
   </div>
 </div>
 
+<style>
+  .complementary-toast {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background-color: #4caf50;
+    color: white;
+    padding: 16px 24px;
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+    font-size: 14px;
+    font-weight: 500;
+    animation: slideIn 0.3s ease-out;
+  }
+
+  @keyframes slideIn {
+    from {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideOut {
+    from {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+  }
+
+  .complementary-toast.hide {
+    animation: slideOut 0.3s ease-out forwards;
+  }
+</style>
+
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     const buttons = document.querySelectorAll('.js-complementary-add-to-cart');
@@ -117,6 +160,22 @@
     buttons.forEach(button => {
       button.addEventListener('click', handleAddToCart);
     });
+
+    function showToast(message) {
+      // Create toast element
+      const toast = document.createElement('div');
+      toast.className = 'complementary-toast';
+      toast.textContent = message;
+      document.body.appendChild(toast);
+
+      // Auto-remove after 3 seconds
+      setTimeout(() => {
+        toast.classList.add('hide');
+        setTimeout(() => {
+          toast.remove();
+        }, 300); // Wait for animation to complete
+      }, 3000);
+    }
 
     function handleAddToCart(e) {
       e.preventDefault();
@@ -163,6 +222,9 @@
       .then(data => {
         // Success - update button text
         btn.textContent = 'Added!';
+
+        // Show success toast notification
+        showToast(productTitle + ' added to cart!');
 
         // Reset button after 2 seconds
         setTimeout(() => {
