@@ -17,7 +17,7 @@
 <div class="color-{{ section.settings.color_scheme }} gradient">
   <div class="contact contact--layout-{{ section.settings.layout }} page-width page-width--narrow section-{{ section.id }}-padding">
 
-    <div class="contatct-form">
+    <div class="contatct-form" class="margin-element">
       {%- if section.settings.heading != blank -%}
         <h2 class="title title-wrapper--no-top-margin inline-richtext {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
           {{ section.settings.heading }}
@@ -154,7 +154,9 @@
                 <div id="contact-phone" class="margin-element">
                     <hr />
                     <div class="{{ headers_align }}">
-                      {{ block.settings.phone_header | prepend: headers_style_pre | append: headers_style_post }}
+                      {{ headers_style_pre }}
+                        {{ block.settings.phone_header }}
+                      {{ headers_style_post }}
                     </div>
                     <div class="{{ descriptions_align }}">
                       <div>{{ block.settings.s_phone_text }}</div>
@@ -167,7 +169,9 @@
                 <div id="contact-email" class="margin-element">
                     <hr />
                     <div class="{{ headers_align }}">
-                      {{ block.settings.email_header | prepend: headers_style_pre | append: headers_style_post }}
+                      {{ headers_style_pre }}
+                        {{ block.settings.email_header }}
+                      {{ headers_style_post }}
                     </div>
                     <div class="{{ descriptions_align }}">
                       <div>{{ block.settings.email_text }}</div>
@@ -180,7 +184,9 @@
                 <div id="contact-address" class="margin-element">
                     <hr />
                     <div class="{{ headers_align }}">
-                      {{ block.settings.address_header | prepend: headers_style_pre | append: headers_style_post }}
+                      {{ headers_style_pre }}
+                        {{ block.settings.address_header }}
+                      {{ headers_style_post }}
                     </div>
                     <div class="{{ descriptions_align }}">
                       {% if block.settings.address_include != blank %}
@@ -200,7 +206,9 @@
                 <div id="contact-social" class="margin-element">
                     <hr />
                     <div class="{{ headers_align }}">
-                      {{ block.settings.social_header | prepend: headers_style_pre | append: headers_style_post }}
+                      {{ headers_style_pre }}
+                        {{ block.settings.social_header }}
+                      {{ headers_style_post }}
                     </div>
                     <div class="{{ descriptions_align }}">
                       <div>{{ block.settings.social_text }}</div>    
@@ -215,7 +223,9 @@
                 <div id="contact-newsletter" class="margin-element">
                     <hr />
                     <div class="{{ headers_align }}">
-                      {{ block.settings.newsletter_header | prepend: headers_style_pre | append: headers_style_post }}
+                      {{ headers_style_pre }}
+                        {{ block.settings.newsletter_header }}
+                      {{ headers_style_post }}
                     </div>
                     <div class="{{ descriptions_align }}">
                       <div>{{ block.settings.newsletter_text }}</div>    
