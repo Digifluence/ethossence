@@ -14,18 +14,25 @@
   }
 {%- endstyle -%}
 
-<pre>Version 6</pre>
+{%- liquid 
+  assign headers_style_pre = section.settings.contact_header_treatment | prepend: '<' | append: '>'
+  assign headers_style_post = section.settings.contact_header_treatment | prepend: '</' | append: '>' 
+  assign headers_align = section.settings.contact_text_align
+  assign descriptions_align = section.settings.contact_description_align
+-%}
+
+<pre>Version 8</pre>
 
 <div class="color-{{ section.settings.color_scheme }} gradient">
   <div class="contact contact--layout-{{ section.settings.layout }} page-width page-width--narrow section-{{ section.id }}-padding">
 
     <div class="contatct-form" class="margin-element">
       {%- if section.settings.heading != blank -%}
-        <h2 class="title title-wrapper--no-top-margin inline-richtext {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+        <{{ section.settings.contact_header_treatment }} class="title title-wrapper--no-top-margin inline-richtext {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
           {{ section.settings.heading }}
-        </h2>
+        </{{ section.settings.contact_header_treatment }}>
       {%- else -%}
-        <h2 class="visually-hidden">{{ 'templates.contact.form.title' | t }}</h2>
+        <{{ section.settings.contact_header_treatment }} class="visually-hidden">{{ 'templates.contact.form.title' | t }}</{{ section.settings.contact_header_treatment }}>
       {%- endif -%}
       {%- liquid
         assign contact_form_class = 'isolate'
@@ -139,13 +146,6 @@
     </div>
 
     <div class="contact-info">
-
-        {%- liquid 
-          assign headers_style_pre = section.settings.contact_header_treatment | prepend: '<' | append: '>'
-          assign headers_style_post = section.settings.contact_header_treatment | prepend: '</' | append: '>' 
-          assign headers_align = section.settings.contact_text_align
-          assign descriptions_align = section.settings.contact_description_align
-        -%}
 
         {%- for block in section.blocks -%}
 

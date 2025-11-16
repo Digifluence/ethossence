@@ -47,7 +47,7 @@
   .contact--layout-equal-split {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
+    gap: 4rem;
   }
 
   .contact--layout-equal-split .contatct-form {
