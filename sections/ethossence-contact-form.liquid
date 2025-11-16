@@ -1,0 +1,511 @@
+{{ 'ethossence-contact-form.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div class="contact contact--layout-{{ section.settings.layout }} page-width page-width--narrow section-{{ section.id }}-padding">
+
+    <div class="contatct-form">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="title title-wrapper--no-top-margin inline-richtext {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+          {{ section.settings.heading }}
+        </h2>
+      {%- else -%}
+        <h2 class="visually-hidden">{{ 'templates.contact.form.title' | t }}</h2>
+      {%- endif -%}
+      {%- liquid
+        assign contact_form_class = 'isolate'
+        if settings.animations_reveal_on_scroll
+          assign contact_form_class = 'isolate scroll-trigger animate--slide-in'
+        endif
+      -%}
+      {%- form 'contact', id: 'ContactForm', class: contact_form_class -%}
+        {%- if form.posted_successfully? -%}
+          <h2 class="form-status form-status-list form__message" tabindex="-1" autofocus>
+            {{- 'icon-success.svg' | inline_asset_content -}}
+            {{ 'templates.contact.form.post_success' | t }}
+          </h2>
+        {%- elsif form.errors -%}
+          <div class="form__message">
+            <h2 class="form-status caption-large text-body" role="alert" tabindex="-1" autofocus>
+              {{- 'icon-error.svg' | inline_asset_content -}}
+              {{ 'templates.contact.form.error_heading' | t }}
+            </h2>
+          </div>
+          <ul class="form-status-list caption-large" role="list">
+            <li>
+              <a href="#ContactForm-email" class="link">
+                {{ form.errors.translated_fields.email | capitalize }}
+                {{ form.errors.messages.email }}
+              </a>
+            </li>
+          </ul>
+        {%- endif -%}
+        <div class="contact__fields">
+          <div class="field">
+            <input
+              class="field__input"
+              autocomplete="name"
+              type="text"
+              id="ContactForm-name"
+              name="contact[{{ 'templates.contact.form.name' | t }}]"
+              value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+              placeholder="{{ 'templates.contact.form.name' | t }}"
+            >
+            <label class="field__label" for="ContactForm-name">{{ 'templates.contact.form.name' | t }}</label>
+          </div>
+          <div class="field field--with-error">
+            <input
+              autocomplete="email"
+              type="email"
+              id="ContactForm-email"
+              class="field__input"
+              name="contact[email]"
+              spellcheck="false"
+              autocapitalize="off"
+              value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+              aria-required="true"
+              {% if form.errors contains 'email' %}
+                aria-invalid="true"
+                aria-describedby="ContactForm-email-error"
+              {% endif %}
+              placeholder="{{ 'templates.contact.form.email' | t }}"
+            >
+            <label class="field__label" for="ContactForm-email">
+              {{- 'templates.contact.form.email' | t }}
+              <span aria-hidden="true">*</span></label
+            >
+            {%- if form.errors contains 'email' -%}
+              <small class="contact__field-error" id="ContactForm-email-error">
+                <span class="visually-hidden">{{ 'accessibility.error' | t }}</span>
+                <span class="form__message">
+                  <span class="svg-wrapper">
+                    {{- 'icon-error.svg' | inline_asset_content -}}
+                  </span>
+                  {{- form.errors.translated_fields.email | capitalize }}
+                  {{ form.errors.messages.email -}}
+                </span>
+              </small>
+            {%- endif -%}
+          </div>
+        </div>
+        <div class="field">
+          <input
+            type="tel"
+            id="ContactForm-phone"
+            class="field__input"
+            autocomplete="tel"
+            name="contact[{{ 'templates.contact.form.phone' | t }}]"
+            pattern="[0-9\-]*"
+            value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+            placeholder="{{ 'templates.contact.form.phone' | t }}"
+          >
+          <label class="field__label" for="ContactForm-phone">{{ 'templates.contact.form.phone' | t }}</label>
+        </div>
+        <div class="field">
+          <textarea
+            rows="10"
+            id="ContactForm-body"
+            class="text-area field__input"
+            name="contact[{{ 'templates.contact.form.comment' | t }}]"
+            placeholder="{{ 'templates.contact.form.comment' | t }}"
+          >
+            {{- form.body -}}
+          </textarea>
+          <label class="form__label field__label" for="ContactForm-body">
+            {{- 'templates.contact.form.comment' | t -}}
+          </label>
+        </div>
+        <div class="contact__button">
+          <button type="submit" class="button">
+            {{ 'templates.contact.form.send' | t }}
+          </button>
+        </div>
+      {%- endform -%}
+    </div>
+
+    <div class="contact-info">
+
+        {%- liquid 
+          assign headers_style_pre = section.settings.contact_header_treatment | prepend: '<' | append: '>'
+          assign headers_style_post = section.settings.contact_header_treatment | prepend: '</' | append: '>' 
+          assign headers_align = section.settings.contact_text_align
+          assign descriptions_align = section.settings.contact_description_align
+        -%}
+
+        {%- for block in section.blocks -%}
+
+          {%- case block.type -%}
+
+              {%- when 'phone' -%}
+                <!-- PHONE -->
+                <div id="contact-phone" class="margin-element">
+                    <hr />
+                    <div class="{{ headers_align }}">
+                      {{ block.settings.phone_header | prepend: headers_style_pre | append: headers_style_post }}
+                    </div>
+                    <div class="{{ descriptions_align }}">
+                      <div>{{ block.settings.s_phone_text }}</div>
+                      <div>{{ shop.address.phone }}</div>
+                    </div>                                  
+                </div>
+                
+              {%- when 'email' -%}
+                <!-- EMAIL -->
+                <div id="contact-email" class="margin-element">
+                    <hr />
+                    <div class="{{ headers_align }}">
+                      {{ block.settings.email_header | prepend: headers_style_pre | append: headers_style_post }}
+                    </div>
+                    <div class="{{ descriptions_align }}">
+                      <div>{{ block.settings.email_text }}</div>
+                      <div>{{ shop.address.email }}</div>
+                    </div>                                  
+                </div>
+
+              {%- when 'address' -%}
+                <!-- ADDRESS -->
+                <div id="contact-address" class="margin-element">
+                    <hr />
+                    <div class="{{ headers_align }}">
+                      {{ block.settings.address_header | prepend: headers_style_pre | append: headers_style_post }}
+                    </div>
+                    <div class="{{ descriptions_align }}">
+                      {% if block.settings.address_include != blank %}
+                          <div>{{ block.settings.address_text }}</div>    
+                          <div>
+                            <strong>{{ shop.name }}</strong><br />
+                            {{ shop.address.street }}<br />
+                            {{ shop.address.city }}, {{ shop.address.province_code }} {{ shop.address.zip }}<br />
+                            {{ shop.address.country }}
+                          </div>
+                      {% endif %}
+                    </div>   
+                </div>
+
+              {%- when 'social' -%}
+                <!-- SOCIAL -->
+                <div id="contact-social" class="margin-element">
+                    <hr />
+                    <div class="{{ headers_align }}">
+                      {{ block.settings.social_header | prepend: headers_style_pre | append: headers_style_post }}
+                    </div>
+                    <div class="{{ descriptions_align }}">
+                      <div>{{ block.settings.social_text }}</div>    
+                      <div>
+                          {%- render 'social-icons', class: 'contact__list-social' -%}
+                      </div>
+                    </div>   
+                </div>
+
+              {%- when 'newsletter' -%}
+                <!-- NEWSLETTER -->
+                <div id="contact-newsletter" class="margin-element">
+                    <hr />
+                    <div class="{{ headers_align }}">
+                      {{ block.settings.newsletter_header | prepend: headers_style_pre | append: headers_style_post }}
+                    </div>
+                    <div class="{{ descriptions_align }}">
+                      <div>{{ block.settings.newsletter_text }}</div>    
+                      <div>
+                          {%- render 'ethossence-block-newsletter', 
+                            section_id: section.id 
+                          -%}  
+                      </div>
+                    </div>   
+                </div>
+
+          {%- endcase -%}
+
+        {% endfor %}
+
+    </div>    
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.contact-form.name",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "default": "t:sections.contact-form.settings.title.default",
+      "label": "t:sections.contact-form.settings.title.label"
+    },    
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_size.options__1.label"
+        },
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_size.options__2.label"
+        },
+        {
+          "value": "h0",
+          "label": "t:sections.all.heading_size.options__3.label"
+        },
+        {
+          "value": "hxl",
+          "label": "t:sections.all.heading_size.options__4.label"
+        },
+        {
+          "value": "hxxl",
+          "label": "t:sections.all.heading_size.options__5.label"
+        }
+      ],
+      "default": "h1",
+      "label": "t:sections.all.heading_size.label"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Desktop Layout",
+      "options": [
+        {
+          "value": "stacked",
+          "label": "Stacked"
+        },
+        {
+          "value": "equal-split",
+          "label": "Equal Split (50/50)"
+        },
+        {
+          "value": "form-wide",
+          "label": "Form Wide (66/33)"
+        }
+      ],
+      "default": "stacked"
+    },
+    {
+      "type": "header",
+      "content": "Block header and text"
+    },    
+    {
+      "id": "contact_header_treatment",
+      "type": "select",
+      "label": "Treatment for headers",
+      "options":
+        [
+          {
+            "value": "<regular>",
+            "label": "Regular"
+          },
+          {
+            "value": "<H1>",
+            "label": "Header 1 (H1)"
+          },
+          {
+            "value": "<H2>",
+            "label": "Header 2 (H2)"
+          },
+          {
+            "value": "<H3>",
+            "label": "Header 3 (H3)"
+          },
+          {
+            "value": "<H4>",
+            "label": "Header 4 (H4)"
+          },
+          {
+            "value": "<H5>",
+            "label": "Header 5 (H5)"
+          },
+          {
+            "value": "<H6>",
+            "label": "Header 6 (H6)"
+          },
+          {
+            "value": "<small>",
+            "label": "Small"
+          }
+        ],
+      "default": "<H2>"
+    },
+    {
+      "id": "contact_header_align",
+      "type": "select",
+      "label": "Alignment for headers",
+      "options":
+        [
+          { "value": "text-left", "label": "Left"},
+          { "value": "text-center", "label": "Center"},
+          { "value": "text-right", "label": "Right"}
+        ],
+      "default": "text-left"
+    },
+    {
+      "id": "contact_description_align",
+      "type": "select",
+      "label": "Alignment for descriptions",
+      "options":
+        [
+          { "value": "text-left", "label": "Left"},
+          { "value": "text-center", "label": "Center"},
+          { "value": "text-right", "label": "Right"}
+        ],
+      "default": "text-left"
+    },
+  ],
+  "blocks": [
+    {
+      "type": "phone",
+      "name": "Phone",
+      "settings": [
+        {
+          "id": "phone_header",
+          "type": "text",
+          "label": "Phone Header",
+          "default": "Phone"
+        },
+        {
+          "id": "s_phone_text",
+          "type": "textarea",
+          "label": "Phone Description",
+          "default": "Enter phone description here"
+        }
+      ]
+    },
+    {
+      "type": "email",
+      "name": "Email",
+      "settings": [
+        {
+          "id": "email_header",
+          "type": "text",
+          "label": "Email Header",
+          "default": "Email"
+        },
+        {
+          "id": "email_text",
+          "type": "textarea",
+          "label": "Email Description",
+          "default": "Enter email description here"
+        }
+      ]
+    },
+    {
+      "type": "address",
+      "name": "Address",
+      "settings": [
+        {
+          "id": "address_header",
+          "type": "text",
+          "label": "Address Header",
+          "default": "Address"
+        },
+        {
+          "id": "address_text",
+          "type": "textarea",
+          "label": "Address Description",
+          "default": "Enter address description here"
+        },
+        {
+          "id": "address_include",
+          "type": "checkbox",
+          "label": "Show Shop Address",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "social",
+      "name": "Social",
+      "settings": [
+        {
+          "id": "social_header",
+          "type": "text",
+          "label": "Social Header",
+          "default": "Follow Us"
+        },
+        {
+          "id": "social_text",
+          "type": "textarea",
+          "label": "Social Description",
+          "default": "Connect with us on social media"
+        }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "settings": [
+        {
+          "id": "newsletter_header",
+          "type": "text",
+          "label": "Newsletter Header",
+          "default": "Newsletter"
+        },
+        {
+          "id": "newsletter_text",
+          "type": "textarea",
+          "label": "Newsletter Description",
+          "default": "Sign up for our newsletter"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.contact-form.presets.name",
+      "category": "Ethossence",
+    }
+  ]
+}
+{% endschema %}
