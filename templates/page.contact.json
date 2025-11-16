@@ -18,51 +18,6 @@
     },
     "form": {
       "type": "ethossence-contact-form",
-      "blocks": {
-        "phone_eQezt4": {
-          "type": "phone",
-          "settings": {
-            "phone_header": "Phone",
-            "s_phone_text": "Enter phone description here"
-          }
-        },
-        "email_Fk76Vc": {
-          "type": "email",
-          "settings": {
-            "email_header": "Email",
-            "email_text": "Enter email description here"
-          }
-        },
-        "address_bbnynU": {
-          "type": "address",
-          "settings": {
-            "address_header": "Address",
-            "address_text": "Enter address description here",
-            "address_include": true
-          }
-        },
-        "social_q9dftP": {
-          "type": "social",
-          "settings": {
-            "social_header": "Follow Us",
-            "social_text": "Connect with us on social media"
-          }
-        },
-        "newsletter_rx4mLH": {
-          "type": "newsletter",
-          "settings": {
-            "newsletter_header": "Newsletter",
-            "newsletter_text": "Sign up for our newsletter"
-          }
-        }
-      },
-      "block_order": [
-        "phone_eQezt4",
-        "email_Fk76Vc",
-        "address_bbnynU",
-        "social_q9dftP",
-        "newsletter_rx4mLH"
-      ],
       "settings": {
         "heading": "Let's Connect",
         "heading_size": "h1",
