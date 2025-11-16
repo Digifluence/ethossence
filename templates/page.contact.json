@@ -26,7 +26,7 @@
             "s_phone_text": "Enter phone description here"
           }
         },
-        "email_YTLCAd": {
+        "email_Fk76Vc": {
           "type": "email",
           "settings": {
             "email_header": "Email",
@@ -58,7 +58,7 @@
       },
       "block_order": [
         "phone_eQezt4",
-        "email_YTLCAd",
+        "email_Fk76Vc",
         "address_bbnynU",
         "social_q9dftP",
         "newsletter_rx4mLH"
@@ -70,7 +70,7 @@
         "padding_top": 36,
         "padding_bottom": 36,
         "layout": "equal-split",
-        "contact_header_treatment": "<H2>",
+        "contact_header_treatment": "H2",
         "contact_header_align": "text-left",
         "contact_description_align": "text-left"
       }
