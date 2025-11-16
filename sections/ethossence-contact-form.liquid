@@ -153,90 +153,85 @@
 
               {%- when 'phone' -%}
                 <!-- PHONE -->
-                <div id="contact-phone" class="margin-element">
-                    <hr />
-                    <div class="{{ headers_align }}">
-                      {{ headers_style_pre }}
-                        {{ block.settings.phone_header }}
-                      {{ headers_style_post }}
-                    </div>
-                    <div class="{{ descriptions_align }}">
-                      <div>{{ block.settings.s_phone_text }}</div>
-                      <div>{{ shop.address.phone }}</div>
-                    </div>                                  
+                <div id="contact-phone" class="contact-block margin-element-sm">
+                  <div class="{{ headers_align }}">
+                    {{ headers_style_pre }}
+                      {{ block.settings.phone_header }}
+                    {{ headers_style_post }}
+                  </div>
+                  <div class="{{ descriptions_align }}">
+                    <div>{{ block.settings.s_phone_text }}</div>
+                    <div>{{ shop.address.phone }}</div>
+                  </div>                                  
                 </div>
                 
               {%- when 'email' -%}
                 <!-- EMAIL -->
-                <div id="contact-email" class="margin-element">
-                    <hr />
-                    <div class="{{ headers_align }}">
-                      {{ headers_style_pre }}
-                        {{ block.settings.email_header }}
-                      {{ headers_style_post }}
-                    </div>
-                    <div class="{{ descriptions_align }}">
-                      <div>{{ block.settings.email_text }}</div>
-                      <div>{{ shop.address.email }}</div>
-                    </div>                                  
+                <div id="contact-email" class="contact-block margin-element-sm">
+                  <div class="{{ headers_align }}">
+                    {{ headers_style_pre }}
+                      {{ block.settings.email_header }}
+                    {{ headers_style_post }}
+                  </div>
+                  <div class="{{ descriptions_align }}">
+                    <div>{{ block.settings.email_text }}</div>
+                    <div>{{ shop.address.email }}</div>
+                  </div>                                  
                 </div>
 
               {%- when 'address' -%}
                 <!-- ADDRESS -->
-                <div id="contact-address" class="margin-element">
-                    <hr />
-                    <div class="{{ headers_align }}">
-                      {{ headers_style_pre }}
-                        {{ block.settings.address_header }}
-                      {{ headers_style_post }}
-                    </div>
-                    <div class="{{ descriptions_align }}">
-                      {% if block.settings.address_include != blank %}
-                          <div>{{ block.settings.address_text }}</div>    
-                          <div>
-                            <strong>{{ shop.name }}</strong><br />
-                            {{ shop.address.street }}<br />
-                            {{ shop.address.city }}, {{ shop.address.province_code }} {{ shop.address.zip }}<br />
-                            {{ shop.address.country }}
-                          </div>
-                      {% endif %}
-                    </div>   
+                <div id="contact-address" class="contact-block margin-element-sm">
+                  <div class="{{ headers_align }}">
+                    {{ headers_style_pre }}
+                      {{ block.settings.address_header }}
+                    {{ headers_style_post }}
+                  </div>
+                  <div class="{{ descriptions_align }}">
+                    {% if block.settings.address_include != blank %}
+                        <div>{{ block.settings.address_text }}</div>    
+                        <div>
+                          <strong>{{ shop.name }}</strong><br />
+                          {{ shop.address.street }}<br />
+                          {{ shop.address.city }}, {{ shop.address.province_code }} {{ shop.address.zip }}<br />
+                          {{ shop.address.country }}
+                        </div>
+                    {% endif %}
+                  </div>   
                 </div>
 
               {%- when 'social' -%}
                 <!-- SOCIAL -->
-                <div id="contact-social" class="margin-element">
-                    <hr />
-                    <div class="{{ headers_align }}">
-                      {{ headers_style_pre }}
-                        {{ block.settings.social_header }}
-                      {{ headers_style_post }}
+                <div id="contact-social" class="contact-block margin-element-sm">
+                  <div class="{{ headers_align }}">
+                    {{ headers_style_pre }}
+                      {{ block.settings.social_header }}
+                    {{ headers_style_post }}
+                  </div>
+                  <div class="{{ descriptions_align }}">
+                    <div>{{ block.settings.social_text }}</div>    
+                    <div>
+                        {%- render 'social-icons', class: 'contact__list-social' -%}
                     </div>
-                    <div class="{{ descriptions_align }}">
-                      <div>{{ block.settings.social_text }}</div>    
-                      <div>
-                          {%- render 'social-icons', class: 'contact__list-social' -%}
-                      </div>
-                    </div>   
+                  </div>   
                 </div>
 
               {%- when 'newsletter' -%}
                 <!-- NEWSLETTER -->
-                <div id="contact-newsletter" class="margin-element">
-                    <hr />
-                    <div class="{{ headers_align }}">
-                      {{ headers_style_pre }}
-                        {{ block.settings.newsletter_header }}
-                      {{ headers_style_post }}
+                <div id="contact-newsletter" class="contact-block margin-element-sm">
+                  <div class="{{ headers_align }}">
+                    {{ headers_style_pre }}
+                      {{ block.settings.newsletter_header }}
+                    {{ headers_style_post }}
+                  </div>
+                  <div class="{{ descriptions_align }}">
+                    <div>{{ block.settings.newsletter_text }}</div>    
+                    <div>
+                        {%- render 'ethossence-block-newsletter', 
+                          section_id: section.id 
+                        -%}  
                     </div>
-                    <div class="{{ descriptions_align }}">
-                      <div>{{ block.settings.newsletter_text }}</div>    
-                      <div>
-                          {%- render 'ethossence-block-newsletter', 
-                            section_id: section.id 
-                          -%}  
-                      </div>
-                    </div>   
+                  </div>   
                 </div>
 
           {%- endcase -%}

@@ -38,6 +38,10 @@
   }
 }
 
+.contact-block {
+  border-bottom: 1px solid var(--color-border);
+}
+
 /* Layout Options */
 @media screen and (min-width: 750px) {
   .contact--layout-equal-split {
