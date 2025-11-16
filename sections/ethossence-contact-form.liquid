@@ -28,7 +28,7 @@
 
     <div class="contatct-form" class="margin-element">
       {%- if section.settings.heading != blank -%}
-        <{{ section.settings.contact_header_treatment }} class="title title-wrapper--no-top-margin inline-richtext {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+        <{{ section.settings.contact_header_treatment }} class="{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
           {{ section.settings.heading }}
         </{{ section.settings.contact_header_treatment }}>
       {%- else -%}
