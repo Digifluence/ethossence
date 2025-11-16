@@ -188,8 +188,8 @@
                     {{ headers_style_post }}
                   </div>
                   <div class="{{ descriptions_align }}">
-                    {% if block.settings.address_include != blank %}
-                        <div>{{ block.settings.address_text }}</div>    
+                      <div>{{ block.settings.address_text }}</div>    
+                      {% if block.settings.address_include != blank %}                      
                         <div>
                           <strong>{{ shop.name }}</strong><br />
                           {{ shop.address.street }}<br />
@@ -197,6 +197,7 @@
                           {{ shop.address.country }}
                         </div>
                     {% endif %}
+                    <div>{{ block.settings.address_map_embed }}</div>
                   </div>   
                 </div>
 
