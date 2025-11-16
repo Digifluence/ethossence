@@ -21,7 +21,7 @@
   assign descriptions_align = section.settings.contact_description_align
 -%}
 
-<pre>Version 8</pre>
+<pre>Version 12</pre>
 
 <div class="color-{{ section.settings.color_scheme }} gradient">
   <div class="contact contact--layout-{{ section.settings.layout }} page-width page-width--narrow section-{{ section.id }}-padding">
@@ -210,7 +210,7 @@
                   </div>
                   <div class="{{ descriptions_align }}">
                     <div>{{ block.settings.social_text }}</div>    
-                    <div>
+                    <div class="margin-element-sm">
                         {%- render 'social-icons', class: 'contact__list-social' -%}
                     </div>
                   </div>   
@@ -226,7 +226,7 @@
                   </div>
                   <div class="{{ descriptions_align }}">
                     <div>{{ block.settings.newsletter_text }}</div>    
-                    <div>
+                    <div class="margin-element-sm">
                         {%- render 'ethossence-block-newsletter', 
                           section_id: section.id 
                         -%}  
@@ -425,7 +425,7 @@
           "id": "s_phone_text",
           "type": "textarea",
           "label": "Phone Description",
-          "default": "Enter phone description here"
+          "default": "{{ shop.address.phone }}"
         }
       ]
     },
@@ -443,7 +443,7 @@
           "id": "email_text",
           "type": "textarea",
           "label": "Email Description",
-          "default": "Enter email description here"
+          "default": ""
         }
       ]
     },
@@ -461,7 +461,7 @@
           "id": "address_text",
           "type": "textarea",
           "label": "Address Description",
-          "default": "Enter address description here"
+          "default": "<strong>{{ shop.name }}</strong><br />{{ shop.address.street }}<br />{{ shop.address.city }}, {{ shop.address.province_code }} {{ shop.address.zip }}<br />{{ shop.address.country }}"
         },
         {
           "id": "address_include",
