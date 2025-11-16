@@ -38,7 +38,8 @@
           "settings": {
             "address_header": "Address",
             "address_text": "",
-            "address_include": true
+            "address_include": true,
+            "address_map_embed": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d11822.230705123931!2d-85.539917!3d42.2025242!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xdcb99e20db91850!2sMeltTools!5e0!3m2!1sen!2sus!4v1638988715264!5m2!1sen!2sus\" width=\"100%\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\"></iframe>"
           }
         },
         "social_8C6L8d": {
@@ -72,7 +73,7 @@
         "layout": "equal-split",
         "contact_header_treatment": "H2",
         "contact_header_align": "text-left",
-        "contact_description_align": "text-left"
+        "contact_text_align": "text-left"
       }
     }
   },
