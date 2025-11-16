@@ -18,6 +18,51 @@
     },
     "form": {
       "type": "ethossence-contact-form",
+      "blocks": {
+        "phone_j33yEk": {
+          "type": "phone",
+          "settings": {
+            "phone_header": "Phone",
+            "s_phone_text": ""
+          }
+        },
+        "email_m7TeFy": {
+          "type": "email",
+          "settings": {
+            "email_header": "Email",
+            "email_text": "<a href=\"mailto:sales@melttools.com\" title=\"Contact MeltTools Sales\">sales@melttools.com</a>\n<br>\n<a href=\"mailto:support@melttools.com\" title=\"Contact MeltTools Support\">support@melttools.com</a>"
+          }
+        },
+        "address_Vci3eG": {
+          "type": "address",
+          "settings": {
+            "address_header": "Address",
+            "address_text": "",
+            "address_include": true
+          }
+        },
+        "social_8C6L8d": {
+          "type": "social",
+          "settings": {
+            "social_header": "Follow Us",
+            "social_text": "Connect with us on social media"
+          }
+        },
+        "newsletter_xYHQMe": {
+          "type": "newsletter",
+          "settings": {
+            "newsletter_header": "Newsletter",
+            "newsletter_text": "Sign up for our newsletter"
+          }
+        }
+      },
+      "block_order": [
+        "phone_j33yEk",
+        "email_m7TeFy",
+        "address_Vci3eG",
+        "social_8C6L8d",
+        "newsletter_xYHQMe"
+      ],
       "settings": {
         "heading": "Let's Connect",
         "heading_size": "h1",
