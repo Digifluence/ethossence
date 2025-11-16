@@ -18,7 +18,7 @@
   assign headers_style_pre = section.settings.contact_header_treatment | prepend: '<' | append: '>'
   assign headers_style_post = section.settings.contact_header_treatment | prepend: '</' | append: '>' 
   assign headers_align = section.settings.contact_text_align
-  assign descriptions_align = section.settings.contact_description_align
+  assign descriptions_align = section.settings.contact_text_align
 -%}
 
 <pre>Version 21</pre>
@@ -398,7 +398,7 @@
       "default": "text-left"
     },
     {
-      "id": "contact_description_align",
+      "id": "contact_text_align",
       "type": "select",
       "label": "Alignment for descriptions",
       "options":
@@ -422,7 +422,7 @@
           "default": "Phone"
         },
         {
-          "id": "s_phone_description",
+          "id": "s_phone_text",
           "type": "textarea",
           "label": "Phone text"
         }
@@ -439,7 +439,7 @@
           "default": "Email"
         },
         {
-          "id": "email_description",
+          "id": "email_text",
           "type": "textarea",
           "label": "Email text"
         }
@@ -456,7 +456,7 @@
           "default": "Address"
         },
         {
-          "id": "address_description",
+          "id": "address_text",
           "type": "textarea",
           "label": "Address text"
         },
@@ -467,7 +467,7 @@
           "default": true
         },
         {
-          "id": "address_text",
+          "id": "address_map_embed",
           "type": "textarea",
           "label": "Google Maps embed code"
         },        
@@ -484,7 +484,7 @@
           "default": "Follow Us"
         },
         {
-          "id": "social_description",
+          "id": "social_text",
           "type": "textarea",
           "label": "Social text",
           "default": "Connect with us on social media"
@@ -502,7 +502,7 @@
           "default": "Newsletter"
         },
         {
-          "id": "newsletter_description",
+          "id": "newsletter_text",
           "type": "textarea",
           "label": "Newsletter text",
           "default": "Sign up for our newsletter"
