@@ -30,7 +30,7 @@
           "type": "email",
           "settings": {
             "email_header": "Email",
-            "email_text": ""
+            "email_text": "<a href=\"mailto:sales@melttools.com\" title=\"Contact MeltTools Sales\">sales@melttools.com</a>\n<br>\n<a href=\"mailto:support@melttools.com\" title=\"Contact MeltTools Support\">support@melttools.com</a>"
           }
         },
         "address_Vci3eG": {
