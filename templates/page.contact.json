@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -9,12 +18,61 @@
     },
     "form": {
       "type": "ethossence-contact-form",
+      "blocks": {
+        "phone_eQezt4": {
+          "type": "phone",
+          "settings": {
+            "phone_header": "Phone",
+            "s_phone_text": "Enter phone description here"
+          }
+        },
+        "email_YTLCAd": {
+          "type": "email",
+          "settings": {
+            "email_header": "Email",
+            "email_text": "Enter email description here"
+          }
+        },
+        "address_bbnynU": {
+          "type": "address",
+          "settings": {
+            "address_header": "Address",
+            "address_text": "Enter address description here",
+            "address_include": true
+          }
+        },
+        "social_q9dftP": {
+          "type": "social",
+          "settings": {
+            "social_header": "Follow Us",
+            "social_text": "Connect with us on social media"
+          }
+        },
+        "newsletter_rx4mLH": {
+          "type": "newsletter",
+          "settings": {
+            "newsletter_header": "Newsletter",
+            "newsletter_text": "Sign up for our newsletter"
+          }
+        }
+      },
+      "block_order": [
+        "phone_eQezt4",
+        "email_YTLCAd",
+        "address_bbnynU",
+        "social_q9dftP",
+        "newsletter_rx4mLH"
+      ],
       "settings": {
         "heading": "",
         "heading_size": "h1",
         "color_scheme": "scheme-1",
         "padding_top": 36,
-        "padding_bottom": 36
+        "padding_bottom": 36,
+        "layout": "stacked",
+        "contact_header_treatment": "<H2>",
+        "contact_header_align": "text-left",
+        "contact_description_align": "text-left"
       }
     }
   },
