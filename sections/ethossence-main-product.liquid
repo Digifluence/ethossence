@@ -57,12 +57,16 @@
     }
 
     .quantity {
-      border-radius: 40px;
+      border-radius: var(--variant-pills-radius, 40px);
       margin: 0 auto;
       text-align: center;
       width: 100%;
     }
-    
+
+    quantity-input input[type="number"] {
+      border-radius: var(--variant-pills-radius, 40px);
+    }
+
     .variant-frame {
       display: block !important;
       width: 100% !important;
