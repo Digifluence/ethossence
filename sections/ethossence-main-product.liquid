@@ -663,7 +663,12 @@
 
       {%- style -%}
         #VariantListModal-{{ section.id }} {
-          display: none !important;
+          display: none;
+        }
+
+        #VariantListModal-{{ section.id }}[open] {
+          display: flex !important;
+          overflow: hidden;
         }
 
         .variant-list-modal__content {
@@ -675,6 +680,8 @@
           position: relative;
           max-height: 80vh;
           overflow-y: auto;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+          z-index: 1001;
         }
 
         @media screen and (max-width: 750px) {
@@ -741,22 +748,11 @@
           // Open modal
           modalOpener.addEventListener('click', function(e) {
             e.preventDefault();
-            modal.style.display = 'flex';
-            modal.style.position = 'fixed';
-            modal.style.top = '0';
-            modal.style.left = '0';
-            modal.style.right = '0';
-            modal.style.bottom = '0';
-            modal.style.alignItems = 'center';
-            modal.style.justifyContent = 'center';
-            modal.style.zIndex = '1000';
-            modal.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
             modal.setAttribute('open', '');
           });
 
           // Close modal
           function closeModal() {
-            modal.style.display = 'none';
             modal.removeAttribute('open');
           }
 
@@ -764,7 +760,7 @@
             closeButton.addEventListener('click', closeModal);
           }
 
-          // Close modal when clicking outside
+          // Close modal when clicking outside the content
           modal.addEventListener('click', function(e) {
             if (e.target === modal) {
               closeModal();
@@ -773,7 +769,7 @@
 
           // Close modal on Escape key
           document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && modal.style.display === 'flex') {
+            if (e.key === 'Escape' && modal.hasAttribute('open')) {
               closeModal();
             }
           });
