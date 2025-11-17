@@ -22,21 +22,23 @@
         "phone_j33yEk": {
           "type": "phone",
           "settings": {
-            "phone_header": "Phone",
-            "s_phone_text": ""
+            "phone_header": "Call Us",
+            "s_phone_text": "",
+            "phone_include": true
           }
         },
         "email_m7TeFy": {
           "type": "email",
           "settings": {
-            "email_header": "Email",
-            "email_text": "<a href=\"mailto:sales@melttools.com\" title=\"Contact MeltTools Sales\">sales@melttools.com</a>\n<br>\n<a href=\"mailto:support@melttools.com\" title=\"Contact MeltTools Support\">support@melttools.com</a>"
+            "email_header": "Email Us",
+            "email_text": "<a href=\"mailto:sales@melttools.com\" title=\"Contact MeltTools Sales\">sales@melttools.com</a>\n<br>\n<a href=\"mailto:support@melttools.com\" title=\"Contact MeltTools Support\">support@melttools.com</a>",
+            "email_include": true
           }
         },
         "address_Vci3eG": {
           "type": "address",
           "settings": {
-            "address_header": "Address",
+            "address_header": "Visit",
             "address_text": "",
             "address_include": true,
             "address_map_embed": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d11822.230705123931!2d-85.539917!3d42.2025242!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xdcb99e20db91850!2sMeltTools!5e0!3m2!1sen!2sus!4v1638988715264!5m2!1sen!2sus\" width=\"100%\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\"></iframe>"
@@ -46,14 +48,16 @@
           "type": "social",
           "settings": {
             "social_header": "Follow Us",
-            "social_text": "Connect with us on social media"
+            "social_text": "",
+            "social_include": true
           }
         },
         "newsletter_xYHQMe": {
           "type": "newsletter",
           "settings": {
             "newsletter_header": "Newsletter",
-            "newsletter_text": "Sign up for our newsletter"
+            "newsletter_text": "Sign up for occasional emails.",
+            "newsletter_include": true
           }
         }
       },
