@@ -151,7 +151,7 @@
               value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.location }}{% endif %}"
               placeholder="{{ 'templates.contact.form.location' | t }}"
             >
-            <label class="field__label" for="ContactForm-location">{{ 'templates.contact.form.company' | t }}</label>
+            <label class="field__label" for="ContactForm-location">{{ 'templates.contact.form.location' | t }}</label>
           </div>            
 
           <!-- MESSAGE FIELD -->
@@ -303,39 +303,51 @@
   },
   "settings": [
     {
+      "type": "header",
+      "content": "Form settings"
+    },    
+    {
       "type": "inline_richtext",
       "id": "heading",
       "default": "t:sections.contact-form.settings.title.default",
-      "label": "t:sections.contact-form.settings.title.label"
-    },    
+      "label": "Form header"
+    },
+    {
+      "id": "company_include",
+      "type": "checkbox",
+      "label": "Include company input",
+      "default": true
+    },
+    {
+      "id": "location_include",
+      "type": "checkbox",
+      "label": "Include location input",
+      "default": true
+    },        
+    {
+      "type": "header",
+      "content": "Layout"
+    },
     {
       "type": "select",
-      "id": "heading_size",
+      "id": "layout",
+      "label": "Desktop Layout",
       "options": [
         {
-          "value": "h2",
-          "label": "t:sections.all.heading_size.options__1.label"
+          "value": "stacked",
+          "label": "Stacked"
         },
         {
-          "value": "h1",
-          "label": "t:sections.all.heading_size.options__2.label"
+          "value": "equal-split",
+          "label": "Equal split (50/50)"
         },
         {
-          "value": "h0",
-          "label": "t:sections.all.heading_size.options__3.label"
-        },
-        {
-          "value": "hxl",
-          "label": "t:sections.all.heading_size.options__4.label"
-        },
-        {
-          "value": "hxxl",
-          "label": "t:sections.all.heading_size.options__5.label"
+          "value": "form-wide",
+          "label": "Form wide (2/3 & 1/3)"
         }
       ],
-      "default": "h1",
-      "label": "t:sections.all.heading_size.label"
-    },
+      "default": "stacked"
+    },     
     {
       "type": "color_scheme",
       "id": "color_scheme",
@@ -368,31 +380,7 @@
     },
     {
       "type": "header",
-      "content": "Layout"
-    },
-    {
-      "type": "select",
-      "id": "layout",
-      "label": "Desktop Layout",
-      "options": [
-        {
-          "value": "stacked",
-          "label": "Stacked"
-        },
-        {
-          "value": "equal-split",
-          "label": "Equal Split (50/50)"
-        },
-        {
-          "value": "form-wide",
-          "label": "Form Wide (66/33)"
-        }
-      ],
-      "default": "stacked"
-    },
-    {
-      "type": "header",
-      "content": "Block header and text"
+      "content": "Content styling"
     },    
     {
       "id": "contact_header_treatment",
@@ -441,9 +429,18 @@
       "label": "Alignment for headers",
       "options":
         [
-          { "value": "text-left", "label": "Left"},
-          { "value": "text-center", "label": "Center"},
-          { "value": "text-right", "label": "Right"}
+          { 
+            "value": "text-left", 
+            "label": "Left"
+          },
+          { 
+            "value": "text-center", 
+            "label": "Center"
+          },
+          { 
+            "value": "text-right", 
+            "label": "Right"
+          }
         ],
       "default": "text-left"
     },
@@ -453,9 +450,18 @@
       "label": "Alignment for descriptions",
       "options":
         [
-          { "value": "text-left", "label": "Left"},
-          { "value": "text-center", "label": "Center"},
-          { "value": "text-right", "label": "Right"}
+          { 
+            "value": "text-left", 
+            "label": "Left"
+          },
+          { 
+            "value": "text-center", 
+            "label": "Center"
+          },
+          { 
+            "value": "text-right", 
+            "label": "Right"
+          }
         ],
       "default": "text-left"
     },
