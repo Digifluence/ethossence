@@ -11,6 +11,7 @@ class VariantCascadeFilter {
     this.productVariants = this.getProductVariants();
     this.authorizedVariants = this.getAuthorizedVariants();
     this.optionFields = this.getOptionFields();
+    this.isFiltering = false; // Prevent infinite loops
 
     if (this.optionFields.length > 1) {
       this.init();
@@ -18,13 +19,15 @@ class VariantCascadeFilter {
   }
 
   init() {
-    // Listen for changes to any option
+    // Listen for changes to any option - use capture phase to run before other handlers
     this.variantSelects.addEventListener('change', (event) => {
       this.handleOptionChange(event);
-    });
+    }, true);
 
     // Initial filter on page load
-    this.filterOptions();
+    setTimeout(() => {
+      this.filterOptions();
+    }, 0);
   }
 
   getProductVariants() {
@@ -59,46 +62,69 @@ class VariantCascadeFilter {
     // Get all option fieldsets/select containers in order (option1, option2, option3)
     const fields = [];
 
-    // For pill/button style (fieldsets with radio inputs)
-    const fieldsets = this.variantSelects.querySelectorAll('fieldset.product-form__input');
-    fieldsets.forEach(fieldset => {
-      fields.push({
-        container: fieldset,
-        type: 'fieldset',
-        position: fields.length + 1
-      });
+    // Look for elements with data-option-position attribute in order
+    const allContainers = this.variantSelects.querySelectorAll('[data-option-position]');
+
+    allContainers.forEach(container => {
+      const position = parseInt(container.getAttribute('data-option-position'));
+
+      // Check if it's a fieldset or dropdown
+      if (container.tagName === 'FIELDSET') {
+        fields.push({
+          container: container,
+          type: 'fieldset',
+          position: position
+        });
+      } else if (container.classList.contains('product-form__input--dropdown')) {
+        const select = container.querySelector('select');
+        fields.push({
+          container: container,
+          select: select,
+          type: 'dropdown',
+          position: position
+        });
+      }
     });
 
-    // For dropdown style (select elements)
-    const selects = this.variantSelects.querySelectorAll('.product-form__input--dropdown select');
-    selects.forEach(select => {
-      fields.push({
-        container: select.closest('.product-form__input--dropdown'),
-        select: select,
-        type: 'dropdown',
-        position: fields.length + 1
-      });
-    });
+    // Sort by position to ensure correct order
+    fields.sort((a, b) => a.position - b.position);
 
     return fields;
   }
 
   handleOptionChange(event) {
-    // Filter subsequent options based on the change
-    this.filterOptions();
+    // Prevent infinite loops from auto-selecting options
+    if (this.isFiltering) {
+      return;
+    }
+
+    // Use setTimeout to ensure the change is processed before filtering
+    setTimeout(() => {
+      this.filterOptions();
+    }, 10);
   }
 
   filterOptions() {
-    const selectedValues = this.getSelectedValues();
-
-    // Filter Option 2 based on Option 1
-    if (this.optionFields.length > 1) {
-      this.filterOption(2, selectedValues);
+    if (this.isFiltering) {
+      return;
     }
 
-    // Filter Option 3 based on Option 1 + Option 2
-    if (this.optionFields.length > 2) {
-      this.filterOption(3, selectedValues);
+    this.isFiltering = true;
+
+    try {
+      const selectedValues = this.getSelectedValues();
+
+      // Filter Option 2 based on Option 1
+      if (this.optionFields.length > 1) {
+        this.filterOption(2, selectedValues);
+      }
+
+      // Filter Option 3 based on Option 1 + Option 2
+      if (this.optionFields.length > 2) {
+        this.filterOption(3, selectedValues);
+      }
+    } finally {
+      this.isFiltering = false;
     }
   }
 
@@ -178,6 +204,7 @@ class VariantCascadeFilter {
     const inputs = fieldset.querySelectorAll('input[type="radio"]');
     let hasVisibleOption = false;
     let firstAvailableInput = null;
+    let needsAutoSelect = false;
 
     inputs.forEach(input => {
       const wrapper = input.closest('.variant-option');
@@ -188,6 +215,7 @@ class VariantCascadeFilter {
         if (wrapper) wrapper.style.display = '';
         if (label) label.style.display = '';
         input.style.display = '';
+        input.disabled = false;
         hasVisibleOption = true;
 
         if (!firstAvailableInput) {
@@ -198,20 +226,27 @@ class VariantCascadeFilter {
         if (wrapper) wrapper.style.display = 'none';
         if (label) label.style.display = 'none';
         input.style.display = 'none';
+        input.disabled = true;
 
         // If this was selected, we need to select another option
         if (input.checked) {
           input.checked = false;
+          needsAutoSelect = true;
         }
       }
     });
 
     // If current selection is no longer available, select first available option
-    const currentlyChecked = fieldset.querySelector('input[type="radio"]:checked');
-    if (!currentlyChecked && firstAvailableInput && hasVisibleOption) {
+    const currentlyChecked = fieldset.querySelector('input[type="radio"]:checked:not([disabled])');
+    if ((!currentlyChecked || needsAutoSelect) && firstAvailableInput && hasVisibleOption) {
       firstAvailableInput.checked = true;
-      // Trigger change event to update product info
-      firstAvailableInput.dispatchEvent(new Event('change', { bubbles: true }));
+
+      // Trigger change event to update product info after filtering is done
+      setTimeout(() => {
+        this.isFiltering = false;
+        firstAvailableInput.dispatchEvent(new Event('change', { bubbles: true }));
+        this.isFiltering = true;
+      }, 0);
     }
   }
 
@@ -247,25 +282,18 @@ class VariantCascadeFilter {
     if (!availableValues.has(currentValue) && firstAvailableOption) {
       select.value = firstAvailableOption.value;
       firstAvailableOption.setAttribute('selected', 'selected');
-      // Trigger change event to update product info
-      select.dispatchEvent(new Event('change', { bubbles: true }));
+
+      // Trigger change event to update product info after filtering is done
+      setTimeout(() => {
+        this.isFiltering = false;
+        select.dispatchEvent(new Event('change', { bubbles: true }));
+        this.isFiltering = true;
+      }, 0);
     }
   }
 }
 
-// Initialize when variant-selects elements are added to the page
-if (!customElements.get('variant-selects')) {
-  // Wait for variant-selects to be defined
-  customElements.whenDefined('variant-selects').then(() => {
-    initializeCascadeFilters();
-  });
-} else {
-  // Already defined, initialize now
-  document.addEventListener('DOMContentLoaded', () => {
-    initializeCascadeFilters();
-  });
-}
-
+// Initialize cascade filters
 function initializeCascadeFilters() {
   const variantSelectsElements = document.querySelectorAll('variant-selects');
   variantSelectsElements.forEach(element => {
@@ -277,7 +305,29 @@ function initializeCascadeFilters() {
   });
 }
 
+// Wait for both custom element definition and DOM ready
+function initWhenReady() {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(initializeCascadeFilters, 100);
+    });
+  } else {
+    setTimeout(initializeCascadeFilters, 100);
+  }
+}
+
+// Check if variant-selects custom element is defined
+if (customElements.get('variant-selects')) {
+  // Already defined, just wait for DOM
+  initWhenReady();
+} else {
+  // Wait for it to be defined, then initialize
+  customElements.whenDefined('variant-selects').then(() => {
+    initWhenReady();
+  });
+}
+
 // Also initialize when product info is loaded (for AJAX updates)
 document.addEventListener('product-info:loaded', () => {
-  initializeCascadeFilters();
+  setTimeout(initializeCascadeFilters, 100);
 });
