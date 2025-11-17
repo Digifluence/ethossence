@@ -196,7 +196,11 @@
                   </div>
                   <div class="{{ descriptions_align }}">
                     <div>{{ block.settings.s_phone_text }}</div>
-                    <div>{{ shop.address.phone }}</div>
+                    {% if block.settings.phone_include %}
+                      <div>
+                        {{ shop.address.phone | prepend: '+1 ' }}
+                      </div>
+                    {% endif %}
                   </div>                                  
                 </div>
                 
@@ -210,7 +214,11 @@
                   </div>
                   <div class="{{ descriptions_align }}">
                     <div>{{ block.settings.email_text }}</div>
-                    <div>{{ shop.address.email }}</div>
+                    {% if block.settings.phone_include %}
+                      <div>
+                        {{ shop.address.email }}
+                      </div>
+                    {% endif %}
                   </div>                                  
                 </div>
 
@@ -224,7 +232,7 @@
                   </div>
                   <div class="{{ descriptions_align }}">
                       <div>{{ block.settings.address_text }}</div>    
-                      {% if block.settings.address_include != blank %}                      
+                      {% if block.settings.address_include %}
                         <div>
                           <strong>{{ shop.name }}</strong><br />
                           {{ shop.address.street }}<br />
@@ -232,7 +240,11 @@
                           {{ shop.address.country }}
                         </div>
                     {% endif %}
-                    <div>{{ block.settings.address_map_embed }}</div>
+                    {% if block.settings.address_map_embed != blank %}
+                      <div>
+                        {{ block.settings.address_map_embed }}
+                      </div>
+                    {% endif %}
                   </div>   
                 </div>
 
@@ -245,8 +257,12 @@
                     {{ headers_style_post }}
                   </div>
                   <div class="{{ descriptions_align }}">
-                    <div>{{ block.settings.social_text }}</div>    
-                    <div>{%- render 'social-icons', class: 'contact__list-social' -%}</div>
+                    <div>{{ block.settings.social_text }}</div>
+                    {% if block.settings.social_include %}  
+                      <div>
+                        {%- render 'social-icons', class: 'contact__list-social' -%}
+                      </div>
+                    {% endif %}
                   </div>   
                 </div>
 
@@ -259,12 +275,12 @@
                     {{ headers_style_post }}
                   </div>
                   <div class="{{ descriptions_align }}">
-                    <div>{{ block.settings.newsletter_text }}</div>    
-                    <div class="margin-element-sm">
-                        {%- render 'ethossence-block-newsletter', 
-                          section_id: section.id 
-                        -%}  
-                    </div>
+                    <div>{{ block.settings.newsletter_text }}</div>
+                    {% if block.settings.newsletter_include %}
+                      <div class="margin-element-sm">
+                          {%- render 'ethossence-block-newsletter', section_id: section.id -%}  
+                      </div>
+                    {% endif %}
                   </div>   
                 </div>
 
@@ -459,6 +475,12 @@
           "id": "s_phone_text",
           "type": "textarea",
           "label": "Phone text"
+        },
+        {
+          "id": "phone_include",
+          "type": "checkbox",
+          "label": "Show shop phone number",
+          "default": true
         }
       ]
     },
@@ -476,6 +498,12 @@
           "id": "email_text",
           "type": "textarea",
           "label": "Email text"
+        },
+        {
+          "id": "email_include",
+          "type": "checkbox",
+          "label": "Show shop email address",
+          "default": true
         }
       ]
     },
@@ -522,6 +550,12 @@
           "type": "textarea",
           "label": "Social text",
           "default": "Connect with us on social media"
+        },
+        {
+          "id": "social_include",
+          "type": "checkbox",
+          "label": "Show social media icons",
+          "default": true
         }
       ]
     },
@@ -540,6 +574,12 @@
           "type": "textarea",
           "label": "Newsletter text",
           "default": "Sign up for our newsletter"
+        },
+        {
+          "id": "newsletter_include",
+          "type": "checkbox",
+          "label": "Show newsletter signup",
+          "default": true
         }
       ]
     }
