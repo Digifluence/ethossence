@@ -75,19 +75,21 @@
             <label class="field__label" for="ContactForm-name">{{ 'templates.contact.form.name' | t }}</label>
           </div>
 
-          <!-- COMPANY FIELD -->
-          <div class="field">
-            <input
-              class="field__input"
-              autocomplete="company"
-              type="text"
-              id="ContactForm-company"
-              name="contact[{{ 'templates.contact.form.company' | t }}]"
-              value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.company }}{% endif %}"
-              placeholder="{{ 'templates.contact.form.company' | t }}"
-            >
-            <label class="field__label" for="ContactForm-company">{{ 'templates.contact.form.company' | t }}</label>
-          </div>          
+          {%- if section.settings.company_include %}
+            <!-- COMPANY FIELD -->
+            <div class="field">
+              <input
+                class="field__input"
+                autocomplete="company"
+                type="text"
+                id="ContactForm-company"
+                name="contact[{{ 'templates.contact.form.company' | t }}]"
+                value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.company }}{% endif %}"
+                placeholder="{{ 'templates.contact.form.company' | t }}"
+              >
+              <label class="field__label" for="ContactForm-company">{{ 'templates.contact.form.company' | t }}</label>
+            </div>
+          {%- endif %}       
 
           <!-- EMAIL FIELD -->
           <div class="field field--with-error">
@@ -125,34 +127,38 @@
             {%- endif -%}
           </div>
         
-          <!-- PHONE FIELD -->
-          <div class="field">
-            <input
-              type="tel"
-              id="ContactForm-phone"
-              class="field__input"
-              autocomplete="tel"
-              name="contact[{{ 'templates.contact.form.phone' | t }}]"
-              pattern="[0-9\-]*"
-              value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
-              placeholder="{{ 'templates.contact.form.phone' | t }}"
-            >
-            <label class="field__label" for="ContactForm-phone">{{ 'templates.contact.form.phone' | t }}</label>
-          </div>
+          {%- if section.settings.phone_include %}
+            <!-- PHONE FIELD -->
+            <div class="field">
+              <input
+                type="tel"
+                id="ContactForm-phone"
+                class="field__input"
+                autocomplete="tel"
+                name="contact[{{ 'templates.contact.form.phone' | t }}]"
+                pattern="[0-9\-]*"
+                value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+                placeholder="{{ 'templates.contact.form.phone' | t }}"
+              >
+              <label class="field__label" for="ContactForm-phone">{{ 'templates.contact.form.phone' | t }}</label>
+            </div>
+          {%- endif %}       
 
-          <!-- LOCATION FIELD -->
-          <div class="field">
-            <input
-              class="field__input"
-              autocomplete="location"
-              type="text"
-              id="ContactForm-location"
-              name="contact[{{ 'templates.contact.form.location' | t }}]"
-              value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.location }}{% endif %}"
-              placeholder="{{ 'templates.contact.form.location' | t }}"
-            >
-            <label class="field__label" for="ContactForm-location">{{ 'templates.contact.form.location' | t }}</label>
-          </div>            
+          {%- if section.settings.location_include %}
+            <!-- LOCATION FIELD -->
+            <div class="field">
+              <input
+                class="field__input"
+                autocomplete="location"
+                type="text"
+                id="ContactForm-location"
+                name="contact[{{ 'templates.contact.form.location' | t }}]"
+                value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.location }}{% endif %}"
+                placeholder="{{ 'templates.contact.form.location' | t }}"
+              >
+              <label class="field__label" for="ContactForm-location">{{ 'templates.contact.form.location' | t }}</label>
+            </div>
+          {%- endif %}
 
           <!-- MESSAGE FIELD -->
           <div class="field">
@@ -310,7 +316,7 @@
       "type": "inline_richtext",
       "id": "heading",
       "default": "t:sections.contact-form.settings.title.default",
-      "label": "Form header"
+      "label": "Header"
     },
     {
       "id": "company_include",
@@ -318,6 +324,12 @@
       "label": "Include company input",
       "default": true
     },
+    {
+      "id": "phone_include",
+      "type": "checkbox",
+      "label": "Include phone input",
+      "default": true
+    },     
     {
       "id": "location_include",
       "type": "checkbox",
