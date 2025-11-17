@@ -530,11 +530,29 @@
               {%- when 'share' -%}
                 <!-- SOCIAL SHARE TEMP REMOVED -->
               {%- when 'variant_picker' -%}
-               {% render 'ethossence-product-variant-picker', 
-                  product: product, 
-                  block: block, 
-                  product_form_id: product_form_id 
+               {% render 'ethossence-product-variant-picker',
+                  product: product,
+                  block: block,
+                  product_form_id: product_form_id
                 %}
+
+                {%- if product.variants.size > 0 -%}
+                  <div style="margin-top: 20px;">
+                    <modal-opener
+                      class="variant-list-modal__opener"
+                      data-modal="#VariantListModal-{{ section.id }}"
+                    >
+                      <button
+                        id="VariantListButton-{{ section.id }}"
+                        class="button"
+                        type="button"
+                        aria-haspopup="dialog"
+                      >
+                        View All Variants
+                      </button>
+                    </modal-opener>
+                  </div>
+                {%- endif -%}
 
               {%- when 'buy_buttons' -%}
                 {%- render 'buy-buttons',
@@ -603,6 +621,107 @@
         </div>
       </modal-dialog>
     {%- endfor -%}
+
+    {%- if product.variants.size > 0 -%}
+      <modal-dialog id="VariantListModal-{{ section.id }}" class="variant-list-modal">
+        <div
+          role="dialog"
+          aria-label="All Product Variants"
+          aria-modal="true"
+          class="variant-list-modal__content"
+          tabindex="-1"
+        >
+          <button
+            id="VariantListModalClose-{{ section.id }}"
+            type="button"
+            class="variant-list-modal__close"
+            aria-label="{{ 'accessibility.close' | t }}"
+          >
+            {{- 'icon-close.svg' | inline_asset_content -}}
+          </button>
+          <div class="variant-list-modal__body">
+            <h2>All Variants</h2>
+            <ul class="variant-list-modal__list">
+              {%- for variant in product.variants -%}
+                <li>
+                  <a
+                    href="{{ product.url }}?variant={{ variant.id }}"
+                    class="variant-list-modal__link"
+                  >
+                    {{ variant.title }}
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        </div>
+      </modal-dialog>
+
+      {%- style -%}
+        .variant-list-modal__content {
+          width: 600px;
+          max-width: 90%;
+          background: white;
+          border-radius: 8px;
+          padding: 24px;
+          position: relative;
+          max-height: 80vh;
+          overflow-y: auto;
+        }
+
+        @media screen and (max-width: 750px) {
+          .variant-list-modal__content {
+            width: 80%;
+            max-width: 100%;
+          }
+        }
+
+        .variant-list-modal__close {
+          position: absolute;
+          top: 16px;
+          right: 16px;
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .variant-list-modal__body {
+          padding-top: 20px;
+        }
+
+        .variant-list-modal__body h2 {
+          margin-top: 0;
+          margin-bottom: 20px;
+        }
+
+        .variant-list-modal__list {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+        }
+
+        .variant-list-modal__list li {
+          margin-bottom: 12px;
+        }
+
+        .variant-list-modal__link {
+          color: var(--color-text);
+          text-decoration: none;
+          display: block;
+          padding: 8px 12px;
+          border-radius: 4px;
+          transition: background-color 0.2s;
+        }
+
+        .variant-list-modal__link:hover {
+          background-color: var(--color-background-secondary, #f5f5f5);
+        }
+      {%- endstyle -%}
+    {%- endif -%}
 
     {%- if product.media.size > 0 -%}
       <script src="{{ 'product-modal.js' | asset_url }}" defer="defer"></script>
