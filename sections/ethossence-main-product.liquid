@@ -146,7 +146,6 @@
   endcomment
 %}
 
-
 <product-info
   id="MainProduct-{{ section.id }}"
   class="section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }}"
@@ -175,6 +174,7 @@
   {%- endif -%}
 
   {%- style -%}
+
     .section-{{ section.id }}-padding {
       padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
       padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
@@ -211,6 +211,15 @@
       width: 100%;
     }
     
+    .variant-frame {
+      display: block !important;
+      width: 100% !important;
+      margin: 10px 0 !important;
+      padding: 7px !important;
+      text-align: center !important;
+      box-sizing: border-box !important;
+    }
+
   {%- endstyle -%}
 
   <script src="{{ 'product-info.js' | asset_url }}" defer="defer"></script>
@@ -670,50 +679,11 @@
                 %}
 
               {%- when 'variant_picker' -%}
-
-               {% style %}
-                .variant-frame {
-                          display: block !important;
-                          width: 100% !important;
-                          margin: 10px 0 !important;
-                          padding: 7px !important;
-                          text-align: center !important;
-                          box-sizing: border-box !important;
-                }
-               {% endstyle %}
-                             
-               {% render 'ethossence-product-variant-picker', product: product, block: block, product_form_id: product_form_id %}
-
-               <script>
-                  console.log('202503181140');
-                  document.addEventListener('change', function(e) {
-                     // Filter for radio inputs for Services (Option 1).
-                     if (e.target && e.target.matches('input[type="radio"][name^="Services-"]')) {
-                        var selectedOption1 = e.target.getAttribute('data-variant-title');
-                        if (!selectedOption1) return;
-                        selectedOption1 = selectedOption1.trim();
-                        console.log("Service selected:", selectedOption1);
-
-                        // Find all Applications (Option 2) radios by filtering by name.
-                        var appRadios = document.querySelectorAll('input[type="radio"][name^="Applications-"]');
-                        for (var i = 0; i < appRadios.length; i++) {
-                        var appRadio = appRadios[i];
-                        var appVariantTitle = appRadio.getAttribute('data-variant-title');
-                        if (appVariantTitle) {
-                           // Assumes format "Option 1 / Option 2".
-                           var option1Part = appVariantTitle.split(' / ')[0].trim();
-                           if (option1Part === selectedOption1) {
-                              console.log("Found matching Application:", appRadio.value);
-                              appRadio.checked = true;
-                              // Dispatch a change event so any other listeners can react.
-                              appRadio.dispatchEvent(new Event('change', { bubbles: true }));
-                              break;
-                           }
-                        }
-                        }
-                     }
-                  });
-               </script>
+               {% render 'ethossence-product-variant-picker', 
+                  product: product, 
+                  block: block, 
+                  product_form_id: product_form_id 
+                %}
 
               {%- when 'buy_buttons' -%}
                 {%- render 'buy-buttons',
@@ -807,11 +777,7 @@
                           </summary>
                         {%- endif -%}
                         <slideshow-component class="slider-mobile-gutter">
-                          {%- assign number_of_slides = recommendations.products_count
-                            | plus: 0.0
-                            | divided_by: block.settings.products_per_page
-                            | ceil
-                          -%}
+                          {%- assign number_of_slides = recommendations.products_count| plus: 0.0 | divided_by: block.settings.products_per_page | ceil -%}
                           <div
                             id="Slider-{{ block.id }}"
                             class="contains-card contains-card--product complementary-slider grid grid--1-col slider slider--everywhere"
