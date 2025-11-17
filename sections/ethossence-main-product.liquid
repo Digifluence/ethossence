@@ -63,16 +63,22 @@
       width: 100%;
     }
 
-    .quantity__button[name="minus"] {
-      border-radius: var(--variant-pills-radius, 40px) 0 0 var(--variant-pills-radius, 40px) !important;
+    quantity-input .quantity__button[name="minus"] {
+      border-top-left-radius: var(--variant-pills-radius, 40px) !important;
+      border-bottom-left-radius: var(--variant-pills-radius, 40px) !important;
+      border-top-right-radius: 0 !important;
+      border-bottom-right-radius: 0 !important;
     }
 
-    .quantity__input {
+    quantity-input .quantity__input {
       border-radius: 0 !important;
     }
 
-    .quantity__button[name="plus"] {
-      border-radius: 0 var(--variant-pills-radius, 40px) var(--variant-pills-radius, 40px) 0 !important;
+    quantity-input .quantity__button[name="plus"] {
+      border-top-left-radius: 0 !important;
+      border-bottom-left-radius: 0 !important;
+      border-top-right-radius: var(--variant-pills-radius, 40px) !important;
+      border-bottom-right-radius: var(--variant-pills-radius, 40px) !important;
     }
 
     .variant-frame {
