@@ -81,5 +81,5 @@
 .contact__list-social {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: center !important;
 }
