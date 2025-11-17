@@ -85,11 +85,9 @@
 }
 
 .list-social__item .icon {
-  transform: scale(2.7) !important
+  transform: scale(1.74) !important
 }
 
 .list-social__link:hover .icon {
-  transform: scale(2.7) !important
+  transform: scale(1.74) !important
 }
-
-/* End Layout Options */
