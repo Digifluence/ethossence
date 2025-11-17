@@ -83,3 +83,8 @@
   flex-wrap: wrap;
   justify-content: center !important;
 }
+
+.list-social__item .icon {
+  width: 3.5rem imn !important;
+  height: 3.5rem !important;
+}
