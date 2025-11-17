@@ -17,7 +17,7 @@
 {%- liquid 
   assign headers_style_pre = section.settings.contact_header_treatment | prepend: '<' | append: '>'
   assign headers_style_post = section.settings.contact_header_treatment | prepend: '</' | append: '>' 
-  assign headers_align = section.settings.contact_text_align
+  assign headers_align = section.settings.contact_headers_align
   assign descriptions_align = section.settings.contact_text_align
 -%}
 
@@ -341,6 +341,12 @@
       "content": "Layout"
     },
     {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },    
+    {
       "type": "select",
       "id": "layout",
       "label": "Desktop Layout",
@@ -360,12 +366,6 @@
       ],
       "default": "stacked"
     },     
-    {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "t:sections.all.colors.label",
-      "default": "scheme-1"
-    },
     {
       "type": "header",
       "content": "t:sections.all.padding.section_padding_heading"
@@ -459,7 +459,7 @@
     {
       "id": "contact_text_align",
       "type": "select",
-      "label": "Alignment for descriptions",
+      "label": "Alignment for text",
       "options":
         [
           { 
