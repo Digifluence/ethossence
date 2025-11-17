@@ -85,8 +85,7 @@
 }
 
 .list-social__item .icon {
-  height: 3.5rem !important;  
-  width: 3.5rem !important;
+  transform: scale(2.7) !important
 }
 
 .list-social__link:hover .icon {
