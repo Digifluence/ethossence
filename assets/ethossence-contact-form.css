@@ -88,3 +88,7 @@
   height: 3.5rem !important;  
   width: 3.5rem !important;
 }
+
+.list-social__link:hover .icon {
+  transform: scale(2.7)
+}
