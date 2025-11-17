@@ -262,9 +262,11 @@
       "form": {
         "title": "Contact form",
         "name": "Name",
+        "company": "Company",
         "email": "Email",
         "phone": "Phone number",
-        "comment": "Comment",
+        "location": "Location",
+        "comment": "Message",
         "send": "Send",
         "post_success": "Thanks for contacting us. We'll get back to you as soon as possible.",
         "error_heading": "Please adjust the following:"

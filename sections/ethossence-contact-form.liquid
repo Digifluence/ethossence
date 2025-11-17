@@ -62,7 +62,8 @@
             </li>
           </ul>
         {%- endif -%}
-        <div class="contact__fields">
+
+          <!-- NAME FIELD -->
           <div class="field">
             <input
               class="field__input"
@@ -75,6 +76,22 @@
             >
             <label class="field__label" for="ContactForm-name">{{ 'templates.contact.form.name' | t }}</label>
           </div>
+
+          <!-- COMPANY FIELD -->
+          <div class="field">
+            <input
+              class="field__input"
+              autocomplete="company"
+              type="text"
+              id="ContactForm-company"
+              name="contact[{{ 'templates.contact.form.company' | t }}]"
+              value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.company }}{% endif %}"
+              placeholder="{{ 'templates.contact.form.company' | t }}"
+            >
+            <label class="field__label" for="ContactForm-company">{{ 'templates.contact.form.company' | t }}</label>
+          </div>          
+
+          <!-- EMAIL FIELD -->
           <div class="field field--with-error">
             <input
               autocomplete="email"
@@ -109,39 +126,59 @@
               </small>
             {%- endif -%}
           </div>
-        </div>
-        <div class="field">
-          <input
-            type="tel"
-            id="ContactForm-phone"
-            class="field__input"
-            autocomplete="tel"
-            name="contact[{{ 'templates.contact.form.phone' | t }}]"
-            pattern="[0-9\-]*"
-            value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
-            placeholder="{{ 'templates.contact.form.phone' | t }}"
-          >
-          <label class="field__label" for="ContactForm-phone">{{ 'templates.contact.form.phone' | t }}</label>
-        </div>
-        <div class="field">
-          <textarea
-            rows="10"
-            id="ContactForm-body"
-            class="text-area field__input"
-            name="contact[{{ 'templates.contact.form.comment' | t }}]"
-            placeholder="{{ 'templates.contact.form.comment' | t }}"
-          >
-            {{- form.body -}}
-          </textarea>
-          <label class="form__label field__label" for="ContactForm-body">
-            {{- 'templates.contact.form.comment' | t -}}
-          </label>
-        </div>
-        <div class="contact__button">
-          <button type="submit" class="button">
-            {{ 'templates.contact.form.send' | t }}
-          </button>
-        </div>
+        
+          <!-- PHONE FIELD -->
+          <div class="field">
+            <input
+              type="tel"
+              id="ContactForm-phone"
+              class="field__input"
+              autocomplete="tel"
+              name="contact[{{ 'templates.contact.form.phone' | t }}]"
+              pattern="[0-9\-]*"
+              value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+              placeholder="{{ 'templates.contact.form.phone' | t }}"
+            >
+            <label class="field__label" for="ContactForm-phone">{{ 'templates.contact.form.phone' | t }}</label>
+          </div>
+
+          <!-- LOCATION FIELD -->
+          <div class="field">
+            <input
+              class="field__input"
+              autocomplete="location"
+              type="text"
+              id="ContactForm-location"
+              name="contact[{{ 'templates.contact.form.location' | t }}]"
+              value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.location }}{% endif %}"
+              placeholder="{{ 'templates.contact.form.location' | t }}"
+            >
+            <label class="field__label" for="ContactForm-location">{{ 'templates.contact.form.company' | t }}</label>
+          </div>            
+
+          <!-- MESSAGE FIELD -->
+          <div class="field">
+            <textarea
+              rows="10"
+              id="ContactForm-body"
+              class="text-area field__input"
+              name="contact[{{ 'templates.contact.form.comment' | t }}]"
+              placeholder="{{ 'templates.contact.form.comment' | t }}"
+            >
+              {{- form.body -}}
+            </textarea>
+            <label class="form__label field__label" for="ContactForm-body">
+              {{- 'templates.contact.form.comment' | t -}}
+            </label>
+          </div>
+
+          <!-- SUBMIT BUTTON -->
+          <div class="contact__button">
+            <button type="submit" class="button">
+              {{ 'templates.contact.form.send' | t }}
+            </button>
+          </div>
+
       {%- endform -%}
     </div>
 
