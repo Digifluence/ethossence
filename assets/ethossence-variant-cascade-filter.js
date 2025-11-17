@@ -292,9 +292,9 @@ class VariantCascadeFilter {
       }
     });
 
-    // If current selection is no longer available, select first available option
-    const currentlyChecked = fieldset.querySelector('input[type="radio"]:checked:not([disabled])');
-    if ((!currentlyChecked || needsAutoSelect) && firstAvailableInput && hasVisibleOption) {
+    // Only auto-select if the current selection was actually disabled
+    // Don't auto-select just because nothing is checked yet (for option 3)
+    if (needsAutoSelect && firstAvailableInput && hasVisibleOption) {
       firstAvailableInput.checked = true;
 
       // Trigger change event to update product info after filtering is done
@@ -311,6 +311,7 @@ class VariantCascadeFilter {
     let hasVisibleOption = false;
     let firstAvailableOption = null;
     const currentValue = select.value;
+    let wasSelectionInvalidated = false;
 
     options.forEach(option => {
       // Skip the placeholder option if it exists
@@ -331,11 +332,16 @@ class VariantCascadeFilter {
         // Hide this option
         option.style.display = 'none';
         option.disabled = true;
+
+        // Check if current selection was disabled
+        if (option.value === currentValue) {
+          wasSelectionInvalidated = true;
+        }
       }
     });
 
-    // If current selection is no longer available, select first available option
-    if (!availableValues.has(currentValue) && firstAvailableOption) {
+    // Only auto-select if the current selection was actually invalidated by filtering
+    if (wasSelectionInvalidated && firstAvailableOption) {
       select.value = firstAvailableOption.value;
       firstAvailableOption.setAttribute('selected', 'selected');
 
