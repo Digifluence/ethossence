@@ -4,10 +4,13 @@
  * Shows only Option 2 values available with Option 1 selection
  * Shows only Option 3 values available with Option 1 + Option 2 selection
  *
- * VERSION: 1.1.0
+ * VERSION: 1.2.0
  */
 
-const VARIANT_CASCADE_VERSION = '1.1.0';
+const VARIANT_CASCADE_VERSION = '1.2.0';
+
+// Use WeakMap to track which actual element instances have been initialized
+const initializedElements = new WeakMap();
 
 class VariantCascadeFilter {
   constructor(variantSelectsElement) {
@@ -33,11 +36,21 @@ class VariantCascadeFilter {
   init() {
     console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Setting up change listener...`);
 
-    // Listen for changes to any option - use capture phase to run before other handlers
-    this.variantSelects.addEventListener('change', (event) => {
-      console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Change event detected on:`, event.target);
-      this.handleOptionChange(event);
-    }, true);
+    // Store bound handler so we can remove it later if needed
+    this.boundChangeHandler = (event) => {
+      // Only handle changes within our variant-selects element
+      if (this.variantSelects.contains(event.target)) {
+        console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Change event detected on:`, event.target);
+        this.handleOptionChange(event);
+      }
+    };
+
+    // Use event delegation on document to survive DOM updates
+    // Listen in capture phase to intercept before other handlers
+    document.addEventListener('change', this.boundChangeHandler, true);
+
+    // Store this instance in the WeakMap
+    initializedElements.set(this.variantSelects, this);
 
     // Initial filter on page load
     console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Scheduling initial filter...`);
@@ -45,6 +58,14 @@ class VariantCascadeFilter {
       console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Running initial filter...`);
       this.filterOptions();
     }, 0);
+  }
+
+  destroy() {
+    // Clean up event listener when instance is destroyed
+    if (this.boundChangeHandler) {
+      document.removeEventListener('change', this.boundChangeHandler, true);
+      console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Event listener removed`);
+    }
   }
 
   getProductVariants() {
@@ -335,13 +356,19 @@ function initializeCascadeFilters() {
   console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Found ${variantSelectsElements.length} variant-selects elements`);
 
   variantSelectsElements.forEach(element => {
-    // Check if already initialized
-    if (!element.hasAttribute('data-cascade-initialized')) {
+    // Check if this specific element instance has already been initialized using WeakMap
+    const existingInstance = initializedElements.get(element);
+
+    if (!existingInstance) {
       console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Initializing new filter for element:`, element);
       new VariantCascadeFilter(element);
-      element.setAttribute('data-cascade-initialized', 'true');
     } else {
-      console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Element already initialized, skipping`);
+      console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Element already initialized, refreshing data...`);
+      // Element already initialized, but refresh its data in case variants changed
+      existingInstance.productVariants = existingInstance.getProductVariants();
+      existingInstance.authorizedVariants = existingInstance.getAuthorizedVariants();
+      existingInstance.optionFields = existingInstance.getOptionFields();
+      existingInstance.filterOptions();
     }
   });
 
@@ -387,3 +414,32 @@ document.addEventListener('product-info:loaded', () => {
   console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] product-info:loaded event fired, re-initializing...`);
   setTimeout(initializeCascadeFilters, 100);
 });
+
+// Watch for DOM changes to catch when variant-selects elements are added/replaced
+const observer = new MutationObserver((mutations) => {
+  let shouldReinitialize = false;
+
+  mutations.forEach((mutation) => {
+    // Check if any variant-selects elements were added
+    mutation.addedNodes.forEach((node) => {
+      if (node.nodeType === 1) { // Element node
+        if (node.tagName === 'VARIANT-SELECTS' || node.querySelector('variant-selects')) {
+          console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] variant-selects element added to DOM`);
+          shouldReinitialize = true;
+        }
+      }
+    });
+  });
+
+  if (shouldReinitialize) {
+    setTimeout(initializeCascadeFilters, 50);
+  }
+});
+
+// Start observing the document for changes
+observer.observe(document.body, {
+  childList: true,
+  subtree: true
+});
+
+console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] MutationObserver set up to watch for DOM changes`);
