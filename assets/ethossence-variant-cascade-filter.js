@@ -4,10 +4,10 @@
  * Shows only Option 2 values available with Option 1 selection
  * Shows only Option 3 values available with Option 1 + Option 2 selection
  *
- * VERSION: 1.3.0
+ * VERSION: 1.4.0
  */
 
-const VARIANT_CASCADE_VERSION = '1.3.0';
+const VARIANT_CASCADE_VERSION = '1.4.0';
 
 // Use WeakMap to track which actual element instances have been initialized
 const initializedElements = new WeakMap();
