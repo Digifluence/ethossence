@@ -4,10 +4,10 @@
  * Shows only Option 2 values available with Option 1 selection
  * Shows only Option 3 values available with Option 1 + Option 2 selection
  *
- * VERSION: 1.2.0
+ * VERSION: 1.3.0
  */
 
-const VARIANT_CASCADE_VERSION = '1.2.0';
+const VARIANT_CASCADE_VERSION = '1.3.0';
 
 // Use WeakMap to track which actual element instances have been initialized
 const initializedElements = new WeakMap();
@@ -137,34 +137,57 @@ class VariantCascadeFilter {
       return;
     }
 
-    console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Scheduling filter after change...`);
+    // Determine which option position triggered this change
+    const changedOptionPosition = this.getOptionPositionFromEvent(event);
+    console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Option ${changedOptionPosition} changed, scheduling filter...`);
+
     // Use setTimeout to ensure the change is processed before filtering
     setTimeout(() => {
-      this.filterOptions();
+      this.filterOptions(changedOptionPosition);
     }, 10);
   }
 
-  filterOptions() {
+  getOptionPositionFromEvent(event) {
+    // Find the option container that contains this input
+    const target = event.target;
+    const container = target.closest('[data-option-position]');
+
+    if (container) {
+      const position = parseInt(container.getAttribute('data-option-position'));
+      console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Detected change in option position: ${position}`);
+      return position;
+    }
+
+    console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Could not determine option position, defaulting to 1`);
+    return 1; // Default to option 1 if we can't determine
+  }
+
+  filterOptions(changedOptionPosition = 0) {
     if (this.isFiltering) {
       console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Already filtering, skipping...`);
       return;
     }
 
-    console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Starting filter process...`);
+    console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Starting filter process (triggered by option ${changedOptionPosition})...`);
     this.isFiltering = true;
 
     try {
       const selectedValues = this.getSelectedValues();
       console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Selected values:`, selectedValues);
 
-      // Filter Option 2 based on Option 1
-      if (this.optionFields.length > 1) {
+      // Only filter options AFTER the one that changed
+      // If Option 1 changed, filter Option 2 and 3
+      // If Option 2 changed, only filter Option 3
+      // If Option 3 changed, don't filter anything
+
+      // Filter Option 2 based on Option 1 (only if Option 1 changed or initial load)
+      if (this.optionFields.length > 1 && changedOptionPosition <= 1) {
         console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Filtering Option 2...`);
         this.filterOption(2, selectedValues);
       }
 
-      // Filter Option 3 based on Option 1 + Option 2
-      if (this.optionFields.length > 2) {
+      // Filter Option 3 based on Option 1 + Option 2 (only if Option 1 or 2 changed or initial load)
+      if (this.optionFields.length > 2 && changedOptionPosition <= 2) {
         console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Filtering Option 3...`);
         this.filterOption(3, selectedValues);
       }
@@ -260,7 +283,7 @@ class VariantCascadeFilter {
     const inputs = fieldset.querySelectorAll('input[type="radio"]');
     let hasVisibleOption = false;
     let firstAvailableInput = null;
-    let needsAutoSelect = false;
+    let currentSelectionStillValid = false;
 
     inputs.forEach(input => {
       const wrapper = input.closest('.variant-option');
@@ -277,6 +300,12 @@ class VariantCascadeFilter {
         if (!firstAvailableInput) {
           firstAvailableInput = input;
         }
+
+        // Check if this is the currently selected option
+        if (input.checked) {
+          currentSelectionStillValid = true;
+          console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Option ${optionPosition}: Current selection "${input.value}" is still valid`);
+        }
       } else {
         // Hide this option
         if (wrapper) wrapper.style.display = 'none';
@@ -284,17 +313,17 @@ class VariantCascadeFilter {
         input.style.display = 'none';
         input.disabled = true;
 
-        // If this was selected, we need to select another option
+        // If this was selected, uncheck it
         if (input.checked) {
+          console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Option ${optionPosition}: Current selection "${input.value}" is no longer available`);
           input.checked = false;
-          needsAutoSelect = true;
         }
       }
     });
 
-    // If current selection is no longer available, select first available option
-    const currentlyChecked = fieldset.querySelector('input[type="radio"]:checked:not([disabled])');
-    if ((!currentlyChecked || needsAutoSelect) && firstAvailableInput && hasVisibleOption) {
+    // Only auto-select if current selection is invalid AND we have available options
+    if (!currentSelectionStillValid && firstAvailableInput && hasVisibleOption) {
+      console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Option ${optionPosition}: Auto-selecting first available option "${firstAvailableInput.value}"`);
       firstAvailableInput.checked = true;
 
       // Trigger change event to update product info after filtering is done
@@ -303,6 +332,8 @@ class VariantCascadeFilter {
         firstAvailableInput.dispatchEvent(new Event('change', { bubbles: true }));
         this.isFiltering = true;
       }, 0);
+    } else if (currentSelectionStillValid) {
+      console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Option ${optionPosition}: Keeping current selection, no auto-select needed`);
     }
   }
 
@@ -311,6 +342,7 @@ class VariantCascadeFilter {
     let hasVisibleOption = false;
     let firstAvailableOption = null;
     const currentValue = select.value;
+    const currentSelectionStillValid = availableValues.has(currentValue);
 
     options.forEach(option => {
       // Skip the placeholder option if it exists
@@ -334,8 +366,9 @@ class VariantCascadeFilter {
       }
     });
 
-    // If current selection is no longer available, select first available option
-    if (!availableValues.has(currentValue) && firstAvailableOption) {
+    // Only auto-select if current selection is invalid AND we have available options
+    if (!currentSelectionStillValid && firstAvailableOption) {
+      console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Option ${optionPosition}: Auto-selecting first available option "${firstAvailableOption.value}"`);
       select.value = firstAvailableOption.value;
       firstAvailableOption.setAttribute('selected', 'selected');
 
@@ -345,6 +378,8 @@ class VariantCascadeFilter {
         select.dispatchEvent(new Event('change', { bubbles: true }));
         this.isFiltering = true;
       }, 0);
+    } else if (currentSelectionStillValid) {
+      console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Option ${optionPosition}: Current selection "${currentValue}" is still valid, keeping it`);
     }
   }
 }
