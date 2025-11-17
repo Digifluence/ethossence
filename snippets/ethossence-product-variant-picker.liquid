@@ -98,6 +98,10 @@
   assign authorized_variant_ids = authorized_variants | split: ','
 %}
 
+<div>
+  LIST OPTIONS 
+</div>
+
 {%- unless product.has_only_default_variant -%}
   <variant-selects
     id="variant-selects-{{ section.id }}"
