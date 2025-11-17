@@ -90,5 +90,5 @@
 }
 
 .list-social__link:hover .icon {
-  transform: scale(2.7)
+  transform: scale(2.7) !important
 }
