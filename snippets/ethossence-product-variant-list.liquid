@@ -36,7 +36,7 @@
                tabindex="0"
                aria-haspopup="dialog"
                >
-               Click here
+               {{ product.metafields.ethossence.variant_list.value.link_label | default: 'Click here' }}
             </span>           
          {% endcapture %}
          {{ product.metafields.ethossence.variant_list.value.click_to_view_message | metafield_tag | replace: 'LINK', modal-link }}
