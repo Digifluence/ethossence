@@ -52,7 +52,7 @@
             tabindex="0"
             aria-haspopup="dialog"
             >
-            {{ product.metafields.ethossence.variant_list.value.link_label | default: view_all_label_default }}
+            {{ product.metafields.ethossence.variant_list.value.click_to_view_link_label | default: view_all_label_default }}
          </span>           
       {% endcapture %}
       {{ product.metafields.ethossence.variant_list.value.click_to_view_message | metafield_tag | default: view_all_msg_default | replace: 'LINK', modal-link }}
