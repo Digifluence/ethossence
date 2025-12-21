@@ -91,14 +91,15 @@
                </li>
             {%- endfor -%}
          </ul>
-         <button
-            id="VariantListModalClose-{{ section.id }}"
-            type="button"
-            class="button"
-            aria-label="{{ 'accessibility.close' | t }}"
-            >
-            close
-         </button>         
+         <div style="margin-top: 20px; text-align: center;">
+            <button
+               type="button"
+               class="button variant-list-modal__close-button"
+               data-close-modal="#VariantListModal-{{ section.id }}"
+               >
+               {{ 'accessibility.close' | t }}
+            </button>
+         </div>
       </div>
    </div>
 </modal-dialog>

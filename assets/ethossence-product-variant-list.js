@@ -9,6 +9,7 @@ class VariantListModal {
     this.modalOpener = document.querySelector(`[data-modal="#VariantListModal-${sectionId}"]`);
     this.modal = document.getElementById(`VariantListModal-${sectionId}`);
     this.closeButton = document.getElementById(`VariantListModalClose-${sectionId}`);
+    this.closeButtonBottom = document.querySelector(`[data-close-modal="#VariantListModal-${sectionId}"]`);
 
     if (!this.modalOpener || !this.modal) return;
 
@@ -30,9 +31,14 @@ class VariantListModal {
       }
     });
 
-    // Close modal button
+    // Close modal button (top)
     if (this.closeButton) {
       this.closeButton.addEventListener('click', () => this.closeModal());
+    }
+
+    // Close modal button (bottom)
+    if (this.closeButtonBottom) {
+      this.closeButtonBottom.addEventListener('click', () => this.closeModal());
     }
 
     // Close modal when clicking outside the content
