@@ -18,25 +18,24 @@
 {{ 'ethossence-product-variant-list.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'ethossence-product-variant-list.js' | asset_url }}" defer="defer"></script>
 
-<div class="color-{{ color_scheme }} gradient">
-  <div class="page-width section-{{ section.id }}-padding">
-    <!-- BUTTON TO OPTEN MODAL -->
-    <div style="margin-top: 20px;">
-   <modal-opener
-      class="variant-list-modal__opener"
-      data-modal="#VariantListModal-{{ section.id }}"
-   >
-      <button
-         id="VariantListButton-{{ section.id }}"
-         class="button"
-         type="button"
-         aria-haspopup="dialog"
-         >
-         {{ product.metafields.ethossence.variant_list.value.click_to_view_message | metafield_tag }}
-      </button>
-   </modal-opener>
-    </div>
-  </div>
+
+<div class="page-width section-{{ section.id }}-padding">
+   <!-- BUTTON TO OPTEN MODAL -->
+   <div style="margin-top: 20px;">
+      <modal-opener
+         class="variant-list-modal__opener"
+         data-modal="#VariantListModal-{{ section.id }}"
+      >
+         <button
+            id="VariantListButton-{{ section.id }}"
+            class="button"
+            type="button"
+            aria-haspopup="dialog"
+            >
+            {{ product.metafields.ethossence.variant_list.value.click_to_view_message | metafield_tag }}
+         </button>
+      </modal-opener>
+   </div>
 </div>
 
 <!-- VARIANT LIST MODAL -->
