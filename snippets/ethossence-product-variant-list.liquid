@@ -28,7 +28,6 @@
 
 
       >
-
          {% capture 'modal-link' %}
             <span
                id="VariantListButton-{{ section.id }}"
@@ -40,9 +39,7 @@
                Click here
             </span>           
          {% endcapture %}
-
-         {{ product.metafields.ethossence.variant_list.value.click_to_view_message | metafield_tag | replace: 'Click here', modal-link }}
-
+         {{ product.metafields.ethossence.variant_list.value.click_to_view_message | metafield_tag | replace: 'LINK', modal-link }}
       </modal-opener>
    </div>
 </div>
