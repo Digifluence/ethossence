@@ -548,33 +548,23 @@
               {%- when 'share' -%}
                 <!-- SOCIAL SHARE TEMP REMOVED -->
 
+              {%- when 'variant_list' -%}
+               {% render 'ethossence-product-variant-list',
+                  product: product,
+                  block: block,
+                  product_form_id: product_form_id,
+                  heading_size: block.settings.heading_size,
+                  color_scheme: block.settings.color_scheme
+                  padding_top: block.settings.padding_top,
+                  padding_bottom: block.settings.padding_bottom
+                %}              
+              
               {%- when 'variant_picker' -%}
-
-                {%- if product.variants.size > 0 -%}
-                  <div style="margin-top: 20px;">
-                    <modal-opener
-                      class="variant-list-modal__opener"
-                      data-modal="#VariantListModal-{{ section.id }}"
-                    >
-                      <button
-                        id="VariantListButton-{{ section.id }}"
-                        class="button"
-                        type="button"
-                        aria-haspopup="dialog"
-                      >
-                        View All Variants
-                      </button>
-                    </modal-opener>
-                  </div>
-                {%- endif -%}
-
                {% render 'ethossence-product-variant-picker',
                   product: product,
                   block: block,
                   product_form_id: product_form_id
                 %}
-
-
 
               {%- when 'buy_buttons' -%}
                 {%- render 'buy-buttons',
@@ -644,170 +634,7 @@
       </modal-dialog>
     {%- endfor -%}
 
-    {%- if product.variants.size > 0 -%}
-      <modal-dialog id="VariantListModal-{{ section.id }}" class="variant-list-modal">
-        <div
-          role="dialog"
-          aria-label="All Product Variants"
-          aria-modal="true"
-          class="variant-list-modal__content"
-          tabindex="-1"
-        >
-          <button
-            id="VariantListModalClose-{{ section.id }}"
-            type="button"
-            class="variant-list-modal__close"
-            aria-label="{{ 'accessibility.close' | t }}"
-          >
-            {{- 'icon-close.svg' | inline_asset_content -}}
-          </button>
-          <div class="variant-list-modal__body">
-            <h2>All Variants</h2>
-            <ul class="variant-list-modal__list">
-              {%- for variant in product.variants -%}
-                <li>
-                  <a
-                    href="{{ product.url }}?variant={{ variant.id }}"
-                    class="variant-list-modal__link"
-                  >
-                    {{ variant.title }}
-                  </a>
-                </li>
-              {%- endfor -%}
-            </ul>
-          </div>
-        </div>
-      </modal-dialog>
 
-      {%- style -%}
-        #VariantListModal-{{ section.id }} {
-          all: revert;
-          display: none !important;
-          position: fixed !important;
-          top: 0 !important;
-          left: 0 !important;
-          right: 0 !important;
-          bottom: 0 !important;
-          width: 100% !important;
-          height: 100% !important;
-          align-items: center !important;
-          justify-content: center !important;
-          background-color: rgba(0, 0, 0, 0.5) !important;
-          z-index: 1000 !important;
-          margin: 0 !important;
-          padding: 0 !important;
-          border: none !important;
-        }
-
-        #VariantListModal-{{ section.id }}[open] {
-          display: flex !important;
-        }
-
-        .variant-list-modal__content {
-          width: 600px;
-          max-width: 90%;
-          background: white;
-          border-radius: 8px;
-          padding: 24px;
-          position: relative;
-          max-height: 80vh;
-          overflow-y: auto;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-          z-index: 1001;
-        }
-
-        @media screen and (max-width: 750px) {
-          .variant-list-modal__content {
-            width: 80%;
-            max-width: 100%;
-          }
-        }
-
-        .variant-list-modal__close {
-          position: absolute;
-          top: 16px;
-          right: 16px;
-          background: none;
-          border: none;
-          cursor: pointer;
-          padding: 8px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .variant-list-modal__body {
-          padding-top: 20px;
-        }
-
-        .variant-list-modal__body h2 {
-          margin-top: 0;
-          margin-bottom: 20px;
-        }
-
-        .variant-list-modal__list {
-          list-style: none;
-          padding: 0;
-          margin: 0;
-        }
-
-        .variant-list-modal__list li {
-          margin-bottom: 12px;
-        }
-
-        .variant-list-modal__link {
-          color: var(--color-text);
-          text-decoration: none;
-          display: block;
-          padding: 8px 12px;
-          border-radius: 4px;
-          transition: background-color 0.2s;
-        }
-
-        .variant-list-modal__link:hover {
-          background-color: var(--color-background-secondary, #f5f5f5);
-        }
-      {%- endstyle -%}
-
-      <script>
-        document.addEventListener('DOMContentLoaded', function() {
-          const modalOpener = document.querySelector('[data-modal="#VariantListModal-{{ section.id }}"]');
-          const modal = document.getElementById('VariantListModal-{{ section.id }}');
-          const closeButton = document.getElementById('VariantListModalClose-{{ section.id }}');
-
-          if (!modalOpener || !modal) return;
-
-          // Open modal
-          modalOpener.addEventListener('click', function(e) {
-            e.preventDefault();
-            modal.setAttribute('open', '');
-          });
-
-          // Close modal
-          function closeModal() {
-            modal.removeAttribute('open');
-          }
-
-          if (closeButton) {
-            closeButton.addEventListener('click', closeModal);
-          }
-
-          // Close modal when clicking outside the content
-          modal.addEventListener('click', function(e) {
-            if (e.target === modal) {
-              closeModal();
-            }
-          });
-
-          // Close modal on Escape key
-          document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && modal.hasAttribute('open')) {
-              closeModal();
-            }
-          });
-        });
-      </script>
-    {%- endif -%}
 
     {%- if product.media.size > 0 -%}
       <script src="{{ 'product-modal.js' | asset_url }}" defer="defer"></script>
@@ -961,6 +788,71 @@
       "name": "t:sections.main-product.blocks.quantity_selector.name",
       "limit": 1
     },
+    {
+      "type": "variant_list",
+      "name": "Variant list",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "heading_size",
+          "options": [
+            {
+              "value": "h2",
+              "label": "t:sections.all.heading_size.options__1.label"
+            },
+            {
+              "value": "h1",
+              "label": "t:sections.all.heading_size.options__2.label"
+            },
+            {
+              "value": "h0",
+              "label": "t:sections.all.heading_size.options__3.label"
+            },
+            {
+              "value": "hxl",
+              "label": "t:sections.all.heading_size.options__4.label"
+            },
+            {
+              "value": "hxxl",
+              "label": "t:sections.all.heading_size.options__5.label"
+            }
+          ],
+          "default": "h1",
+          "label": "t:sections.all.heading_size.label"
+        },
+        {
+          "type": "color_scheme",
+          "id": "color_scheme",
+          "label": "t:sections.all.colors.label",
+          "default": "scheme-1"
+        },
+        {
+          "type": "header",
+          "content": "t:sections.all.padding.section_padding_heading"
+        },
+        {
+          "type": "range",
+          "id": "padding_top",
+          "min": 0,
+          "max": 100,
+          "step": 4,
+          "unit": "px",
+          "label": "t:sections.all.padding.padding_top",
+          "default": 40
+        },
+        {
+          "type": "range",
+          "id": "padding_bottom",
+          "min": 0,
+          "max": 100,
+          "step": 4,
+          "unit": "px",
+          "label": "t:sections.all.padding.padding_bottom",
+          "default": 52
+        }        
+      ]
+    },    
     {
       "type": "variant_picker",
       "name": "t:sections.main-product.blocks.variant_picker.name",

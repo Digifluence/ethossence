@@ -1,0 +1,92 @@
+{%- comment -%}
+  ETHOSSENCE Product Variant List Modal
+  This snippet creates a button that opens a modal displaying all product variants.
+
+   Product metafield
+   Name: "Variant list"
+   Namespace and key: "ethossence.variant_list"
+   Type: single metaobject reference for metaobject "Variant list modal"
+
+   Metaobject |  type: variant_list_modal
+   Fields
+   Label: "Click to view message" | type:  Rich text
+   Label: "Variant list header" | type: Single line text
+   Label: "Variant list message" | type: Rich text
+
+{%- endcomment -%}
+
+{{ 'ethossence-product-variant-list.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'ethossence-product-variant-list.js' | asset_url }}" defer="defer"></script>
+
+<div class="color-{{ color_scheme }} gradient">
+  <div class="page-width section-{{ section.id }}-padding">
+    <!-- BUTTON TO OPTEN MODAL -->
+    <div style="margin-top: 20px;">
+   <modal-opener
+      class="variant-list-modal__opener"
+      data-modal="#VariantListModal-{{ section.id }}"
+   >
+      <button
+         id="VariantListButton-{{ section.id }}"
+         class="button"
+         type="button"
+         aria-haspopup="dialog"
+         >
+         {{ product.metafields.ethossence.variant_list.value.click_to_view_message }}
+      </button>
+   </modal-opener>
+    </div>
+  </div>
+</div>
+
+<!-- VARIANT LIST MODAL -->
+<modal-dialog id="VariantListModal-{{ section.id }}" class="variant-list-modal">
+   <div
+      role="dialog"
+      aria-label="All Product Variants"
+      aria-modal="true"
+      class="variant-list-modal__content"
+      tabindex="-1"
+   >
+      <button
+      id="VariantListModalClose-{{ section.id }}"
+      type="button"
+      class="variant-list-modal__close"
+      aria-label="{{ 'accessibility.close' | t }}"
+      >
+      {{- 'icon-close.svg' | inline_asset_content -}}
+      </button>
+      <div class="variant-list-modal__body">
+
+      <h2 class="{{ heading_size }}">{{ product.metafields.ethossence.variant_list.value.variant_list_header }}</h2>
+      <div>{{ product.metafields.ethossence.variant_list.value.variant_list_message }}</div>
+
+      <ul class="variant-list-modal__list">
+         {%- for variant in product.variants -%}
+            <li>
+            <a
+               href="{{ product.url }}?variant={{ variant.id }}"
+               class="variant-list-modal__link"
+            >
+               {{ variant.title }}
+            </a>
+            </li>
+         {%- endfor -%}
+      </ul>
+      </div>
+   </div>
+</modal-dialog>
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ padding_top }}px;
+      padding-bottom: {{ padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
