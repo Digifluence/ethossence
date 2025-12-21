@@ -26,13 +26,16 @@
          class="variant-list-modal__opener"
          data-modal="#VariantListModal-{{ section.id }}"
       >
+
+         {{ product.metafields.ethossence.variant_list.value.click_to_view_message | metafield_tag }}         
+
          <button
             id="VariantListButton-{{ section.id }}"
             class="button"
             type="button"
             aria-haspopup="dialog"
             >
-            {{ product.metafields.ethossence.variant_list.value.click_to_view_message | metafield_tag }}
+            Click here
          </button>
       </modal-opener>
    </div>
