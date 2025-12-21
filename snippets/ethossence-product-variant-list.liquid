@@ -84,7 +84,7 @@
          <h2 class="{{ heading_size }}">{{ product.metafields.ethossence.variant_list.value.variant_list_header | default: view_all_modal_header_default }}</h2>
          {% if product.metafields.ethossence.variant_list.value.variant_list_message != null %}
             {{ product.metafields.ethossence.variant_list.value.variant_list_message | metafield_tag }}
-         {% endi %}
+         {% endif %}
          <ul class="variant-list-modal__list">
             {%- for variant in product.variants -%}
                <li>
