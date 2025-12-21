@@ -38,29 +38,25 @@
    assign view_all_modal_header_default = "View All Variants"
 %}
 
+<!-- BUTTON TO OPTEN MODAL -->
 <div class="page-width section-{{ section.id }}-padding">
-   <!-- BUTTON TO OPTEN MODAL -->
-   <div style="margin-top: 20px;">
-      <modal-opener
-         class="variant-list-modal__opener"
-         data-modal="#VariantListModal-{{ section.id }}"
-
-
-      >
-         {% capture 'modal-link' %}
-            <span
-               id="VariantListButton-{{ section.id }}"
-               class="variant-list-modal__trigger"
-               role="button"
-               tabindex="0"
-               aria-haspopup="dialog"
-               >
-               {{ product.metafields.ethossence.variant_list.value.link_label | default: view_all_label_default }}
-            </span>           
-         {% endcapture %}
-         {{ product.metafields.ethossence.variant_list.value.click_to_view_message | metafield_tag | default: view_all_msg_default | replace: 'LINK', modal-link }}
-      </modal-opener>
-   </div>
+   <modal-opener
+      class="variant-list-modal__opener"
+      data-modal="#VariantListModal-{{ section.id }}"
+   >
+      {% capture 'modal-link' %}
+         <span
+            id="VariantListButton-{{ section.id }}"
+            class="variant-list-modal__trigger"
+            role="button"
+            tabindex="0"
+            aria-haspopup="dialog"
+            >
+            {{ product.metafields.ethossence.variant_list.value.link_label | default: view_all_label_default }}
+         </span>           
+      {% endcapture %}
+      {{ product.metafields.ethossence.variant_list.value.click_to_view_message | metafield_tag | default: view_all_msg_default | replace: 'LINK', modal-link }}
+   </modal-opener>
 </div>
 
 <!-- VARIANT LIST MODAL -->
