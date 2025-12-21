@@ -75,9 +75,7 @@
          {{- 'icon-close.svg' | inline_asset_content -}}
       </button>
       <div class="variant-list-modal__body">
-         {% if product.metafields.ethossence.variant_list.value.variant_list_header != null %}
-            <h2 class="{{ heading_size }}">{{ product.metafields.ethossence.variant_list.value.variant_list_header }}</h2>
-         {% endif %}
+         <h2 class="{{ heading_size }}">{{ product.metafields.ethossence.variant_list.value.variant_list_header | default: 'Veiw All Variants' }}</h2>
          {% if product.metafields.ethossence.variant_list.value.variant_list_message != null %}
             {{ product.metafields.ethossence.variant_list.value.variant_list_message | metafield_tag }}
          {% endi %}
