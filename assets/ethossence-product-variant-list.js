@@ -16,10 +16,18 @@ class VariantListModal {
   }
 
   init() {
-    // Open modal
+    // Open modal on click
     this.modalOpener.addEventListener('click', (e) => {
       e.preventDefault();
       this.openModal();
+    });
+
+    // Open modal on keyboard (Enter or Space) for accessibility
+    this.modalOpener.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        this.openModal();
+      }
     });
 
     // Close modal button

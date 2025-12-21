@@ -25,18 +25,24 @@
       <modal-opener
          class="variant-list-modal__opener"
          data-modal="#VariantListModal-{{ section.id }}"
+
+
       >
 
-         {{ product.metafields.ethossence.variant_list.value.click_to_view_message | metafield_tag }}         
+         {% capture 'modal-link' %}
+            <span
+               id="VariantListButton-{{ section.id }}"
+               class="variant-list-modal__trigger"
+               role="button"
+               tabindex="0"
+               aria-haspopup="dialog"
+               >
+               Click here
+            </span>           
+         {% endcapture %}
 
-         <button
-            id="VariantListButton-{{ section.id }}"
-            class="button"
-            type="button"
-            aria-haspopup="dialog"
-            >
-            Click here
-         </button>
+         {{ product.metafields.ethossence.variant_list.value.click_to_view_message | metafield_tag | replace: 'Click here', modal-link }}
+
       </modal-opener>
    </div>
 </div>

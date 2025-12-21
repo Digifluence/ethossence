@@ -1,5 +1,20 @@
 /* ETHOSSENCE Product Variant List Modal Styles */
 
+.variant-list-modal__trigger {
+  cursor: pointer;
+  text-decoration: underline;
+  color: inherit;
+}
+
+.variant-list-modal__trigger:hover {
+  opacity: 0.8;
+}
+
+.variant-list-modal__trigger:focus {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
 .variant-list-modal {
   all: revert;
   display: none !important;
