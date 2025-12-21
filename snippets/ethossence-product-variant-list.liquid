@@ -32,7 +32,7 @@
          type="button"
          aria-haspopup="dialog"
          >
-         {{ product.metafields.ethossence.variant_list.value.click_to_view_message }}
+         {{ product.metafields.ethossence.variant_list.value.click_to_view_message | metafield_tag }}
       </button>
    </modal-opener>
     </div>
@@ -59,7 +59,7 @@
       <div class="variant-list-modal__body">
 
       <h2 class="{{ heading_size }}">{{ product.metafields.ethossence.variant_list.value.variant_list_header }}</h2>
-      <div>{{ product.metafields.ethossence.variant_list.value.variant_list_message }}</div>
+      {{ product.metafields.ethossence.variant_list.value.variant_list_message | metafield_tag }}
 
       <ul class="variant-list-modal__list">
          {%- for variant in product.variants -%}
