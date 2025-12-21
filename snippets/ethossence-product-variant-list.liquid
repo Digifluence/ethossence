@@ -32,6 +32,12 @@
   }
 {%- endstyle -%}
 
+{% liquid
+   view_all_label_default = "Click here"
+   view_all_msg_default = "LINK to view all variant options."
+   view_all_modal_header_default = "View All Variants"
+%}
+
 <div class="page-width section-{{ section.id }}-padding">
    <!-- BUTTON TO OPTEN MODAL -->
    <div style="margin-top: 20px;">
@@ -49,10 +55,10 @@
                tabindex="0"
                aria-haspopup="dialog"
                >
-               {{ product.metafields.ethossence.variant_list.value.link_label | default: 'Click here' }}
+               {{ product.metafields.ethossence.variant_list.value.link_label | default: view_all_label_default }}
             </span>           
          {% endcapture %}
-         {{ product.metafields.ethossence.variant_list.value.click_to_view_message | metafield_tag | replace: 'LINK', modal-link }}
+         {{ product.metafields.ethossence.variant_list.value.click_to_view_message | metafield_tag | default: view_all_msg_default | replace: 'LINK', modal-link }}
       </modal-opener>
    </div>
 </div>
@@ -75,7 +81,7 @@
          {{- 'icon-close.svg' | inline_asset_content -}}
       </button>
       <div class="variant-list-modal__body">
-         <h2 class="{{ heading_size }}">{{ product.metafields.ethossence.variant_list.value.variant_list_header | default: 'Veiw All Variants' }}</h2>
+         <h2 class="{{ heading_size }}">{{ product.metafields.ethossence.variant_list.value.variant_list_header | default: view_all_modal_header_default }}</h2>
          {% if product.metafields.ethossence.variant_list.value.variant_list_message != null %}
             {{ product.metafields.ethossence.variant_list.value.variant_list_message | metafield_tag }}
          {% endi %}
