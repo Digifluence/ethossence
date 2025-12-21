@@ -75,8 +75,12 @@
          {{- 'icon-close.svg' | inline_asset_content -}}
       </button>
       <div class="variant-list-modal__body">
-         <h2 class="{{ heading_size }}">{{ product.metafields.ethossence.variant_list.value.variant_list_header }}</h2>
-         {{ product.metafields.ethossence.variant_list.value.variant_list_message | metafield_tag }}
+         {% if product.metafields.ethossence.variant_list.value.variant_list_header != null %}
+            <h2 class="{{ heading_size }}">{{ product.metafields.ethossence.variant_list.value.variant_list_header }}</h2>
+         {% endif %}
+         {% if product.metafields.ethossence.variant_list.value.variant_list_message != null %}
+            {{ product.metafields.ethossence.variant_list.value.variant_list_message | metafield_tag }}
+         {% endi %}
          <ul class="variant-list-modal__list">
             {%- for variant in product.variants -%}
                <li>
