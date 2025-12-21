@@ -1,5 +1,10 @@
 /* ETHOSSENCE Product Variant List Modal Styles */
 
+.variant-list-modal__opener {
+  display: block;
+  width: 100%;
+}
+
 .variant-list-modal__trigger {
   cursor: pointer;
   text-decoration: underline;
@@ -49,6 +54,7 @@
   overflow-y: auto;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   z-index: 1001;
+  text-align: left;
 }
 
 @media screen and (max-width: 750px) {
@@ -83,6 +89,7 @@
 
 .variant-list-modal__body {
   padding-top: 20px;
+  text-align: left;
 }
 
 .variant-list-modal__body h2 {
