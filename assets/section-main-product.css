@@ -279,6 +279,10 @@ a.product__text {
   margin-bottom: 0.5rem;
 }
 
+.product .price__container .form__label {
+  font-weight: bold;
+}
+
 .product .price dl {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
