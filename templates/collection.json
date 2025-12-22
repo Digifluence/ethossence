@@ -70,6 +70,77 @@
         "color_scheme": "scheme-1"
       }
     },
+    "ethossence_featured_product_JjCTgE": {
+      "type": "ethossence-featured-product",
+      "blocks": {
+        "text_f49fxL": {
+          "type": "text",
+          "settings": {
+            "text": "{{ section.settings.product.vendor }}",
+            "text_style": "uppercase"
+          }
+        },
+        "title_bND9Qi": {
+          "type": "title",
+          "settings": {
+            "heading_size": "h1"
+          }
+        },
+        "price_m6yzbL": {
+          "type": "price",
+          "settings": {}
+        },
+        "variant_picker_zq8cde": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "quantity_selector_N6DXWq": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons_QTWpJb": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "share_ErDjAK": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        }
+      },
+      "block_order": [
+        "text_f49fxL",
+        "title_bND9Qi",
+        "price_m6yzbL",
+        "variant_picker_zq8cde",
+        "quantity_selector_N6DXWq",
+        "buy_buttons_QTWpJb",
+        "share_ErDjAK"
+      ],
+      "name": "Product feature",
+      "settings": {
+        "product": "",
+        "section_width": "half",
+        "color_scheme": "",
+        "secondary_background": false,
+        "media_size": "medium",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "hide_variants": false,
+        "enable_video_looping": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
     "product-grid": {
       "type": "ethossence-main-collection-product-grid",
       "settings": {
@@ -96,19 +167,9 @@
       "name": "Extended Content",
       "settings": {
         "color_scheme": "",
+        "full_width": true,
         "padding_top": 36,
-        "padding_bottom": 36,
-        "content_ext_contain": "grid-container",
-        "content_ext_m_top": 10,
-        "content_ext_m_bottom": 10,
-        "content_ext_p_top": 0,
-        "content_ext_p_bottom": 0,
-        "content_ext_p_left": 0,
-        "content_ext_p_right": 0,
-        "content_ext_bck": "none",
-        "content_ext_bck_span": "full",
-        "content_ext_border": "none",
-        "content_ext_border_round": false
+        "padding_bottom": 36
       }
     }
   },
@@ -116,6 +177,7 @@
     "image_banner_MtL38k",
     "rich_text_QCXigq",
     "banner",
+    "ethossence_featured_product_JjCTgE",
     "product-grid",
     "ethossence_content_ext_FrFgyT"
   ]
