@@ -1,0 +1,50 @@
+/* Ethossence Featured Product Section Width Styles */
+
+/* Full width section (default) */
+.ethossence-featured-product--full {
+  width: 100%;
+  max-width: 100%;
+  display: block;
+}
+
+/* Half width section - allows side-by-side layout */
+.ethossence-featured-product--half {
+  width: 100%;
+  max-width: 100%;
+  display: block;
+}
+
+@media screen and (min-width: 990px) {
+  .ethossence-featured-product--half {
+    width: 50%;
+    max-width: 50%;
+    display: inline-block;
+    vertical-align: top;
+    box-sizing: border-box;
+  }
+
+  /* Container to hold half-width sections side by side */
+  .ethossence-featured-product--half + .ethossence-featured-product--half {
+    margin-left: 0;
+  }
+}
+
+/* Ensure the product info wrapper fills the section */
+.ethossence-featured-product--half .page-width {
+  max-width: 100%;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+@media screen and (max-width: 989px) {
+  /* On mobile, half-width sections stack vertically */
+  .ethossence-featured-product--half {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+/* Adjust spacing for half-width sections */
+.ethossence-featured-product--half .featured-product {
+  margin: 0 auto;
+}
