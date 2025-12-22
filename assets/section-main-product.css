@@ -179,6 +179,7 @@ product-info {
 
 .product-form__input .form__label {
   padding-left: 0;
+  font-weight: bold;
 }
 
 .product-form__input .select {
