@@ -210,6 +210,7 @@
     },
     "ethossence_product_parts_h4rqaf": {
       "type": "ethossence-product-parts",
+      "disabled": true,
       "name": "Replacement parts",
       "settings": {
         "variants_per_page": 50,
@@ -244,7 +245,6 @@
     },
     "related-products": {
       "type": "related-products",
-      "disabled": true,
       "settings": {
         "heading": "You may also like",
         "heading_size": "h2",
