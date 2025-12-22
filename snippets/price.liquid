@@ -50,6 +50,18 @@
   .price__regular {
     text-align: center;    
   }
+
+.price__container {
+    display: flex;
+    align-items: center; /* Optional: to vertically align items */
+    gap: 10px; /* Optional: to add space between items */
+}
+
+/* You might want to remove explicit display:block from children if they have it */
+.price__container > legend.form__label,
+.price__container > .price__regular {
+    display: unset; /* or remove the display: block declaration entirely */
+}  
 {% endstyle %}
 
 {%- unless target == null and placeholder == null -%}
