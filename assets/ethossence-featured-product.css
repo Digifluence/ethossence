@@ -1,50 +1,46 @@
 /* Ethossence Featured Product Section Width Styles */
+/* These styles work within the Dawn page-width container */
 
-/* Full width section (default) */
-.ethossence-featured-product--full {
+/* Full width section (default) - takes 100% of page-width */
+.ethossence-featured-product--full .page-width {
   width: 100%;
   max-width: 100%;
-  display: block;
 }
 
-/* Half width section - allows side-by-side layout */
-.ethossence-featured-product--half {
+/* Half width section - takes 50% of page-width container */
+.ethossence-featured-product--half .page-width {
   width: 100%;
   max-width: 100%;
-  display: block;
 }
 
 @media screen and (min-width: 990px) {
-  .ethossence-featured-product--half {
+  .ethossence-featured-product--half .page-width {
     width: 50%;
     max-width: 50%;
-    display: inline-block;
-    vertical-align: top;
+    float: left;
     box-sizing: border-box;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 
-  /* Container to hold half-width sections side by side */
-  .ethossence-featured-product--half + .ethossence-featured-product--half {
-    margin-left: 0;
+  /* Clear floats after half-width sections */
+  .section-featured-product::after {
+    content: "";
+    display: table;
+    clear: both;
   }
-}
-
-/* Ensure the product info wrapper fills the section */
-.ethossence-featured-product--half .page-width {
-  max-width: 100%;
-  padding-left: 2rem;
-  padding-right: 2rem;
 }
 
 @media screen and (max-width: 989px) {
-  /* On mobile, half-width sections stack vertically */
-  .ethossence-featured-product--half {
+  /* On mobile, half-width sections take full width */
+  .ethossence-featured-product--half .page-width {
     width: 100%;
     max-width: 100%;
+    float: none;
   }
 }
 
-/* Adjust spacing for half-width sections */
+/* Adjust the featured product grid for half-width */
 .ethossence-featured-product--half .featured-product {
-  margin: 0 auto;
+  width: 100%;
 }
