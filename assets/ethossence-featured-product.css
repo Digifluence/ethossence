@@ -103,12 +103,24 @@
     width: 100% !important;
     max-width: 100% !important;
   }
+
+  /* Override Dawn's product__info-container max-width */
+  .ethossence-featured-product--full .product__info-container,
+  .ethossence-featured-product--half .product__info-container {
+    max-width: 100% !important;
+  }
 }
 
 @media screen and (min-width: 990px) {
   .ethossence-featured-product--full .product__info-wrapper,
   .ethossence-featured-product--half .product__info-wrapper {
     width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Override Dawn's product__info-container max-width */
+  .ethossence-featured-product--full .product__info-container,
+  .ethossence-featured-product--half .product__info-container {
     max-width: 100% !important;
   }
 }
