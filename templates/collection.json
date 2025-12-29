@@ -88,7 +88,9 @@
         },
         "price_m6yzbL": {
           "type": "price",
-          "settings": {}
+          "settings": {
+            "show_payment_terms": false
+          }
         },
         "variant_picker_zq8cde": {
           "type": "variant_picker",
