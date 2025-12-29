@@ -54,3 +54,41 @@
 .ethossence-featured-product--half .featured-product {
   width: 100%;
 }
+
+/* Stack media above info - override Dawn's side-by-side layout */
+.ethossence-featured-product--full .featured-product,
+.ethossence-featured-product--half .featured-product {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Ensure media wrapper appears first (on top) */
+.ethossence-featured-product--full .product__media-wrapper,
+.ethossence-featured-product--half .product__media-wrapper {
+  order: 1;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Ensure info wrapper appears second (below) */
+.ethossence-featured-product--full .product__info-wrapper,
+.ethossence-featured-product--half .product__info-wrapper {
+  order: 2;
+  width: 100%;
+  max-width: 100%;
+  margin-top: 2rem;
+}
+
+/* Remove grid-based side-by-side layout for this section */
+.ethossence-featured-product--full .featured-product.grid--2-col-tablet,
+.ethossence-featured-product--half .featured-product.grid--2-col-tablet {
+  grid-template-columns: 1fr;
+}
+
+/* Override any media position styling */
+.ethossence-featured-product--full .featured-product.product--left,
+.ethossence-featured-product--full .featured-product.product--right,
+.ethossence-featured-product--half .featured-product.product--left,
+.ethossence-featured-product--half .featured-product.product--right {
+  flex-direction: column;
+}
