@@ -73,17 +73,10 @@
     "ethossence_featured_product_JjCTgE": {
       "type": "ethossence-featured-product",
       "blocks": {
-        "text_f49fxL": {
-          "type": "text",
-          "settings": {
-            "text": "{{ section.settings.product.vendor }}",
-            "text_style": "uppercase"
-          }
-        },
         "title_bND9Qi": {
           "type": "title",
           "settings": {
-            "heading_size": "h1"
+            "heading_size": "h2"
           }
         },
         "price_m6yzbL": {
@@ -113,7 +106,6 @@
         }
       },
       "block_order": [
-        "text_f49fxL",
         "title_bND9Qi",
         "price_m6yzbL",
         "variant_picker_zq8cde",
@@ -131,6 +123,63 @@
         "media_fit": "contain",
         "image_zoom": "lightbox",
         "hide_variants": true,
+        "enable_video_looping": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "ethossence_featured_product_af9CXW": {
+      "type": "ethossence-featured-product",
+      "blocks": {
+        "title_7PNw9k": {
+          "type": "title",
+          "settings": {
+            "heading_size": "h2"
+          }
+        },
+        "price_WjPpxY": {
+          "type": "price",
+          "settings": {
+            "show_payment_terms": false
+          }
+        },
+        "variant_picker_jhwtNL": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "quantity_selector_k8qakf": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons_iy7Yr4": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": false,
+            "show_gift_card_recipient": true
+          }
+        }
+      },
+      "block_order": [
+        "title_7PNw9k",
+        "price_WjPpxY",
+        "variant_picker_jhwtNL",
+        "quantity_selector_k8qakf",
+        "buy_buttons_iy7Yr4"
+      ],
+      "name": "Product feature",
+      "settings": {
+        "product": "meltview-pixi",
+        "section_width": "half",
+        "color_scheme": "",
+        "secondary_background": false,
+        "media_size": "medium",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "image_zoom": "lightbox",
+        "hide_variants": false,
         "enable_video_looping": false,
         "padding_top": 36,
         "padding_bottom": 36
@@ -173,6 +222,7 @@
     "rich_text_QCXigq",
     "banner",
     "ethossence_featured_product_JjCTgE",
+    "ethossence_featured_product_af9CXW",
     "product-grid",
     "ethossence_content_ext_FrFgyT"
   ]
