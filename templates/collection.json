@@ -128,6 +128,78 @@
         "padding_bottom": 36
       }
     },
+    "ethossence_featured_product_af9CXW": {
+      "type": "ethossence-featured-product",
+      "blocks": {
+        "text_qYbptC": {
+          "type": "text",
+          "settings": {
+            "text": "{{ section.settings.product.vendor }}",
+            "text_style": "uppercase"
+          }
+        },
+        "title_7PNw9k": {
+          "type": "title",
+          "settings": {
+            "heading_size": "h1"
+          }
+        },
+        "price_WjPpxY": {
+          "type": "price",
+          "settings": {
+            "show_payment_terms": true
+          }
+        },
+        "variant_picker_jhwtNL": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "quantity_selector_k8qakf": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons_iy7Yr4": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "share_U6tgpE": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        }
+      },
+      "block_order": [
+        "text_qYbptC",
+        "title_7PNw9k",
+        "price_WjPpxY",
+        "variant_picker_jhwtNL",
+        "quantity_selector_k8qakf",
+        "buy_buttons_iy7Yr4",
+        "share_U6tgpE"
+      ],
+      "name": "Product feature",
+      "settings": {
+        "product": "meltview-pixi",
+        "section_width": "half",
+        "color_scheme": "",
+        "secondary_background": false,
+        "media_size": "medium",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "image_zoom": "lightbox",
+        "hide_variants": false,
+        "enable_video_looping": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
     "product-grid": {
       "type": "ethossence-main-collection-product-grid",
       "settings": {
@@ -165,6 +237,7 @@
     "rich_text_QCXigq",
     "banner",
     "ethossence_featured_product_JjCTgE",
+    "ethossence_featured_product_af9CXW",
     "product-grid",
     "ethossence_content_ext_FrFgyT"
   ]
