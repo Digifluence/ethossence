@@ -29,24 +29,31 @@
 }
 
 @media screen and (min-width: 990px) {
-  /* Parent section needs to create a containing block for floats */
-  .section-featured-product {
-    max-width: var(--page-width);
-    margin: 0 auto;
+  /* Create flexbox container wrapper for half-width sections */
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Use flexbox row container to hold half-width sections side-by-side */
+  .ethossence-featured-product--half {
+    display: inline-block;
+    width: 50%;
+    vertical-align: top;
+    box-sizing: border-box;
   }
 
   .ethossence-featured-product--half .ethossence-page-width {
-    width: 50%;
-    max-width: none;
-    float: left;
+    max-width: 100%;
     margin: 0;
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
 
-  /* Clear floats after half-width sections */
-  .section-featured-product::after {
-    content: "";
-    display: table;
-    clear: both;
+  /* Full width sections remain block */
+  .ethossence-featured-product--full {
+    display: block;
+    width: 100%;
   }
 }
 
