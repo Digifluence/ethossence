@@ -66,8 +66,25 @@
 .ethossence-featured-product--full .product__media-wrapper,
 .ethossence-featured-product--half .product__media-wrapper {
   order: 1;
-  width: 100%;
-  max-width: 100%;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Override Dawn's responsive media wrapper widths */
+@media screen and (min-width: 750px) {
+  .ethossence-featured-product--full .product__media-wrapper,
+  .ethossence-featured-product--half .product__media-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .ethossence-featured-product--full .product__media-wrapper,
+  .ethossence-featured-product--half .product__media-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
 }
 
 /* Ensure info wrapper appears second (below) */
