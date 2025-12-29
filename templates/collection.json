@@ -99,19 +99,14 @@
         },
         "quantity_selector_N6DXWq": {
           "type": "quantity_selector",
+          "disabled": true,
           "settings": {}
         },
         "buy_buttons_QTWpJb": {
           "type": "buy_buttons",
           "settings": {
-            "show_dynamic_checkout": true,
+            "show_dynamic_checkout": false,
             "show_gift_card_recipient": true
-          }
-        },
-        "share_ErDjAK": {
-          "type": "share",
-          "settings": {
-            "share_label": "Share"
           }
         }
       },
@@ -121,8 +116,7 @@
         "price_m6yzbL",
         "variant_picker_zq8cde",
         "quantity_selector_N6DXWq",
-        "buy_buttons_QTWpJb",
-        "share_ErDjAK"
+        "buy_buttons_QTWpJb"
       ],
       "name": "Product feature",
       "settings": {
