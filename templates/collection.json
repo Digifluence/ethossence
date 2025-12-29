@@ -73,17 +73,10 @@
     "ethossence_featured_product_JjCTgE": {
       "type": "ethossence-featured-product",
       "blocks": {
-        "text_f49fxL": {
-          "type": "text",
-          "settings": {
-            "text": "{{ section.settings.product.vendor }}",
-            "text_style": "uppercase"
-          }
-        },
         "title_bND9Qi": {
           "type": "title",
           "settings": {
-            "heading_size": "h1"
+            "heading_size": "h2"
           }
         },
         "price_m6yzbL": {
@@ -113,7 +106,6 @@
         }
       },
       "block_order": [
-        "text_f49fxL",
         "title_bND9Qi",
         "price_m6yzbL",
         "variant_picker_zq8cde",
