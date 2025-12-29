@@ -1,14 +1,17 @@
 /* Ethossence Featured Product Section Width Styles */
 
 /* Base styles for ethossence-page-width (mimics Dawn's page-width) */
-.ethossence-page-width {
+.ethossence-featured-product--full .ethossence-page-width,
+.ethossence-featured-product--half .ethossence-page-width {
   margin: 0 auto;
   max-width: var(--page-width);
   padding: 0 1.5rem;
+  box-sizing: border-box;
 }
 
 @media screen and (min-width: 750px) {
-  .ethossence-page-width {
+  .ethossence-featured-product--full .ethossence-page-width,
+  .ethossence-featured-product--half .ethossence-page-width {
     padding: 0 5rem;
   }
 }
@@ -16,21 +19,27 @@
 /* Full width section (default) - takes 100% of page-width */
 .ethossence-featured-product--full .ethossence-page-width {
   width: 100%;
+  display: block;
 }
 
 /* Half width section - takes 50% of page-width container */
 .ethossence-featured-product--half .ethossence-page-width {
   width: 100%;
+  display: block;
 }
 
 @media screen and (min-width: 990px) {
+  /* Parent section needs to create a containing block for floats */
+  .section-featured-product {
+    max-width: var(--page-width);
+    margin: 0 auto;
+  }
+
   .ethossence-featured-product--half .ethossence-page-width {
     width: 50%;
-    max-width: calc(var(--page-width) / 2);
+    max-width: none;
     float: left;
-    box-sizing: border-box;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    margin: 0;
   }
 
   /* Clear floats after half-width sections */
