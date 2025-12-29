@@ -91,9 +91,26 @@
 .ethossence-featured-product--full .product__info-wrapper,
 .ethossence-featured-product--half .product__info-wrapper {
   order: 2;
-  width: 100%;
-  max-width: 100%;
+  width: 100% !important;
+  max-width: 100% !important;
   margin-top: 2rem;
+}
+
+/* Override Dawn's responsive info wrapper widths */
+@media screen and (min-width: 750px) {
+  .ethossence-featured-product--full .product__info-wrapper,
+  .ethossence-featured-product--half .product__info-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .ethossence-featured-product--full .product__info-wrapper,
+  .ethossence-featured-product--half .product__info-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
 }
 
 /* Remove grid-based side-by-side layout for this section */
