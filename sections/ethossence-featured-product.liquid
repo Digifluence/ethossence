@@ -149,12 +149,14 @@
                             </div>
                             {%- endif -%}
                             {%- unless placeholder -%}
-                            <div {{ block.shopify_attributes }}>
-                                {%- form 'product', product -%}
-                                  <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-                                  {{ form | payment_terms }}
-                                {%- endform -%}
-                            </div>
+                              {%- if block.settings.show_payment_terms -%}
+                                <div {{ block.shopify_attributes }}>
+                                  {%- form 'product', product -%}
+                                    <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                                    {{ form | payment_terms }}
+                                  {%- endform -%}
+                                </div>
+                              {%- endif -%}
                             {%- endunless -%}
                           {%- when 'sku' -%}
                             <p
@@ -592,7 +594,16 @@
     {
       "type": "price",
       "name": "t:sections.featured-product.blocks.price.name",
-      "limit": 1
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_payment_terms",
+          "label": "Show payment terms",
+          "default": true,
+          "info": "Display Shopify payment installment options (e.g., Shop Pay Installments)"
+        }
+      ]
     },
     {
       "type": "sku",
