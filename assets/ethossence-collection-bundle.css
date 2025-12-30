@@ -120,6 +120,24 @@
   letter-spacing: 0.1rem;
 }
 
+.bundle-product-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+}
+
+.bundle-product-rating .rating {
+  display: inline-flex;
+}
+
+.bundle-product-rating .rating-text,
+.bundle-product-rating .rating-count {
+  margin: 0;
+  font-size: 1.2rem;
+  color: rgba(var(--color-foreground), 0.75);
+}
+
 .bundle-product-price {
   font-size: 1.4rem;
   margin: 0.5rem 0;

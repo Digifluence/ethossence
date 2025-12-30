@@ -85,7 +85,10 @@
               product: featured_product,
               section: section,
               card_class: 'collection-bundle-product',
-              quick_add: section.settings.quick_add
+              quick_add: section.settings.quick_add,
+              show_vendor: section.settings.show_vendor,
+              show_price: section.settings.show_price,
+              show_rating: section.settings.show_rating
             %}
           {% endif %}
 
@@ -94,7 +97,10 @@
               product: featured_bundle,
               section: section,
               card_class: 'collection-bundle-product',
-              quick_add: section.settings.quick_add
+              quick_add: section.settings.quick_add,
+              show_vendor: section.settings.show_vendor,
+              show_price: section.settings.show_price,
+              show_rating: section.settings.show_rating
             %}
           {% endif %}
 
@@ -150,6 +156,29 @@
       "id": "secondary_background",
       "default": false,
       "label": "Use Secondary Background"
+    },
+    {
+      "type": "header",
+      "content": "Product Card Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": false,
+      "label": "Show Vendor"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_price",
+      "default": true,
+      "label": "Show Price"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "default": false,
+      "label": "Show Product Rating",
+      "info": "To display a rating, add a product rating app. Learn more"
     },
     {
       "type": "select",
