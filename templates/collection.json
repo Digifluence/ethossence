@@ -70,6 +70,19 @@
         "color_scheme": "scheme-1"
       }
     },
+    "ethossence_collection_bundle_qw6V9A": {
+      "type": "ethossence-collection-bundle",
+      "name": "Collection Bundle",
+      "settings": {
+        "header_text": "Featured Products",
+        "header_heading_size": "h0",
+        "color_scheme": "",
+        "secondary_background": false,
+        "quick_add": "standard",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
     "product-grid": {
       "type": "ethossence-main-collection-product-grid",
       "settings": {
@@ -83,7 +96,7 @@
         "show_price": true,
         "show_vendor": false,
         "show_rating": false,
-        "quick_add": "none",
+        "quick_add": "standard",
         "enable_filtering": true,
         "filter_type": "horizontal",
         "enable_sorting": true,
@@ -97,18 +110,6 @@
       "settings": {
         "color_scheme": "",
         "full_width": true,
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
-    "ethossence_collection_bundle_qw6V9A": {
-      "type": "ethossence-collection-bundle",
-      "name": "Collection Bundle",
-      "settings": {
-        "header_text": "Featured Products",
-        "header_heading_size": "h1",
-        "color_scheme": "",
-        "secondary_background": false,
         "padding_top": 36,
         "padding_bottom": 36
       }
