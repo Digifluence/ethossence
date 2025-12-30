@@ -29,17 +29,21 @@
 }
 
 @media screen and (min-width: 990px) {
-  /* Create flexbox container wrapper for half-width sections */
-  body {
+  /* Make main content area a flex container to allow side-by-side sections */
+  main#MainContent {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: flex-start;
   }
 
-  /* Use flexbox row container to hold half-width sections side-by-side */
+  /* Target the section wrapper itself for half-width layout */
   .ethossence-featured-product--half {
-    display: inline-block;
+    display: block;
+  }
+
+  /* The section element needs to be 50% width */
+  product-info.ethossence-featured-product--half {
     width: 50%;
-    vertical-align: top;
     box-sizing: border-box;
   }
 
@@ -50,9 +54,8 @@
     padding-right: 2rem;
   }
 
-  /* Full width sections remain block */
-  .ethossence-featured-product--full {
-    display: block;
+  /* Full width sections take full width */
+  product-info.ethossence-featured-product--full {
     width: 100%;
   }
 }
