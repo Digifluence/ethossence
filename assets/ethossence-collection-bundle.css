@@ -137,11 +137,26 @@
   padding-top: 1rem;
 }
 
-.bundle-product-cta .button {
+.bundle-product-cta .button,
+.bundle-product-cta .quick-add__submit {
   width: 100%;
   text-align: center;
   min-height: 4.5rem;
   padding: 1.2rem 2.8rem;
+}
+
+/* Quick Add Styles */
+.bundle-product-cta .quick-add {
+  width: 100%;
+}
+
+.bundle-product-cta .quick-add-bulk {
+  width: 100%;
+}
+
+/* Volume pricing note */
+.bundle-product-price .card__information-volume-pricing-note {
+  margin-top: 0.5rem;
 }
 
 /* Mobile Styles */
