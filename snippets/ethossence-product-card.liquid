@@ -210,12 +210,6 @@
         </div>
         {%- endif -%}
 
-        {%- if product.description != blank -%}
-          <div class="bundle-product-description rte">
-            {{ product.description | strip_html | truncate: 150 }}
-          </div>
-        {%- endif -%}
-
         <div class="bundle-product-cta">
           {% if quick_add == 'standard' %}
             <div class="quick-add no-js-hidden">
