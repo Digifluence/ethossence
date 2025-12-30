@@ -120,7 +120,7 @@
 
         {%- if show_price -%}
         <div class="bundle-product-price">
-          {% render 'price', product: product, use_variant: true, show_badges: false %}
+          {% render 'price', product: product, use_variant: false, show_badges: false, show_compare_at_price: true %}
 
           {%- if product.quantity_price_breaks_configured? -%}
             {% if product.variants_count == 1 and quick_add == 'bulk' %}
