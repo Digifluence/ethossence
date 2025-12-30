@@ -25,7 +25,7 @@
       ],
       "name": "t:sections.image-banner.presets.name",
       "settings": {
-        "image": "{{ collection.metafields.ethossence.banner_img.value }}",
+        "image": "shopify://shop_images/PIXI-color-trailing.jpg",
         "image_overlay_opacity": 0,
         "image_height": "small",
         "image_behavior": "none",
@@ -58,8 +58,8 @@
         "content_alignment": "left",
         "color_scheme": "",
         "full_width": true,
-        "padding_top": 40,
-        "padding_bottom": 52
+        "padding_top": 52,
+        "padding_bottom": 0
       }
     },
     "banner": {
