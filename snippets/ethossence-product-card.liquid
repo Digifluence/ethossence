@@ -1,0 +1,81 @@
+{% comment %}
+  Renders a product card for collection bundle section
+
+  Accepts:
+  - product: {Object} Product Liquid object
+  - section: {Object} Section Liquid object
+  - card_class: {String} Additional CSS class for the card
+
+  Usage:
+  {% render 'ethossence-product-card', product: product, section: section %}
+{% endcomment %}
+
+{%- if product and product != blank -%}
+  {%- liquid
+    assign ratio = 1
+    if product.featured_media
+      assign ratio = product.featured_media.aspect_ratio
+    endif
+    if ratio == 0 or ratio == null
+      assign ratio = 1
+    endif
+  -%}
+
+  <div class="collection-bundle-product {{ card_class }}">
+    <div class="bundle-product-inner">
+
+      {%- if product.featured_media -%}
+        <div class="bundle-product-media">
+          <a href="{{ product.url }}" class="bundle-product-link">
+            <div class="media media--transparent">
+              <img
+                srcset="
+                  {%- if product.featured_media.width >= 165 -%}{{ product.featured_media | image_url: width: 165 }} 165w,{%- endif -%}
+                  {%- if product.featured_media.width >= 360 -%}{{ product.featured_media | image_url: width: 360 }} 360w,{%- endif -%}
+                  {%- if product.featured_media.width >= 533 -%}{{ product.featured_media | image_url: width: 533 }} 533w,{%- endif -%}
+                  {%- if product.featured_media.width >= 720 -%}{{ product.featured_media | image_url: width: 720 }} 720w,{%- endif -%}
+                  {{ product.featured_media | image_url }} {{ product.featured_media.width }}w
+                "
+                src="{{ product.featured_media | image_url: width: 533 }}"
+                sizes="(min-width: 990px) calc(50vw - 10rem), calc(100vw - 3rem)"
+                alt="{{ product.featured_media.alt | escape }}"
+                loading="lazy"
+                width="{{ product.featured_media.width }}"
+                height="{{ product.featured_media.height }}"
+              >
+            </div>
+          </a>
+        </div>
+      {%- endif -%}
+
+      <div class="bundle-product-info">
+        <h3 class="bundle-product-title h3">
+          <a href="{{ product.url }}">{{ product.title | escape }}</a>
+        </h3>
+
+        {%- if product.vendor != blank -%}
+          <div class="bundle-product-vendor caption-with-letter-spacing">
+            {{ product.vendor }}
+          </div>
+        {%- endif -%}
+
+        <div class="bundle-product-price">
+          {% render 'price', product: product, use_variant: true, show_badges: false %}
+        </div>
+
+        {%- if product.description != blank -%}
+          <div class="bundle-product-description rte">
+            {{ product.description | strip_html | truncate: 150 }}
+          </div>
+        {%- endif -%}
+
+        <div class="bundle-product-cta">
+          <a href="{{ product.url }}" class="button button--primary">
+            View Product
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+{%- endif -%}

@@ -1,0 +1,165 @@
+{%- liquid
+  assign featured_product = collection.metafields.ethossence.featured_product.value
+  assign featured_bundle = collection.metafields.ethossence.featured_bundle.value
+  assign has_featured_product = false
+  assign has_featured_bundle = false
+
+  if featured_product != blank and featured_product != null
+    assign has_featured_product = true
+  endif
+
+  if featured_bundle != blank and featured_bundle != null
+    assign has_featured_bundle = true
+  endif
+
+  assign display_count = 0
+  if has_featured_product
+    assign display_count = display_count | plus: 1
+  endif
+  if has_featured_bundle
+    assign display_count = display_count | plus: 1
+  endif
+-%}
+
+{% if display_count > 0 %}
+  {{ 'ethossence-collection-bundle.css' | asset_url | stylesheet_tag }}
+  {{ 'section-main-product.css' | asset_url | stylesheet_tag }}
+  {{ 'section-featured-product.css' | asset_url | stylesheet_tag }}
+  {{ 'component-accordion.css' | asset_url | stylesheet_tag }}
+  {{ 'component-price.css' | asset_url | stylesheet_tag }}
+  {{ 'component-deferred-media.css' | asset_url | stylesheet_tag }}
+  {{ 'component-rating.css' | asset_url | stylesheet_tag }}
+  {{ 'component-volume-pricing.css' | asset_url | stylesheet_tag }}
+
+  {%- style -%}
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    }
+
+    @media screen and (min-width: 750px) {
+      .section-{{ section.id }}-padding {
+        padding-top: {{ section.settings.padding_top }}px;
+        padding-bottom: {{ section.settings.padding_bottom }}px;
+      }
+    }
+  {%- endstyle -%}
+
+  <script src="{{ 'product-info.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'show-more.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'price-per-item.js' | asset_url }}" defer="defer"></script>
+
+  <section class="color-{{ section.settings.color_scheme }} {% if section.settings.secondary_background %}background-secondary{% else %}gradient{% endif %}">
+    <div class="page-width">
+      <div class="section-{{ section.id }}-padding{% if section.settings.secondary_background %} isolate{% endif %}">
+
+        {% if section.settings.header_text != blank %}
+          <h2 class="collection-bundle-header {{ section.settings.header_heading_size }}">
+            {{ section.settings.header_text }}
+          </h2>
+        {% endif %}
+
+        <div class="collection-bundle-container collection-bundle-container--{{ display_count }}">
+
+          {% if has_featured_product %}
+            {% render 'ethossence-product-card',
+              product: featured_product,
+              section: section,
+              card_class: 'collection-bundle-product'
+            %}
+          {% endif %}
+
+          {% if has_featured_bundle %}
+            {% render 'ethossence-product-card',
+              product: featured_bundle,
+              section: section,
+              card_class: 'collection-bundle-product'
+            %}
+          {% endif %}
+
+        </div>
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Collection Bundle",
+  "tag": "section",
+  "class": "section section-collection-bundle",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "header_text",
+      "label": "Header Text",
+      "default": "Featured Products"
+    },
+    {
+      "type": "select",
+      "id": "header_heading_size",
+      "label": "Header Size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "Small"
+        },
+        {
+          "value": "h1",
+          "label": "Medium"
+        },
+        {
+          "value": "h0",
+          "label": "Large"
+        }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "secondary_background",
+      "default": false,
+      "label": "Use Secondary Background"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Bundle",
+      "category": "Ethossence"
+    }
+  ]
+}
+{% endschema %}
