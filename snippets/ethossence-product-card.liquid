@@ -31,6 +31,12 @@
   <div class="collection-bundle-product {{ card_class }}">
     <div class="bundle-product-inner">
 
+      {% if card_header != blank %}
+        <h2 class="collection-bundle-header {{ card_header_heading_size }}">
+          {{ card_header }}
+        </h2>
+      {% endif %}      
+
       {%- if product.featured_media -%}
         <div class="bundle-product-media">
           <a href="{{ product.url }}" class="bundle-product-link" id="BundleCardLink-{{ section_id }}-{{ product.id }}">

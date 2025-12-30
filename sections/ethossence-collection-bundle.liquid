@@ -72,12 +72,6 @@
     <div class="page-width">
       <div class="section-{{ section.id }}-padding{% if section.settings.secondary_background %} isolate{% endif %}">
 
-        {% if section.settings.header_text != blank %}
-          <h2 class="collection-bundle-header {{ section.settings.header_heading_size }}">
-            {{ section.settings.header_text }}
-          </h2>
-        {% endif %}
-
         <div class="collection-bundle-container collection-bundle-container--{{ display_count }}">
 
           {% if has_featured_bundle %}
@@ -85,6 +79,8 @@
               product: featured_bundle,
               section: section,
               card_class: 'collection-bundle-product',
+              card_header: section.settings.feature_header_text,
+              card_header_heading_size: section.settings.header_heading_size
               quick_add: section.settings.quick_add,
               show_vendor: section.settings.show_vendor,
               show_price: section.settings.show_price,
@@ -97,6 +93,8 @@
               product: featured_product,
               section: section,
               card_class: 'collection-bundle-product',
+              card_header: section.settings.bundle_header_text,
+              card_header_heading_size: section.settings.header_heading_size
               quick_add: section.settings.quick_add,
               show_vendor: section.settings.show_vendor,
               show_price: section.settings.show_price,
@@ -121,10 +119,16 @@
   "settings": [
     {
       "type": "text",
-      "id": "header_text",
-      "label": "Header Text",
-      "default": "Featured Products"
+      "id": "feature_header_text",
+      "label": "Featured header Text",
+      "default": "System Key Product"
     },
+    {
+      "type": "text",
+      "id": "bundle_header_text",
+      "label": "Bundle header Text",
+      "default": "Pre-bundled System"
+    },    
     {
       "type": "select",
       "id": "header_heading_size",
