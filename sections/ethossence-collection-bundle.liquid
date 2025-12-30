@@ -80,9 +80,9 @@
 
         <div class="collection-bundle-container collection-bundle-container--{{ display_count }}">
 
-          {% if has_featured_product %}
+          {% if has_featured_bundle %}
             {% render 'ethossence-product-card',
-              product: featured_product,
+              product: featured_bundle,
               section: section,
               card_class: 'collection-bundle-product',
               quick_add: section.settings.quick_add,
@@ -90,11 +90,11 @@
               show_price: section.settings.show_price,
               show_rating: section.settings.show_rating
             %}
-          {% endif %}
+          {% endif %}          
 
-          {% if has_featured_bundle %}
+          {% if has_featured_product %}
             {% render 'ethossence-product-card',
-              product: featured_bundle,
+              product: featured_product,
               section: section,
               card_class: 'collection-bundle-product',
               quick_add: section.settings.quick_add,
