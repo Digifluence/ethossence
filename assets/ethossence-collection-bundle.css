@@ -213,3 +213,10 @@
   margin: 0 auto;
   max-width: var(--page-width);
 }
+
+
+@media screen and (min-width: 750px) {
+    .collection-hero__description {
+        max-width: 100% !important;
+    }
+}
