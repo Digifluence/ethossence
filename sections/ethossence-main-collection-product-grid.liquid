@@ -289,10 +289,15 @@
             </div>
           </div>
         {%- else -%}
-          <div
-            class="collection{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}"
-          >
+          <div class="collection{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}">
             <div class="loading-overlay gradient"></div>
+
+            {% if section.settings.grid_header_text != blank %}
+              <h2 class="collection-bundle-header {{ section.settings.grid_header_heading_size }}">
+                {{ section.settings.grid_header_text }}
+              </h2>
+            {% endif %}             
+
             <ul
               id="product-grid"
               data-id="{{ section.id }}"
@@ -304,66 +309,66 @@
             >
               {% assign skip_card_product_styles = false %}
 
-                  {%- for product in collection.products -%}
-                    {%- liquid 
+              {%- for product in collection.products -%}
+                {%- liquid 
 
-                      assign display_product = true
-                        
-                      # Get levels
-                      assign c_auth = customer.metafields.ethossence.authorization_show.value
-                      assign p_auth = product.metafields.ethossence.authorization_show.value
-                      
-                      # Extract customer levels
-                      assign c_levels = blank
-                      if c_auth.level
-                        assign c_levels = c_auth.level | downcase
-                      endif
-                      
-                      # Extract product levels  
-                      assign p_levels = blank
-                      if p_auth.level
-                        assign p_levels = p_auth.level | downcase
-                      endif
-                      
-                      # Check authorization
-                      if p_levels != blank
-                        if c_levels == blank or c_levels != p_levels
-                          assign display_product = false
-                        endif
-                      endif
-
-                      if display_product == false
-                        continue
-                      endif
-                      
-                      assign lazy_load = false 
+                  assign display_product = true
                     
-                      if forloop.index > 2
-                        assign lazy_load = true
-                      endif 
-                    -%}                      
-                     <li
-                        class="grid__item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-                        {% if settings.animations_reveal_on_scroll %}
-                        data-cascade
-                        style="--animation-order: {{ forloop.index }};"
-                        {% endif %}
-                     >
-                        {% render 'card-product',
-                           card_product: product,
-                           media_aspect_ratio: section.settings.image_ratio,
-                           image_shape: section.settings.image_shape,
-                           show_secondary_image: section.settings.show_secondary_image,
-                           show_vendor: section.settings.show_vendor,
-                           show_price: section.settings.show_price,
-                           show_rating: section.settings.show_rating,
-                           lazy_load: lazy_load,
-                           skip_styles: skip_card_product_styles,
-                           quick_add: section.settings.quick_add,
-                           section_id: section.id
-                        %}
-                     </li>
-                  {%- endfor -%}   
+                  # Get levels
+                  assign c_auth = customer.metafields.ethossence.authorization_show.value
+                  assign p_auth = product.metafields.ethossence.authorization_show.value
+                  
+                  # Extract customer levels
+                  assign c_levels = blank
+                  if c_auth.level
+                    assign c_levels = c_auth.level | downcase
+                  endif
+                  
+                  # Extract product levels  
+                  assign p_levels = blank
+                  if p_auth.level
+                    assign p_levels = p_auth.level | downcase
+                  endif
+                  
+                  # Check authorization
+                  if p_levels != blank
+                    if c_levels == blank or c_levels != p_levels
+                      assign display_product = false
+                    endif
+                  endif
+
+                  if display_product == false
+                    continue
+                  endif
+                  
+                  assign lazy_load = false 
+                
+                  if forloop.index > 2
+                    assign lazy_load = true
+                  endif 
+                -%}                      
+                  <li
+                    class="grid__item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+                    {% if settings.animations_reveal_on_scroll %}
+                    data-cascade
+                    style="--animation-order: {{ forloop.index }};"
+                    {% endif %}
+                  >
+                    {% render 'card-product',
+                        card_product: product,
+                        media_aspect_ratio: section.settings.image_ratio,
+                        image_shape: section.settings.image_shape,
+                        show_secondary_image: section.settings.show_secondary_image,
+                        show_vendor: section.settings.show_vendor,
+                        show_price: section.settings.show_price,
+                        show_rating: section.settings.show_rating,
+                        lazy_load: lazy_load,
+                        skip_styles: skip_card_product_styles,
+                        quick_add: section.settings.quick_add,
+                        section_id: section.id
+                    %}
+                  </li>
+              {%- endfor -%}   
 
               {% comment %}
                   {%- for product in collection.products -%}
@@ -461,6 +466,52 @@
     {
       "type": "header",
       "content": "t:sections.main-collection-product-grid.settings.header__3.content"
+    },
+    {
+      "type": "text",
+      "id": "grid_header_text",
+      "label": "Grid header text",
+      "default": ""
+    },
+    {
+      "type": "select",
+      "id": "grid_header_heading_size",
+      "label": "Grid header Size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "Small"
+        },
+        {
+          "value": "h1",
+          "label": "Medium"
+        },
+        {
+          "value": "h0",
+          "label": "Large"
+        }
+      ],
+      "default": "h1"
+    },    
+    {
+      "type": "select",
+      "id": "grid_header_heading_size",
+      "label": "Grid Header Size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "Small"
+        },
+        {
+          "value": "h1",
+          "label": "Medium"
+        },
+        {
+          "value": "h0",
+          "label": "Large"
+        }
+      ],
+      "default": "h1"
     },
     {
       "type": "select",
