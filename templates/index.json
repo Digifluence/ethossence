@@ -85,9 +85,11 @@
           "settings": {
             "image": "shopify://shop_images/weld-monitoring-camera-home-page.png",
             "title": "",
+            "heading_size": "h1",
             "text": "",
             "link_label": "Weld Monitoring",
-            "link": "shopify://collections/meltview-weld-monitoring-cameras-cro"
+            "link": "shopify://collections/meltview-weld-monitoring-cameras-cro",
+            "column_alignment": "default"
           }
         },
         "column_EanaXN": {
@@ -95,9 +97,11 @@
           "settings": {
             "image": "shopify://shop_images/weld-ai-welding-camera-home-page.png",
             "title": "",
+            "heading_size": "h1",
             "text": "",
             "link_label": "Welding AI",
-            "link": "shopify://pages/welding-artificial-intelligence"
+            "link": "shopify://pages/welding-artificial-intelligence",
+            "column_alignment": "default"
           }
         },
         "column_MRiRKr": {
@@ -105,9 +109,11 @@
           "settings": {
             "image": "shopify://shop_images/welding-education-camera-home-page.png",
             "title": "",
+            "heading_size": "h1",
             "text": "",
             "link_label": "Welding Education",
-            "link": "shopify://blogs/insight/welding-education"
+            "link": "shopify://blogs/insight/welding-education",
+            "column_alignment": "default"
           }
         }
       },
@@ -128,6 +134,7 @@
         "column_alignment": "center",
         "background_style": "none",
         "color_scheme": "",
+        "link_color": "link_primary",
         "columns_mobile": "1",
         "swipe_on_mobile": false,
         "padding_top": 36,
@@ -142,9 +149,11 @@
           "settings": {
             "image": "shopify://shop_images/saw-mig-application-dart2-and-pixi.png",
             "title": "",
+            "heading_size": "h1",
             "text": "",
             "link_label": "Welding Camera by Applications",
-            "link": "/blogs/insight/tagged/applications"
+            "link": "/blogs/insight/tagged/applications",
+            "column_alignment": "default"
           }
         },
         "column_mVcPf6": {
@@ -152,9 +161,11 @@
           "settings": {
             "image": "shopify://shop_images/Untitled-6.png",
             "title": "",
+            "heading_size": "h1",
             "text": "",
             "link_label": "Technical Support",
-            "link": "shopify://pages/technical-support"
+            "link": "shopify://pages/technical-support",
+            "column_alignment": "default"
           }
         },
         "column_CcdmTH": {
@@ -162,9 +173,11 @@
           "settings": {
             "image": "shopify://shop_images/pl90-welding-camera.png",
             "title": "",
+            "heading_size": "h1",
             "text": "",
             "link_label": "Engineered Cameras",
-            "link": "shopify://pages/engineered-cameras"
+            "link": "shopify://pages/engineered-cameras",
+            "column_alignment": "default"
           }
         }
       },
@@ -185,6 +198,7 @@
         "column_alignment": "center",
         "background_style": "none",
         "color_scheme": "",
+        "link_color": "link_primary",
         "columns_mobile": "1",
         "swipe_on_mobile": false,
         "padding_top": 16,
@@ -197,19 +211,23 @@
         "column_QjFMtV": {
           "type": "column",
           "settings": {
-            "title": "BROWSE OUR PRODUCTS",
+            "title": "BROWSE PRODUCTS",
+            "heading_size": "h1",
             "text": "<h3>SUPPORTED BY A DEDICATED TEAM</h3>",
             "link_label": "",
-            "link": ""
+            "link": "",
+            "column_alignment": "default"
           }
         },
         "column_iRHULH": {
           "type": "column",
           "settings": {
             "title": "TRY OUR CAMERA FINDER",
+            "heading_size": "h1",
             "text": "",
-            "link_label": "Camera Quiz",
-            "link": "/pages/meltview-camera-finder"
+            "link_label": "CAMERA QUIZ",
+            "link": "/pages/meltview-camera-finder",
+            "column_alignment": "right"
           }
         }
       },
@@ -217,7 +235,6 @@
         "column_QjFMtV",
         "column_iRHULH"
       ],
-      "disabled": true,
       "name": "t:sections.multicolumn.presets.name",
       "settings": {
         "title": "",
@@ -227,13 +244,14 @@
         "button_label": "",
         "button_link": "",
         "columns_desktop": 2,
-        "column_alignment": "center",
+        "column_alignment": "left",
         "background_style": "none",
         "color_scheme": "",
+        "link_color": "link_primary",
         "columns_mobile": "1",
         "swipe_on_mobile": false,
         "padding_top": 36,
-        "padding_bottom": 36
+        "padding_bottom": 16
       }
     },
     "featured_collection_4M6g6r": {
@@ -242,9 +260,9 @@
       "settings": {
         "collection": "home-page-browse-our-products",
         "products_to_show": 5,
-        "title": "BROWSE OUR PRODUCTS",
+        "title": "",
         "heading_size": "h1",
-        "description": "<p>SUPPORTED BY A DEDICATED TEAM</p>",
+        "description": "",
         "show_description": false,
         "description_style": "body",
         "columns_desktop": 5,
@@ -261,7 +279,7 @@
         "quick_add": "none",
         "columns_mobile": "2",
         "swipe_on_mobile": false,
-        "padding_top": 36,
+        "padding_top": 0,
         "padding_bottom": 0
       }
     },
