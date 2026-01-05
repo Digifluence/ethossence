@@ -550,6 +550,16 @@
         "default": 0
       },
       {
+        "type": "range",
+        "id": "card_product_title_scale",
+        "min": 100,
+        "max": 150,
+        "step": 5,
+        "unit": "%",
+        "label": "Product title scale",
+        "default": 100
+      },
+      {
         "type": "select",
         "id": "card_text_alignment",
         "options": [
