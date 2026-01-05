@@ -60,6 +60,42 @@
           },
           {
             "type": "color",
+            "id": "link_primary",
+            "label": "Link primary",
+            "default": "#121212"
+          },
+          {
+            "type": "color",
+            "id": "link_secondary",
+            "label": "Link secondary",
+            "default": "#121212"
+          },
+          {
+            "type": "color",
+            "id": "headers_primary",
+            "label": "Headers primary",
+            "default": "#121212"
+          },
+          {
+            "type": "color",
+            "id": "headers_secondary",
+            "label": "Headers secondary",
+            "default": "#121212"
+          },
+          {
+            "type": "color",
+            "id": "subheaders_primary",
+            "label": "Subheaders primary",
+            "default": "#121212"
+          },
+          {
+            "type": "color",
+            "id": "subheaders_secondary",
+            "label": "Subheaders secondary",
+            "default": "#121212"
+          },
+          {
+            "type": "color",
             "id": "button",
             "label": "t:settings_schema.colors.settings.button_background.label",
             "default": "#121212"

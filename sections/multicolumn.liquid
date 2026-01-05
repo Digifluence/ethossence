@@ -13,6 +13,10 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+
+  #shopify-section-{{ section.id }} .multicolumn-card__info .link {
+    color: rgb(var(--color-{{ section.settings.link_color }}));
+  }
 {%- endstyle -%}
 
 {%- liquid
@@ -156,7 +160,7 @@
                     {{- block.settings.link_label | escape -}}
                     <span class="svg-wrapper"
                       ><span class="icon-wrap">&nbsp;{{ 'icon-arrow.svg' | inline_asset_content }}</span></span
-                    >  test HERE
+                    >
                   </a>
                 {%- endif -%}
               </div>
@@ -368,7 +372,23 @@
       "id": "color_scheme",
       "label": "t:sections.all.colors.label",
       "default": "scheme-1"
-    },    
+    },
+    {
+      "type": "select",
+      "id": "link_color",
+      "options": [
+        {
+          "value": "link_primary",
+          "label": "Link Primary"
+        },
+        {
+          "value": "link_secondary",
+          "label": "Link Secondary"
+        }
+      ],
+      "default": "link_primary",
+      "label": "Link Label Color"
+    },
     {
       "type": "header",
       "content": "t:sections.multicolumn.settings.header_mobile.content"
