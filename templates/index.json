@@ -109,45 +109,12 @@
             "link_label": "Welding Education",
             "link": "shopify://blogs/insight/welding-education"
           }
-        },
-        "column_jJVhjQ": {
-          "type": "column",
-          "settings": {
-            "image": "shopify://shop_images/saw-mig-application-dart2-and-pixi.png",
-            "title": "",
-            "text": "",
-            "link_label": "Welding Camera by Applications",
-            "link": "/blogs/insight/tagged/applications"
-          }
-        },
-        "column_Nx7VBh": {
-          "type": "column",
-          "settings": {
-            "image": "shopify://shop_images/Untitled-6.png",
-            "title": "",
-            "text": "",
-            "link_label": "Technical Support",
-            "link": "shopify://pages/technical-support"
-          }
-        },
-        "column_JnTCaC": {
-          "type": "column",
-          "settings": {
-            "image": "shopify://shop_images/pl90-welding-camera.png",
-            "title": "",
-            "text": "",
-            "link_label": "Engineered Cameras",
-            "link": "shopify://pages/engineered-cameras"
-          }
         }
       },
       "block_order": [
         "column_RBz43q",
         "column_EanaXN",
-        "column_MRiRKr",
-        "column_jJVhjQ",
-        "column_Nx7VBh",
-        "column_JnTCaC"
+        "column_MRiRKr"
       ],
       "name": "t:sections.multicolumn.presets.name",
       "settings": {
@@ -215,8 +182,8 @@
         "button_label": "",
         "button_link": "",
         "columns_desktop": 3,
-        "column_alignment": "left",
-        "background_style": "primary",
+        "column_alignment": "center",
+        "background_style": "none",
         "color_scheme": "",
         "columns_mobile": "1",
         "swipe_on_mobile": false,
