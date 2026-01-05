@@ -594,3 +594,8 @@
     clip-path: polygon(var(--shape--blob-5));
   }
 }
+
+/* Override base.css caption-large font-size for product cards */
+.card .caption-large {
+  font-size: inherit;
+}
