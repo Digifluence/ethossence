@@ -595,7 +595,7 @@
   }
 }
 
-/* Override base.css caption-large font-size for product cards */
-.card .caption-large {
+/* Override base.css font-size for form__label within product cards */
+.card .form__label {
   font-size: inherit;
 }
