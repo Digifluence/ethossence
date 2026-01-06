@@ -41,8 +41,7 @@
 -%}
 
 <!-- ETHOSSENCE CUSTOMIZATION: ADD CENTER ALIGN FOR PRICING -->
-<!-- Commented out to allow section-level alignment control -->
-
+{% comment %}
 {% style %}
 
   .price__container {
@@ -66,7 +65,6 @@
   }
 
 {% endstyle %}
-{% comment %}
 {% endcomment %}
 
 {%- unless target == null and placeholder == null -%}
