@@ -9,6 +9,43 @@
  */
 {
   "sections": {
+    "image_banner_c36eRX": {
+      "type": "image-banner",
+      "blocks": {
+        "heading_Q7tFxW": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Weld Monitoring</strong>",
+            "heading_size": "h1"
+          }
+        },
+        "text_HKPyWh": {
+          "type": "text",
+          "settings": {
+            "text": "Leading and Trailing Cameras",
+            "text_style": "subtitle"
+          }
+        }
+      },
+      "block_order": [
+        "heading_Q7tFxW",
+        "text_HKPyWh"
+      ],
+      "name": "t:sections.image-banner.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/melttools-insight_banner.jpg",
+        "image_overlay_opacity": 0,
+        "image_height": "small",
+        "image_behavior": "none",
+        "desktop_content_position": "middle-right",
+        "desktop_content_alignment": "right",
+        "show_text_box": false,
+        "color_scheme": "scheme-4",
+        "stack_images_on_mobile": true,
+        "mobile_content_alignment": "center",
+        "show_text_below": true
+      }
+    },
     "main": {
       "type": "main-article",
       "blocks": {
@@ -44,58 +81,10 @@
         "content"
       ],
       "settings": {}
-    },
-    "image_banner_c36eRX": {
-      "type": "image-banner",
-      "blocks": {
-        "heading_Q7tFxW": {
-          "type": "heading",
-          "settings": {
-            "heading": "Image banner",
-            "heading_size": "h1"
-          }
-        },
-        "text_HKPyWh": {
-          "type": "text",
-          "settings": {
-            "text": "Give customers details about the banner image(s) or content on the template.",
-            "text_style": "body"
-          }
-        },
-        "buttons_VtzPMR": {
-          "type": "buttons",
-          "settings": {
-            "button_label_1": "Button label",
-            "button_link_1": "",
-            "button_style_secondary_1": false,
-            "button_label_2": "Button label",
-            "button_link_2": "",
-            "button_style_secondary_2": false
-          }
-        }
-      },
-      "block_order": [
-        "heading_Q7tFxW",
-        "text_HKPyWh",
-        "buttons_VtzPMR"
-      ],
-      "name": "t:sections.image-banner.presets.name",
-      "settings": {
-        "image_overlay_opacity": 0,
-        "image_height": "medium",
-        "image_behavior": "none",
-        "desktop_content_position": "middle-center",
-        "desktop_content_alignment": "center",
-        "show_text_box": true,
-        "color_scheme": "",
-        "stack_images_on_mobile": true,
-        "mobile_content_alignment": "center",
-        "show_text_below": true
-      }
     }
   },
   "order": [
-    "main",
-    "image_banner_c36eRX"
+    "image_banner_c36eRX",
+    "main"
   ]
 }
