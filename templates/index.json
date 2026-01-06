@@ -363,6 +363,7 @@
         "text_KFrV8k",
         "button_GeNtwg"
       ],
+      "disabled": true,
       "name": "t:sections.rich-text.presets.name",
       "settings": {
         "desktop_content_position": "left",
@@ -371,6 +372,55 @@
         "full_width": true,
         "padding_top": 12,
         "padding_bottom": 64
+      }
+    },
+    "multicolumn_eYE6Dg": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_w9AJLf": {
+          "type": "column",
+          "settings": {
+            "title": "NEED HELP?",
+            "heading_size": "h1",
+            "text": "",
+            "link_label": "",
+            "link": "",
+            "column_alignment": "center"
+          }
+        },
+        "column_Baqnpp": {
+          "type": "column",
+          "settings": {
+            "title": "",
+            "heading_size": "h1",
+            "text": "<p>Whether you're interested in a product demonstration, require technical assistance, or simply have a general inquiry, we offer various ways to connect with our team.</p>",
+            "link_label": "BOOK A MEETING »",
+            "link": "shopify://pages/welding-camera-consultation-demonstration-appointments",
+            "column_alignment": "default"
+          }
+        }
+      },
+      "block_order": [
+        "column_w9AJLf",
+        "column_Baqnpp"
+      ],
+      "name": "t:sections.multicolumn.presets.name",
+      "settings": {
+        "title": "",
+        "heading_size": "h1",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "button_label": "",
+        "button_link": "",
+        "columns_desktop": 2,
+        "column_alignment": "left",
+        "background_style": "none",
+        "color_scheme": "scheme-2",
+        "link_color": "link_primary",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
       }
     }
   },
@@ -383,6 +433,7 @@
     "featured_collection_4M6g6r",
     "featured_collection_TwmbK7",
     "featured_blog_LWT6zN",
-    "rich_text_qjpaeU"
+    "rich_text_qjpaeU",
+    "multicolumn_eYE6Dg"
   ]
 }
