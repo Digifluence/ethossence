@@ -41,7 +41,7 @@
 -%}
 
 <!-- ETHOSSENCE CUSTOMIZATION: ADD CENTER ALIGN FOR PRICING -->
-
+{% comment %}
 {% style %}
 
   .price__container {
@@ -65,7 +65,6 @@
   }
 
 {% endstyle %}
-{% comment %}
 {% endcomment %}
 
 {%- unless target == null and placeholder == null -%}
@@ -87,7 +86,7 @@
           - div.price__sale: Displayed when a variant is a sale
       {%- endcomment -%}
 
-      <legend class="form__label margin-element-sm">
+      <legend class="form__label margin-element-sm hide">
         {{ 'products.product.price.regular_price' | t }}
       </legend>
 
@@ -95,8 +94,9 @@
         {%- if product.quantity_price_breaks_configured? -%}
           {%- if show_compare_at_price and compare_at_price -%}
             {%- unless product.price_varies == false and product.compare_at_price_varies %}
-              <span class="visually-hidden visually-hidden--inline">
+              
                 {{- 'products.product.price.regular_price' | t -}}
+              <span class="visually-hidden visually-hidden--inline">  
               </span>
               <span>
                 <s class="price-item price-item--regular variant-item__old-price">
