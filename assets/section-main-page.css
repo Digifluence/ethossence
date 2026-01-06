@@ -4,11 +4,22 @@
 
 .main-page-title {
   margin-bottom: 3rem;
+  color: rgb(var(--color-headers_primary));
+}
+
+.main-page-subtitle {
+  margin-bottom: 3rem;
+  color: rgb(var(--color-subheaders_primary));
+  font-size: 0.8em;
 }
 
 @media screen and (min-width: 750px) {
   .main-page-title {
-    margin-bottom: 4rem;
+    margin-bottom: 0;
+  }
+
+  .main-page-subtitle {
+    margin-bottom: 0;
   }
 }
 
