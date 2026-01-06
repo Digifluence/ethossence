@@ -218,6 +218,11 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+
+  #shopify-section-{{ section.id }} .card__information,
+  #shopify-section-{{ section.id }} .card__content {
+    text-align: {{ section.settings.product_card_alignment }};
+  }
 {%- endstyle -%}
 
 <div
@@ -603,6 +608,26 @@
       "default": false,
       "label": "t:sections.featured-collection.settings.show_rating.label",
       "info": "t:sections.featured-collection.settings.show_rating.info"
+    },
+    {
+      "type": "select",
+      "id": "product_card_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left",
+      "label": "Product card content alignment"
     },
     {
       "type": "select",
