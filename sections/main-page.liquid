@@ -142,6 +142,10 @@
 
   endfor      
 
+  if output contains 'BUTTON:'
+    output | metafield_tag | replace: '<a', '<a class="button"' | remove: 'BUTTON:'
+  endif
+
   comment
     Close grid wrapper
   endcomment
