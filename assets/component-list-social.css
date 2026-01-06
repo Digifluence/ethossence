@@ -30,3 +30,8 @@
 .list-social__link:hover .icon {
   transform: scale(1.07);
 }
+
+.footer__list-social-big .list-social__item .icon {
+  height: 4.4rem;
+  width: 4.4rem;
+}
