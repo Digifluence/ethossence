@@ -35,7 +35,7 @@
       "settings": {
         "image": "shopify://shop_images/melttools-insight_banner.jpg",
         "image_overlay_opacity": 0,
-        "image_height": "small",
+        "image_height": "medium",
         "image_behavior": "none",
         "desktop_content_position": "middle-right",
         "desktop_content_alignment": "right",
