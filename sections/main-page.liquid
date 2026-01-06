@@ -147,7 +147,7 @@
   endcomment
   assign output = output | append: '</div>'
 
-  
+
   if output contains 'BUTTON:'
     assign output = output | replace: '<a', '<a class="button"' | remove: 'BUTTON:'
   endif  
@@ -217,10 +217,8 @@
     }
   }
 </style>  
-            
-<!-- page-width--narrow -->
 
-<div class="page-width  section-{{ section.id }}-padding">
+<div class="page-width section-{{ section.id }}-padding">
   <h1 class="main-page-title page-title h0{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
     {{ page.title | escape }}
   </h1>
