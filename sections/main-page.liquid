@@ -147,6 +147,7 @@
   endcomment
   assign output = output | append: '</div>'
 
+  
   if output contains 'BUTTON:'
     assign output = output | replace: '<a', '<a class="button"' | remove: 'BUTTON:'
   endif  
