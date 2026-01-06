@@ -41,12 +41,12 @@
 -%}
 
 <!-- ETHOSSENCE CUSTOMIZATION: ADD CENTER ALIGN FOR PRICING -->
-{% comment %}
+
 {% style %}
 
   .price__container {
     margin: 0 auto;
-    width: 100%;
+    width: 80%;
   }
 
   .price__regular {
@@ -65,6 +65,7 @@
   }
 
 {% endstyle %}
+{% comment %}
 {% endcomment %}
 
 {%- unless target == null and placeholder == null -%}
