@@ -142,14 +142,14 @@
 
   endfor      
 
-  if output contains 'BUTTON:'
-    output | metafield_tag | replace: '<a', '<a class="button"' | remove: 'BUTTON:'
-  endif
-
   comment
     Close grid wrapper
   endcomment
   assign output = output | append: '</div>'
+
+  if output contains 'BUTTON:'
+    output | metafield_tag | replace: '<a', '<a class="button"' | remove: 'BUTTON:'
+  endif  
 
   comment
     Final cleanup of any remaining empty paragraphs
