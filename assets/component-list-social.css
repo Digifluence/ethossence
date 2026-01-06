@@ -32,6 +32,11 @@
 }
 
 .footer__list-social-big .list-social__item .icon {
-  height: 4.4rem;
-  width: 4.4rem;
+  height: 4.4rem !important;
+  width: 4.4rem !important;
+}
+
+.footer__list-social-big .list-social__item svg {
+  height: 4.4rem !important;
+  width: 4.4rem !important;
 }
