@@ -1271,6 +1271,12 @@ button.shopify-payment-button__button--unbranded {
     0 0 0 calc(var(--buttons-border-width) + 1px) rgba(var(--color-button), var(--alpha-button-background));
 }
 
+.button:not([disabled]):hover,
+.shopify-challenge__button:hover,
+.customer button:hover {
+  background-color: rgba(var(--color-button-text), 0.1);
+}
+
 .button--secondary:after {
   --border-opacity: var(--buttons-border-opacity);
 }
