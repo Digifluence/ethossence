@@ -87,7 +87,7 @@
       {%- endcomment -%}
 
       <legend class="form__label margin-element-sm hide">
-        {{ 'products.product.price.regular_price' | t }}
+        {{ 'products.product.price.regular_price' | t }} Hello 90
       </legend>
 
       <div class="price__regular">
@@ -118,7 +118,7 @@
         {%- else -%}
           <span class="visually-hidden visually-hidden--inline">{{ 'products.product.price.regular_price' | t }}</span>
           <span class="price-item price-item--regular">
-            {{ money_price | prepend: products.product.price.regular_price }}
+            {{ money_price | prepend: products.product.price.regular_price }} Hello 121
           </span>
         {%- endif -%}
       </div>
