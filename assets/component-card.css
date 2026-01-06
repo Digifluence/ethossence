@@ -304,6 +304,7 @@
   margin-top: 0;
   margin-bottom: 0;
   font-size: calc(var(--font-heading-scale) * var(--product-card-title-scale) * 1.5rem);
+  font-weight: bold;
 }
 
 .card__heading:last-child {
