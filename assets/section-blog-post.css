@@ -92,6 +92,10 @@
   margin-bottom: 3rem;
 }
 
+.article-template__content > p:first-child {
+  font-size: 1.2em;
+}
+
 .article-template__social-sharing {
   margin-top: 3rem;
   display: flex;
