@@ -41,7 +41,9 @@
 -%}
 
 <!-- ETHOSSENCE CUSTOMIZATION: ADD CENTER ALIGN FOR PRICING -->
-{% style %} 
+<!-- Commented out to allow section-level alignment control -->
+{% comment %}
+{% style %}
 
   .price__container {
     margin: 0 auto;
@@ -49,22 +51,22 @@
   }
 
   .price__regular {
-    text-align: center;    
+    text-align: center;
   }
 
   .price__container {
       display: flex;
-      align-items: center; /* Optional: to vertically align items */
-      gap: 10px; /* Optional: to add space between items */
+      align-items: center;
+      gap: 10px;
   }
 
-  /* You might want to remove explicit display:block from children if they have it */
   .price__container > legend.form__label,
   .price__container > .price__regular {
-      display: unset; /* or remove the display: block declaration entirely */
-  }  
+      display: unset;
+  }
 
 {% endstyle %}
+{% endcomment %}
 
 {%- unless target == null and placeholder == null -%}
   <div
