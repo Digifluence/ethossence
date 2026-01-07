@@ -38,30 +38,6 @@
         "show_text_below": true
       }
     },
-    "rich_text_QCXigq": {
-      "type": "rich-text",
-      "blocks": {
-        "heading_4gHkdd": {
-          "type": "heading",
-          "settings": {
-            "heading": "{{ collection.metafields.iqx.collection_header.value }}",
-            "heading_size": "h1"
-          }
-        }
-      },
-      "block_order": [
-        "heading_4gHkdd"
-      ],
-      "name": "t:sections.rich-text.presets.name",
-      "settings": {
-        "desktop_content_position": "left",
-        "content_alignment": "left",
-        "color_scheme": "",
-        "full_width": true,
-        "padding_top": 52,
-        "padding_bottom": 0
-      }
-    },
     "banner": {
       "type": "main-collection-banner",
       "settings": {
@@ -123,7 +99,6 @@
   },
   "order": [
     "image_banner_MtL38k",
-    "rich_text_QCXigq",
     "banner",
     "ethossence_collection_bundle_qw6V9A",
     "product-grid",
