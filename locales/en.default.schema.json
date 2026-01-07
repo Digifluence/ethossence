@@ -342,6 +342,10 @@
           "label": "YouTube",
           "info": "https://www.youtube.com/shopify"
         },
+        "social_linkedin_link": {
+          "label": "LinkedIn",
+          "info": "https://www.linkedin.com/company/shopify"
+        },
         "social_vimeo_link": {
           "label": "Vimeo",
           "info": "https://vimeo.com/shopify"
