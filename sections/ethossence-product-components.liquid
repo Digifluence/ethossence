@@ -62,18 +62,18 @@
         if (event.source && event.source === sectionId) {
           console.log('Source matched! Opening cart', cartType + '...');
 
-          // Update the message to be generic for both additions and removals
+          // Hide the section message (cart notification is sufficient)
           const quickOrderList = document.getElementById(sectionId);
           if (quickOrderList) {
             const messages = quickOrderList.querySelectorAll('.quick-order-list__message-text');
             const icons = quickOrderList.querySelectorAll('.quick-order-list__message-icon');
 
             messages.forEach((msg) => {
-              msg.innerHTML = 'Your cart has been updated';
+              msg.innerHTML = '';
             });
 
-            // Show the checkmark icon
-            icons.forEach((icon) => icon.classList.remove('hidden'));
+            // Hide the checkmark icon
+            icons.forEach((icon) => icon.classList.add('hidden'));
           }
 
           setTimeout(() => {
