@@ -33,14 +33,25 @@
 
     if (cartDrawer && typeof subscribe !== 'undefined' && typeof PUB_SUB_EVENTS !== 'undefined') {
       subscribe(PUB_SUB_EVENTS.cartUpdate, (event) => {
+        console.log('Cart update event received:', event);
+        console.log('Expected source:', '{{ section.id }}-{{ product.id }}');
+        console.log('Actual source:', event.source);
+
         // Only respond to cart updates from this section
         if (event.source && event.source === '{{ section.id }}-{{ product.id }}') {
+          console.log('Source matched! Opening cart drawer...');
           // Open the cart drawer to show visual confirmation
           // The quick-order-list already updates the drawer contents, we just need to open it
           setTimeout(() => {
             cartDrawer.open();
           }, 100);
         }
+      });
+    } else {
+      console.log('Cart drawer setup failed:', {
+        cartDrawer: !!cartDrawer,
+        subscribe: typeof subscribe,
+        PUB_SUB_EVENTS: typeof PUB_SUB_EVENTS
       });
     }
   });
