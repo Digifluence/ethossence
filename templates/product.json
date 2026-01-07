@@ -9,6 +9,49 @@
  */
 {
   "sections": {
+    "image_banner_tkihzn": {
+      "type": "image-banner",
+      "blocks": {
+        "buttons_TG4AYb": {
+          "type": "buttons",
+          "settings": {
+            "button_label_1": "Ask a Question",
+            "button_link_1": "",
+            "button_style_secondary_1": false,
+            "button_label_2": "Product Finder",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "buttons_TG4AYb"
+      ],
+      "name": "t:sections.image-banner.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/melttools-tig-monochrome-groove-banner.jpg",
+        "image_overlay_opacity": 0,
+        "image_height": "small",
+        "image_behavior": "none",
+        "desktop_content_position": "bottom-left",
+        "desktop_content_alignment": "center",
+        "show_text_box": false,
+        "color_scheme": "",
+        "stack_images_on_mobile": true,
+        "mobile_content_alignment": "center",
+        "show_text_below": true
+      }
+    },
+    "ethossence_breadcrumbs_X64tn3": {
+      "type": "ethossence-breadcrumbs",
+      "name": "Breadcrumbs",
+      "settings": {
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
     "rich_text_d6Vjce": {
       "type": "rich-text",
       "blocks": {
@@ -263,6 +306,8 @@
     }
   },
   "order": [
+    "image_banner_tkihzn",
+    "ethossence_breadcrumbs_X64tn3",
     "rich_text_d6Vjce",
     "main",
     "ethossence_product_desc_3FH7xM",
