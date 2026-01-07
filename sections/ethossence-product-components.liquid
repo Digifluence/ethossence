@@ -110,14 +110,20 @@
               if (notification && typeof notification.open === 'function') {
                 notification.open();
 
-                // Update the notification message
+                // Update the notification heading message
                 setTimeout(() => {
-                  const notificationMessages = notification.querySelectorAll('.product-added-message, [role="status"]');
-                  notificationMessages.forEach((msg) => {
-                    if (msg.textContent.includes('added') || msg.textContent.includes('removed')) {
-                      msg.textContent = 'Your cart has been updated';
+                  const heading = notification.querySelector('.cart-notification__heading');
+                  if (heading) {
+                    // Get the SVG icon (first child)
+                    const icon = heading.querySelector('.svg-wrapper');
+                    // Replace text content while preserving the icon
+                    if (icon) {
+                      heading.innerHTML = icon.outerHTML + ' Your cart has been updated';
+                    } else {
+                      heading.textContent = 'Your cart has been updated';
                     }
-                  });
+                    console.log('Updated cart notification heading to: Your cart has been updated');
+                  }
                 }, 150);
               }
             }
@@ -163,7 +169,7 @@
 
 <div class="page-width section-{{ section.id }}-padding color-{{ section.settings.color_scheme }} gradient">
 
-<pre>version 014d</pre>
+<pre>version 014e</pre>
 
 
    {%- if section.settings.heading != blank or section.settings.description != blank -%}
