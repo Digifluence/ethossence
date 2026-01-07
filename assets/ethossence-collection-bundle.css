@@ -35,6 +35,7 @@
 @media screen and (min-width: 750px) {
   .collection-bundle-container--1 {
     max-width: 50%;
+    margin: 0 auto;
   }
 }
 
