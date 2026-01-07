@@ -268,19 +268,6 @@
         "padding_bottom": 28
       }
     },
-    "ethossence_product_parts_h4rqaf": {
-      "type": "ethossence-product-parts",
-      "name": "Replacement parts",
-      "settings": {
-        "variants_per_page": 50,
-        "show_image": false,
-        "show_sku": false,
-        "show_vendor": false,
-        "color_scheme": "",
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
     "17564162700878961e": {
       "type": "apps",
       "blocks": {
@@ -332,7 +319,6 @@
     "ethossence_video_resources_QWP7UH",
     "ethossence_product_components_V6NUmf",
     "ethossence_products_complementary_VHVX4X",
-    "ethossence_product_parts_h4rqaf",
     "17564162700878961e",
     "related-products"
   ]
