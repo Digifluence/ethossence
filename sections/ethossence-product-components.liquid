@@ -32,7 +32,36 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+
+  .product-components__header {
+    margin-bottom: 3rem;
+  }
+
+  .product-components__heading {
+    margin: 0 0 1rem 0;
+  }
+
+  .product-components__description {
+    margin: 0;
+  }
 {%- endstyle -%}
+
+<div class="page-width section-{{ section.id }}-padding">
+  {%- if section.settings.heading != blank or section.settings.description != blank -%}
+    <div class="product-components__header">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="product-components__heading {{ section.settings.heading_size }}">
+          {{ section.settings.heading }}
+        </h2>
+      {%- endif -%}
+      {%- if section.settings.description != blank -%}
+        <div class="product-components__description rte">
+          {{ section.settings.description }}
+        </div>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+</div>
 
 {% render 'ethossence-product-components-list',
   product: product,
@@ -50,6 +79,37 @@
     "templates": ["product"]
   },
   "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Product Components"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_size.options__1.label"
+        },
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_size.options__2.label"
+        },
+        {
+          "value": "h0",
+          "label": "t:sections.all.heading_size.options__3.label"
+        }
+      ],
+      "default": "h1",
+      "label": "t:sections.all.heading_size.label"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
     {
       "type": "collection",
       "id": "collection",
