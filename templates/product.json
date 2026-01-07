@@ -162,6 +162,18 @@
         "padding_bottom": 12
       }
     },
+    "melttools_welding_processes_Mhzzeh": {
+      "type": "melttools-welding-processes",
+      "name": "Welding processes",
+      "settings": {
+        "heading": "Welding processes",
+        "heading_size": "h1",
+        "introduction": "",
+        "color_scheme": "",
+        "padding_top": 16,
+        "padding_bottom": 16
+      }
+    },
     "ethossence_product_desc_3FH7xM": {
       "type": "ethossence-product-description",
       "blocks": {
@@ -182,7 +194,7 @@
         "content_alignment": "left",
         "color_scheme": "",
         "full_width": true,
-        "padding_top": 40,
+        "padding_top": 16,
         "padding_bottom": 16
       }
     },
@@ -195,18 +207,6 @@
         "introduction": "",
         "color_scheme": "scheme-1",
         "padding_top": 16,
-        "padding_bottom": 16
-      }
-    },
-    "melttools_welding_processes_Mhzzeh": {
-      "type": "melttools-welding-processes",
-      "name": "Welding processes",
-      "settings": {
-        "heading": "Welding processes",
-        "heading_size": "h1",
-        "introduction": "",
-        "color_scheme": "",
-        "padding_top": 0,
         "padding_bottom": 16
       }
     },
@@ -373,9 +373,9 @@
     "ethossence_breadcrumbs_X64tn3",
     "rich_text_d6Vjce",
     "main",
+    "melttools_welding_processes_Mhzzeh",
     "ethossence_product_desc_3FH7xM",
     "ethossence_product_specifications_eYJQ4A",
-    "melttools_welding_processes_Mhzzeh",
     "ethossence_image_resources_EJwUk6",
     "ethossence_video_resources_QWP7UH",
     "ethossence_product_components_V6NUmf",
