@@ -32,22 +32,26 @@
     let isSetup = false;
     const sectionId = '{{ section.id }}-{{ product.id }}';
 
-    function setupCartDrawer() {
+    function setupCartVisualConfirmation() {
       if (isSetup) return; // Only setup once
 
+      // Check for cart drawer or cart notification
       const cartDrawer = document.querySelector('cart-drawer');
-      if (!cartDrawer) {
-        console.log('Cart drawer element not found');
+      const cartNotification = document.querySelector('cart-notification');
+
+      if (!cartDrawer && !cartNotification) {
+        // Don't log error - cart type might be 'page' which is valid
         return;
       }
 
       if (typeof subscribe === 'undefined' || typeof PUB_SUB_EVENTS === 'undefined') {
-        console.log('PubSub not available yet');
+        // PubSub not ready yet, will try again on next event
         return;
       }
 
       isSetup = true;
-      console.log('Setting up cart drawer confirmation for section:', sectionId);
+      const cartType = cartDrawer ? 'drawer' : 'notification';
+      console.log('Setting up cart', cartType, 'confirmation for section:', sectionId);
 
       subscribe(PUB_SUB_EVENTS.cartUpdate, (event) => {
         console.log('Cart update event received:', event);
@@ -56,29 +60,31 @@
 
         // Only respond to cart updates from this section
         if (event.source && event.source === sectionId) {
-          console.log('Source matched! Opening cart drawer...');
-          // Open the cart drawer to show visual confirmation
-          // The quick-order-list already updates the drawer contents, we just need to open it
+          console.log('Source matched! Opening cart', cartType + '...');
+
           setTimeout(() => {
-            const drawer = document.querySelector('cart-drawer');
-            if (drawer) {
-              drawer.open();
+            if (cartType === 'drawer') {
+              const drawer = document.querySelector('cart-drawer');
+              if (drawer && typeof drawer.open === 'function') {
+                drawer.open();
+              }
+            } else {
+              const notification = document.querySelector('cart-notification');
+              if (notification && typeof notification.open === 'function') {
+                notification.open();
+              }
             }
           }, 100);
         }
       });
     }
 
-    // Try to setup immediately if DOM is ready
+    // Try to setup at multiple points
     if (document.readyState !== 'loading') {
-      setupCartDrawer();
+      setupCartVisualConfirmation();
     }
-
-    // Also try on DOMContentLoaded
-    document.addEventListener('DOMContentLoaded', setupCartDrawer);
-
-    // And try after window load (when all scripts including deferred ones are loaded)
-    window.addEventListener('load', setupCartDrawer);
+    document.addEventListener('DOMContentLoaded', setupCartVisualConfirmation);
+    window.addEventListener('load', setupCartVisualConfirmation);
   })();
 </script>
 
