@@ -59,9 +59,9 @@
       assign pos_2_url = '' 
       endif 
 
-      assign pos_1 = blog.title 
-      assign pos_1_url = blog.url 
-   
+      assign pos_1 = blog.title
+      assign pos_1_url = blog.url
+
       if article.title != ''
          if article.metafields.iqx.article_header != blank
             assign pos_2 = article.metafields.iqx.article_header
@@ -71,16 +71,6 @@
          assign pos_2_url = article.url
       else
          assign pos_2_url = ''
-      endif 
-
-      if article.title == blank  
-         assign pos_4 = 'n0ne' 
-      else  
-         assign pos_4 = article.title 
-      endif 
-
-      if blog.handle contains 'media' 
-         assign pos_4 = article.title | truncatewords: 5 
       endif 
 
    elsif template contains 'list-collection' 
@@ -205,12 +195,12 @@
 <!-- block-breadcrumbs \\\ START /// -->
 {%- liquid
    comment
-      Clean position labels from menu prefixes
+      Clean position labels from menu prefixes and truncate to 27 characters
    endcomment
-   assign pos_1_clean = pos_1 | remove: 'A] ' | remove: 'B] ' | remove: 'C] ' | remove: 'D] ' | remove: '1] ' | remove: '2] ' | remove: '3] ' | remove: '4] ' | remove: '5] ' | remove: '6] ' | remove: '7] ' | remove: '8] ' | remove: '9] ' | remove: '10] '
-   assign pos_2_clean = pos_2 | remove: 'A] ' | remove: 'B] ' | remove: 'C] ' | remove: 'D] ' | remove: '1] ' | remove: '2] ' | remove: '3] ' | remove: '4] ' | remove: '5] ' | remove: '6] ' | remove: '7] ' | remove: '8] ' | remove: '9] ' | remove: '10] '
-   assign pos_3_clean = pos_3 | remove: 'A] ' | remove: 'B] ' | remove: 'C] ' | remove: 'D] ' | remove: '1] ' | remove: '2] ' | remove: '3] ' | remove: '4] ' | remove: '5] ' | remove: '6] ' | remove: '7] ' | remove: '8] ' | remove: '9] ' | remove: '10] '
-   assign pos_4_clean = pos_4 | remove: 'A] ' | remove: 'B] ' | remove: 'C] ' | remove: 'D] ' | remove: '1] ' | remove: '2] ' | remove: '3] ' | remove: '4] ' | remove: '5] ' | remove: '6] ' | remove: '7] ' | remove: '8] ' | remove: '9] ' | remove: '10] '
+   assign pos_1_clean = pos_1 | remove: 'A] ' | remove: 'B] ' | remove: 'C] ' | remove: 'D] ' | remove: '1] ' | remove: '2] ' | remove: '3] ' | remove: '4] ' | remove: '5] ' | remove: '6] ' | remove: '7] ' | remove: '8] ' | remove: '9] ' | remove: '10] ' | truncate: 27
+   assign pos_2_clean = pos_2 | remove: 'A] ' | remove: 'B] ' | remove: 'C] ' | remove: 'D] ' | remove: '1] ' | remove: '2] ' | remove: '3] ' | remove: '4] ' | remove: '5] ' | remove: '6] ' | remove: '7] ' | remove: '8] ' | remove: '9] ' | remove: '10] ' | truncate: 27
+   assign pos_3_clean = pos_3 | remove: 'A] ' | remove: 'B] ' | remove: 'C] ' | remove: 'D] ' | remove: '1] ' | remove: '2] ' | remove: '3] ' | remove: '4] ' | remove: '5] ' | remove: '6] ' | remove: '7] ' | remove: '8] ' | remove: '9] ' | remove: '10] ' | truncate: 27
+   assign pos_4_clean = pos_4 | remove: 'A] ' | remove: 'B] ' | remove: 'C] ' | remove: 'D] ' | remove: '1] ' | remove: '2] ' | remove: '3] ' | remove: '4] ' | remove: '5] ' | remove: '6] ' | remove: '7] ' | remove: '8] ' | remove: '9] ' | remove: '10] ' | truncate: 27
 -%}
 
 <div id="block-breadcrumbs" class="color-{{ section.settings.color_scheme }} gradient page-width section-{{ section.id }}-padding">
