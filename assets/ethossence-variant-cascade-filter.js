@@ -14,7 +14,7 @@ const initializedElements = new WeakMap();
 
 class VariantCascadeFilter {
   constructor(variantSelectsElement) {
-    console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Initializing filter...`);
+   //  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Initializing filter...`);
 
     this.variantSelects = variantSelectsElement;
     this.productVariants = this.getProductVariants();
@@ -22,25 +22,25 @@ class VariantCascadeFilter {
     this.optionFields = this.getOptionFields();
     this.isFiltering = false; // Prevent infinite loops
 
-    console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Found ${this.productVariants.length} variants`);
-    console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Found ${this.optionFields.length} option fields`);
-    console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Authorized variants:`, Array.from(this.authorizedVariants));
+   //  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Found ${this.productVariants.length} variants`);
+   //  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Found ${this.optionFields.length} option fields`);
+   //  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Authorized variants:`, Array.from(this.authorizedVariants));
 
     if (this.optionFields.length > 1) {
       this.init();
     } else {
-      console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Not enough options to filter (need 2+)`);
+     //  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Not enough options to filter (need 2+)`);
     }
   }
 
   init() {
-    console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Setting up change listener...`);
+   //  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Setting up change listener...`);
 
     // Store bound handler so we can remove it later if needed
     this.boundChangeHandler = (event) => {
       // Only handle changes within our variant-selects element
       if (this.variantSelects.contains(event.target)) {
-        console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Change event detected on:`, event.target);
+       //  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Change event detected on:`, event.target);
         this.handleOptionChange(event);
       }
     };
@@ -53,9 +53,9 @@ class VariantCascadeFilter {
     initializedElements.set(this.variantSelects, this);
 
     // Initial filter on page load
-    console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Scheduling initial filter...`);
+   //  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Scheduling initial filter...`);
     setTimeout(() => {
-      console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Running initial filter...`);
+     //  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Running initial filter...`);
       this.filterOptions();
     }, 0);
   }
@@ -64,7 +64,7 @@ class VariantCascadeFilter {
     // Clean up event listener when instance is destroyed
     if (this.boundChangeHandler) {
       document.removeEventListener('change', this.boundChangeHandler, true);
-      console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Event listener removed`);
+     //  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Event listener removed`);
     }
   }
 
@@ -133,11 +133,11 @@ class VariantCascadeFilter {
   handleOptionChange(event) {
     // Prevent infinite loops from auto-selecting options
     if (this.isFiltering) {
-      console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Skipping change - already filtering`);
+     //  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Skipping change - already filtering`);
       return;
     }
 
-    console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Scheduling filter after change...`);
+   //  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Scheduling filter after change...`);
     // Use setTimeout to ensure the change is processed before filtering
     setTimeout(() => {
       this.filterOptions();
@@ -146,30 +146,30 @@ class VariantCascadeFilter {
 
   filterOptions() {
     if (this.isFiltering) {
-      console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Already filtering, skipping...`);
+     //  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Already filtering, skipping...`);
       return;
     }
 
-    console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Starting filter process...`);
+   //  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Starting filter process...`);
     this.isFiltering = true;
 
     try {
       const selectedValues = this.getSelectedValues();
-      console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Selected values:`, selectedValues);
+     //  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Selected values:`, selectedValues);
 
       // Filter Option 2 based on Option 1
       if (this.optionFields.length > 1) {
-        console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Filtering Option 2...`);
+       //  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Filtering Option 2...`);
         this.filterOption(2, selectedValues);
       }
 
       // Filter Option 3 based on Option 1 + Option 2
       if (this.optionFields.length > 2) {
-        console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Filtering Option 3...`);
+       //  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Filtering Option 3...`);
         this.filterOption(3, selectedValues);
       }
 
-      console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Filter process complete`);
+     //  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Filter process complete`);
     } finally {
       this.isFiltering = false;
     }
@@ -201,16 +201,16 @@ class VariantCascadeFilter {
     const field = this.optionFields[optionIndex];
 
     if (!field) {
-      console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] No field found for option ${optionPosition}`);
+     //  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] No field found for option ${optionPosition}`);
       return;
     }
 
-    console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Filtering option ${optionPosition} (type: ${field.type})`);
+   //  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Filtering option ${optionPosition} (type: ${field.type})`);
 
     // Get available values for this option based on previous selections
     const availableValues = this.getAvailableValuesForOption(optionPosition, selectedValues);
 
-    console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Available values for option ${optionPosition}:`, Array.from(availableValues));
+   //  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Available values for option ${optionPosition}:`, Array.from(availableValues));
 
     if (field.type === 'fieldset') {
       this.filterFieldsetOptions(field.container, availableValues, optionPosition);
@@ -223,7 +223,7 @@ class VariantCascadeFilter {
     const availableValues = new Set();
     const optionKey = `option${optionPosition}`;
 
-    console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Getting available values for ${optionKey} with selections:`, selectedValues);
+   //  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Getting available values for ${optionKey} with selections:`, selectedValues);
 
     // Filter variants based on previous selections and authorization
     const filteredVariants = this.productVariants.filter(variant => {
@@ -357,19 +357,19 @@ class VariantCascadeFilter {
 
 // Initialize cascade filters
 function initializeCascadeFilters() {
-  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Initializing cascade filters...`);
+ //  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Initializing cascade filters...`);
   const variantSelectsElements = document.querySelectorAll('variant-selects');
-  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Found ${variantSelectsElements.length} variant-selects elements`);
+ //  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Found ${variantSelectsElements.length} variant-selects elements`);
 
   variantSelectsElements.forEach(element => {
     // Check if this specific element instance has already been initialized using WeakMap
     const existingInstance = initializedElements.get(element);
 
     if (!existingInstance) {
-      console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Initializing new filter for element:`, element);
+     //  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Initializing new filter for element:`, element);
       new VariantCascadeFilter(element);
     } else {
-      console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Element already initialized, refreshing data...`);
+     //  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Element already initialized, refreshing data...`);
       // Element already initialized, but refresh its data in case variants changed
       existingInstance.productVariants = existingInstance.getProductVariants();
       existingInstance.authorizedVariants = existingInstance.getAuthorizedVariants();
@@ -385,15 +385,15 @@ function initializeCascadeFilters() {
 
 // Wait for both custom element definition and DOM ready
 function initWhenReady() {
-  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] DOM state: ${document.readyState}`);
+ //  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] DOM state: ${document.readyState}`);
   if (document.readyState === 'loading') {
-    console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Waiting for DOMContentLoaded...`);
+   //  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Waiting for DOMContentLoaded...`);
     document.addEventListener('DOMContentLoaded', () => {
-      console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] DOMContentLoaded fired`);
+     //  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] DOMContentLoaded fired`);
       setTimeout(initializeCascadeFilters, 100);
     });
   } else {
-    console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] DOM already ready, initializing now`);
+   //  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] DOM already ready, initializing now`);
     setTimeout(initializeCascadeFilters, 100);
   }
 }
@@ -403,21 +403,21 @@ console.log(`%c🔄 Variant Cascade Filter v${VARIANT_CASCADE_VERSION} loaded`, 
 
 // Check if variant-selects custom element is defined
 if (customElements.get('variant-selects')) {
-  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] variant-selects custom element already defined`);
+ //  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] variant-selects custom element already defined`);
   // Already defined, just wait for DOM
   initWhenReady();
 } else {
-  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Waiting for variant-selects custom element to be defined...`);
+ //  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] Waiting for variant-selects custom element to be defined...`);
   // Wait for it to be defined, then initialize
   customElements.whenDefined('variant-selects').then(() => {
-    console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] variant-selects custom element now defined`);
+   //  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] variant-selects custom element now defined`);
     initWhenReady();
   });
 }
 
 // Also initialize when product info is loaded (for AJAX updates)
 document.addEventListener('product-info:loaded', () => {
-  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] product-info:loaded event fired, re-initializing...`);
+ //  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] product-info:loaded event fired, re-initializing...`);
   setTimeout(initializeCascadeFilters, 100);
 });
 
@@ -430,7 +430,7 @@ const observer = new MutationObserver((mutations) => {
     mutation.addedNodes.forEach((node) => {
       if (node.nodeType === 1) { // Element node
         if (node.tagName === 'VARIANT-SELECTS' || node.querySelector('variant-selects')) {
-          console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] variant-selects element added to DOM`);
+         //  console.log(`[Variant Cascade v${VARIANT_CASCADE_VERSION}] variant-selects element added to DOM`);
           shouldReinitialize = true;
         }
       }
