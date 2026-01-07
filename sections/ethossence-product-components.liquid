@@ -81,11 +81,44 @@
               const drawer = document.querySelector('cart-drawer');
               if (drawer && typeof drawer.open === 'function') {
                 drawer.open();
+
+                // Update the cart drawer's internal message after it opens
+                setTimeout(() => {
+                  // Try multiple possible selectors for the message
+                  const possibleSelectors = [
+                    '.product-added-message',
+                    '[role="status"]',
+                    '.cart-drawer__message',
+                    '.cart__message',
+                    '*[class*="message"]'
+                  ];
+
+                  possibleSelectors.forEach(selector => {
+                    const messages = drawer.querySelectorAll(selector);
+                    messages.forEach((msg) => {
+                      const text = msg.textContent || msg.innerText;
+                      if (text && (text.includes('added') || text.includes('removed') || text.includes('Item'))) {
+                        console.log('Found message element:', selector, 'with text:', text);
+                        msg.textContent = 'Your cart has been updated';
+                      }
+                    });
+                  });
+                }, 150);
               }
             } else {
               const notification = document.querySelector('cart-notification');
               if (notification && typeof notification.open === 'function') {
                 notification.open();
+
+                // Update the notification message
+                setTimeout(() => {
+                  const notificationMessages = notification.querySelectorAll('.product-added-message, [role="status"]');
+                  notificationMessages.forEach((msg) => {
+                    if (msg.textContent.includes('added') || msg.textContent.includes('removed')) {
+                      msg.textContent = 'Your cart has been updated';
+                    }
+                  });
+                }, 150);
               }
             }
           }, 100);
