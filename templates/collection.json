@@ -72,7 +72,7 @@
     },
     "ethossence_collection_bundle_qw6V9A": {
       "type": "ethossence-collection-bundle",
-      "name": "Collection Bundle",
+      "name": "Collection bundle",
       "settings": {
         "feature_header_text": "System Key Product",
         "bundle_header_text": "Pre-bundled System",
