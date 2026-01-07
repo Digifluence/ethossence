@@ -136,6 +136,7 @@
               >
                 <span class="quick-order-list__button-text">{{- 'sections.quick_order_list.view_cart' | t -}}</span>
               </a>
+              {% comment %}
               <div class="variant-remove-total{% if items_in_cart == 0 %} variant-remove-total--empty{% endif %}">
                 {%- render 'loading-spinner' -%}
                 <quick-order-list-remove-all-button
@@ -150,6 +151,7 @@
                   </button>
                 </quick-order-list-remove-all-button>
               </div>
+              {% endcomment %}
             </div>
             <span class="quick-order-list__message caption-large" role="status">
               <span class="quick-order-list__message-icon hidden">
