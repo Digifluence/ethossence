@@ -27,7 +27,17 @@
   }
 }
 
-/* Single product layout - full width */
+/* Single product layout - 50% width on desktop */
+.collection-bundle-container--1 {
+  width: 100%;
+}
+
+@media screen and (min-width: 750px) {
+  .collection-bundle-container--1 {
+    max-width: 50%;
+  }
+}
+
 .collection-bundle-container--1 .collection-bundle-product {
   width: 100%;
   max-width: 100%;
