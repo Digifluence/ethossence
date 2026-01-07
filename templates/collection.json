@@ -85,23 +85,12 @@
         "padding_top": 36,
         "padding_bottom": 36
       }
-    },
-    "ethossence_content_ext_FrFgyT": {
-      "type": "ethossence-content",
-      "name": "Extended Content",
-      "settings": {
-        "color_scheme": "",
-        "full_width": true,
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
     }
   },
   "order": [
     "image_banner_MtL38k",
     "banner",
     "ethossence_collection_bundle_qw6V9A",
-    "product-grid",
-    "ethossence_content_ext_FrFgyT"
+    "product-grid"
   ]
 }

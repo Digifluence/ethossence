@@ -272,9 +272,9 @@
       "type": "featured-collection",
       "name": "t:sections.featured-collection.presets.name",
       "settings": {
-        "collection": "meltview®-pixi-camera-replacement-parts",
+        "collection": "camera-system-meltview-pixi",
         "products_to_show": 4,
-        "title": "MeltView® PIXI camera replacement parts",
+        "title": "Build a complete camera system",
         "heading_size": "h1",
         "description": "",
         "show_description": false,
