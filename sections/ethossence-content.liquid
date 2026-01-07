@@ -1,10 +1,4 @@
-<!-- MELTTOOLS -->
-
-{% comment %}
-{% assign display_content = [content_type].metafields.ethossence.content.value %}
-item.header v. item.header_text
-item.paragraph v. item.paragraph_text
-{% endcomment %}
+<!-- ETHOSSENCE -->
 
 {%- if template contains 'page' -%}{% assign content_type = 'page' %}{% assign display_content = [content_type].metafields.ethossence.content.value %}
 {%- elsif template contains 'blog' -%}{% assign content_type = 'blog' %}{% assign display_content = [content_type].metafields.ethossence.content.value %}
