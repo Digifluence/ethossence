@@ -8,9 +8,11 @@
 {{ 'quick-order-list.css' | asset_url | stylesheet_tag }}
 {{ 'quantity-popover.css' | asset_url | stylesheet_tag }}
 
-{%  style  %} 
+{%  style  %}
+    /* Ethossence override for product components */
     @media screen and (min-width: 990px) {
-        .quick-order-list__table thead th:first-child, .quick-order-list-total__column {
+        #shopify-section-{{ section.id }} .quick-order-list__table thead th:first-child,
+        #shopify-section-{{ section.id }} .quick-order-list-total__column {
             width: 50%;
         }
     }
