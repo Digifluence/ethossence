@@ -26,6 +26,23 @@
 <script src="{{ 'price-per-item.js' | asset_url }}" defer="defer"></script>
 <script src="{{ 'quick-order-list.js' | asset_url }}" defer="defer"></script>
 
+<script>
+  // Add visual confirmation when products are added to cart from ethossence-product-components
+  document.addEventListener('DOMContentLoaded', function() {
+    const cartDrawer = document.querySelector('cart-drawer');
+
+    if (cartDrawer && typeof subscribe !== 'undefined' && typeof PUB_SUB_EVENTS !== 'undefined') {
+      subscribe(PUB_SUB_EVENTS.cartUpdate, (event) => {
+        // Only respond to cart updates from this section
+        if (event.source && event.source === '{{ section.id }}-{{ product.id }}') {
+          // Open the cart drawer to show visual confirmation
+          cartDrawer.renderContents(event.cartData);
+        }
+      });
+    }
+  });
+</script>
+
 {%- style -%}
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
