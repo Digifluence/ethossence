@@ -445,6 +445,7 @@
       </div>
     {%- endif -%}
   </td>
+  {% comment %}
   <td class="variant-item__totals right small-hide medium-hide">
     {%- render 'loading-spinner' -%}
     {% comment %} TODO: enable theme-check once `line_items_for` is accepted as valid filter {% endcomment %}
@@ -452,6 +453,7 @@
     <span class="price">{{ cart | line_items_for: item | sum: 'original_line_price' | money }}</span>
     {% # theme-check-enable %}
   </td>
+  {% endcomment %}
 </tr>
 <tr class="small-hide medium-hide hidden desktop-row-error">
   <td></td>

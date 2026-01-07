@@ -46,30 +46,32 @@
   }
 {%- endstyle -%}
 
-<div class="page-width section-{{ section.id }}-padding">
-  {%- if section.settings.heading != blank or section.settings.description != blank -%}
-    <div class="product-components__header">
+<div class="page-width section-{{ section.id }}-padding color-{{ section.settings.color_scheme }} gradient">
+
+   {%- if section.settings.heading != blank or section.settings.description != blank -%}
+      <div class="product-components__header">
       {%- if section.settings.heading != blank -%}
-        <h2 class="product-components__heading {{ section.settings.heading_size }}">
-          {{ section.settings.heading }}
-        </h2>
+         <h2 class="product-components__heading {{ section.settings.heading_size }}">
+            {{ section.settings.heading }}
+         </h2>
       {%- endif -%}
       {%- if section.settings.description != blank -%}
-        <div class="product-components__description rte">
-          {{ section.settings.description }}
-        </div>
+         <div class="product-components__description rte">
+            {{ section.settings.description }}
+         </div>
       {%- endif -%}
-    </div>
-  {%- endif -%}
-</div>
+      </div>
+   {%- endif -%}
 
-{% render 'ethossence-product-components-list',
-  product: product,
-  collection: section.settings.collection,
-  show_image: section.settings.show_image,
-  show_sku: section.settings.show_sku,
-  show_vendor: section.settings.show_vendor
-%}
+   {% render 'ethossence-product-components-list',
+      product: product,
+      collection: section.settings.collection,
+      show_image: section.settings.show_image,
+      show_sku: section.settings.show_sku,
+      show_vendor: section.settings.show_vendor
+   %}
+
+</div>
 
 {% schema %}
 {

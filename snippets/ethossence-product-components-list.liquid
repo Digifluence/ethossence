@@ -17,7 +17,7 @@
 {% # theme-check-disable %}
 {%- assign items_in_cart = cart | line_items_for: product | sum: 'quantity' -%}
 {% # theme-check-enable %}
-<div class="quick-order-list-container color-{{ section.settings.color_scheme }}{% unless is_modal %} gradient{% endunless %}">
+<div class="quick-order-list-container">
   <quick-order-list
     class="page-width section-{{ section.id }}-padding"
     id="{{ section.id }}-{{ product.id }}"
