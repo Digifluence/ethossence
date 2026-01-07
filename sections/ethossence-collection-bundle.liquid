@@ -69,7 +69,7 @@
   <script src="{{ 'price-per-item.js' | asset_url }}" defer="defer"></script>
 
   <section class="color-{{ section.settings.color_scheme }} {% if section.settings.secondary_background %}background-secondary{% else %}gradient{% endif %}">
-    <div class="page-width">
+    <div class="page-width {% if has_featured_bundle == false %}page-width--narrow{% endif %}">
       <div class="section-{{ section.id }}-padding{% if section.settings.secondary_background %} isolate{% endif %}">
 
         <div class="collection-bundle-container collection-bundle-container--{{ display_count }}">
