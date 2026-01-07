@@ -36,7 +36,10 @@
         // Only respond to cart updates from this section
         if (event.source && event.source === '{{ section.id }}-{{ product.id }}') {
           // Open the cart drawer to show visual confirmation
-          cartDrawer.renderContents(event.cartData);
+          // The quick-order-list already updates the drawer contents, we just need to open it
+          setTimeout(() => {
+            cartDrawer.open();
+          }, 100);
         }
       });
     }
