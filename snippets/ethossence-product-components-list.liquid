@@ -61,9 +61,11 @@
                 >
                   {{ 'sections.cart.headings.price' | t }}
                 </th>
+                {% comment %}
                 <th class="small-hide medium-hide right caption-with-letter-spacing" scope="col">
                   Total
                 </th>
+                {% endcomment %}
               </tr>
             </thead>
 
@@ -167,6 +169,7 @@
             </span>
             <p class="h5">{{ 'sections.quick_order_list.total_items' | t }}</p>
           </div>
+          {% comment %}
           <div class="quick-order-list-total__price">
             <div class="totals__product-total">
               <span class="totals__subtotal-value">
@@ -217,6 +220,7 @@
               {%- endif -%}
             </small>
           </div>
+         {% endcomment %}
           <div class="quick-order-list-total__column large-up-hide">
             <div class="quick-order-list-buttons">
               <a
