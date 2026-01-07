@@ -4,8 +4,6 @@
 
 {%- endcomment -%}
 
-<pre>version 14c</pre>
-
 {{ 'component-price.css' | asset_url | stylesheet_tag }}
 {{ 'quick-order-list.css' | asset_url | stylesheet_tag }}
 {{ 'quantity-popover.css' | asset_url | stylesheet_tag }}
@@ -164,6 +162,9 @@
 {%- endstyle -%}
 
 <div class="page-width section-{{ section.id }}-padding color-{{ section.settings.color_scheme }} gradient">
+
+<pre>version 014d</pre>
+
 
    {%- if section.settings.heading != blank or section.settings.description != blank -%}
       <div class="product-components__header">
