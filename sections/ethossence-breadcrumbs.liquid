@@ -197,10 +197,10 @@
    comment
       Clean position labels from menu prefixes and truncate to 27 characters
    endcomment
-   assign pos_1_clean = pos_1 | remove: 'A] ' | remove: 'B] ' | remove: 'C] ' | remove: 'D] ' | remove: '1] ' | remove: '2] ' | remove: '3] ' | remove: '4] ' | remove: '5] ' | remove: '6] ' | remove: '7] ' | remove: '8] ' | remove: '9] ' | remove: '10] ' | truncate: 60
-   assign pos_2_clean = pos_2 | remove: 'A] ' | remove: 'B] ' | remove: 'C] ' | remove: 'D] ' | remove: '1] ' | remove: '2] ' | remove: '3] ' | remove: '4] ' | remove: '5] ' | remove: '6] ' | remove: '7] ' | remove: '8] ' | remove: '9] ' | remove: '10] ' | truncate: 60
-   assign pos_3_clean = pos_3 | remove: 'A] ' | remove: 'B] ' | remove: 'C] ' | remove: 'D] ' | remove: '1] ' | remove: '2] ' | remove: '3] ' | remove: '4] ' | remove: '5] ' | remove: '6] ' | remove: '7] ' | remove: '8] ' | remove: '9] ' | remove: '10] ' | truncate: 60
-   assign pos_4_clean = pos_4 | remove: 'A] ' | remove: 'B] ' | remove: 'C] ' | remove: 'D] ' | remove: '1] ' | remove: '2] ' | remove: '3] ' | remove: '4] ' | remove: '5] ' | remove: '6] ' | remove: '7] ' | remove: '8] ' | remove: '9] ' | remove: '10] ' | truncate: 60
+   assign pos_1_clean = pos_1 | remove: 'A] ' | remove: 'B] ' | remove: 'C] ' | remove: 'D] ' | remove: '1] ' | remove: '2] ' | remove: '3] ' | remove: '4] ' | remove: '5] ' | remove: '6] ' | remove: '7] ' | remove: '8] ' | remove: '9] ' | remove: '10] ' | truncate: 74
+   assign pos_2_clean = pos_2 | remove: 'A] ' | remove: 'B] ' | remove: 'C] ' | remove: 'D] ' | remove: '1] ' | remove: '2] ' | remove: '3] ' | remove: '4] ' | remove: '5] ' | remove: '6] ' | remove: '7] ' | remove: '8] ' | remove: '9] ' | remove: '10] ' | truncate: 74
+   assign pos_3_clean = pos_3 | remove: 'A] ' | remove: 'B] ' | remove: 'C] ' | remove: 'D] ' | remove: '1] ' | remove: '2] ' | remove: '3] ' | remove: '4] ' | remove: '5] ' | remove: '6] ' | remove: '7] ' | remove: '8] ' | remove: '9] ' | remove: '10] ' | truncate: 74
+   assign pos_4_clean = pos_4 | remove: 'A] ' | remove: 'B] ' | remove: 'C] ' | remove: 'D] ' | remove: '1] ' | remove: '2] ' | remove: '3] ' | remove: '4] ' | remove: '5] ' | remove: '6] ' | remove: '7] ' | remove: '8] ' | remove: '9] ' | remove: '10] ' | truncate: 74
 -%}
 
 <div id="block-breadcrumbs" class="color-{{ section.settings.color_scheme }} gradient page-width section-{{ section.id }}-padding">
