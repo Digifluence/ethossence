@@ -241,6 +241,20 @@
         "padding_bottom": 28
       }
     },
+    "ethossence_product_components_V6NUmf": {
+      "type": "ethossence-product-components",
+      "name": "Product components",
+      "settings": {
+        "collection": "meltview®-pixi-camera-replacement-parts",
+        "variants_per_page": 50,
+        "show_image": false,
+        "show_sku": false,
+        "show_vendor": false,
+        "color_scheme": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
     "ethossence_products_complementary_VHVX4X": {
       "type": "ethossence-products-complementary",
       "name": "Complementary products",
@@ -313,6 +327,7 @@
     "melttools_welding_processes_Mhzzeh",
     "ethossence_image_resources_EJwUk6",
     "ethossence_video_resources_QWP7UH",
+    "ethossence_product_components_V6NUmf",
     "ethossence_products_complementary_VHVX4X",
     "ethossence_product_parts_h4rqaf",
     "17564162700878961e",
