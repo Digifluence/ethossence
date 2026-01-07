@@ -81,10 +81,21 @@
         "content"
       ],
       "settings": {}
+    },
+    "ethossence_breadcrumbs_zc6CX6": {
+      "type": "ethossence-breadcrumbs",
+      "name": "Breadcrumbs",
+      "settings": {
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
     }
   },
   "order": [
     "image_banner_c36eRX",
+    "ethossence_breadcrumbs_zc6CX6",
     "main"
   ]
 }

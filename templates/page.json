@@ -38,10 +38,21 @@
       "settings": {
         "include_margins": true
       }
+    },
+    "ethossence_breadcrumbs_fiwKWd": {
+      "type": "ethossence-breadcrumbs",
+      "name": "Breadcrumbs",
+      "settings": {
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
     }
   },
   "order": [
     "image_banner_g8wC6R",
+    "ethossence_breadcrumbs_fiwKWd",
     "main",
     "174017485838edd9b6"
   ]
