@@ -20,6 +20,15 @@
     #shopify-section-{{ section.id }} .quick-order-list-buttons {
         text-align: center;
     }
+
+    #shopify-section-{{ section.id }} .variant-item__link,
+    #shopify-section-{{ section.id }} .variant-item__link:visited {
+        color: rgb(var(--color-link-primary));
+    }
+
+    #shopify-section-{{ section.id }} .variant-item__link:hover {
+        color: rgba(var(--color-link-primary), 0.8);
+    }
 {% endstyle %}
 
 <script src="{{ 'quantity-popover.js' | asset_url }}" defer="defer"></script>
