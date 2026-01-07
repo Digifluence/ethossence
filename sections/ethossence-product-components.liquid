@@ -25,36 +25,60 @@
 <script src="{{ 'quantity-popover.js' | asset_url }}" defer="defer"></script>
 <script src="{{ 'price-per-item.js' | asset_url }}" defer="defer"></script>
 <script src="{{ 'quick-order-list.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'pubsub.js' | asset_url }}" defer="defer"></script>
 
 <script>
   // Add visual confirmation when products are added to cart from ethossence-product-components
-  document.addEventListener('DOMContentLoaded', function() {
+  // Wait for all deferred scripts to load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCartDrawerConfirmation);
+  } else {
+    // DOM already loaded, wait a bit for deferred scripts
+    setTimeout(initCartDrawerConfirmation, 100);
+  }
+
+  function initCartDrawerConfirmation() {
+    // Wait for pubsub to be available
+    const checkPubSub = setInterval(function() {
+      if (typeof subscribe !== 'undefined' && typeof PUB_SUB_EVENTS !== 'undefined') {
+        clearInterval(checkPubSub);
+        setupCartDrawer();
+      }
+    }, 50);
+
+    // Timeout after 5 seconds
+    setTimeout(function() {
+      clearInterval(checkPubSub);
+      console.log('Cart drawer setup timeout - pubsub not available');
+    }, 5000);
+  }
+
+  function setupCartDrawer() {
     const cartDrawer = document.querySelector('cart-drawer');
 
-    if (cartDrawer && typeof subscribe !== 'undefined' && typeof PUB_SUB_EVENTS !== 'undefined') {
-      subscribe(PUB_SUB_EVENTS.cartUpdate, (event) => {
-        console.log('Cart update event received:', event);
-        console.log('Expected source:', '{{ section.id }}-{{ product.id }}');
-        console.log('Actual source:', event.source);
-
-        // Only respond to cart updates from this section
-        if (event.source && event.source === '{{ section.id }}-{{ product.id }}') {
-          console.log('Source matched! Opening cart drawer...');
-          // Open the cart drawer to show visual confirmation
-          // The quick-order-list already updates the drawer contents, we just need to open it
-          setTimeout(() => {
-            cartDrawer.open();
-          }, 100);
-        }
-      });
-    } else {
-      console.log('Cart drawer setup failed:', {
-        cartDrawer: !!cartDrawer,
-        subscribe: typeof subscribe,
-        PUB_SUB_EVENTS: typeof PUB_SUB_EVENTS
-      });
+    if (!cartDrawer) {
+      console.log('Cart drawer element not found');
+      return;
     }
-  });
+
+    console.log('Setting up cart drawer confirmation for section: {{ section.id }}-{{ product.id }}');
+
+    subscribe(PUB_SUB_EVENTS.cartUpdate, (event) => {
+      console.log('Cart update event received:', event);
+      console.log('Expected source:', '{{ section.id }}-{{ product.id }}');
+      console.log('Actual source:', event.source);
+
+      // Only respond to cart updates from this section
+      if (event.source && event.source === '{{ section.id }}-{{ product.id }}') {
+        console.log('Source matched! Opening cart drawer...');
+        // Open the cart drawer to show visual confirmation
+        // The quick-order-list already updates the drawer contents, we just need to open it
+        setTimeout(() => {
+          cartDrawer.open();
+        }, 100);
+      }
+    });
+  }
 </script>
 
 {%- style -%}
