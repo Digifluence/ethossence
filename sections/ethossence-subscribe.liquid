@@ -1,0 +1,153 @@
+{%- comment -%}
+  ETHOSSENCE SUBSCRIBE SECTION
+  
+  CURRENTLY USE FOR EMAIL NEWSLETTER SIGNUP
+  FUTURE USE FOR OTHER SUBSCRIPTION OPTIONS AND INCLUDE SMS (TEXT) SIGNUP
+{%- endcomment -%}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  /* Subscribe section styles */
+  #shopify-section-{{ section.id }} .subscribe-heading {
+    margin-bottom: 2rem;
+  }
+
+  #shopify-section-{{ section.id }} .subscribe-description {
+    margin-bottom: 3rem;
+  }
+
+  #shopify-section-{{ section.id }} .subscribe-description p {
+    font-size: 1.6rem;
+    line-height: 1.6;
+  }
+
+  #shopify-section-{{ section.id }} .email-subscribe-wrapper {
+    max-width: 50rem;
+    margin: 0 auto;
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width section-{{ section.id }}-padding isolate">
+
+    {%- if section.settings.heading != blank -%}
+      <h2 class="subscribe-heading {{ section.settings.heading_size }} center">
+        {{ section.settings.heading }}
+      </h2>
+    {%- endif -%}
+
+    {%- if section.settings.description != blank -%}
+      <div class="subscribe-description rte center">
+        {{ section.settings.description }}
+      </div>
+    {%- endif -%}
+
+    <div class="email-subscribe-wrapper">
+      {%- render 'ethossence-block-newsletter',
+        section_id: section.id
+      -%}
+    </div>    
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Email subscription",
+  "limit": 1,
+  "tag": "section",
+  "class": "section",
+  "enabled_on": {
+    "templates": ["article", "blog", "collection", "index", "page", "product"]
+  },
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Join our newsletter."
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Subscribe to receive updates, access to exclusive deals, and more.</p>"
+    },      
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_size.options__1.label"
+        },
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_size.options__2.label"
+        },
+        {
+          "value": "h0",
+          "label": "t:sections.all.heading_size.options__3.label"
+        },
+        {
+          "value": "hxl",
+          "label": "t:sections.all.heading_size.options__4.label"
+        },
+        {
+          "value": "hxxl",
+          "label": "t:sections.all.heading_size.options__5.label"
+        }
+      ],
+      "default": "h1",
+      "label": "t:sections.all.heading_size.label"
+    }, 
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Email subscription",
+      "category": "Ethossence"
+    }
+  ]
+}
+{% endschema %}
