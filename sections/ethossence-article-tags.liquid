@@ -18,29 +18,27 @@
   }
 {%- endstyle -%}
 
-<div class="color-{{ section.settings.color_scheme }} gradient">
-  <div class="page-width section-{{ section.id }}-padding isolate">
+{%- if article.tags.size > 0 -%}
+   <div class="color-{{ section.settings.color_scheme }} gradient">
+      <div class="page-width section-{{ section.id }}-padding isolate">
+         <div class="article-tags-container">
+            
+            {%- if section.settings.heading != blank -%}
+               <h2 class="article-tags__heading {{ section.settings.heading_size }}">
+                  {{ section.settings.heading }}
+               </h2>
+            {%- endif -%}
 
-    {%- if section.settings.heading != blank or article.tags.size > 0 -%}
-      <div class="article-tags-container">
-        {%- if section.settings.heading != blank -%}
-          <h2 class="article-tags__heading {{ section.settings.heading_size }}">
-            {{ section.settings.heading }}
-          </h2>
-        {%- endif -%}
+            <div class="tags-list">
+               {% for tag in article.tags %}
+                  <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="tag-item">{{ tag }}</a>
+               {% endfor %}
+            </div>
 
-        {%- if article.tags.size > 0 -%}
-          <div class="tags-list">
-            {% for tag in article.tags %}
-              <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="tag-item">{{ tag }}</a>
-            {% endfor %}
-          </div>
-        {%- endif -%}
+         </div>
       </div>
-    {%- endif -%}
-
-  </div>
-</div>
+   </div>
+{%- endif -%}   
 
 {% schema %}
 {
