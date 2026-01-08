@@ -87,27 +87,27 @@
       ],
       "settings": {}
     },
-    "ethossence_subscribe_f6rMqK": {
-      "type": "ethossence-subscribe",
-      "name": "Email subscription",
-      "settings": {
-        "heading": "Join our newsletter.",
-        "description": "<p>Subscribe to receive updates, access to exclusive deals, and more.</p>",
-        "heading_size": "h1",
-        "color_scheme": "",
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
     "ethossence_article_tags_w9BgDA": {
       "type": "ethossence-article-tags",
       "name": "Blog article tags",
       "settings": {
         "heading": "Tagged",
         "heading_size": "h1",
-        "color_scheme": "",
-        "padding_top": 36,
-        "padding_bottom": 36
+        "color_scheme": "scheme-2",
+        "padding_top": 16,
+        "padding_bottom": 16
+      }
+    },
+    "ethossence_subscribe_f6rMqK": {
+      "type": "ethossence-subscribe",
+      "name": "Email subscription",
+      "settings": {
+        "heading": "Subscribe to our emails",
+        "description": "<p>Subscribe to receive alerts when new articles and videos are published.</p>",
+        "heading_size": "h1",
+        "color_scheme": "scheme-2",
+        "padding_top": 16,
+        "padding_bottom": 84
       }
     }
   },
