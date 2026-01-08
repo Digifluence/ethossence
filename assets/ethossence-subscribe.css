@@ -58,4 +58,9 @@
     flex: 1;
     margin: 0;
   }
+
+  /* Remove max-width from newsletter form */
+  .email-subscribe-wrapper .newsletter-form {
+    max-width: none;
+  }
 }
