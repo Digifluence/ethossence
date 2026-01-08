@@ -60,7 +60,7 @@
       "type": "ethossence-content-headings",
       "name": "Content headings",
       "settings": {
-        "heading_size": "h1",
+        "heading_size": "h0",
         "subheading_size": "h1",
         "color_scheme": "",
         "padding_top": 0,
@@ -87,20 +87,6 @@
     "main": {
       "type": "main-article",
       "blocks": {
-        "featured_image": {
-          "type": "featured_image",
-          "disabled": true,
-          "settings": {
-            "image_height": "adapt"
-          }
-        },
-        "title": {
-          "type": "title",
-          "settings": {
-            "blog_show_date": true,
-            "blog_show_author": false
-          }
-        },
         "share": {
           "type": "share",
           "settings": {
@@ -113,8 +99,6 @@
         }
       },
       "block_order": [
-        "featured_image",
-        "title",
         "share",
         "content"
       ],
