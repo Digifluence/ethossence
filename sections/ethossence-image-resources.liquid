@@ -16,8 +16,20 @@
 {%- endstyle -%}
 
 {%- liquid
-  assign image_resources_unfiltered = product.metafields.ethossence.image_resources.value
-  assign image_resources = product.metafields.ethossence.image_resources.value
+
+  assign image_resources = blank
+
+  if template contains 'page'
+    assign image_resources = page.metafields.ethossence.image_resources.value
+  elsif template contains 'article'
+    assign image_resources = article.metafields.ethossence.image_resources.value
+  elsif template contains 'blog'
+    assign image_resources = blog.metafields.ethossence.image_resources.value
+  elsif template contains 'collection'
+    assign image_resources = collection.metafields.ethossence.image_resources.value
+  elsif template contains 'product'
+    assign image_resources = product.metafields.ethossence.image_resources.value
+  endif
 
   # ETHOSSENCE FEATURE: AUTHORIZATION FOR IMAGE RESOURCES
   # FILTER IMAGE RESOURCES BASED ON CUSTOMER AUTHORIZATION
@@ -40,7 +52,6 @@
   endif
 
   # FILTER AUTHORIZED IMAGE RESOURCES - BUILD ARRAY DYNAMICALLY
-  assign authorized_resources = ''
   assign resource_count = 0
 
   for resource in image_resources
@@ -107,8 +118,9 @@
 -%}
 
 {%- if filtered_resource_count > 0 -%}
-  <image-resource-gallery class="image-resource-gallery section-{{ section.id }}-padding" data-gallery-id="{{ section.id }}">
-    <div class="image-resource-gallery__wrapper page-width">
+  <div class="color-{{ section.settings.color_scheme }} gradient">
+    <image-resource-gallery class="image-resource-gallery section-{{ section.id }}-padding" data-gallery-id="{{ section.id }}">
+      <div class="image-resource-gallery__wrapper page-width isolate">
 
       {%- if section.settings.heading != blank -%}
         <h2 class="image-resource-gallery__heading {{ section.settings.heading_size }}">
@@ -357,7 +369,9 @@
         {%- endfor -%}
       ]
     </script>
-  </image-resource-gallery>
+      </div>
+    </image-resource-gallery>
+  </div>
 {%- endif -%}
 
 {% schema %}
@@ -365,8 +379,8 @@
   "name": "Image resources",
   "tag": "section",
   "class": "section",
-  "disabled_on": {
-    "groups": ["header", "footer"]
+  "enabled_on": {
+    "templates": ["article", "blog", "collection", "page", "product"]
   },
   "settings": [
     {
@@ -406,6 +420,12 @@
       ],
       "default": "h2",
       "label": "Heading size"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
     },
     {
       "type": "header",

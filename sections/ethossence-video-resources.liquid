@@ -17,19 +17,19 @@
 
 {%- liquid
 
-  if template contains 'page' 
-    assign content_type = 'page'
-  elsif template contains 'blog' 
-    assign content_type = 'blog'
-  elsif template contains 'article' 
-    assign content_type = 'article'
-  elsif template contains 'collection' 
-    assign content_type = 'collection'
-  elsif template contains 'product' 
-    assign content_type = 'product'
-  endif
+  assign video_resources = blank
 
-  assign video_resources = [content_type].metafields.ethossence.video_resources.value
+  if template contains 'page'
+    assign video_resources = page.metafields.ethossence.video_resources.value
+  elsif template contains 'article'
+    assign video_resources = article.metafields.ethossence.video_resources.value
+  elsif template contains 'blog'
+    assign video_resources = blog.metafields.ethossence.video_resources.value
+  elsif template contains 'collection'
+    assign video_resources = collection.metafields.ethossence.video_resources.value
+  elsif template contains 'product'
+    assign video_resources = product.metafields.ethossence.video_resources.value
+  endif
   
   # ETHOSSENCE FEATURE: AUTHORIZATION FOR VIDEO RESOURCES
   # FILTER VIDEO RESOURCES BASED ON CUSTOMER AUTHORIZATION
@@ -118,8 +118,9 @@
 -%}
 
 {%- if filtered_resource_count > 0 -%}
-  <div class="ethossence-video-resources section-{{ section.id }}-padding">
-    <div class="ethossence-video-resources__wrapper page-width">
+  <div class="color-{{ section.settings.color_scheme }} gradient">
+    <div class="ethossence-video-resources section-{{ section.id }}-padding">
+      <div class="ethossence-video-resources__wrapper page-width isolate">
 
       {%- if section.settings.heading != blank -%}
         <h2 class="ethossence-video-resources__heading {{ section.settings.heading_size }}">
@@ -330,6 +331,7 @@
           {%- endif -%}
         {%- endfor -%}
       </div>
+      </div>
     </div>
   </div>
 {%- endif -%}
@@ -339,8 +341,8 @@
   "name": "Video resources",
   "tag": "section",
   "class": "section",
-  "disabled_on": {
-    "groups": ["header", "footer"]
+  "enabled_on": {
+    "templates": ["article", "blog", "collection", "page", "product"]
   },
   "settings": [
     {
@@ -382,9 +384,15 @@
       "label": "Heading size"
     },
     {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
       "type": "header",
       "content": "Video content"
-    },   
+    },
     {
       "type": "checkbox",
       "id": "include_video_title",

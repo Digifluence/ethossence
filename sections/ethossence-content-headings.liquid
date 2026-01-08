@@ -1,0 +1,148 @@
+{%- comment -%}
+  ETHOSSENCE CONTENT HEADINGS SECTION
+{%- endcomment -%}
+
+{%- liquid
+
+  assign heading = blank
+  assign subheading = blank
+
+  if template contains 'page'
+    assign heading = page.metafields.ethossence.content_heading.value
+    assign subheading = page.metafields.ethossence.content_subheading.value
+  elsif template contains 'article'
+    assign heading = article.metafields.ethossence.content_heading.value
+    assign subheading = article.metafields.ethossence.content_subheading.value
+  elsif template contains 'blog'
+    assign heading = blog.metafields.ethossence.content_heading.value
+    assign subheading = blog.metafields.ethossence.content_subheading.value
+  elsif template contains 'collection'
+    assign heading = collection.metafields.ethossence.content_heading.value
+    assign subheading = collection.metafields.ethossence.content_subheading.value
+  elsif template contains 'product'
+    assign heading = product.metafields.ethossence.content_heading.value
+    assign subheading = product.metafields.ethossence.content_subheading.value
+  endif
+
+-%}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width section-{{ section.id }}-padding isolate">
+
+    {%- if heading != blank -%}
+      <h1 class="content-headings {{ section.settings.heading_size }}">
+        {{ heading }}
+      </h1>
+    {%- endif -%}
+    {%- if subheading != blank -%}
+      <h2 class="content-subheadings {{ section.settings.subheading_size }}">
+        {{ subheading }}
+      </h2>
+    {%- endif -%}
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Content headings",
+  "limit": 1,
+  "tag": "section",
+  "class": "section",
+  "enabled_on": {
+    "templates": ["article", "blog", "collection", "page", "product"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_size.options__1.label"
+        },
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_size.options__2.label"
+        },
+        {
+          "value": "h0",
+          "label": "t:sections.all.heading_size.options__3.label"
+        }
+      ],
+      "default": "h1",
+      "label": "t:sections.all.heading_size.label"
+    },
+    {
+      "type": "select",
+      "id": "subheading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:sections.all.subheading_size.options__1.label"
+        },
+        {
+          "value": "h1",
+          "label": "t:sections.all.subheading_size.options__2.label"
+        },
+        {
+          "value": "h0",
+          "label": "t:sections.all.subheading_size.options__3.label"
+        }
+      ],
+      "default": "h1",
+      "label": "t:sections.all.subheading_size.label"
+    },   
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Content headings",
+      "category": "Ethossence"
+    }
+  ]
+}
+{% endschema %}

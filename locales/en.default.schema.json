@@ -488,6 +488,24 @@
           "label": "Extra extra large"
         }
       },
+      "subheading_size": {
+        "label": "Subheading size",
+        "options__1": {
+          "label": "Small"
+        },
+        "options__2": {
+          "label": "Medium"
+        },
+        "options__3": {
+          "label": "Large"
+        },
+        "options__4": {
+          "label": "Extra large"
+        },
+        "options__5": {
+          "label": "Extra extra large"
+        }
+      },
       "image_shape": {
         "options__1": {
           "label": "Default"
