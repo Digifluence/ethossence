@@ -21,6 +21,19 @@
   margin: 0 auto;
 }
 
+/* Newsletter form full width */
+.email-subscribe-wrapper .newsletter-form__field-wrapper {
+  width: 100%;
+  max-width: 100%;
+}
+
+.email-subscribe-wrapper .newsletter-form__field-wrapper .field,
+.email-subscribe-wrapper .newsletter-form__field-wrapper input,
+.email-subscribe-wrapper .newsletter-form__field-wrapper button {
+  width: 100%;
+  max-width: 100%;
+}
+
 /* Horizontal alignment for desktop */
 @media screen and (min-width: 750px) {
   .subscribe-section-container {
