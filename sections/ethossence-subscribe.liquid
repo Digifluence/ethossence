@@ -1,9 +1,11 @@
 {%- comment -%}
   ETHOSSENCE SUBSCRIBE SECTION
-  
+
   CURRENTLY USE FOR EMAIL NEWSLETTER SIGNUP
   FUTURE USE FOR OTHER SUBSCRIPTION OPTIONS AND INCLUDE SMS (TEXT) SIGNUP
 {%- endcomment -%}
+
+{{ 'ethossence-subscribe.css' | asset_url | stylesheet_tag }}
 
 {%- style -%}
   .section-{{ section.id }}-padding {
@@ -17,47 +19,32 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
-
-  /* Subscribe section styles */
-  #shopify-section-{{ section.id }} .subscribe-heading {
-    margin-bottom: 2rem;
-  }
-
-  #shopify-section-{{ section.id }} .subscribe-description {
-    margin-bottom: 3rem;
-  }
-
-  #shopify-section-{{ section.id }} .subscribe-description p {
-    font-size: 1.6rem;
-    line-height: 1.6;
-  }
-
-  #shopify-section-{{ section.id }} .email-subscribe-wrapper {
-    max-width: 50rem;
-    margin: 0 auto;
-  }
 {%- endstyle -%}
 
 <div class="color-{{ section.settings.color_scheme }} gradient">
   <div class="page-width section-{{ section.id }}-padding isolate">
 
-    {%- if section.settings.heading != blank -%}
-      <h2 class="subscribe-heading {{ section.settings.heading_size }} center">
-        {{ section.settings.heading }}
-      </h2>
-    {%- endif -%}
+    <div class="subscribe-section-container">
+      <div id="subscribe-content">
+        {%- if section.settings.heading != blank -%}
+          <h2 class="subscribe-heading {{ section.settings.heading_size }} center">
+            {{ section.settings.heading }}
+          </h2>
+        {%- endif -%}
 
-    {%- if section.settings.description != blank -%}
-      <div class="subscribe-description rte center">
-        {{ section.settings.description }}
+        {%- if section.settings.description != blank -%}
+          <div class="subscribe-description rte center">
+            {{ section.settings.description }}
+          </div>
+        {%- endif -%}
       </div>
-    {%- endif -%}
 
-    <div class="email-subscribe-wrapper">
-      {%- render 'ethossence-block-newsletter',
-        section_id: section.id
-      -%}
-    </div>    
+      <div class="email-subscribe-wrapper">
+        {%- render 'ethossence-block-newsletter',
+          section_id: section.id
+        -%}
+      </div>
+    </div>
 
   </div>
 </div>

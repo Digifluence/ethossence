@@ -1,0 +1,56 @@
+/* Ethossence Subscribe Section Styles */
+
+/* Subscribe heading */
+.subscribe-heading {
+  margin-bottom: 2rem;
+}
+
+/* Subscribe description */
+.subscribe-description {
+  margin-bottom: 3rem;
+}
+
+.subscribe-description p {
+  font-size: 1.6rem;
+  line-height: 1.6;
+}
+
+/* Email subscribe wrapper */
+.email-subscribe-wrapper {
+  max-width: 50rem;
+  margin: 0 auto;
+}
+
+/* Horizontal alignment for desktop */
+@media screen and (min-width: 750px) {
+  .subscribe-section-container {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+  }
+
+  #subscribe-content {
+    flex: 1;
+    text-align: left;
+  }
+
+  #subscribe-content .subscribe-heading,
+  #subscribe-content .subscribe-description {
+    text-align: left;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  #subscribe-content .subscribe-heading {
+    margin-bottom: 1rem;
+  }
+
+  #subscribe-content .subscribe-description {
+    margin-bottom: 0;
+  }
+
+  .email-subscribe-wrapper {
+    flex: 1;
+    margin: 0;
+  }
+}

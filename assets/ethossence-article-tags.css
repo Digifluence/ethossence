@@ -1,0 +1,51 @@
+/* Ethossence Article Tags Section Styles */
+
+/* Article tags heading */
+.article-tags__heading {
+  margin-bottom: 2rem;
+}
+
+/* Tags list container */
+.tags-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Individual tag item */
+.tag-item {
+  display: inline-block;
+  padding: 0.8rem 1.6rem;
+  background-color: rgba(var(--color-foreground), 0.08);
+  color: rgb(var(--color-foreground));
+  text-decoration: none;
+  border-radius: 0.4rem;
+  font-size: 1.4rem;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.tag-item:hover {
+  background-color: rgba(var(--color-foreground), 0.15);
+  text-decoration: none;
+}
+
+/* Horizontal alignment for desktop */
+@media screen and (min-width: 750px) {
+  .article-tags-container {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+  }
+
+  .article-tags__heading {
+    margin-bottom: 0;
+    flex-shrink: 0;
+  }
+
+  .tags-list {
+    flex: 1;
+  }
+}

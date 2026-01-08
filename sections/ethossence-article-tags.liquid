@@ -2,6 +2,8 @@
   ETHOSSENCE ARTICLE TAGS SECTION
 {%- endcomment -%}
 
+{{ 'ethossence-article-tags.css' | asset_url | stylesheet_tag }}
+
 {%- style -%}
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
@@ -14,52 +16,26 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
-
-  /* Article tags styles */
-  #shopify-section-{{ section.id }} .article-tags__heading {
-    margin-bottom: 2rem;
-  }
-
-  #shopify-section-{{ section.id }} .tags-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  #shopify-section-{{ section.id }} .tag-item {
-    display: inline-block;
-    padding: 0.8rem 1.6rem;
-    background-color: rgba(var(--color-foreground), 0.08);
-    color: rgb(var(--color-foreground));
-    text-decoration: none;
-    border-radius: 0.4rem;
-    font-size: 1.4rem;
-    transition: background-color 0.2s ease, color 0.2s ease;
-  }
-
-  #shopify-section-{{ section.id }} .tag-item:hover {
-    background-color: rgba(var(--color-foreground), 0.15);
-    text-decoration: none;
-  }
 {%- endstyle -%}
 
 <div class="color-{{ section.settings.color_scheme }} gradient">
   <div class="page-width section-{{ section.id }}-padding isolate">
 
-    {%- if section.settings.heading != blank -%}
-      <h2 class="article-tags__heading {{ section.settings.heading_size }}">
-        {{ section.settings.heading }}
-      </h2>
-    {%- endif -%}
+    {%- if section.settings.heading != blank or article.tags.size > 0 -%}
+      <div class="article-tags-container">
+        {%- if section.settings.heading != blank -%}
+          <h2 class="article-tags__heading {{ section.settings.heading_size }}">
+            {{ section.settings.heading }}
+          </h2>
+        {%- endif -%}
 
-    {%- if article.tags.size > 0 -%}
-      <div class="tags-list">
-        {% for tag in article.tags %}
-          <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="tag-item">{{ tag }}</a>
-        {% endfor %}
+        {%- if article.tags.size > 0 -%}
+          <div class="tags-list">
+            {% for tag in article.tags %}
+              <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="tag-item">{{ tag }}</a>
+            {% endfor %}
+          </div>
+        {%- endif -%}
       </div>
     {%- endif -%}
 
