@@ -3,16 +3,6 @@
   CONTENT HEADINGS SECTION
 {%- endcomment -%}
 
-<pre>
-  template: {{ template }}
-  {% if template contains 'collection' %}
-  collection.metafields.ethossence.content_heading: {{ collection.metafields.ethossence.content_heading }}
-  collection.metafields.ethossence.content_heading.value: {{ collection.metafields.ethossence.content_heading.value }}
-  collection.metafields.ethossence.content_subheading: {{ collection.metafields.ethossence.content_subheading }}
-  collection.metafields.ethossence.content_subheading.value: {{ collection.metafields.ethossence.content_subheading.value }}
-  {% endif %}
-</pre>
-
 {%- liquid
 
   assign heading = blank
