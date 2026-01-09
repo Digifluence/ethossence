@@ -36,19 +36,6 @@
         "padding_bottom": 16
       }
     },
-    "main": {
-      "type": "main-page",
-      "settings": {
-        "padding_top": 12,
-        "padding_bottom": 64
-      }
-    },
-    "174017485838edd9b6": {
-      "type": "apps",
-      "settings": {
-        "include_margins": true
-      }
-    },
     "ethossence_content_headings_CCeiBk": {
       "type": "ethossence-content-headings",
       "name": "Content headings",
@@ -57,7 +44,21 @@
         "subheading_size": "h2",
         "color_scheme": "",
         "padding_top": 36,
-        "padding_bottom": 36
+        "padding_bottom": 0
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "hide_title": true,
+        "padding_top": 0,
+        "padding_bottom": 64
+      }
+    },
+    "174017485838edd9b6": {
+      "type": "apps",
+      "settings": {
+        "include_margins": true
       }
     }
   },
