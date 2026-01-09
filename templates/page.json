@@ -65,7 +65,7 @@
         "include_image_title": false,
         "title_size": "h3",
         "include_image_description": true,
-        "columns_desktop": 4,
+        "columns_desktop": 3,
         "columns_mobile": "2",
         "padding_top": 12,
         "padding_bottom": 28
@@ -133,7 +133,7 @@
     "ethossence_content_headings_CCeiBk",
     "main",
     "ethossence_image_resources_NGcFLE",
-    "174017485838edd9b6",
-    "multicolumn_3f88yA"
+    "multicolumn_3f88yA",
+    "174017485838edd9b6"
   ]
 }
