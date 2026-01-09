@@ -531,9 +531,9 @@ a.button,
   text-decoration: none;
 }
 
-a.button:hover,
-.rte a.button:hover {
-  color: rgb(var(--color-link_primary));
+a.button:not([disabled]):hover,
+.rte a.button:not([disabled]):hover {
+  color: rgb(var(--color-link_primary)) !important;
 }
 
 a.button:visited,
