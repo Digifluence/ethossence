@@ -11,18 +11,6 @@
   "sections": {
     "image_banner_MtL38k": {
       "type": "image-banner",
-      "blocks": {
-        "heading_ARBRWn": {
-          "type": "heading",
-          "settings": {
-            "heading": "{{ collection.metafields.ethossence.banner_heading.value }}",
-            "heading_size": "h1"
-          }
-        }
-      },
-      "block_order": [
-        "heading_ARBRWn"
-      ],
       "name": "t:sections.image-banner.presets.name",
       "settings": {
         "image": "shopify://shop_images/PIXI-color-trailing.jpg",
