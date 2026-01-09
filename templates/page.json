@@ -71,12 +71,6 @@
         "padding_bottom": 28
       }
     },
-    "174017485838edd9b6": {
-      "type": "apps",
-      "settings": {
-        "include_margins": true
-      }
-    },
     "multicolumn_3f88yA": {
       "type": "multicolumn",
       "blocks": {
@@ -86,7 +80,7 @@
             "title": "Start a Conversation",
             "heading_size": "h1",
             "text": "",
-            "link_label": "Contact for More Information",
+            "link_label": "Contact Us",
             "link": "shopify://pages/contact",
             "column_alignment": "default"
           }
@@ -97,7 +91,7 @@
             "title": "Let's Meet Online",
             "heading_size": "h1",
             "text": "",
-            "link_label": "Book a Meeting",
+            "link_label": "Book an Appointment",
             "link": "shopify://pages/welding-camera-consultation-demonstration-appointments",
             "column_alignment": "default"
           }
@@ -124,6 +118,12 @@
         "swipe_on_mobile": false,
         "padding_top": 40,
         "padding_bottom": 84
+      }
+    },
+    "174017485838edd9b6": {
+      "type": "apps",
+      "settings": {
+        "include_margins": true
       }
     }
   },
