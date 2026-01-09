@@ -44,14 +44,14 @@
         "subheading_size": "h2",
         "color_scheme": "",
         "padding_top": 36,
-        "padding_bottom": 36
+        "padding_bottom": 0
       }
     },
     "main": {
       "type": "main-page",
       "settings": {
         "hide_title": true,
-        "padding_top": 28,
+        "padding_top": 0,
         "padding_bottom": 28
       }
     },
@@ -115,9 +115,9 @@
         "color_scheme": "scheme-1",
         "layout": "form-wide",
         "padding_top": 0,
-        "padding_bottom": 36,
+        "padding_bottom": 84,
         "contact_header_treatment": "H2",
-        "contact_header_align": "text-center",
+        "contact_header_align": "text-left",
         "contact_text_align": "text-left"
       }
     }
