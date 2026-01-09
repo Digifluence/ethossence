@@ -48,11 +48,23 @@
       "settings": {
         "include_margins": true
       }
+    },
+    "ethossence_content_headings_CCeiBk": {
+      "type": "ethossence-content-headings",
+      "name": "Content headings",
+      "settings": {
+        "heading_size": "h1",
+        "subheading_size": "h2",
+        "color_scheme": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
     }
   },
   "order": [
     "image_banner_g8wC6R",
     "ethossence_breadcrumbs_fiwKWd",
+    "ethossence_content_headings_CCeiBk",
     "main",
     "174017485838edd9b6"
   ]
