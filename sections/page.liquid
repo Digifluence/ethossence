@@ -135,7 +135,7 @@
 
 {%- liquid
 
-  if selected_page.content == blank
+  if selected_page.content != blank
   
     assign content = selected_page.content
 
