@@ -76,6 +76,55 @@
       "settings": {
         "include_margins": true
       }
+    },
+    "multicolumn_3f88yA": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_ddLNFH": {
+          "type": "column",
+          "settings": {
+            "title": "Start a Conversation",
+            "heading_size": "h1",
+            "text": "",
+            "link_label": "Contact for More Information",
+            "link": "shopify://pages/contact",
+            "column_alignment": "default"
+          }
+        },
+        "column_gFeKaQ": {
+          "type": "column",
+          "settings": {
+            "title": "Let's Meet Online",
+            "heading_size": "h1",
+            "text": "",
+            "link_label": "Book a Meeting",
+            "link": "shopify://pages/welding-camera-consultation-demonstration-appointments",
+            "column_alignment": "default"
+          }
+        }
+      },
+      "block_order": [
+        "column_ddLNFH",
+        "column_gFeKaQ"
+      ],
+      "name": "t:sections.multicolumn.presets.name",
+      "settings": {
+        "title": "",
+        "heading_size": "h1",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "button_label": "",
+        "button_link": "",
+        "columns_desktop": 2,
+        "column_alignment": "center",
+        "background_style": "none",
+        "color_scheme": "",
+        "link_color": "link_primary",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 40,
+        "padding_bottom": 84
+      }
     }
   },
   "order": [
@@ -84,6 +133,7 @@
     "ethossence_content_headings_CCeiBk",
     "main",
     "ethossence_image_resources_NGcFLE",
-    "174017485838edd9b6"
+    "174017485838edd9b6",
+    "multicolumn_3f88yA"
   ]
 }
