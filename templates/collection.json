@@ -95,6 +95,20 @@
         "padding_top": 36,
         "padding_bottom": 36
       }
+    },
+    "page_QddJn3": {
+      "type": "page",
+      "name": "t:sections.page.presets.name",
+      "settings": {
+        "page": "transform-welding-operations",
+        "heading_hide": false,
+        "heading_size": "h1",
+        "color_scheme": "",
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "authoriz_enabled": false,
+        "authoriz_require_msg": ""
+      }
     }
   },
   "order": [
@@ -103,6 +117,7 @@
     "ethossence_content_headings_rnXBtt",
     "banner",
     "ethossence_collection_bundle_qw6V9A",
-    "product-grid"
+    "product-grid",
+    "page_QddJn3"
   ]
 }
