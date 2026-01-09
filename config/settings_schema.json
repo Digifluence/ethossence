@@ -72,14 +72,14 @@
           },
           {
             "type": "color",
-            "id": "headers_primary",
-            "label": "Heading primary",
+            "id": "content_heading",
+            "label": "Content heading",
             "default": "#121212"
           },
           {
             "type": "color",
-            "id": "subheaders_primary",
-            "label": "Subheading primary",
+            "id": "content_subheading",
+            "label": "Content subheading",
             "default": "#121212"
           },
           {
