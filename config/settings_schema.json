@@ -73,25 +73,13 @@
           {
             "type": "color",
             "id": "headers_primary",
-            "label": "Headers primary",
-            "default": "#121212"
-          },
-          {
-            "type": "color",
-            "id": "headers_secondary",
-            "label": "Headers secondary",
+            "label": "Heading primary",
             "default": "#121212"
           },
           {
             "type": "color",
             "id": "subheaders_primary",
-            "label": "Subheaders primary",
-            "default": "#121212"
-          },
-          {
-            "type": "color",
-            "id": "subheaders_secondary",
-            "label": "Subheaders secondary",
+            "label": "Subheading primary",
             "default": "#121212"
           },
           {
