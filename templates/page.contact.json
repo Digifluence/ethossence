@@ -9,9 +9,48 @@
  */
 {
   "sections": {
+    "image_banner_r4KWGN": {
+      "type": "image-banner",
+      "name": "t:sections.image-banner.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/apex3-during-welding.jpg",
+        "image_overlay_opacity": 0,
+        "image_height": "small",
+        "image_behavior": "ambient",
+        "desktop_content_position": "middle-center",
+        "desktop_content_alignment": "center",
+        "show_text_box": true,
+        "color_scheme": "",
+        "stack_images_on_mobile": true,
+        "mobile_content_alignment": "center",
+        "show_text_below": true
+      }
+    },
+    "ethossence_breadcrumbs_GmEG7z": {
+      "type": "ethossence-breadcrumbs",
+      "name": "Breadcrumbs",
+      "settings": {
+        "color_scheme": "scheme-3",
+        "full_width": false,
+        "padding_top": 12,
+        "padding_bottom": 12
+      }
+    },
+    "ethossence_content_headings_tcbUHJ": {
+      "type": "ethossence-content-headings",
+      "name": "Content headings",
+      "settings": {
+        "heading_size": "h1",
+        "subheading_size": "h2",
+        "color_scheme": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
     "main": {
       "type": "main-page",
       "settings": {
+        "hide_title": true,
         "padding_top": 28,
         "padding_bottom": 28
       }
@@ -70,11 +109,13 @@
       ],
       "settings": {
         "heading": "Contact Us",
-        "heading_size": "h1",
+        "company_include": true,
+        "phone_include": true,
+        "location_include": true,
         "color_scheme": "scheme-1",
+        "layout": "form-wide",
         "padding_top": 0,
         "padding_bottom": 36,
-        "layout": "form-wide",
         "contact_header_treatment": "H2",
         "contact_header_align": "text-center",
         "contact_text_align": "text-left"
@@ -82,6 +123,9 @@
     }
   },
   "order": [
+    "image_banner_r4KWGN",
+    "ethossence_breadcrumbs_GmEG7z",
+    "ethossence_content_headings_tcbUHJ",
     "main",
     "form"
   ]
