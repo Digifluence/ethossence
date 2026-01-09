@@ -533,7 +533,7 @@ a.button,
 
 a.button:hover,
 .rte a.button:hover {
-  color: rgb(var(--color-button-text));
+  color: rgb(var(--color-link_primary));
 }
 
 a.button:visited,
