@@ -522,3 +522,21 @@
 .rte a:visited {
   color: rgb(var(--color-link_primary));
 }
+
+/* Button styles - override RTE link styles */
+a.button,
+.rte a.button {
+  color: rgb(var(--color-button-text));
+  font-weight: 700;
+  text-decoration: none;
+}
+
+a.button:hover,
+.rte a.button:hover {
+  color: rgb(var(--color-button-text));
+}
+
+a.button:visited,
+.rte a.button:visited {
+  color: rgb(var(--color-button-text));
+}
