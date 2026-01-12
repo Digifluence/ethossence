@@ -18,7 +18,7 @@
   comment
     Start output with grid wrapper
   endcomment
-  assign output = '<div class="article-grid grid grid--6-col">'
+  assign output = '<div class="page-grid grid grid--6-col">'
   
   comment
     Track if we're in the first section and row column count
@@ -118,7 +118,7 @@
         comment
           Log error for invalid column size
         endcomment
-        assign error_msg = '<div class="article-grid-error">Invalid column size: [[ COL ' | append: col_definition | append: ' ]] - must be 1-6</div>'
+        assign error_msg = '<div class="page-grid-error">Invalid column size: [[ COL ' | append: col_definition | append: ' ]] - must be 1-6</div>'
         assign output = output | append: error_msg
       endif
 
@@ -160,7 +160,7 @@
   }
 
 
-  .article-grid {
+  .page-grid {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     column-gap: var(--grid-gap, 2rem);
@@ -168,12 +168,12 @@
     margin: 2rem 0;
   }
   
-  .article-grid .grid__item {
+  .page-grid .grid__item {
     min-width: 0; /* Prevent grid blowout */
   }
   
   /* Prevent nested grids from breaking layout */
-  .article-grid .grid__item .grid__item {
+  .page-grid .grid__item .grid__item {
     display: block;
     grid-column: auto;
   }
@@ -186,7 +186,7 @@
   .grid__item--6-col { grid-column: span 6; }
   
   /* Error styling for invalid column markers */
-  .article-grid-error {
+  .page-grid-error {
     grid-column: 1 / -1;
     padding: 1rem;
     background-color: #fff3cd;
@@ -198,7 +198,7 @@
   }
   
   @media screen and (max-width: 749px) {
-    .article-grid {
+    .page-grid {
       grid-template-columns: repeat(2, 1fr);
     }
     
@@ -211,7 +211,7 @@
       grid-column: span 2;
     }
     
-    .article-grid-error {
+    .page-grid-error {
       grid-column: 1 / -1;
     }
   }
