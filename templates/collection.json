@@ -104,7 +104,7 @@
         "heading_size": "h1",
         "color_scheme": "",
         "padding_top": 36,
-        "padding_bottom": 36,
+        "padding_bottom": 84,
         "authoriz_enabled": false,
         "authoriz_require_msg": ""
       }
