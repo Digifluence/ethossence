@@ -80,7 +80,7 @@
         "columns_desktop": 4,
         "columns_mobile": "2",
         "color_scheme": "scheme-1",
-        "grid_header_text": "Configure Your System",
+        "grid_header_text": "{{ collection.metafields.ethossence.product_grid_heading.value }}",
         "grid_header_heading_size": "h1",
         "image_ratio": "square",
         "image_shape": "default",
