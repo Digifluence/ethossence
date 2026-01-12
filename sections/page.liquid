@@ -1,137 +1,26 @@
-{%- liquid 
+{%- liquid
   # ETHOSSENCE ~ MOD: Added authorization logic to control page visibility based on customer metafields and page metafields.
 
   # Get the selected page from section settings
   assign selected_page = pages[section.settings.page]
 
-  # Initialize display_content to true (default to showing content)
-  assign display_content = true
-  
-  if section.settings.authoriz_enabled and selected_page
-    # Initialize authorization variables
-    assign customer_authorization_levels = blank
-    assign page_has_authorization = false
-    assign page_required_levels = blank
-    
-    # GET CUSTOMER AUTHORIZATION LEVELS FROM METAFIELD
-    if customer
-      # Access the metafield - this returns a MetaobjectDrop or list of MetaobjectDrops
-      assign customer_auth_metaobject = customer.metafields.ethossence.authorization_show.value
-      
-      if customer_auth_metaobject
-        assign temp_levels = blank
-        
-        # First try to access as a single metaobject
-        if customer_auth_metaobject.level
-          # Direct access to the level field of the metaobject
-          assign level_value = customer_auth_metaobject.level
-          if level_value != blank
-            assign temp_levels = level_value
-          endif
-        else
-          # Try as an array of metaobjects
-          for auth_obj in customer_auth_metaobject
-            if auth_obj.level
-              assign level_value = auth_obj.level
-              if level_value != blank
-                if temp_levels == blank
-                  assign temp_levels = level_value
-                else
-                  assign temp_levels = temp_levels | append: ',' | append: level_value
-                endif
-              endif
-            endif
-          endfor
-        endif
-        
-        if temp_levels != blank
-          assign customer_authorization_levels = temp_levels | downcase | split: ','
-        endif
-      endif
-    endif
-    
-    # GET PAGE AUTHORIZATION REQUIREMENTS
-    if selected_page.metafields.ethossence.authorization_show
-      assign page_auth_metaobject = selected_page.metafields.ethossence.authorization_show.value
-      
-      if page_auth_metaobject
-        assign temp_levels = blank
-        
-        # First try to access as a single metaobject
-        if page_auth_metaobject.level
-          # Direct access to the level field of the metaobject
-          assign level_value = page_auth_metaobject.level
-          if level_value != blank
-            assign page_has_authorization = true
-            assign temp_levels = level_value
-          endif
-        else
-          # Try as an array of metaobjects
-          for auth_obj in page_auth_metaobject
-            if auth_obj.level
-              assign level_value = auth_obj.level
-              if level_value != blank
-                assign page_has_authorization = true
-                if temp_levels == blank
-                  assign temp_levels = level_value
-                else
-                  assign temp_levels = temp_levels | append: ',' | append: level_value
-                endif
-              endif
-            endif
-          endfor
-        endif
-        
-        if temp_levels != blank
-          assign page_required_levels = temp_levels | downcase | split: ','
-        endif
-      endif
-    endif
-  
-    # DETERMINE AUTHORIZATION
-    # If page has no authorization requirements, display it (public page)
-    # If page has authorization requirements, check customer levels
-    if page_has_authorization and page_required_levels != blank
-      # Page has authorization requirements - check customer authorization
-      assign display_content = false
-      
-      if customer_authorization_levels != blank
-        # Check if any customer level matches any required level
-        for required_level in page_required_levels
-          assign required_level_clean = required_level | strip
-          
-          for customer_level in customer_authorization_levels
-            assign customer_level_clean = customer_level | strip
-            if customer_level_clean == required_level_clean
-              assign display_content = true
-              break
-            endif
-          endfor
-          
-          if display_content
-            break
-          endif
-        endfor
-      endif
-    else
-      # No authorization requirements - page is public
-      assign display_content = true
-    endif
-
-  endif
-
-  # Get the hero image class (unchanged from your original code)
+  # Get the hero image class
   assign img_hero_class = selected_page.metafields.ethossence.img_hero_placement | prepend: 'img-' | replace: ' ', '-' | replace: '-|-', ' img-' | downcase | strip
-
-  # Optional: Debug output (remove in production)
-  comment
-    echo 'Customer levels: ' | append: customer_authorization_levels | join: ', '
-    echo '<br>Page levels: ' | append: page_required_levels | join: ', '
-    echo '<br>Page has authorization: ' | append: page_has_authorization
-    echo '<br>Display content: ' | append: display_content
-  endcomment
-
 -%}
+
+{%- comment -%} Check authorization {%- endcomment -%}
+{%- capture auth_result -%}
+  {%- render 'ethossence-authorization',
+    resource: selected_page,
+    authorization_enabled: section.settings.authoriz_enabled
+  -%}
+{%- endcapture -%}
+{%- assign auth_result_clean = auth_result | strip -%}
+{%- if auth_result_clean == 'true' -%}
+  {%- assign display_content = true -%}
+{%- else -%}
+  {%- assign display_content = false -%}
+{%- endif -%}
 
 {%- liquid
 

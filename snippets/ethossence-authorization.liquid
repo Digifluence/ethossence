@@ -1,0 +1,145 @@
+{%- comment -%}
+  ETHOSSENCE AUTHORIZATION SNIPPET
+
+  Checks if a customer is authorized to view a specific resource (page, article, product, collection, blog)
+  based on customer authorization levels and resource authorization requirements.
+
+  Parameters:
+  - resource: The object to check authorization for (page, article, product, collection, blog)
+  - authorization_enabled: Boolean from section settings (if false, always returns true)
+
+  Returns (via assign in parent scope):
+  - display_content: Boolean indicating if content should be displayed
+
+  Usage:
+  {% render 'ethossence-authorization',
+    resource: page,
+    authorization_enabled: section.settings.authoriz_enabled
+  %}
+
+  {% if display_content %}
+    Display content here
+  {% endif %}
+{%- endcomment -%}
+
+{%- liquid
+  # Initialize display_content to true (default to showing content)
+  # Note: This variable will be available in the parent scope after render
+  assign display_content = true
+
+  if authorization_enabled and resource
+    # Initialize authorization variables
+    assign customer_authorization_levels = blank
+    assign page_has_authorization = false
+    assign page_required_levels = blank
+
+    # GET CUSTOMER AUTHORIZATION LEVELS FROM METAFIELD
+    if customer
+      # Access the metafield - this returns a MetaobjectDrop or list of MetaobjectDrops
+      assign customer_auth_metaobject = customer.metafields.ethossence.authorization_show.value
+
+      if customer_auth_metaobject
+        assign temp_levels = blank
+
+        # First try to access as a single metaobject
+        if customer_auth_metaobject.level
+          # Direct access to the level field of the metaobject
+          assign level_value = customer_auth_metaobject.level
+          if level_value != blank
+            assign temp_levels = level_value
+          endif
+        else
+          # Try as an array of metaobjects
+          for auth_obj in customer_auth_metaobject
+            if auth_obj.level
+              assign level_value = auth_obj.level
+              if level_value != blank
+                if temp_levels == blank
+                  assign temp_levels = level_value
+                else
+                  assign temp_levels = temp_levels | append: ',' | append: level_value
+                endif
+              endif
+            endif
+          endfor
+        endif
+
+        if temp_levels != blank
+          assign customer_authorization_levels = temp_levels | downcase | split: ','
+        endif
+      endif
+    endif
+
+    # GET RESOURCE AUTHORIZATION REQUIREMENTS
+    if resource.metafields.ethossence.authorization_show
+      assign page_auth_metaobject = resource.metafields.ethossence.authorization_show.value
+
+      if page_auth_metaobject
+        assign temp_levels = blank
+
+        # First try to access as a single metaobject
+        if page_auth_metaobject.level
+          # Direct access to the level field of the metaobject
+          assign level_value = page_auth_metaobject.level
+          if level_value != blank
+            assign page_has_authorization = true
+            assign temp_levels = level_value
+          endif
+        else
+          # Try as an array of metaobjects
+          for auth_obj in page_auth_metaobject
+            if auth_obj.level
+              assign level_value = auth_obj.level
+              if level_value != blank
+                assign page_has_authorization = true
+                if temp_levels == blank
+                  assign temp_levels = level_value
+                else
+                  assign temp_levels = temp_levels | append: ',' | append: level_value
+                endif
+              endif
+            endif
+          endfor
+        endif
+
+        if temp_levels != blank
+          assign page_required_levels = temp_levels | downcase | split: ','
+        endif
+      endif
+    endif
+
+    # DETERMINE AUTHORIZATION
+    # If resource has no authorization requirements, display it (public resource)
+    # If resource has authorization requirements, check customer levels
+    if page_has_authorization and page_required_levels != blank
+      # Resource has authorization requirements - check customer authorization
+      assign display_content = false
+
+      if customer_authorization_levels != blank
+        # Check if any customer level matches any required level
+        for required_level in page_required_levels
+          assign required_level_clean = required_level | strip
+
+          for customer_level in customer_authorization_levels
+            assign customer_level_clean = customer_level | strip
+            if customer_level_clean == required_level_clean
+              assign display_content = true
+              break
+            endif
+          endfor
+
+          if display_content
+            break
+          endif
+        endfor
+      endif
+    else
+      # No authorization requirements - resource is public
+      assign display_content = true
+    endif
+
+  endif
+
+  # Output the result for capture in parent
+  echo display_content
+-%}

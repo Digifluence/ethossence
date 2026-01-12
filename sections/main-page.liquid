@@ -1,3 +1,17 @@
+{%- comment -%} Check authorization {%- endcomment -%}
+{%- capture auth_result -%}
+  {%- render 'ethossence-authorization',
+    resource: page,
+    authorization_enabled: section.settings.authoriz_enabled
+  -%}
+{%- endcapture -%}
+{%- assign auth_result_clean = auth_result | strip -%}
+{%- if auth_result_clean == 'true' -%}
+  {%- assign display_content = true -%}
+{%- else -%}
+  {%- assign display_content = false -%}
+{%- endif -%}
+
 {%- liquid
 
   assign content = page.content
@@ -162,14 +176,20 @@
 {%- endstyle -%}
 
 <div class="page-width section-{{ section.id }}-padding">
-  {%- unless section.settings.hide_title -%}
-    <h1 class="main-page-title page-title h0{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
-      {{ page.title | escape }}
-    </h1>
-  {%- endunless -%}
-  <div class="rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-    {{ output }}
-  </div>
+  {%- if section.settings.authoriz_enabled and display_content != true -%}
+    <div class="rte">
+      <p>{{ section.settings.authoriz_require_msg }}</p>
+    </div>
+  {%- else -%}
+    {%- unless section.settings.hide_title -%}
+      <h1 class="main-page-title page-title h0{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+        {{ page.title | escape }}
+      </h1>
+    {%- endunless -%}
+    <div class="rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+      {{ output }}
+    </div>
+  {%- endif -%}
 </div>
 
 {% schema %}
@@ -207,6 +227,22 @@
       "unit": "px",
       "label": "t:sections.all.padding.padding_bottom",
       "default": 36
+    },
+    {
+      "type": "header",
+      "content": "Authorization settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "authoriz_enabled",
+      "default": false,
+      "label": "Enforce authorization to view"
+    },
+    {
+      "type": "richtext",
+      "id": "authoriz_require_msg",
+      "label": "Authorization required message",
+      "info": "Message to display when authorization is required but not met"
     }
   ]
 }
