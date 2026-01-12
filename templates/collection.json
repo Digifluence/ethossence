@@ -96,11 +96,10 @@
         "padding_bottom": 36
       }
     },
-    "page_QddJn3": {
-      "type": "page",
-      "name": "t:sections.page.presets.name",
+    "page_additonal_JFBFXA": {
+      "type": "page-additonal",
+      "name": "Page additional",
       "settings": {
-        "page": "transform-welding-operations",
         "heading_hide": false,
         "heading_size": "h1",
         "color_scheme": "",
@@ -118,6 +117,6 @@
     "banner",
     "ethossence_collection_bundle_qw6V9A",
     "product-grid",
-    "page_QddJn3"
+    "page_additonal_JFBFXA"
   ]
 }
