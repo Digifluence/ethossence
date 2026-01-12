@@ -1,0 +1,525 @@
+{%- liquid
+  # ETHOSSENCE ~ MOD: Added authorization logic to control page visibility based on customer metafields and page metafields.
+  # Modified to use metafield for page selection and support multiple pages
+
+  # Get the list of pages from the parent page's metafield
+  assign selected_pages = blank
+
+  if template contains 'page'
+    assign selected_pages = page.metafields.ethossence.page_additional.value
+  elsif template contains 'article'
+    assign selected_pages = article.metafields.ethossence.page_additional.value
+  elsif template contains 'blog'
+    assign selected_pages = blog.metafields.ethossence.page_additional.value
+  elsif template contains 'collection'
+    assign selected_pages = collection.metafields.ethossence.page_additional.value
+  elsif template contains 'product'
+    assign selected_pages = product.metafields.ethossence.page_additional.value
+  endif
+
+-%}
+
+{{ 'section-main-page.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  .article-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    column-gap: var(--grid-gap, 2rem);
+    row-gap: 0;
+    margin: 2rem 0;
+  }
+
+  .article-grid .grid__item {
+    min-width: 0; /* Prevent grid blowout */
+  }
+
+  /* Prevent nested grids from breaking layout */
+  .article-grid .grid__item .grid__item {
+    display: block;
+    grid-column: auto;
+  }
+
+  .grid__item--1-col { grid-column: span 1; }
+  .grid__item--2-col { grid-column: span 2; }
+  .grid__item--3-col { grid-column: span 3; }
+  .grid__item--4-col { grid-column: span 4; }
+  .grid__item--5-col { grid-column: span 5; }
+  .grid__item--6-col { grid-column: span 6; }
+
+  /* Error styling for invalid column markers */
+  .article-grid-error {
+    grid-column: 1 / -1;
+    padding: 1rem;
+    background-color: #fff3cd;
+    border: 1px solid #ffc107;
+    border-radius: 4px;
+    color: #856404;
+    font-size: 0.875rem;
+    margin: 0.5rem 0;
+  }
+
+  @media screen and (max-width: 749px) {
+    .article-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid__item--1-col,
+    .grid__item--2-col,
+    .grid__item--3-col,
+    .grid__item--4-col,
+    .grid__item--5-col,
+    .grid__item--6-col {
+      grid-column: span 2;
+    }
+
+    .article-grid-error {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .page-additional-separator {
+    margin: 4rem 0;
+    border-top: 0.1rem solid rgba(var(--color-foreground), 0.08);
+  }
+
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width section-{{ section.id }}-padding">
+
+    {%- if selected_pages != blank -%}
+      {%- for selected_page in selected_pages -%}
+
+        {%- liquid
+          # Initialize display_content to true (default to showing content)
+          assign display_content = true
+
+          if section.settings.authoriz_enabled and selected_page
+            # Initialize authorization variables
+            assign customer_authorization_levels = blank
+            assign page_has_authorization = false
+            assign page_required_levels = blank
+
+            # GET CUSTOMER AUTHORIZATION LEVELS FROM METAFIELD
+            if customer
+              # Access the metafield - this returns a MetaobjectDrop or list of MetaobjectDrops
+              assign customer_auth_metaobject = customer.metafields.ethossence.authorization_show.value
+
+              if customer_auth_metaobject
+                assign temp_levels = blank
+
+                # First try to access as a single metaobject
+                if customer_auth_metaobject.level
+                  # Direct access to the level field of the metaobject
+                  assign level_value = customer_auth_metaobject.level
+                  if level_value != blank
+                    assign temp_levels = level_value
+                  endif
+                else
+                  # Try as an array of metaobjects
+                  for auth_obj in customer_auth_metaobject
+                    if auth_obj.level
+                      assign level_value = auth_obj.level
+                      if level_value != blank
+                        if temp_levels == blank
+                          assign temp_levels = level_value
+                        else
+                          assign temp_levels = temp_levels | append: ',' | append: level_value
+                        endif
+                      endif
+                    endif
+                  endfor
+                endif
+
+                if temp_levels != blank
+                  assign customer_authorization_levels = temp_levels | downcase | split: ','
+                endif
+              endif
+            endif
+
+            # GET PAGE AUTHORIZATION REQUIREMENTS
+            if selected_page.metafields.ethossence.authorization_show
+              assign page_auth_metaobject = selected_page.metafields.ethossence.authorization_show.value
+
+              if page_auth_metaobject
+                assign temp_levels = blank
+
+                # First try to access as a single metaobject
+                if page_auth_metaobject.level
+                  # Direct access to the level field of the metaobject
+                  assign level_value = page_auth_metaobject.level
+                  if level_value != blank
+                    assign page_has_authorization = true
+                    assign temp_levels = level_value
+                  endif
+                else
+                  # Try as an array of metaobjects
+                  for auth_obj in page_auth_metaobject
+                    if auth_obj.level
+                      assign level_value = auth_obj.level
+                      if level_value != blank
+                        assign page_has_authorization = true
+                        if temp_levels == blank
+                          assign temp_levels = level_value
+                        else
+                          assign temp_levels = temp_levels | append: ',' | append: level_value
+                        endif
+                      endif
+                    endif
+                  endfor
+                endif
+
+                if temp_levels != blank
+                  assign page_required_levels = temp_levels | downcase | split: ','
+                endif
+              endif
+            endif
+
+            # DETERMINE AUTHORIZATION
+            # If page has no authorization requirements, display it (public page)
+            # If page has authorization requirements, check customer levels
+            if page_has_authorization and page_required_levels != blank
+              # Page has authorization requirements - check customer authorization
+              assign display_content = false
+
+              if customer_authorization_levels != blank
+                # Check if any customer level matches any required level
+                for required_level in page_required_levels
+                  assign required_level_clean = required_level | strip
+
+                  for customer_level in customer_authorization_levels
+                    assign customer_level_clean = customer_level | strip
+                    if customer_level_clean == required_level_clean
+                      assign display_content = true
+                      break
+                    endif
+                  endfor
+
+                  if display_content
+                    break
+                  endif
+                endfor
+              endif
+            else
+              # No authorization requirements - page is public
+              assign display_content = true
+            endif
+
+          endif
+        -%}
+
+        {%- if display_content -%}
+          {%- liquid
+            if selected_page.content != blank
+
+              assign content = selected_page.content
+
+              comment
+                Clean up <p> tags around column markers and extra whitespace
+              endcomment
+              assign content = content | replace: '<p>[[ COL ', '[[ COL '
+              assign content = content | replace: ' ]]</p>', ' ]]'
+              assign content = content | replace: ' ]]<br></p>', ' ]]'
+              assign content = content | replace: '<p> </p>', ''
+
+              comment
+                Split content by column markers
+              endcomment
+              assign content_sections = content | split: '[[ COL '
+
+              comment
+                Start output with grid wrapper
+              endcomment
+              assign output = '<div class="article-grid grid grid--6-col">'
+
+              comment
+                Track if we're in the first section and row column count
+              endcomment
+              assign first_section = true
+              assign current_row_cols = 0
+              assign errors = ''
+
+              for content_section in content_sections
+
+                if first_section
+
+                    comment
+                      Content before first column marker
+                    endcomment
+
+                    assign first_section = false
+                    assign trimmed = content_section | strip
+
+                  if trimmed != ''
+                    assign output = output | append: '<div class="grid__item grid__item--6-col">'
+                    assign output = output | append: content_section
+                    assign output = output | append: '</div>'
+                  endif
+
+                else
+
+                  comment
+                    Process column marker and content
+                  endcomment
+
+                  assign parts = content_section | split: ' ]]'
+                  assign col_definition = parts[0]
+
+                  comment
+                    Get everything after the marker
+                  endcomment
+                  assign parts_size = parts | size
+                  assign remaining_content = ''
+
+                  for part in parts offset: 1
+                    if forloop.first
+                      assign remaining_content = part
+                    else
+                      assign remaining_content = remaining_content | append: ' ]]' | append: part
+                    endif
+                  endfor
+
+                  comment
+                    Parse column size and validate
+                  endcomment
+                  assign col_parts = col_definition | split: '/'
+                  assign col_size_str = col_parts[0] | strip
+                  assign col_size = col_size_str | times: 1
+
+                  comment
+                    Validate column size
+                  endcomment
+                  assign is_valid = false
+
+                  if col_size_str == '1' or col_size_str == '2' or col_size_str == '3' or col_size_str == '4' or col_size_str == '5' or col_size_str == '6'
+                    if col_size >= 1 and col_size <= 6
+                      assign is_valid = true
+                    endif
+                  endif
+
+                  comment
+                    Track column count for row validation
+                  endcomment
+                  assign new_row_total = current_row_cols | plus: col_size
+
+                  if new_row_total > 6
+                    comment
+                      Reset to new row
+                    endcomment
+                    assign current_row_cols = col_size
+                  else
+                    assign current_row_cols = new_row_total
+                  endif
+
+                  comment
+                    Clean up remaining content
+                  endcomment
+                  assign remaining_content = remaining_content | replace: '<p></p>', ''
+
+                  comment
+                    Only add column if valid and has content
+                  endcomment
+                  assign trimmed_content = remaining_content | strip
+
+                  if is_valid and trimmed_content != ''
+                    assign col_class = 'grid__item grid__item--' | append: col_size | append: '-col'
+                    assign output = output | append: '<div class="' | append: col_class | append: '">'
+                    assign output = output | append: remaining_content
+                    assign output = output | append: '</div>'
+                  elsif is_valid == false
+                    comment
+                      Log error for invalid column size
+                    endcomment
+                    assign error_msg = '<div class="article-grid-error">Invalid column size: [[ COL ' | append: col_definition | append: ' ]] - must be 1-6</div>'
+                    assign output = output | append: error_msg
+                  endif
+
+                endif
+
+              endfor
+
+              comment
+                Close grid wrapper
+              endcomment
+              assign output = output | append: '</div>'
+
+
+              if output contains 'BUTTON:'
+                assign output = output | replace: '<a', '<a class="button"' | remove: 'BUTTON:'
+              endif
+
+              comment
+                Final cleanup of any remaining empty paragraphs
+              endcomment
+              assign output = output | replace: '<p></p>', ''
+              assign output = output | replace: '<p> </p>', ''
+
+            endif
+
+            # Get the hero image class
+            assign img_hero_class = selected_page.metafields.ethossence.img_hero_placement | prepend: 'img-' | replace: ' ', '-' | replace: '-|-', ' img-' | downcase | strip
+          -%}
+
+          {%- unless forloop.first -%}
+            <div class="page-additional-separator"></div>
+          {%- endunless -%}
+
+          {%- if section.settings.heading_hide != true -%}
+            <h2 class="page-title {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+              {%- if selected_page.title != blank -%}
+                {{ selected_page.title | escape }}
+              {%- else -%}
+                {{ 'sections.page.title' | t }}
+              {%- endif -%}
+            </h2>
+          {%- endif -%}
+
+          <div class="rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+            {%- if output != blank -%}
+              {%- if selected_page.metafields.ethossence.img_hero != blank -%}
+                {{ selected_page.metafields.ethossence.img_hero | image_url: width: 600 | image_tag: loading: 'lazy', class: img_hero_class }}
+              {%- endif -%}
+              {{ output }}
+            {%- else -%}
+              <div class="page-placeholder-wrapper placeholder">
+                {{ 'page' | placeholder_svg_tag: 'page-placeholder' }}
+              </div>
+            {%- endif -%}
+          </div>
+
+        {%- else -%}
+          {%- comment -%} Page not authorized - show message {%- endcomment -%}
+          {%- unless forloop.first -%}
+            <div class="page-additional-separator"></div>
+          {%- endunless -%}
+
+          <div class="rte">
+            <p>{{ section.settings.authoriz_require_msg }}</p>
+          </div>
+        {%- endif -%}
+
+      {%- endfor -%}
+    {%- else -%}
+      <div class="rte">
+        <p>No additional pages found. Please add pages to the metafield <strong>ethossence.page_additional</strong>.</p>
+      </div>
+    {%- endif -%}
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Page additional",
+  "tag": "section",
+  "class": "section",
+  "enabled_on": {
+    "templates": ["article", "blog", "collection", "page", "product"]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "This section displays additional pages from the metafield 'ethossence.page_additional' (List of Pages). Add this metafield to your page, article, blog, collection, or product to display additional page content."
+    },
+    {
+      "type": "checkbox",
+      "id": "heading_hide",
+      "default": false,
+      "label": "Hide page titles"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_size.options__1.label"
+        },
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_size.options__2.label"
+        },
+        {
+          "value": "h0",
+          "label": "t:sections.all.heading_size.options__3.label"
+        },
+        {
+          "value": "hxl",
+          "label": "t:sections.all.heading_size.options__4.label"
+        },
+        {
+          "value": "hxxl",
+          "label": "t:sections.all.heading_size.options__5.label"
+        }
+      ],
+      "default": "h1",
+      "label": "t:sections.all.heading_size.label"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    },
+    {
+      "type": "header",
+      "content": "Authorization settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "authoriz_enabled",
+      "default": false,
+      "label": "Enforce authorization to view"
+    },
+    {
+      "type": "richtext",
+      "id": "authoriz_require_msg",
+      "label": "Authorization required message",
+      "info": "Message to display when authorization is required but not met"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Page additional",
+      "category": "Ethossence"
+    }
+  ]
+}
+{% endschema %}
