@@ -168,6 +168,49 @@
         "padding_top": 36,
         "padding_bottom": 36
       }
+    },
+    "rich_text_T8f7yr": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_Gw3D7p": {
+          "type": "heading",
+          "settings": {
+            "heading": "Talk about your brand",
+            "heading_size": "h1"
+          }
+        },
+        "text_PVTRWr": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>"
+          }
+        },
+        "button_ngdQGA": {
+          "type": "button",
+          "settings": {
+            "button_label": "Button label",
+            "button_link": "",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_Gw3D7p",
+        "text_PVTRWr",
+        "button_ngdQGA"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
     }
   },
   "order": [
@@ -178,6 +221,7 @@
     "ethossence_collection_bundle_qw6V9A",
     "product-grid",
     "page_additonal_JFBFXA",
+    "rich_text_T8f7yr",
     "featured_collection_X3Cypr",
     "featured_collection_EQ778h"
   ]
