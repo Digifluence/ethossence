@@ -888,7 +888,7 @@ summary::-webkit-details-marker {
 
 @media screen and (min-width: 750px) {
   .grid {
-    column-gap: var(--grid-desktop-horizontal-spacing);
+    column-gap: calc(var(--grid-desktop-horizontal-spacing) * 2);
     row-gap: var(--grid-desktop-vertical-spacing);
   }
 }
