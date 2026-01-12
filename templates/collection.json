@@ -188,9 +188,9 @@
       "settings": {
         "collection": "featured-products-ii",
         "products_to_show": 4,
-        "title": "Featured collection",
+        "title": "SDI Direct Display Cameras",
         "heading_size": "h1",
-        "description": "",
+        "description": "<p>Our SDI direct display welding cameras provide plug-and-play weld visualization with real-time video output to standard monitors and recording systems for immediate process observation. Explore our SDI camera lineup below, then connect with our welding engineers online or by email to discuss mounting options, lens configurations, and display integration to ensure seamless implementation in your welding operation.</p>",
         "show_description": false,
         "description_style": "body",
         "columns_desktop": 4,
