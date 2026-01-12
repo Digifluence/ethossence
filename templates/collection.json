@@ -82,7 +82,7 @@
         "color_scheme": "scheme-1",
         "grid_header_text": "Configure Your System",
         "grid_header_heading_size": "h1",
-        "image_ratio": "adapt",
+        "image_ratio": "square",
         "image_shape": "default",
         "show_secondary_image": false,
         "show_price": true,
