@@ -1,7 +1,6 @@
 {%- liquid
   # ETHOSSENCE
 
-  # Get the list of pages from the parent page's metafield
   assign selected_pages = blank
 
   if template contains 'page'
@@ -33,11 +32,6 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
-
-  .page-additional-separator {
-    margin: 4rem 0;
-    border-top: 0.1rem solid rgba(var(--color-foreground), 0.08);
-  }
 {%- endstyle -%}
 
 <div class="color-{{ section.settings.color_scheme }} gradient">
@@ -47,15 +41,13 @@
       {%- for selected_page in selected_pages -%}
 
         {%- liquid 
-          comment 
-          Check authorization for this page 
-          endcomment
-        capture auth_result
-          render 'ethossence-authorization',
-            resource: selected_page,
-            authorization_enabled: section.settings.authoriz_enabled
-          
-        endcapture
+          # CHECK AUTHORIZATION
+          capture auth_result
+            render 'ethossence-authorization',
+              resource: selected_page,
+              authorization_enabled: section.settings.authoriz_enabled
+            
+          endcapture
           assign auth_result_clean = auth_result | strip
           if auth_result_clean == 'true'
             assign display_content = true
@@ -65,8 +57,9 @@
         -%}
 
         {%- if display_content -%}
+
           {%- liquid
-            # Get the hero image class
+            # GET IMAGE HERO CLASS
             assign img_hero_class = selected_page.metafields.ethossence.img_hero_placement | prepend: 'img-' | replace: ' ', '-' | replace: '-|-', ' img-' | downcase | strip
           -%}
 
@@ -93,7 +86,7 @@
           </div>
 
         {%- else -%}
-          {%- comment -%} Page not authorized - show message {%- endcomment -%}
+          {%- comment -%} PAGE NOT AUTHORIZED SHOW MESSAGE {%- endcomment -%}
           {%- unless forloop.first -%}
             <div class="page-additional-separator"></div>
           {%- endunless -%}
@@ -104,6 +97,7 @@
         {%- endif -%}
 
       {%- endfor -%}
+
     {%- endif -%}
 
   </div>

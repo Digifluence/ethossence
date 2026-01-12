@@ -1,34 +1,25 @@
 {%- liquid
-  # ETHOSSENCE ~ MOD: Added authorization logic to control page visibility based on customer metafields and page metafields.
+  # ETHOSSENCE
 
-  # Get the selected page from section settings
+  # GET THE SELECTED PAGE FROM SECTION SETTINGS
   assign selected_page = pages[section.settings.page]
 
-  # Get the hero image class
+  # GET THE HERO IMAGE CLASS
   assign img_hero_class = selected_page.metafields.ethossence.img_hero_placement | prepend: 'img-' | replace: ' ', '-' | replace: '-|-', ' img-' | downcase | strip
+
+  # CHECK AUTHORIZATION
+  capture auth_result
+    render 'ethossence-authorization',
+      resource: selected_page,
+      authorization_enabled: section.settings.authoriz_enabled
+  endcapture
+  assign auth_result_clean = auth_result | strip
+  if auth_result_clean == 'true'
+    assign display_content = true
+  else
+    assign display_content = false
+  endif
 -%}
-
-{%- comment -%} Check authorization {%- endcomment -%}
-{%- capture auth_result -%}
-  {%- render 'ethossence-authorization',
-    resource: selected_page,
-    authorization_enabled: section.settings.authoriz_enabled
-  -%}
-{%- endcapture -%}
-{%- assign auth_result_clean = auth_result | strip -%}
-{%- if auth_result_clean == 'true' -%}
-  {%- assign display_content = true -%}
-{%- else -%}
-  {%- assign display_content = false -%}
-{%- endif -%}
-
-
-{%- comment -%}
-{%- unless display_content -%}
-  <script>window.location.replace("/pages/no-access?from={{ selected_page.handle }}");</script>
-  <meta http-equiv="refresh" content="0;url=/pages/no-access?from={{ selected_page.handle }}">
-{%- endunless -%}
-{%- endcomment -%}
 
 {{ 'section-main-page.css' | asset_url | stylesheet_tag }}
 {{ 'ethossence-page.css' | asset_url | stylesheet_tag }}

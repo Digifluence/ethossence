@@ -1,17 +1,17 @@
-{%- comment -%} Check authorization {%- endcomment -%}
-{%- capture auth_result -%}
-  {%- render 'ethossence-authorization',
-    resource: page,
-    authorization_enabled: section.settings.authoriz_enabled
-  -%}
-{%- endcapture -%}
-{%- assign auth_result_clean = auth_result | strip -%}
-{%- if auth_result_clean == 'true' -%}
-  {%- assign display_content = true -%}
-{%- else -%}
-  {%- assign display_content = false -%}
-{%- endif -%}
-
+{%- liquid
+  # CHECK AUTHORIZATION
+  capture auth_result
+    render 'ethossence-authorization',
+      resource: page,
+      authorization_enabled: section.settings.authoriz_enabled
+  endcapture
+  assign auth_result_clean = auth_result | strip
+  if auth_result_clean == 'true'
+    assign display_content = true
+  else
+    assign display_content = false
+  endif
+-%}
 
 {{ 'section-main-page.css' | asset_url | stylesheet_tag }}
 {{ 'ethossence-page.css' | asset_url | stylesheet_tag }}
