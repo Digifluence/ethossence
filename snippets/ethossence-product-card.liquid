@@ -77,8 +77,19 @@
 
       <div class="bundle-product-info">
         <h3 class="bundle-product-title h3" id="bundle-title-{{ section_id }}-{{ product.id }}">
-          <a href="{{ product.url }}">{{ product.title | escape }}</a>
+          <a href="{{ product.url }}">
+            {%- if product.metafields.ethossence.content_heading != blank -%}
+              {{ product.metafields.ethossence.content_heading | escape }}
+            {%- else -%}
+              {{ product.title | escape }}
+            {%- endif -%}
+          </a>
         </h3>
+        {%- if product.metafields.ethossence.content_subheading != blank -%}
+          <h4 class="bundle-product-subheading">
+            {{ product.metafields.ethossence.content_subheading | escape }}
+          </h4>
+        {%- endif -%}
 
         {%- if show_vendor and product.vendor != blank -%}
           <div class="bundle-product-vendor caption-with-letter-spacing">

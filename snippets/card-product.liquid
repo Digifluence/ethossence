@@ -122,9 +122,18 @@
                 class="full-unstyled-link"
                 aria-labelledby="StandardCardNoMediaLink-{{ section_id }}-{{ card_product.id }} NoMediaStandardBadge-{{ section_id }}-{{ card_product.id }}"
               >
-                {{ card_product.title | escape }}
+                {%- if card_product.metafields.ethossence.content_heading != blank -%}
+                  {{ card_product.metafields.ethossence.content_heading | escape }}
+                {%- else -%}
+                  {{ card_product.title | escape }}
+                {%- endif -%}
               </a>
             </h3>
+            {%- if card_product.metafields.ethossence.content_subheading != blank -%}
+              <h4 class="card__subheading">
+                {{ card_product.metafields.ethossence.content_subheading | escape }}
+              </h4>
+            {%- endif -%}
           </div>
           <div class="card__badge {{ settings.badge_position }}">
             {%- if card_product.available == false -%}
@@ -159,9 +168,18 @@
               class="full-unstyled-link"
               aria-labelledby="CardLink-{{ section_id }}-{{ card_product.id }} Badge-{{ section_id }}-{{ card_product.id }}"
             >
-              {{ card_product.title | escape }}
+              {%- if card_product.metafields.ethossence.content_heading != blank -%}
+                {{ card_product.metafields.ethossence.content_heading | escape }}
+              {%- else -%}
+                {{ card_product.title | escape }}
+              {%- endif -%}
             </a>
           </h3>
+          {%- if card_product.metafields.ethossence.content_subheading != blank -%}
+            <h4 class="card__subheading">
+              {{ card_product.metafields.ethossence.content_subheading | escape }}
+            </h4>
+          {%- endif -%}
           <div class="card-information">
             {%- if show_vendor -%}
               <span class="visually-hidden">{{ 'accessibility.vendor' | t }}</span>
@@ -512,8 +530,19 @@
                       </div>
                       <div class="quick-add-modal__content-info--bulk-details large-up-hide">
                         <a href="{{ card_product.url }}" class="full-unstyled-link">
-                          <h3>{{ card_product.title | escape }}</h3>
+                          <h3>
+                            {%- if card_product.metafields.ethossence.content_heading != blank -%}
+                              {{ card_product.metafields.ethossence.content_heading | escape }}
+                            {%- else -%}
+                              {{ card_product.title | escape }}
+                            {%- endif -%}
+                          </h3>
                         </a>
+                        {%- if card_product.metafields.ethossence.content_subheading != blank -%}
+                          <h4>
+                            {{ card_product.metafields.ethossence.content_subheading | escape }}
+                          </h4>
+                        {%- endif -%}
                         {% render 'price', product: card_product, price_class: '', show_compare_at_price: true %}
                         {%- if card_product.quantity_price_breaks_configured? -%}
                           <div class="card__information-volume-pricing-note">
@@ -526,9 +555,18 @@
                       <div class="quick-add-modal__content-info--bulk-details small-hide medium-hide">
                         <a href="{{ card_product.url }}" class="full-unstyled-link">
                           <h3 class="h2">
-                            {{ card_product.title | escape }}
+                            {%- if card_product.metafields.ethossence.content_heading != blank -%}
+                              {{ card_product.metafields.ethossence.content_heading | escape }}
+                            {%- else -%}
+                              {{ card_product.title | escape }}
+                            {%- endif -%}
                           </h3>
                         </a>
+                        {%- if card_product.metafields.ethossence.content_subheading != blank -%}
+                          <h4>
+                            {{ card_product.metafields.ethossence.content_subheading | escape }}
+                          </h4>
+                        {%- endif -%}
                         {% render 'price', product: card_product, price_class: '', show_compare_at_price: true %}
                         {%- if card_product.quantity_price_breaks_configured? -%}
                           <div class="card__information-volume-pricing-note">
