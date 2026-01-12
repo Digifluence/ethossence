@@ -123,7 +123,7 @@
                 aria-labelledby="StandardCardNoMediaLink-{{ section_id }}-{{ card_product.id }} NoMediaStandardBadge-{{ section_id }}-{{ card_product.id }}"
               >
                 {%- if card_product.metafields.ethossence.content_heading != blank -%}
-                  {{ card_product.metafields.ethossence.content_heading | escape }}
+                  {{ card_product.metafields.ethossence.content_heading }}
                 {%- else -%}
                   {{ card_product.title | escape }}
                 {%- endif -%}
@@ -131,7 +131,7 @@
             </h3>
             {%- if card_product.metafields.ethossence.content_subheading != blank -%}
               <h4 class="card__subheading">
-                {{ card_product.metafields.ethossence.content_subheading | escape }}
+                {{ card_product.metafields.ethossence.content_subheading }}
               </h4>
             {%- endif -%}
           </div>
@@ -169,7 +169,7 @@
               aria-labelledby="CardLink-{{ section_id }}-{{ card_product.id }} Badge-{{ section_id }}-{{ card_product.id }}"
             >
               {%- if card_product.metafields.ethossence.content_heading != blank -%}
-                {{ card_product.metafields.ethossence.content_heading | escape }}
+                {{ card_product.metafields.ethossence.content_heading }}
               {%- else -%}
                 {{ card_product.title | escape }}
               {%- endif -%}
@@ -177,7 +177,7 @@
           </h3>
           {%- if card_product.metafields.ethossence.content_subheading != blank -%}
             <h4 class="card__subheading">
-              {{ card_product.metafields.ethossence.content_subheading | escape }}
+              {{ card_product.metafields.ethossence.content_subheading }}
             </h4>
           {%- endif -%}
           <div class="card-information">
@@ -532,7 +532,7 @@
                         <a href="{{ card_product.url }}" class="full-unstyled-link">
                           <h3>
                             {%- if card_product.metafields.ethossence.content_heading != blank -%}
-                              {{ card_product.metafields.ethossence.content_heading | escape }}
+                              {{ card_product.metafields.ethossence.content_heading }}
                             {%- else -%}
                               {{ card_product.title | escape }}
                             {%- endif -%}
@@ -540,7 +540,7 @@
                         </a>
                         {%- if card_product.metafields.ethossence.content_subheading != blank -%}
                           <h4>
-                            {{ card_product.metafields.ethossence.content_subheading | escape }}
+                            {{ card_product.metafields.ethossence.content_subheading }}
                           </h4>
                         {%- endif -%}
                         {% render 'price', product: card_product, price_class: '', show_compare_at_price: true %}
@@ -556,7 +556,7 @@
                         <a href="{{ card_product.url }}" class="full-unstyled-link">
                           <h3 class="h2">
                             {%- if card_product.metafields.ethossence.content_heading != blank -%}
-                              {{ card_product.metafields.ethossence.content_heading | escape }}
+                              {{ card_product.metafields.ethossence.content_heading }}
                             {%- else -%}
                               {{ card_product.title | escape }}
                             {%- endif -%}
@@ -564,7 +564,7 @@
                         </a>
                         {%- if card_product.metafields.ethossence.content_subheading != blank -%}
                           <h4>
-                            {{ card_product.metafields.ethossence.content_subheading | escape }}
+                            {{ card_product.metafields.ethossence.content_subheading }}
                           </h4>
                         {%- endif -%}
                         {% render 'price', product: card_product, price_class: '', show_compare_at_price: true %}

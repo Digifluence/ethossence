@@ -79,7 +79,7 @@
         <h3 class="bundle-product-title h3" id="bundle-title-{{ section_id }}-{{ product.id }}">
           <a href="{{ product.url }}">
             {%- if product.metafields.ethossence.content_heading != blank -%}
-              {{ product.metafields.ethossence.content_heading | escape }}
+              {{ product.metafields.ethossence.content_heading }}
             {%- else -%}
               {{ product.title | escape }}
             {%- endif -%}
@@ -87,7 +87,7 @@
         </h3>
         {%- if product.metafields.ethossence.content_subheading != blank -%}
           <h4 class="bundle-product-subheading">
-            {{ product.metafields.ethossence.content_subheading | escape }}
+            {{ product.metafields.ethossence.content_subheading }}
           </h4>
         {%- endif -%}
 
