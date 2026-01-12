@@ -115,21 +115,15 @@
         "heading_Gw3D7p": {
           "type": "heading",
           "settings": {
-            "heading": "Talk about your brand",
-            "heading_size": "h1"
-          }
-        },
-        "text_PVTRWr": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>"
+            "heading": "We're Ready to Help You",
+            "heading_size": "h0"
           }
         },
         "button_ngdQGA": {
           "type": "button",
           "settings": {
-            "button_label": "Button label",
-            "button_link": "",
+            "button_label": "Book an Appointment",
+            "button_link": "shopify://pages/welding-camera-consultation-demonstration-appointments",
             "button_style_secondary": false,
             "button_label_2": "",
             "button_link_2": "",
@@ -139,7 +133,6 @@
       },
       "block_order": [
         "heading_Gw3D7p",
-        "text_PVTRWr",
         "button_ngdQGA"
       ],
       "name": "t:sections.rich-text.presets.name",
