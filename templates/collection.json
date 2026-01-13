@@ -109,6 +109,42 @@
         "authoriz_require_msg": ""
       }
     },
+    "rich_text_T8f7yr": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_Gw3D7p": {
+          "type": "heading",
+          "settings": {
+            "heading": "We're Ready to Help You",
+            "heading_size": "h0"
+          }
+        },
+        "button_ngdQGA": {
+          "type": "button",
+          "settings": {
+            "button_label": "Book an Appointment",
+            "button_link": "shopify://pages/welding-camera-consultation-demonstration-appointments",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_Gw3D7p",
+        "button_ngdQGA"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
     "featured_collection_X3Cypr": {
       "type": "featured-collection",
       "name": "AI Ready Computerized Cameras",
@@ -117,7 +153,7 @@
         "products_to_show": 4,
         "title": "AI Ready Computerized Cameras",
         "heading_size": "h1",
-        "description": "",
+        "description": "<p>Our AI-ready computerized welding cameras combine advanced image processing with industrial durability to deliver intelligent weld monitoring solutions for automated and robotic applications. Explore our complete lineup below, then connect with our welding engineers online or by email to discuss the unique capabilities of each system and ensure you select the optimal camera for your specific welding process and quality requirements.</p>",
         "show_description": false,
         "description_style": "body",
         "columns_desktop": 4,
@@ -145,9 +181,9 @@
       "settings": {
         "collection": "featured-products-ii",
         "products_to_show": 4,
-        "title": "Featured collection",
+        "title": "SDI Direct Display Cameras",
         "heading_size": "h1",
-        "description": "",
+        "description": "<p>Our SDI direct display welding cameras provide plug-and-play weld visualization with real-time video output to standard monitors and recording systems for immediate process observation. Explore our SDI camera lineup below, then connect with our welding engineers online or by email to discuss mounting options, lens configurations, and display integration to ensure seamless implementation in your welding operation.</p>",
         "show_description": false,
         "description_style": "body",
         "columns_desktop": 4,
@@ -178,6 +214,7 @@
     "ethossence_collection_bundle_qw6V9A",
     "product-grid",
     "page_additonal_JFBFXA",
+    "rich_text_T8f7yr",
     "featured_collection_X3Cypr",
     "featured_collection_EQ778h"
   ]
