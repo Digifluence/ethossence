@@ -78,10 +78,10 @@
       "name": "FAQS",
       "settings": {
         "heading": "Frequently Asked Questions",
-        "heading_size": "h2",
+        "heading_size": "h1",
         "color_scheme": "",
-        "padding_top": 28,
-        "padding_bottom": 28
+        "padding_top": 12,
+        "padding_bottom": 12
       }
     },
     "multicolumn_3f88yA": {
