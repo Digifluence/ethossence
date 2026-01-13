@@ -37,17 +37,17 @@
   }
 {%- endstyle -%}
 
-<div class="color-{{ section.settings.color_scheme }} gradient">
-   <div class="ethossence-faqs section-{{ section.id }}-padding">
-      <div class="ethossence-faqs page-width isolate">
+{%- if faqs != blank -%}
+   <div class="color-{{ section.settings.color_scheme }} gradient">
+      <div class="ethossence-faqs section-{{ section.id }}-padding">
+         <div class="ethossence-faqs page-width isolate">
 
-         {%- if section.settings.heading != blank -%}
-            <h2 class="ethossence-faqs__heading {{ section.settings.heading_size }} ethossence-faqs__heading--{{ section.settings.heading_alignment }}">
-               {{ section.settings.heading }}
-            </h2>
-         {%- endif -%}
+            {%- if section.settings.heading != blank -%}
+               <h2 class="ethossence-faqs__heading {{ section.settings.heading_size }} ethossence-faqs__heading--{{ section.settings.heading_alignment }}">
+                  {{ section.settings.heading }}
+               </h2>
+            {%- endif -%}
 
-         {%- if faqs != blank -%}
             <div class="ethossence-faqs__list">
                {%- for faq in faqs -%}
                   <div class="ethossence-faqs__item{% cycle ' ethossence-faqs__item--grey', '' %}">
@@ -62,15 +62,13 @@
                   </div>
                {%- endfor -%}
             </div>
-         {%- else -%}
-            <div class="ethossence-faqs__empty">
-               <p>No FAQs available.</p>
-            </div>
-         {%- endif -%}
       
+         </div>
       </div>
    </div>
-</div>
+
+{%- endif -%}
+
 
 {% schema %}
 {
