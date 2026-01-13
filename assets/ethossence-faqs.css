@@ -10,7 +10,18 @@
 
 .ethossence-faqs__heading {
   margin-bottom: 2rem;
+}
+
+.ethossence-faqs__heading--left {
+  text-align: left;
+}
+
+.ethossence-faqs__heading--center {
   text-align: center;
+}
+
+.ethossence-faqs__heading--right {
+  text-align: right;
 }
 
 .ethossence-faqs__list {

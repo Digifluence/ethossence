@@ -43,7 +43,7 @@
       <div class="ethossence-faqs page-width isolate">
 
          {%- if section.settings.heading != blank -%}
-            <h2 class="ethossence-faqs__heading {{ section.settings.heading_size }}">
+            <h2 class="ethossence-faqs__heading {{ section.settings.heading_size }} ethossence-faqs__heading--{{ section.settings.heading_alignment }}">
                {{ section.settings.heading }}
             </h2>
          {%- endif -%}
@@ -120,6 +120,26 @@
       ],
       "default": "h2",
       "label": "Heading size"
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center",
+      "label": "Heading alignment"
     },
     {
       "type": "color_scheme",
