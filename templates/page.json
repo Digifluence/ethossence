@@ -145,35 +145,53 @@
       "blocks": {
         "column_pAkW7V": {
           "type": "column",
+          "name": "Sales Introduction Consultation",
           "settings": {
             "image": "shopify://shop_images/melttools-sales-consultation-book-appointment-online.jpg",
             "title": "Sales Introduction Consultation",
             "heading_size": "h2",
             "text": "<p>Schedule a consultation with the MeltTools team to learn how our innovative welding cameras can enhance your workflow.  </p>",
-            "link_label": "Book Sales Appointment",
-            "link": "/pages/welding-camera-consultation-ai-welding-introduction",
+            "link_label": "Book Now",
+            "link": "shopify://pages/welding-camera-consultation-ai-welding-introduction",
             "column_alignment": "default"
           }
         },
         "column_F4NdpR": {
           "type": "column",
+          "name": " Live Remote Demonstration",
           "settings": {
-            "title": "Column",
-            "heading_size": "h1",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
-            "link_label": "",
-            "link": "",
+            "image": "shopify://shop_images/melttools-live-remote-demo-welding-bay-book-appointment.jpg",
+            "title": "Live Remote Demonstration",
+            "heading_size": "h2",
+            "text": "<p>We'll showcase our cameras' advanced features, answer your questions, and discuss how they can be tailored to meet your organization's specific needs.</p>",
+            "link_label": "Book Now",
+            "link": "shopify://pages/appointment-booking-live-remote-demonstration",
             "column_alignment": "default"
           }
         },
         "column_KKTUUT": {
           "type": "column",
+          "name": " Technical Support / Troubleshooting",
           "settings": {
-            "title": "Column",
+            "image": "shopify://shop_images/melttools-tech-support-book-appointment-online.jpg",
+            "title": "Technical Support / Troubleshooting",
+            "heading_size": "h2",
+            "text": "<p>Join us for support sessions to receive expert guidance and troubleshooting assistance and ensure you're getting the most out of your investment.</p>",
+            "link_label": "Book Now",
+            "link": "shopify://pages/appointment-booking-technical-support-training",
+            "column_alignment": "default"
+          }
+        },
+        "column_PHcbpA": {
+          "type": "column",
+          "name": " General Purpose Meeting",
+          "settings": {
+            "image": "shopify://shop_images/melttools-general-meeting-book-appointment-online.jpg",
+            "title": "General Purpose Meeting",
             "heading_size": "h1",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
-            "link_label": "",
-            "link": "",
+            "text": "<p>Whether you're interested in partnerships, media relations, or simply want to learn more about MeltTools, we're happy to chat.</p>",
+            "link_label": "Book Now!",
+            "link": "shopify://pages/appointment-booking-general-purpose",
             "column_alignment": "default"
           }
         }
@@ -181,17 +199,18 @@
       "block_order": [
         "column_pAkW7V",
         "column_F4NdpR",
-        "column_KKTUUT"
+        "column_KKTUUT",
+        "column_PHcbpA"
       ],
       "name": "t:sections.multicolumn.presets.name",
       "settings": {
         "title": "Book an Online Meeting",
         "heading_size": "h1",
-        "image_width": "full",
+        "image_width": "half",
         "image_ratio": "square",
         "button_label": "",
         "button_link": "",
-        "columns_desktop": 4,
+        "columns_desktop": 2,
         "column_alignment": "center",
         "background_style": "primary",
         "color_scheme": "",
