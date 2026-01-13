@@ -79,6 +79,7 @@
       "settings": {
         "heading": "Frequently Asked Questions",
         "heading_size": "h1",
+        "heading_alignment": "left",
         "color_scheme": "",
         "padding_top": 12,
         "padding_bottom": 12
