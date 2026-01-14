@@ -1,0 +1,44 @@
+/*
+ * ETHOSSENCE EMBED SCRIPT SECTION STYLES
+ * Displays embed scripts from metafield content
+ */
+
+.ethossence-embed-script {
+  width: 100%;
+}
+
+.ethossence-embed-script__heading {
+  margin-bottom: 2rem;
+}
+
+.ethossence-embed-script__heading--left {
+  text-align: left;
+}
+
+.ethossence-embed-script__heading--center {
+  text-align: center;
+}
+
+.ethossence-embed-script__heading--right {
+  text-align: right;
+}
+
+.ethossence-embed-script__content {
+  width: 100%;
+}
+
+/* Ensure embedded content is responsive */
+.ethossence-embed-script__content iframe,
+.ethossence-embed-script__content embed,
+.ethossence-embed-script__content object,
+.ethossence-embed-script__content video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Desktop styles */
+@media screen and (min-width: 750px) {
+  .ethossence-embed-script__heading {
+    margin-bottom: 3rem;
+  }
+}

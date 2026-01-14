@@ -1,0 +1,167 @@
+{%- comment -%}
+  ETHOSSENCE
+  EMBED SCRIPT SECTION
+  Displays embed scripts from metafield ethossence.embed_script
+{%- endcomment -%}
+
+{%- liquid
+
+  assign embed_script = blank
+
+  if template contains 'page'
+    assign embed_script = page.metafields.ethossence.embed_script.value
+  elsif template contains 'article'
+    assign embed_script = article.metafields.ethossence.embed_script.value
+  elsif template contains 'blog'
+    assign embed_script = blog.metafields.ethossence.embed_script.value
+  elsif template contains 'collection'
+    assign embed_script = collection.metafields.ethossence.embed_script.value
+  elsif template contains 'product'
+    assign embed_script = product.metafields.ethossence.embed_script.value
+  endif
+
+-%}
+
+{{ 'ethossence-embed-script.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- if embed_script != blank -%}
+   <div class="color-{{ section.settings.color_scheme }} gradient">
+      <div class="ethossence-embed-script section-{{ section.id }}-padding">
+         <div class="ethossence-embed-script page-width isolate">
+
+            {%- if section.settings.heading != blank -%}
+               <h2 class="ethossence-embed-script__heading {{ section.settings.heading_size }} ethossence-embed-script__heading--{{ section.settings.heading_alignment }}">
+                  {{ section.settings.heading }}
+               </h2>
+            {%- endif -%}
+
+            <div class="ethossence-embed-script__content">
+               {{ embed_script }}
+            </div>
+
+         </div>
+      </div>
+   </div>
+
+{%- endif -%}
+
+
+{% schema %}
+{
+  "name": "Embed Script",
+  "tag": "section",
+  "class": "section",
+  "enabled_on": {
+    "templates": ["article", "blog", "collection", "page", "product"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Header"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_size.options__1.label"
+        },
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_size.options__2.label"
+        },
+        {
+          "value": "h0",
+          "label": "t:sections.all.heading_size.options__3.label"
+        },
+        {
+          "value": "hxl",
+          "label": "t:sections.all.heading_size.options__4.label"
+        },
+        {
+          "value": "hxxl",
+          "label": "t:sections.all.heading_size.options__5.label"
+        }
+      ],
+      "default": "h2",
+      "label": "Heading size"
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center",
+      "label": "Heading alignment"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 28
+    }
+  ],
+  "presets": [
+    {
+      "name": "Embed Script",
+      "category": "Ethossence"
+    }
+  ]
+}
+{% endschema %}
