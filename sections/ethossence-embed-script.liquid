@@ -20,6 +20,20 @@
     assign embed_script = product.metafields.ethossence.embed_script.value
   endif
 
+  # Extract iframe height value if present
+  assign iframe_height = blank
+  if embed_script contains 'height="'
+    assign height_split = embed_script | split: 'height="'
+    if height_split.size > 1
+      assign height_value_part = height_split[1] | split: '"' | first
+      # Check if value is numeric (pixels)
+      assign height_numeric = height_value_part | plus: 0
+      if height_numeric > 0
+        assign iframe_height = height_numeric
+      endif
+    endif
+  endif
+
 -%}
 
 {{ 'ethossence-embed-script.css' | asset_url | stylesheet_tag }}
@@ -36,10 +50,16 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+
+  {%- if iframe_height != blank -%}
+    .section-{{ section.id }} .ethossence-embed-script__content {
+      min-height: calc({{ iframe_height }}px + 10rem);
+    }
+  {%- endif -%}
 {%- endstyle -%}
 
 {%- if embed_script != blank -%}
-   <div class="color-{{ section.settings.color_scheme }} gradient">
+   <div class="color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}">
       <div class="ethossence-embed-script section-{{ section.id }}-padding">
          <div class="ethossence-embed-script page-width isolate">
 
