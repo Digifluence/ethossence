@@ -85,6 +85,18 @@
         "padding_bottom": 12
       }
     },
+    "ethossence_embed_script_EDwrMP": {
+      "type": "ethossence-embed-script",
+      "name": "Embed Script",
+      "settings": {
+        "heading": "",
+        "heading_size": "h2",
+        "heading_alignment": "center",
+        "color_scheme": "",
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
     "multicolumn_3f88yA": {
       "type": "multicolumn",
       "blocks": {
@@ -220,16 +232,6 @@
         "padding_top": 36,
         "padding_bottom": 36
       }
-    },
-    "custom_liquid_AnzNCx": {
-      "type": "custom-liquid",
-      "name": "t:sections.custom-liquid.presets.name",
-      "settings": {
-        "custom_liquid": "",
-        "color_scheme": "",
-        "padding_top": 40,
-        "padding_bottom": 52
-      }
     }
   },
   "order": [
@@ -239,9 +241,9 @@
     "main",
     "ethossence_image_resources_NGcFLE",
     "ethossence_faqs_jqtdje",
+    "ethossence_embed_script_EDwrMP",
     "multicolumn_3f88yA",
     "174017485838edd9b6",
-    "multicolumn_Uw9GNN",
-    "custom_liquid_AnzNCx"
+    "multicolumn_Uw9GNN"
   ]
 }
