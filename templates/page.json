@@ -202,6 +202,7 @@
         "column_KKTUUT",
         "column_PHcbpA"
       ],
+      "disabled": true,
       "name": "t:sections.multicolumn.presets.name",
       "settings": {
         "title": "Book an Online Meeting",
@@ -221,14 +222,16 @@
         "padding_bottom": 36
       }
     },
-    "custom_liquid_AnzNCx": {
-      "type": "custom-liquid",
-      "name": "t:sections.custom-liquid.presets.name",
+    "ethossence_embed_script_EDwrMP": {
+      "type": "ethossence-embed-script",
+      "name": "Embed Script",
       "settings": {
-        "custom_liquid": "",
+        "heading": "",
+        "heading_size": "h2",
+        "heading_alignment": "center",
         "color_scheme": "",
-        "padding_top": 40,
-        "padding_bottom": 52
+        "padding_top": 28,
+        "padding_bottom": 28
       }
     }
   },
@@ -239,9 +242,9 @@
     "main",
     "ethossence_image_resources_NGcFLE",
     "ethossence_faqs_jqtdje",
+    "ethossence_embed_script_EDwrMP",
     "multicolumn_3f88yA",
     "174017485838edd9b6",
-    "multicolumn_Uw9GNN",
-    "custom_liquid_AnzNCx"
+    "multicolumn_Uw9GNN"
   ]
 }
