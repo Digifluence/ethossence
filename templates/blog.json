@@ -99,7 +99,7 @@
         "show_date": true,
         "show_author": false,
         "padding_top": 8,
-        "padding_bottom": 8
+        "padding_bottom": 16
       }
     },
     "ethossence_subscribe_fPAWCe": {
@@ -110,7 +110,7 @@
         "description": "<p>Subscribe to receive updates, access to exclusive deals, and more.</p>",
         "heading_size": "h1",
         "color_scheme": "",
-        "padding_top": 8,
+        "padding_top": 16,
         "padding_bottom": 84
       }
     }
