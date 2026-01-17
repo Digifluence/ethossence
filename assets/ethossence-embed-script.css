@@ -33,7 +33,6 @@
 .ethossence-embed-script__content object,
 .ethossence-embed-script__content video {
   max-width: 100%;
-  height: auto;
 }
 
 /* Desktop styles */
