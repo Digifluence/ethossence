@@ -214,6 +214,7 @@
         "column_KKTUUT",
         "column_PHcbpA"
       ],
+      "disabled": true,
       "name": "t:sections.multicolumn.presets.name",
       "settings": {
         "title": "Book an Online Meeting",
