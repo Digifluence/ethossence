@@ -49,6 +49,7 @@
     },
     "main": {
       "type": "main-page",
+      "custom_css": [],
       "settings": {
         "hide_title": true,
         "padding_top": 0,
@@ -57,48 +58,22 @@
         "authoriz_require_msg": ""
       }
     },
-    "ethossence_image_resources_NGcFLE": {
-      "type": "ethossence-image-resources",
-      "name": "Image resources",
-      "settings": {
-        "heading": "",
-        "heading_size": "h2",
-        "color_scheme": "",
-        "include_image_title": false,
-        "title_size": "h3",
-        "include_image_description": true,
-        "columns_desktop": 3,
-        "columns_mobile": "2",
-        "padding_top": 12,
-        "padding_bottom": 28
-      }
-    },
-    "ethossence_faqs_jqtdje": {
-      "type": "ethossence-faqs",
-      "name": "FAQS",
-      "settings": {
-        "heading": "Frequently Asked Questions",
-        "heading_size": "h1",
-        "heading_alignment": "left",
-        "color_scheme": "",
-        "padding_top": 12,
-        "padding_bottom": 12
-      }
-    },
-    "ethossence_embed_script_EDwrMP": {
-      "type": "ethossence-embed-script",
-      "name": "Embed Script",
-      "settings": {
-        "heading": "",
-        "heading_size": "h2",
-        "heading_alignment": "center",
-        "color_scheme": "scheme-1",
-        "padding_top": 28,
-        "padding_bottom": 0
-      }
-    },
-    "174017485838edd9b6": {
+    "176867222837c9ac14": {
       "type": "apps",
+      "blocks": {
+        "quiz_kit_ai_product_finder_quiz_3NBR9T": {
+          "type": "shopify://apps/quiz-kit-ai-product-finder/blocks/quiz/0b04f315-849a-4507-8339-7be41cc01813",
+          "settings": {
+            "key": "MuYIk3aFpM"
+          }
+        }
+      },
+      "block_order": [
+        "quiz_kit_ai_product_finder_quiz_3NBR9T"
+      ],
+      "custom_css": [
+        ".cgqvyX {display: none !important;}"
+      ],
       "settings": {
         "include_margins": true
       }
@@ -190,10 +165,7 @@
     "ethossence_breadcrumbs_fiwKWd",
     "ethossence_content_headings_CCeiBk",
     "main",
-    "ethossence_image_resources_NGcFLE",
-    "ethossence_faqs_jqtdje",
-    "ethossence_embed_script_EDwrMP",
-    "174017485838edd9b6",
+    "176867222837c9ac14",
     "multicolumn_Uw9GNN"
   ]
 }
