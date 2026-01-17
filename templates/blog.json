@@ -80,7 +80,7 @@
       "block_order": [
         "text_dy7Meh"
       ],
-      "name": "t:sections.rich-text.presets.name",
+      "name": "Blog content",
       "settings": {
         "desktop_content_position": "left",
         "content_alignment": "left",
@@ -99,6 +99,18 @@
         "show_date": true,
         "show_author": false,
         "padding_top": 8,
+        "padding_bottom": 8
+      }
+    },
+    "ethossence_subscribe_fPAWCe": {
+      "type": "ethossence-subscribe",
+      "name": "Email subscription",
+      "settings": {
+        "heading": "Join our newsletter.",
+        "description": "<p>Subscribe to receive updates, access to exclusive deals, and more.</p>",
+        "heading_size": "h1",
+        "color_scheme": "",
+        "padding_top": 8,
         "padding_bottom": 84
       }
     }
@@ -108,6 +120,7 @@
     "ethossence_breadcrumbs_NTt8tF",
     "ethossence_content_headings_cKhXeh",
     "rich_text_BYcfBN",
-    "main"
+    "main",
+    "ethossence_subscribe_fPAWCe"
   ]
 }
