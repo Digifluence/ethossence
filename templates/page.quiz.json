@@ -50,7 +50,7 @@
     "main": {
       "type": "main-page",
       "custom_css": [
-        ".jELGxs {display: none}"
+        ".jELGxs {display: none !Important;}"
       ],
       "settings": {
         "hide_title": true,
