@@ -174,6 +174,41 @@
         "padding_bottom": 16
       }
     },
+    "rich_text_rN6ALf": {
+      "type": "rich-text",
+      "blocks": {
+        "text_zQwnYn": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Need a camera for a different process?  <a href=\"/pages/contact\" title=\"Contact\">Message us your needs</a> or schedule an online meeting</p>"
+          }
+        },
+        "button_r4kEif": {
+          "type": "button",
+          "settings": {
+            "button_label": "Button label",
+            "button_link": "",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "text_zQwnYn",
+        "button_r4kEif"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
     "ethossence_product_desc_3FH7xM": {
       "type": "ethossence-product-description",
       "blocks": {
@@ -376,6 +411,7 @@
     "rich_text_d6Vjce",
     "main",
     "melttools_welding_processes_Mhzzeh",
+    "rich_text_rN6ALf",
     "ethossence_product_desc_3FH7xM",
     "ethossence_product_specifications_eYJQ4A",
     "ethossence_image_resources_EJwUk6",
