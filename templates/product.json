@@ -180,24 +180,12 @@
         "text_zQwnYn": {
           "type": "text",
           "settings": {
-            "text": "<p>Need a camera for a different process?  <a href=\"/pages/contact\" title=\"Contact\">Message us your needs</a> or schedule an online meeting</p>"
-          }
-        },
-        "button_r4kEif": {
-          "type": "button",
-          "settings": {
-            "button_label": "Button label",
-            "button_link": "",
-            "button_style_secondary": false,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
+            "text": "<p>Need a camera for a different process?  <a href=\"/pages/contact\" title=\"Contact\">Message us your needs</a> or <a href=\"/pages/welding-camera-consultation-ai-welding-introduction\" title=\"Appointment Booking: Sales Introduction Consultation\">schedule an online meeting.</a></p>"
           }
         }
       },
       "block_order": [
-        "text_zQwnYn",
-        "button_r4kEif"
+        "text_zQwnYn"
       ],
       "name": "t:sections.rich-text.presets.name",
       "settings": {
