@@ -46,6 +46,50 @@
         "show_text_below": true
       }
     },
+    "ethossence_breadcrumbs_NTt8tF": {
+      "type": "ethossence-breadcrumbs",
+      "name": "Breadcrumbs",
+      "settings": {
+        "color_scheme": "scheme-3",
+        "full_width": false,
+        "padding_top": 12,
+        "padding_bottom": 12
+      }
+    },
+    "ethossence_content_headings_cKhXeh": {
+      "type": "ethossence-content-headings",
+      "name": "Content headings",
+      "settings": {
+        "heading_size": "h1",
+        "subheading_size": "h2",
+        "color_scheme": "",
+        "padding_top": 16,
+        "padding_bottom": 4
+      }
+    },
+    "rich_text_BYcfBN": {
+      "type": "rich-text",
+      "blocks": {
+        "text_dy7Meh": {
+          "type": "text",
+          "settings": {
+            "text": "{{ blog.metafields.ethossence.content | metafield_tag }}"
+          }
+        }
+      },
+      "block_order": [
+        "text_dy7Meh"
+      ],
+      "name": "Blog content",
+      "settings": {
+        "desktop_content_position": "left",
+        "content_alignment": "left",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 4,
+        "padding_bottom": 8
+      }
+    },
     "main": {
       "type": "main-blog",
       "settings": {
@@ -54,13 +98,29 @@
         "image_height": "medium",
         "show_date": true,
         "show_author": false,
-        "padding_top": 36,
-        "padding_bottom": 36
+        "padding_top": 8,
+        "padding_bottom": 16
+      }
+    },
+    "ethossence_subscribe_fPAWCe": {
+      "type": "ethossence-subscribe",
+      "name": "Email subscription",
+      "settings": {
+        "heading": "Join our newsletter.",
+        "description": "<p>Subscribe to receive updates, access to exclusive deals, and more.</p>",
+        "heading_size": "h1",
+        "color_scheme": "",
+        "padding_top": 16,
+        "padding_bottom": 84
       }
     }
   },
   "order": [
     "image_banner_nxBhhE",
-    "main"
+    "ethossence_breadcrumbs_NTt8tF",
+    "ethossence_content_headings_cKhXeh",
+    "rich_text_BYcfBN",
+    "main",
+    "ethossence_subscribe_fPAWCe"
   ]
 }
