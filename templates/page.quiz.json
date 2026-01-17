@@ -49,6 +49,9 @@
     },
     "main": {
       "type": "main-page",
+      "custom_css": [
+        ".jELGxs {display: none}"
+      ],
       "settings": {
         "hide_title": true,
         "padding_top": 0,
