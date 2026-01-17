@@ -18,9 +18,11 @@
 
 {%- paginate blog.articles by 6 -%}
   <div class="main-blog page-width section-{{ section.id }}-padding">
-    <h1 class="title--primary{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
-      {{ blog.title | escape }}
-    </h1>
+    {%- if section.settings.show_title -%}
+      <h1 class="title--primary{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+        {{ blog.title | escape }}
+      </h1>
+    {%- endif -%}
 
     <div class="blog-articles {% if section.settings.layout == 'collage' %}blog-articles--collage{% endif %}">
       {%- for article in blog.articles -%}
@@ -56,6 +58,12 @@
   "tag": "section",
   "class": "section",
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "default": true,
+      "label": "Show blog title"
+    },
     {
       "type": "select",
       "id": "layout",
