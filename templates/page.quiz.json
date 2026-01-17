@@ -49,9 +49,7 @@
     },
     "main": {
       "type": "main-page",
-      "custom_css": [
-        ".jELGxs {display: none !Important;}"
-      ],
+      "custom_css": [],
       "settings": {
         "hide_title": true,
         "padding_top": 0,
@@ -72,6 +70,9 @@
       },
       "block_order": [
         "quiz_kit_ai_product_finder_quiz_3NBR9T"
+      ],
+      "custom_css": [
+        ".jELGxs {display: none !important;}"
       ],
       "settings": {
         "include_margins": true
