@@ -97,55 +97,6 @@
         "padding_bottom": 28
       }
     },
-    "multicolumn_3f88yA": {
-      "type": "multicolumn",
-      "blocks": {
-        "column_ddLNFH": {
-          "type": "column",
-          "settings": {
-            "title": "Start a Conversation",
-            "heading_size": "h1",
-            "text": "",
-            "link_label": "Contact Us",
-            "link": "shopify://pages/contact",
-            "column_alignment": "default"
-          }
-        },
-        "column_gFeKaQ": {
-          "type": "column",
-          "settings": {
-            "title": "Let's Meet Online",
-            "heading_size": "h1",
-            "text": "",
-            "link_label": "Book an Appointment",
-            "link": "shopify://pages/welding-camera-consultation-demonstration-appointments",
-            "column_alignment": "default"
-          }
-        }
-      },
-      "block_order": [
-        "column_ddLNFH",
-        "column_gFeKaQ"
-      ],
-      "name": "Start Convo / Meet Online",
-      "settings": {
-        "title": "",
-        "heading_size": "h1",
-        "image_width": "full",
-        "image_ratio": "adapt",
-        "button_label": "",
-        "button_link": "",
-        "columns_desktop": 2,
-        "column_alignment": "center",
-        "background_style": "none",
-        "color_scheme": "",
-        "link_color": "link_primary",
-        "columns_mobile": "1",
-        "swipe_on_mobile": false,
-        "padding_top": 40,
-        "padding_bottom": 84
-      }
-    },
     "174017485838edd9b6": {
       "type": "apps",
       "settings": {
@@ -200,7 +151,7 @@
           "settings": {
             "image": "shopify://shop_images/melttools-general-meeting-book-appointment-online.jpg",
             "title": "General Purpose Meeting",
-            "heading_size": "h1",
+            "heading_size": "h2",
             "text": "<p>Whether you're interested in partnerships, media relations, or simply want to learn more about MeltTools, we're happy to chat.</p>",
             "link_label": "Book Now!",
             "link": "shopify://pages/appointment-booking-general-purpose",
@@ -214,10 +165,9 @@
         "column_KKTUUT",
         "column_PHcbpA"
       ],
-      "disabled": true,
-      "name": "t:sections.multicolumn.presets.name",
+      "name": "Meeting Choices",
       "settings": {
-        "title": "Book an Online Meeting",
+        "title": "Online Meeting Options...",
         "heading_size": "h1",
         "image_width": "half",
         "image_ratio": "square",
@@ -243,7 +193,6 @@
     "ethossence_image_resources_NGcFLE",
     "ethossence_faqs_jqtdje",
     "ethossence_embed_script_EDwrMP",
-    "multicolumn_3f88yA",
     "174017485838edd9b6",
     "multicolumn_Uw9GNN"
   ]
