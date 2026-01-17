@@ -536,6 +536,13 @@ a.button:not([disabled]):hover,
   color: rgb(var(--color-link_primary)) !important;
 }
 
+/* Fix for dark color schemes where link_primary is dark on dark background */
+.color-scheme-4 a.button:not([disabled]):hover,
+.color-scheme-4 .rte a.button:not([disabled]):hover,
+.color-scheme-4 .button:not([disabled]):hover {
+  color: #ffffff !important;
+}
+
 a.button:visited,
 .rte a.button:visited {
   color: rgb(var(--color-button-text));
