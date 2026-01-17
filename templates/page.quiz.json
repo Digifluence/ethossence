@@ -1,0 +1,199 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "image_banner_g8wC6R": {
+      "type": "image-banner",
+      "name": "t:sections.image-banner.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/weld_porosity_detection_meltview_torq-2.jpg",
+        "image_overlay_opacity": 0,
+        "image_height": "small",
+        "image_behavior": "ambient",
+        "desktop_content_position": "middle-center",
+        "desktop_content_alignment": "center",
+        "show_text_box": true,
+        "color_scheme": "",
+        "stack_images_on_mobile": true,
+        "mobile_content_alignment": "center",
+        "show_text_below": true
+      }
+    },
+    "ethossence_breadcrumbs_fiwKWd": {
+      "type": "ethossence-breadcrumbs",
+      "name": "Breadcrumbs",
+      "settings": {
+        "color_scheme": "scheme-3",
+        "full_width": false,
+        "padding_top": 16,
+        "padding_bottom": 16
+      }
+    },
+    "ethossence_content_headings_CCeiBk": {
+      "type": "ethossence-content-headings",
+      "name": "Content headings",
+      "settings": {
+        "heading_size": "h1",
+        "subheading_size": "h2",
+        "color_scheme": "",
+        "padding_top": 36,
+        "padding_bottom": 0
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "hide_title": true,
+        "padding_top": 0,
+        "padding_bottom": 12,
+        "authoriz_enabled": false,
+        "authoriz_require_msg": ""
+      }
+    },
+    "ethossence_image_resources_NGcFLE": {
+      "type": "ethossence-image-resources",
+      "name": "Image resources",
+      "settings": {
+        "heading": "",
+        "heading_size": "h2",
+        "color_scheme": "",
+        "include_image_title": false,
+        "title_size": "h3",
+        "include_image_description": true,
+        "columns_desktop": 3,
+        "columns_mobile": "2",
+        "padding_top": 12,
+        "padding_bottom": 28
+      }
+    },
+    "ethossence_faqs_jqtdje": {
+      "type": "ethossence-faqs",
+      "name": "FAQS",
+      "settings": {
+        "heading": "Frequently Asked Questions",
+        "heading_size": "h1",
+        "heading_alignment": "left",
+        "color_scheme": "",
+        "padding_top": 12,
+        "padding_bottom": 12
+      }
+    },
+    "ethossence_embed_script_EDwrMP": {
+      "type": "ethossence-embed-script",
+      "name": "Embed Script",
+      "settings": {
+        "heading": "",
+        "heading_size": "h2",
+        "heading_alignment": "center",
+        "color_scheme": "scheme-1",
+        "padding_top": 28,
+        "padding_bottom": 0
+      }
+    },
+    "174017485838edd9b6": {
+      "type": "apps",
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "multicolumn_Uw9GNN": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_pAkW7V": {
+          "type": "column",
+          "name": "Sales Introduction Consultation",
+          "settings": {
+            "image": "shopify://shop_images/melttools-sales-consultation-book-appointment-online.jpg",
+            "title": "Sales Introduction Consultation",
+            "heading_size": "h2",
+            "text": "<p>Schedule a consultation with the MeltTools team to learn how our innovative welding cameras can enhance your workflow.  </p>",
+            "link_label": "Book Now",
+            "link": "shopify://pages/welding-camera-consultation-ai-welding-introduction",
+            "column_alignment": "default"
+          }
+        },
+        "column_F4NdpR": {
+          "type": "column",
+          "name": " Live Remote Demonstration",
+          "settings": {
+            "image": "shopify://shop_images/melttools-live-remote-demo-welding-bay-book-appointment.jpg",
+            "title": "Live Remote Demonstration",
+            "heading_size": "h2",
+            "text": "<p>We'll showcase our cameras' advanced features, answer your questions, and discuss how they can be tailored to meet your organization's specific needs.</p>",
+            "link_label": "Book Now",
+            "link": "shopify://pages/appointment-booking-live-remote-demonstration",
+            "column_alignment": "default"
+          }
+        },
+        "column_KKTUUT": {
+          "type": "column",
+          "name": " Technical Support / Troubleshooting",
+          "settings": {
+            "image": "shopify://shop_images/melttools-tech-support-book-appointment-online.jpg",
+            "title": "Technical Support / Troubleshooting",
+            "heading_size": "h2",
+            "text": "<p>Join us for support sessions to receive expert guidance and troubleshooting assistance and ensure you're getting the most out of your investment.</p>",
+            "link_label": "Book Now",
+            "link": "shopify://pages/appointment-booking-technical-support-training",
+            "column_alignment": "default"
+          }
+        },
+        "column_PHcbpA": {
+          "type": "column",
+          "name": " General Purpose Meeting",
+          "settings": {
+            "image": "shopify://shop_images/melttools-general-meeting-book-appointment-online.jpg",
+            "title": "General Purpose Meeting",
+            "heading_size": "h2",
+            "text": "<p>Whether you're interested in partnerships, media relations, or simply want to learn more about MeltTools, we're happy to chat.</p>",
+            "link_label": "Book Now!",
+            "link": "shopify://pages/appointment-booking-general-purpose",
+            "column_alignment": "default"
+          }
+        }
+      },
+      "block_order": [
+        "column_pAkW7V",
+        "column_F4NdpR",
+        "column_KKTUUT",
+        "column_PHcbpA"
+      ],
+      "name": "Meeting Choices",
+      "settings": {
+        "title": "Online Meeting Options...",
+        "heading_size": "h1",
+        "image_width": "half",
+        "image_ratio": "square",
+        "button_label": "",
+        "button_link": "",
+        "columns_desktop": 2,
+        "column_alignment": "center",
+        "background_style": "primary",
+        "color_scheme": "",
+        "link_color": "link_primary",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 16,
+        "padding_bottom": 84
+      }
+    }
+  },
+  "order": [
+    "image_banner_g8wC6R",
+    "ethossence_breadcrumbs_fiwKWd",
+    "ethossence_content_headings_CCeiBk",
+    "main",
+    "ethossence_image_resources_NGcFLE",
+    "ethossence_faqs_jqtdje",
+    "ethossence_embed_script_EDwrMP",
+    "174017485838edd9b6",
+    "multicolumn_Uw9GNN"
+  ]
+}
