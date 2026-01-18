@@ -1,11 +1,11 @@
 {%- comment -%}
   ETHOSSENCE CONTENT DISPLAY SNIPPET
 
-  Processes page content to support multi-column layout using [[ COL X ]] markers.
-  Converts page content into a grid-based layout system.
+  Processes page/article content to support multi-column layout using [[ COL X/6 ]] markers.
+  Converts content into a grid-based layout system.
 
   Parameters:
-  - content: The page.content to process
+  - content: The page.content or article.content to process
   - img_hero: Optional hero image URL
   - img_hero_class: Optional CSS class for hero image
 
@@ -17,6 +17,10 @@
     content: page.content,
     img_hero: page.metafields.ethossence.img_hero,
     img_hero_class: img_hero_class
+  %}
+
+  {% render 'ethossence-content-display',
+    content: article.content
   %}
 {%- endcomment -%}
 
@@ -43,7 +47,7 @@
     comment
       Start output with grid wrapper
     endcomment
-    assign output = '<div class="page-grid grid grid--6-col">'
+    assign output = '<div class="content-grid grid grid--6-col">'
 
     comment
       Track if we're in the first section and row column count
@@ -143,7 +147,7 @@
           comment
             Log error for invalid column size
           endcomment
-          assign error_msg = '<div class="page-grid-error">Invalid column size: [[ COL ' | append: col_definition | append: ' ]] - must be 1-6</div>'
+          assign error_msg = '<div class="content-grid-error">Invalid column size: [[ COL ' | append: col_definition | append: ' ]] - must be 1-6</div>'
           assign output = output | append: error_msg
         endif
 

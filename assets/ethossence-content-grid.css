@@ -1,6 +1,6 @@
-/* Ethossence Page Grid Styles */
+/* Ethossence Content Grid Styles */
 
-.page-grid {
+.content-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   column-gap: var(--grid-gap, 2rem);
@@ -8,12 +8,12 @@
   margin: 2rem 0;
 }
 
-.page-grid .grid__item {
+.content-grid .grid__item {
   min-width: 0; /* Prevent grid blowout */
 }
 
 /* Prevent nested grids from breaking layout */
-.page-grid .grid__item .grid__item {
+.content-grid .grid__item .grid__item {
   display: block;
   grid-column: auto;
 }
@@ -26,7 +26,7 @@
 .grid__item--6-col { grid-column: span 6; }
 
 /* Error styling for invalid column markers */
-.page-grid-error {
+.content-grid-error {
   grid-column: 1 / -1;
   padding: 1rem;
   background-color: #fff3cd;
@@ -38,27 +38,27 @@
 }
 
 /* Ensure iframes and images are contained and centered within grid items */
-.page-grid .grid__item {
+.content-grid .grid__item {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.page-grid .grid__item iframe,
-.page-grid .grid__item video,
-.page-grid .grid__item embed,
-.page-grid .grid__item object {
+.content-grid .grid__item iframe,
+.content-grid .grid__item video,
+.content-grid .grid__item embed,
+.content-grid .grid__item object {
   max-width: 100%;
   height: auto;
 }
 
-.page-grid .grid__item img {
+.content-grid .grid__item img {
   max-width: 100%;
   height: auto;
 }
 
-.page-grid .grid__item p {
+.content-grid .grid__item p {
   width: 100%;
   display: flex;
   justify-content: center;
@@ -66,7 +66,7 @@
   margin: 0;
 }
 
-.page-grid .grid__item > div {
+.content-grid .grid__item > div {
   width: 100%;
   display: flex;
   justify-content: center;
@@ -74,7 +74,7 @@
 }
 
 @media screen and (max-width: 749px) {
-  .page-grid {
+  .content-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 
@@ -87,7 +87,7 @@
     grid-column: span 2;
   }
 
-  .page-grid-error {
+  .content-grid-error {
     grid-column: 1 / -1;
   }
 }
