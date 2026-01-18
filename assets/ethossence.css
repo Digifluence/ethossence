@@ -547,3 +547,15 @@ a.button:visited,
 .rte a.button:visited {
   color: rgb(var(--color-button-text));
 }
+
+/* Video centering for embedded iframes */
+.video-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.video-center iframe {
+  max-width: 100%;
+  height: auto;
+}
