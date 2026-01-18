@@ -37,6 +37,42 @@
   margin: 0.5rem 0;
 }
 
+/* Ensure iframes and images are contained and centered within grid items */
+.page-grid .grid__item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.page-grid .grid__item iframe,
+.page-grid .grid__item video,
+.page-grid .grid__item embed,
+.page-grid .grid__item object {
+  max-width: 100%;
+  height: auto;
+}
+
+.page-grid .grid__item img {
+  max-width: 100%;
+  height: auto;
+}
+
+.page-grid .grid__item p {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+}
+
+.page-grid .grid__item > div {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 @media screen and (max-width: 749px) {
   .page-grid {
     grid-template-columns: repeat(2, 1fr);
