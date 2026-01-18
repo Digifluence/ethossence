@@ -37,40 +37,56 @@
   margin: 0.5rem 0;
 }
 
-/* Ensure iframes and images are contained and centered within grid items */
+/* Text content - left aligned */
 .content-grid .grid__item {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  text-align: left;
 }
 
+.content-grid .grid__item h1,
+.content-grid .grid__item h2,
+.content-grid .grid__item h3,
+.content-grid .grid__item h4,
+.content-grid .grid__item h5,
+.content-grid .grid__item h6,
+.content-grid .grid__item p,
+.content-grid .grid__item div {
+  text-align: left;
+  width: 100%;
+}
+
+/* Iframes and media - contained and centered */
 .content-grid .grid__item iframe,
 .content-grid .grid__item video,
 .content-grid .grid__item embed,
 .content-grid .grid__item object {
+  display: block;
   max-width: 100%;
   height: auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 
+/* Images - contained and centered */
 .content-grid .grid__item img {
+  display: block;
   max-width: 100%;
   height: auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.content-grid .grid__item p {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0;
+/* Paragraphs containing only media should center the media */
+.content-grid .grid__item p:has(iframe),
+.content-grid .grid__item p:has(img),
+.content-grid .grid__item p:has(video) {
+  text-align: center;
 }
 
-.content-grid .grid__item > div {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* Divs wrapping media should center */
+.content-grid .grid__item > div:has(iframe),
+.content-grid .grid__item > div:has(img),
+.content-grid .grid__item > div:has(video) {
+  text-align: center;
 }
 
 @media screen and (max-width: 749px) {

@@ -69,7 +69,8 @@
           class="article-template__content page-width rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
           {{ block.shopify_attributes }}
         >
-          {%- render 'ethossence-content-display', content: article.content -%}
+          {%- render 'ethossence-content-display', 
+            content: article.content -%}
         </div>
 
       {%- when 'share' -%}
