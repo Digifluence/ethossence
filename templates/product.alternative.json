@@ -287,9 +287,26 @@
         "show_secondary_image": false,
         "show_vendor": false,
         "show_rating": false,
-        "quick_add": "none",
+        "quick_add": "standard",
         "columns_mobile": "2",
         "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "ethossence_product_components_xLHezU": {
+      "type": "ethossence-product-components",
+      "name": "Product components",
+      "settings": {
+        "heading": "Product Components",
+        "heading_size": "h1",
+        "description": "",
+        "collection": "",
+        "variants_per_page": 50,
+        "show_image": false,
+        "show_sku": false,
+        "show_vendor": false,
+        "color_scheme": "",
         "padding_top": 36,
         "padding_bottom": 36
       }
@@ -306,6 +323,7 @@
     "related-products",
     "17564162700878961e",
     "ethossence_product_complete_solution_brwGtE",
-    "ethossence_products_more_jjBdBw"
+    "ethossence_products_more_jjBdBw",
+    "ethossence_product_components_xLHezU"
   ]
 }
