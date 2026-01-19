@@ -20,8 +20,11 @@
 
   # Check if there are any solution groups
   assign show_section = false
-  if solution_groups != blank and solution_groups.size > 0
-    assign show_section = true
+  if solution_groups != blank
+    for group in solution_groups
+      assign show_section = true
+      break
+    endfor
   endif
 -%}
 
@@ -325,7 +328,8 @@
   ],
   "presets": [
     {
-      "name": "Complete Solution"
+      "name": "Complete Solution",
+      "category": "Ethossence"
     }
   ]
 }
