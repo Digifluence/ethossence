@@ -356,26 +356,27 @@
         btn.disabled = true;
         btn.textContent = '{{ "products.product.adding" | t | default: "Adding..." }}';
 
+        const cart = document.querySelector('cart-notification') || document.querySelector('cart-drawer');
         const rootUrl = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root)
           ? window.Shopify.routes.root
           : '/';
 
-        // Use sections parameter to get the cart notification content
-        const body = JSON.stringify({
-          items: [{
-            id: parseInt(variantId),
-            quantity: 1
-          }],
-          sections: ['cart-notification-product', 'cart-icon-bubble'],
-          sections_url: window.location.pathname
-        });
+        // Build form data like product-form.js does
+        const formData = new FormData();
+        formData.append('id', variantId);
+        formData.append('quantity', '1');
+
+        if (cart && typeof cart.getSectionsToRender === 'function') {
+          formData.append('sections', cart.getSectionsToRender().map((section) => section.id));
+          formData.append('sections_url', window.location.pathname);
+        }
 
         fetch(rootUrl + 'cart/add.js', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
           },
-          body: body
+          body: formData
         })
         .then(response => {
           if (!response.ok) {
@@ -383,13 +384,12 @@
           }
           return response.json();
         })
-        .then(data => {
+        .then(response => {
           btn.textContent = '{{ "products.product.added" | t | default: "Added!" }}';
 
-          // Show the cart notification using the theme's built-in notification
-          const cartNotification = document.querySelector('cart-notification');
-          if (cartNotification && typeof cartNotification.renderContents === 'function') {
-            cartNotification.renderContents(data);
+          // Show the cart notification/drawer using the theme's built-in method
+          if (cart && typeof cart.renderContents === 'function') {
+            cart.renderContents(response);
           }
 
           setTimeout(() => {
@@ -399,7 +399,7 @@
 
           // Dispatch cart updated event
           document.dispatchEvent(new CustomEvent('cart:updated', {
-            detail: { items: data }
+            detail: { items: response }
           }));
         })
         .catch(error => {
