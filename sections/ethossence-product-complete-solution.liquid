@@ -28,7 +28,7 @@
   endif
 -%}
 
-<pre>Hello 2026-01-19 B- hello, hello again?</pre>
+<pre>Hello 2026-01-19 C- hello, hello again? Hello</pre>
 
 {%- if show_section -%}
   {{ 'ethossence-product-complete-solution.css' | asset_url | stylesheet_tag }}
@@ -285,49 +285,6 @@
     </div>
   </div>
 
-  <style>
-    .complete-solution-toast {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background-color: #4caf50;
-      color: white;
-      padding: 16px 24px;
-      border-radius: 4px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      z-index: 9999;
-      font-size: 14px;
-      font-weight: 500;
-      animation: completeSolutionSlideIn 0.3s ease-out;
-    }
-
-    @keyframes completeSolutionSlideIn {
-      from {
-        transform: translateX(100%);
-        opacity: 0;
-      }
-      to {
-        transform: translateX(0);
-        opacity: 1;
-      }
-    }
-
-    @keyframes completeSolutionSlideOut {
-      from {
-        transform: translateX(0);
-        opacity: 1;
-      }
-      to {
-        transform: translateX(100%);
-        opacity: 0;
-      }
-    }
-
-    .complete-solution-toast.hide {
-      animation: completeSolutionSlideOut 0.3s ease-out forwards;
-    }
-  </style>
-
   <script>
     function completeSolutionUpdateVariant(selectElement) {
       const productId = selectElement.dataset.productId;
@@ -383,27 +340,12 @@
         button.addEventListener('click', handleCompleteSolutionAddToCart);
       });
 
-      function showCompleteSolutionToast(message) {
-        const toast = document.createElement('div');
-        toast.className = 'complete-solution-toast';
-        toast.textContent = message;
-        document.body.appendChild(toast);
-
-        setTimeout(() => {
-          toast.classList.add('hide');
-          setTimeout(() => {
-            toast.remove();
-          }, 300);
-        }, 3000);
-      }
-
       function handleCompleteSolutionAddToCart(e) {
         e.preventDefault();
         e.stopPropagation();
 
         const btn = e.currentTarget;
         const variantId = btn.getAttribute('data-variant-id');
-        const productTitle = btn.getAttribute('data-product-title');
         const originalText = btn.textContent.trim();
 
         if (!variantId) {
@@ -414,21 +356,26 @@
         btn.disabled = true;
         btn.textContent = '{{ "products.product.adding" | t | default: "Adding..." }}';
 
-        const cartUrl = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root)
-          ? window.Shopify.routes.root + 'cart/add.js'
-          : '/cart/add.js';
+        const rootUrl = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root)
+          ? window.Shopify.routes.root
+          : '/';
 
-        fetch(cartUrl, {
+        // Use sections parameter to get the cart notification content
+        const body = JSON.stringify({
+          items: [{
+            id: parseInt(variantId),
+            quantity: 1
+          }],
+          sections: ['cart-notification-product', 'cart-icon-bubble'],
+          sections_url: window.location.pathname
+        });
+
+        fetch(rootUrl + 'cart/add.js', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            items: [{
-              id: parseInt(variantId),
-              quantity: 1
-            }]
-          })
+          body: body
         })
         .then(response => {
           if (!response.ok) {
@@ -438,18 +385,21 @@
         })
         .then(data => {
           btn.textContent = '{{ "products.product.added" | t | default: "Added!" }}';
-          showCompleteSolutionToast(productTitle + ' added to cart!');
+
+          // Show the cart notification using the theme's built-in notification
+          const cartNotification = document.querySelector('cart-notification');
+          if (cartNotification && typeof cartNotification.renderContents === 'function') {
+            cartNotification.renderContents(data);
+          }
 
           setTimeout(() => {
             btn.textContent = originalText;
             btn.disabled = false;
           }, 2000);
 
+          // Dispatch cart updated event
           document.dispatchEvent(new CustomEvent('cart:updated', {
-            detail: {
-              product: productTitle,
-              items: data
-            }
+            detail: { items: data }
           }));
         })
         .catch(error => {
