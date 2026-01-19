@@ -253,67 +253,6 @@
       "settings": {
         "include_margins": true
       }
-    },
-    "featured_product_Nbd4wq": {
-      "type": "featured-product",
-      "blocks": {
-        "title_c3mTPN": {
-          "type": "title",
-          "settings": {
-            "heading_size": "h1"
-          }
-        },
-        "price_HbeUxY": {
-          "type": "price",
-          "settings": {}
-        },
-        "variant_picker_CnExHW": {
-          "type": "variant_picker",
-          "settings": {
-            "picker_type": "button",
-            "swatch_shape": "circle"
-          }
-        },
-        "buy_buttons_8DrWcL": {
-          "type": "buy_buttons",
-          "settings": {
-            "show_dynamic_checkout": false,
-            "show_gift_card_recipient": true
-          }
-        }
-      },
-      "block_order": [
-        "title_c3mTPN",
-        "price_HbeUxY",
-        "variant_picker_CnExHW",
-        "buy_buttons_8DrWcL"
-      ],
-      "name": "t:sections.featured-product.presets.name",
-      "settings": {
-        "product": "compact-camera-controller-pxcc8",
-        "color_scheme": "",
-        "secondary_background": false,
-        "media_size": "small",
-        "constrain_to_viewport": true,
-        "media_fit": "contain",
-        "media_position": "left",
-        "image_zoom": "lightbox",
-        "hide_variants": false,
-        "enable_video_looping": false,
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
-    "ethossence_complete_product_solution_B9yAKa": {
-      "type": "ethossence-complete-product-solution",
-      "name": "Complete Solution",
-      "settings": {
-        "heading": "Complete Your System",
-        "heading_size": "h1",
-        "color_scheme": "",
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
     }
   },
   "order": [
@@ -325,8 +264,6 @@
     "melttools_welding_processes_Mhzzeh",
     "rich_text_rN6ALf",
     "related-products",
-    "17564162700878961e",
-    "featured_product_Nbd4wq",
-    "ethossence_complete_product_solution_B9yAKa"
+    "17564162700878961e"
   ]
 }
