@@ -152,83 +152,31 @@
         "include_margins": true
       }
     },
-    "multicolumn_Uw9GNN": {
-      "type": "multicolumn",
-      "blocks": {
-        "column_pAkW7V": {
-          "type": "column",
-          "name": "Sales Introduction Consultation",
-          "settings": {
-            "image": "shopify://shop_images/melttools-sales-consultation-book-appointment-online.jpg",
-            "title": "Sales Introduction Consultation",
-            "heading_size": "h2",
-            "text": "<p>Schedule a consultation with the MeltTools team to learn how our innovative welding cameras can enhance your workflow.  </p>",
-            "link_label": "Book Now",
-            "link": "shopify://pages/welding-camera-consultation-ai-welding-introduction",
-            "column_alignment": "default"
-          }
-        },
-        "column_F4NdpR": {
-          "type": "column",
-          "name": " Live Remote Demonstration",
-          "settings": {
-            "image": "shopify://shop_images/melttools-live-remote-demo-welding-bay-book-appointment.jpg",
-            "title": "Live Remote Demonstration",
-            "heading_size": "h2",
-            "text": "<p>We'll showcase our cameras' advanced features, answer your questions, and discuss how they can be tailored to meet your organization's specific needs.</p>",
-            "link_label": "Book Now",
-            "link": "shopify://pages/appointment-booking-live-remote-demonstration",
-            "column_alignment": "default"
-          }
-        },
-        "column_KKTUUT": {
-          "type": "column",
-          "name": " Technical Support / Troubleshooting",
-          "settings": {
-            "image": "shopify://shop_images/melttools-tech-support-book-appointment-online.jpg",
-            "title": "Technical Support / Troubleshooting",
-            "heading_size": "h2",
-            "text": "<p>Join us for support sessions to receive expert guidance and troubleshooting assistance and ensure you're getting the most out of your investment.</p>",
-            "link_label": "Book Now",
-            "link": "shopify://pages/appointment-booking-technical-support-training",
-            "column_alignment": "default"
-          }
-        },
-        "column_PHcbpA": {
-          "type": "column",
-          "name": " General Purpose Meeting",
-          "settings": {
-            "image": "shopify://shop_images/melttools-general-meeting-book-appointment-online.jpg",
-            "title": "General Purpose Meeting",
-            "heading_size": "h1",
-            "text": "<p>Whether you're interested in partnerships, media relations, or simply want to learn more about MeltTools, we're happy to chat.</p>",
-            "link_label": "Book Now!",
-            "link": "shopify://pages/appointment-booking-general-purpose",
-            "column_alignment": "default"
-          }
-        }
-      },
-      "block_order": [
-        "column_pAkW7V",
-        "column_F4NdpR",
-        "column_KKTUUT",
-        "column_PHcbpA"
-      ],
-      "disabled": true,
-      "name": "t:sections.multicolumn.presets.name",
+    "featured_collection_U3Apnn": {
+      "type": "featured-collection",
+      "name": "t:sections.featured-collection.presets.name",
       "settings": {
-        "title": "Book an Online Meeting",
+        "collection": "",
+        "products_to_show": 4,
+        "title": "Featured collection",
         "heading_size": "h1",
-        "image_width": "half",
-        "image_ratio": "square",
-        "button_label": "",
-        "button_link": "",
-        "columns_desktop": 2,
-        "column_alignment": "center",
-        "background_style": "primary",
+        "description": "",
+        "show_description": false,
+        "description_style": "body",
+        "columns_desktop": 4,
+        "enable_desktop_slider": false,
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "solid",
         "color_scheme": "",
-        "link_color": "link_primary",
-        "columns_mobile": "1",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "product_card_alignment": "left",
+        "quick_add": "none",
+        "columns_mobile": "2",
         "swipe_on_mobile": false,
         "padding_top": 36,
         "padding_bottom": 36
@@ -245,6 +193,6 @@
     "ethossence_embed_script_EDwrMP",
     "multicolumn_3f88yA",
     "174017485838edd9b6",
-    "multicolumn_Uw9GNN"
+    "featured_collection_U3Apnn"
   ]
 }
