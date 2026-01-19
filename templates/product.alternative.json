@@ -253,17 +253,6 @@
       "settings": {
         "include_margins": true
       }
-    },
-    "ethossence_product_complete_solution_8CXCn6": {
-      "type": "ethossence-product-complete-solution",
-      "name": "Complete Solution",
-      "settings": {
-        "heading": "Complete Your System",
-        "heading_size": "h1",
-        "color_scheme": "",
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
     }
   },
   "order": [
@@ -275,7 +264,6 @@
     "melttools_welding_processes_Mhzzeh",
     "rich_text_rN6ALf",
     "related-products",
-    "17564162700878961e",
-    "ethossence_product_complete_solution_8CXCn6"
+    "17564162700878961e"
   ]
 }
