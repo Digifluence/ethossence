@@ -16,7 +16,7 @@
 
 {%- liquid
   # Get the solutions_complete metaobject list from the product
-  assign solution_groups = product.metafields.ethossence.solutions_complete.value
+  assign solution_groups = product.metafields.ethosssence.solutions_complete.value
 
   # Check if there are any solution groups
   assign show_section = false
@@ -83,92 +83,107 @@
 
             <div class="complete-solution__items-list">
 
-              {%- comment -%} Complete System Products - Display all variants for each product {%- endcomment -%}
+              {%- comment -%} Complete System Products - Display product with variant selector {%- endcomment -%}
               {%- assign system_products = group.complete_system_products.value -%}
-              {%- if system_products != blank and system_products.size > 0 -%}
+              {%- if system_products != blank -%}
                 {%- for system_product in system_products -%}
-                  {%- for variant in system_product.variants -%}
-                    <div class="complete-solution__item">
+                  {%- assign first_available_variant = system_product.selected_or_first_available_variant -%}
+                  {%- assign has_multiple_variants = false -%}
+                  {%- if system_product.variants.size > 1 -%}
+                    {%- assign has_multiple_variants = true -%}
+                  {%- endif -%}
 
-                      {%- comment -%} Variant Image {%- endcomment -%}
-                      <div class="complete-solution__item-image">
-                        {%- if variant.image != blank -%}
-                          {{ variant.image | image_url: width: 300 | image_tag:
-                            loading: 'lazy',
-                            widths: '150, 300, 450',
-                            sizes: '(min-width: 750px) 200px, 150px',
-                            alt: variant.title
-                          }}
-                        {%- elsif system_product.featured_image != blank -%}
-                          {{ system_product.featured_image | image_url: width: 300 | image_tag:
-                            loading: 'lazy',
-                            widths: '150, 300, 450',
-                            sizes: '(min-width: 750px) 200px, 150px',
-                            alt: system_product.title
-                          }}
+                  <div class="complete-solution__item" data-product-id="{{ system_product.id }}">
+
+                    {%- comment -%} Product Image {%- endcomment -%}
+                    <div class="complete-solution__item-image">
+                      {%- if system_product.featured_image != blank -%}
+                        {{ system_product.featured_image | image_url: width: 300 | image_tag:
+                          loading: 'lazy',
+                          widths: '150, 300, 450',
+                          sizes: '(min-width: 750px) 200px, 150px',
+                          alt: system_product.title
+                        }}
+                      {%- else -%}
+                        <div class="complete-solution__no-image">
+                          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                        </div>
+                      {%- endif -%}
+                    </div>
+
+                    {%- comment -%} Item Details {%- endcomment -%}
+                    <div class="complete-solution__item-details">
+                      <h4 class="complete-solution__item-title">
+                        <a href="{{ system_product.url }}">
+                          {{ system_product.title }}
+                        </a>
+                      </h4>
+
+                      {%- comment -%} Variant Selector (if multiple variants) {%- endcomment -%}
+                      {%- if has_multiple_variants -%}
+                        <div class="complete-solution__variant-selector">
+                          <select
+                            class="complete-solution__variant-select"
+                            data-product-id="{{ system_product.id }}"
+                            onchange="completeSolutionUpdateVariant(this)"
+                          >
+                            {%- for variant in system_product.variants -%}
+                              <option
+                                value="{{ variant.id }}"
+                                data-price="{{ variant.price | money }}"
+                                data-compare-price="{{ variant.compare_at_price | money }}"
+                                data-available="{{ variant.available }}"
+                                data-sku="{{ variant.sku }}"
+                                {% if variant == first_available_variant %}selected{% endif %}
+                              >
+                                {{ variant.title }}{% unless variant.available %} - {{ 'products.product.sold_out' | t }}{% endunless %} - {{ variant.price | money }}
+                              </option>
+                            {%- endfor -%}
+                          </select>
+                        </div>
+                      {%- endif -%}
+
+                      {%- if first_available_variant.sku != blank -%}
+                        <p class="complete-solution__item-sku" data-sku-display="{{ system_product.id }}">
+                          SKU: {{ first_available_variant.sku }}
+                        </p>
+                      {%- endif -%}
+                    </div>
+
+                    {%- comment -%} Price {%- endcomment -%}
+                    <div class="complete-solution__item-price" data-price-display="{{ system_product.id }}">
+                      {%- if first_available_variant.compare_at_price > first_available_variant.price -%}
+                        <span class="complete-solution__price--sale">
+                          {{ first_available_variant.price | money }}
+                        </span>
+                        <span class="complete-solution__price--compare">
+                          <s>{{ first_available_variant.compare_at_price | money }}</s>
+                        </span>
+                      {%- else -%}
+                        <span class="complete-solution__price">
+                          {{ first_available_variant.price | money }}
+                        </span>
+                      {%- endif -%}
+                    </div>
+
+                    {%- comment -%} Add to Cart {%- endcomment -%}
+                    <div class="complete-solution__item-action">
+                      <form method="post" action="/cart/add" class="complete-solution__form">
+                        <input type="hidden" name="id" value="{{ first_available_variant.id }}" data-variant-input="{{ system_product.id }}">
+                        <input type="hidden" name="quantity" value="1">
+                        {%- if first_available_variant.available -%}
+                          <button type="submit" class="button complete-solution__add-btn" data-add-btn="{{ system_product.id }}">
+                            {{ 'products.product.add_to_cart' | t }}
+                          </button>
                         {%- else -%}
-                          <div class="complete-solution__no-image">
-                            {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
-                          </div>
-                        {%- endif -%}
-                      </div>
-
-                      {%- comment -%} Item Details {%- endcomment -%}
-                      <div class="complete-solution__item-details">
-                        <h4 class="complete-solution__item-title">
-                          <a href="{{ system_product.url }}">
-                            {{ system_product.title }}
-                          </a>
-                        </h4>
-
-                        {%- if variant.title != 'Default Title' -%}
-                          <p class="complete-solution__item-variant">
-                            {{ variant.title }}
-                          </p>
-                        {%- endif -%}
-
-                        {%- if variant.sku != blank -%}
-                          <p class="complete-solution__item-sku">
-                            SKU: {{ variant.sku }}
-                          </p>
-                        {%- endif -%}
-                      </div>
-
-                      {%- comment -%} Price {%- endcomment -%}
-                      <div class="complete-solution__item-price">
-                        {%- if variant.compare_at_price > variant.price -%}
-                          <span class="complete-solution__price--sale">
-                            {{ variant.price | money }}
-                          </span>
-                          <span class="complete-solution__price--compare">
-                            <s>{{ variant.compare_at_price | money }}</s>
-                          </span>
-                        {%- else -%}
-                          <span class="complete-solution__price">
-                            {{ variant.price | money }}
-                          </span>
-                        {%- endif -%}
-                      </div>
-
-                      {%- comment -%} Add to Cart {%- endcomment -%}
-                      <div class="complete-solution__item-action">
-                        {%- if variant.available -%}
-                          <form method="post" action="/cart/add" class="complete-solution__form">
-                            <input type="hidden" name="id" value="{{ variant.id }}">
-                            <input type="hidden" name="quantity" value="1">
-                            <button type="submit" class="button complete-solution__add-btn">
-                              {{ 'products.product.add_to_cart' | t }}
-                            </button>
-                          </form>
-                        {%- else -%}
-                          <button type="button" class="button complete-solution__add-btn" disabled>
+                          <button type="button" class="button complete-solution__add-btn" data-add-btn="{{ system_product.id }}" disabled>
                             {{ 'products.product.sold_out' | t }}
                           </button>
                         {%- endif -%}
-                      </div>
-
+                      </form>
                     </div>
-                  {%- endfor -%}
+
+                  </div>
                 {%- endfor -%}
               {%- endif -%}
 
@@ -267,6 +282,57 @@
       </div>
     </div>
   </div>
+
+  <script>
+    function completeSolutionUpdateVariant(selectElement) {
+      const productId = selectElement.dataset.productId;
+      const selectedOption = selectElement.options[selectElement.selectedIndex];
+      const variantId = selectedOption.value;
+      const price = selectedOption.dataset.price;
+      const comparePrice = selectedOption.dataset.comparePrice;
+      const available = selectedOption.dataset.available === 'true';
+      const sku = selectedOption.dataset.sku;
+
+      // Update hidden variant input
+      const variantInput = document.querySelector(`[data-variant-input="${productId}"]`);
+      if (variantInput) {
+        variantInput.value = variantId;
+      }
+
+      // Update price display
+      const priceDisplay = document.querySelector(`[data-price-display="${productId}"]`);
+      if (priceDisplay) {
+        if (comparePrice && comparePrice !== price) {
+          priceDisplay.innerHTML = `
+            <span class="complete-solution__price--sale">${price}</span>
+            <span class="complete-solution__price--compare"><s>${comparePrice}</s></span>
+          `;
+        } else {
+          priceDisplay.innerHTML = `<span class="complete-solution__price">${price}</span>`;
+        }
+      }
+
+      // Update SKU display
+      const skuDisplay = document.querySelector(`[data-sku-display="${productId}"]`);
+      if (skuDisplay) {
+        skuDisplay.textContent = sku ? `SKU: ${sku}` : '';
+      }
+
+      // Update add to cart button
+      const addBtn = document.querySelector(`[data-add-btn="${productId}"]`);
+      if (addBtn) {
+        if (available) {
+          addBtn.disabled = false;
+          addBtn.type = 'submit';
+          addBtn.textContent = '{{ "products.product.add_to_cart" | t }}';
+        } else {
+          addBtn.disabled = true;
+          addBtn.type = 'button';
+          addBtn.textContent = '{{ "products.product.sold_out" | t }}';
+        }
+      }
+    }
+  </script>
 {%- endif -%}
 
 {% schema %}
