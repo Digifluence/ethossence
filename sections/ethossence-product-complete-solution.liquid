@@ -160,6 +160,19 @@
                       {%- endif -%}
                     </div>
 
+                    {%- comment -%} Description {%- endcomment -%}
+                    {%- if system_product.description != blank -%}
+                      <div class="complete-solution__item-description">
+                        {%- assign description_text = system_product.description | strip_html -%}
+                        {%- if description_text.size > 300 -%}
+                          {{ description_text | truncate: 300, '...' }}
+                          <a href="{{ system_product.url }}" class="complete-solution__learn-more">{{ 'general.continue_reading' | t | default: 'Learn more' }}</a>
+                        {%- else -%}
+                          {{ description_text }}
+                        {%- endif -%}
+                      </div>
+                    {%- endif -%}
+
                     {%- comment -%} Price {%- endcomment -%}
                     <div class="complete-solution__item-price" data-price-display="{{ system_product.id }}" data-price-varies="{{ system_product.price_varies }}">
                       {%- if first_available_variant.compare_at_price > first_available_variant.price -%}
@@ -254,6 +267,19 @@
                         </p>
                       {%- endif -%}
                     </div>
+
+                    {%- comment -%} Description {%- endcomment -%}
+                    {%- if variant_product.description != blank -%}
+                      <div class="complete-solution__item-description">
+                        {%- assign description_text = variant_product.description | strip_html -%}
+                        {%- if description_text.size > 300 -%}
+                          {{ description_text | truncate: 300, '...' }}
+                          <a href="{{ variant_product.url }}" class="complete-solution__learn-more">{{ 'general.continue_reading' | t | default: 'Learn more' }}</a>
+                        {%- else -%}
+                          {{ description_text }}
+                        {%- endif -%}
+                      </div>
+                    {%- endif -%}
 
                     {%- comment -%} Price {%- endcomment -%}
                     <div class="complete-solution__item-price">
