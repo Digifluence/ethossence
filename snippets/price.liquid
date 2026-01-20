@@ -12,6 +12,7 @@
   Usage:
   {% render 'price', product: product %}
 {% endcomment %}
+ 
 {%- liquid
   if use_variant
     assign target = product.selected_or_first_available_variant
@@ -39,33 +40,6 @@
     assign money_price = 'products.product.price.from_price_html' | t: price: money_price
   endif
 -%}
-
-<!-- ETHOSSENCE CUSTOMIZATION: ADD CENTER ALIGN FOR PRICING -->
-{% comment %}
-{% style %}
-
-  .price__container {
-    margin: 0 auto;
-    width: 80%;
-  }
-
-  .price__regular {
-    text-align: center;
-  }
-
-  .price__container {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-  }
-
-  .price__container > legend.form__label,
-  .price__container > .price__regular {
-      display: unset;
-  }
-
-{% endstyle %}
-{% endcomment %}
 
 {%- unless target == null and placeholder == null -%}
   <div

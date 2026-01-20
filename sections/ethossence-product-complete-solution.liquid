@@ -92,6 +92,17 @@
                     {%- assign has_multiple_variants = true -%}
                   {%- endif -%}
 
+                  {%- comment -%} Prepare price display variables {%- endcomment -%}
+                  {%- liquid
+                    assign money_price = first_available_variant.price | money
+                    if settings.currency_code_enabled
+                      assign money_price = first_available_variant.price | money_with_currency
+                    endif
+                    if system_product.price_varies
+                      assign money_price = 'products.product.price.from_price_html' | t: price: money_price
+                    endif
+                  -%}
+
                   <div class="complete-solution__item" data-product-id="{{ system_product.id }}">
 
                     {%- comment -%} Product Image {%- endcomment -%}
@@ -150,17 +161,17 @@
                     </div>
 
                     {%- comment -%} Price {%- endcomment -%}
-                    <div class="complete-solution__item-price" data-price-display="{{ system_product.id }}">
+                    <div class="complete-solution__item-price" data-price-display="{{ system_product.id }}" data-price-varies="{{ system_product.price_varies }}">
                       {%- if first_available_variant.compare_at_price > first_available_variant.price -%}
                         <span class="complete-solution__price--sale">
-                          {{ first_available_variant.price | money }}
+                          {{ money_price }}
                         </span>
                         <span class="complete-solution__price--compare">
                           <s>{{ first_available_variant.compare_at_price | money }}</s>
                         </span>
                       {%- else -%}
                         <span class="complete-solution__price">
-                          {{ first_available_variant.price | money }}
+                          {{ money_price }}
                         </span>
                       {%- endif -%}
                     </div>
