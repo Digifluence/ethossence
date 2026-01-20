@@ -28,10 +28,9 @@
   endif
 -%}
 
-<pre>Hello 2026-01-19 010</pre>
-
 {%- if show_section -%}
   {{ 'ethossence-product-complete-solution.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'ethossence-product-complete-solution.js' | asset_url }}" defer="defer"></script>
 
   {%- style -%}
     .section-{{ section.id }}-padding {
@@ -175,6 +174,11 @@
                         data-variant-input="{{ system_product.id }}"
                         data-product-title="{{ system_product.title | escape }}"
                         data-add-btn="{{ system_product.id }}"
+                        data-add-to-cart-text="{{ 'products.product.add_to_cart' | t }}"
+                        data-sold-out-text="{{ 'products.product.sold_out' | t }}"
+                        data-adding-text="{{ 'products.product.adding' | t | default: 'Adding...' }}"
+                        data-added-text="{{ 'products.product.added' | t | default: 'Added!' }}"
+                        data-error-text="{{ 'products.product.error' | t | default: 'Error - Try Again' }}"
                         {% unless first_available_variant.available %}disabled{% endunless %}
                       >
                         {%- if first_available_variant.available -%}
@@ -263,6 +267,11 @@
                         class="button complete-solution__add-btn js-complete-solution-add-to-cart"
                         data-variant-id="{{ variant.id }}"
                         data-product-title="{{ variant_product.title | escape }}{% if variant.title != 'Default Title' %} - {{ variant.title | escape }}{% endif %}"
+                        data-add-to-cart-text="{{ 'products.product.add_to_cart' | t }}"
+                        data-sold-out-text="{{ 'products.product.sold_out' | t }}"
+                        data-adding-text="{{ 'products.product.adding' | t | default: 'Adding...' }}"
+                        data-added-text="{{ 'products.product.added' | t | default: 'Added!' }}"
+                        data-error-text="{{ 'products.product.error' | t | default: 'Error - Try Again' }}"
                         {% unless variant.available %}disabled{% endunless %}
                       >
                         {%- if variant.available -%}
@@ -284,136 +293,6 @@
       </div>
     </div>
   </div>
-
-  <script>
-    function completeSolutionUpdateVariant(selectElement) {
-      const productId = selectElement.dataset.productId;
-      const selectedOption = selectElement.options[selectElement.selectedIndex];
-      const variantId = selectedOption.value;
-      const price = selectedOption.dataset.price;
-      const comparePrice = selectedOption.dataset.comparePrice;
-      const available = selectedOption.dataset.available === 'true';
-      const sku = selectedOption.dataset.sku;
-
-      // Update the button's variant ID
-      const addBtn = document.querySelector(`[data-variant-input="${productId}"]`);
-      if (addBtn) {
-        addBtn.dataset.variantId = variantId;
-      }
-
-      // Update price display
-      const priceDisplay = document.querySelector(`[data-price-display="${productId}"]`);
-      if (priceDisplay) {
-        if (comparePrice && comparePrice !== price) {
-          priceDisplay.innerHTML = `
-            <span class="complete-solution__price--sale">${price}</span>
-            <span class="complete-solution__price--compare"><s>${comparePrice}</s></span>
-          `;
-        } else {
-          priceDisplay.innerHTML = `<span class="complete-solution__price">${price}</span>`;
-        }
-      }
-
-      // Update SKU display
-      const skuDisplay = document.querySelector(`[data-sku-display="${productId}"]`);
-      if (skuDisplay) {
-        skuDisplay.textContent = sku ? `SKU: ${sku}` : '';
-      }
-
-      // Update add to cart button availability
-      const btn = document.querySelector(`[data-add-btn="${productId}"]`);
-      if (btn) {
-        if (available) {
-          btn.disabled = false;
-          btn.textContent = '{{ "products.product.add_to_cart" | t }}';
-        } else {
-          btn.disabled = true;
-          btn.textContent = '{{ "products.product.sold_out" | t }}';
-        }
-      }
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-      const buttons = document.querySelectorAll('.js-complete-solution-add-to-cart');
-
-      buttons.forEach(button => {
-        button.addEventListener('click', handleCompleteSolutionAddToCart);
-      });
-
-      function handleCompleteSolutionAddToCart(e) {
-        e.preventDefault();
-        e.stopPropagation();
-
-        const btn = e.currentTarget;
-        const variantId = btn.getAttribute('data-variant-id');
-        const originalText = btn.textContent.trim();
-
-        if (!variantId) {
-          console.error('Variant ID not found');
-          return;
-        }
-
-        btn.disabled = true;
-        btn.textContent = 'Adding...';
-
-        const cart = document.querySelector('cart-notification') || document.querySelector('cart-drawer');
-        const rootUrl = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root)
-          ? window.Shopify.routes.root
-          : '/';
-
-        // Build form data like product-form.js does
-        const formData = new FormData();
-        formData.append('id', variantId);
-        formData.append('quantity', '1');
-
-        if (cart && typeof cart.getSectionsToRender === 'function') {
-          formData.append('sections', cart.getSectionsToRender().map((section) => section.id));
-          formData.append('sections_url', window.location.pathname);
-        }
-
-        fetch(rootUrl + 'cart/add.js', {
-          method: 'POST',
-          headers: {
-            'X-Requested-With': 'XMLHttpRequest'
-          },
-          body: formData
-        })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          return response.json();
-        })
-        .then(response => {
-          btn.textContent = '{{ "Item added to cart." }}';
-
-          // Show the cart notification/drawer using the theme's built-in method
-          if (cart && typeof cart.renderContents === 'function') {
-            cart.renderContents(response);
-          }
-
-          setTimeout(() => {
-            btn.textContent = originalText;
-            btn.disabled = false;
-          }, 2000);
-
-          // Dispatch cart updated event
-          document.dispatchEvent(new CustomEvent('cart:updated', {
-            detail: { items: response }
-          }));
-        })
-        .catch(error => {
-          console.error('Error adding to cart:', error);
-          btn.textContent = 'Error - Try Again';
-          btn.disabled = false;
-
-          setTimeout(() => {
-            btn.textContent = originalText;
-          }, 3000);
-        });
-      }
-    });
-  </script>
 {%- endif -%}
 
 {% schema %}
@@ -434,13 +313,30 @@
     {
       "type": "select",
       "id": "heading_size",
-      "label": "Heading size",
       "options": [
-        { "value": "h2", "label": "Small" },
-        { "value": "h1", "label": "Medium" },
-        { "value": "h0", "label": "Large" }
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_size.options__1.label"
+        },
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_size.options__2.label"
+        },
+        {
+          "value": "h0",
+          "label": "t:sections.all.heading_size.options__3.label"
+        },
+        {
+          "value": "hxl",
+          "label": "t:sections.all.heading_size.options__4.label"
+        },
+        {
+          "value": "hxxl",
+          "label": "t:sections.all.heading_size.options__5.label"
+        }
       ],
-      "default": "h1"
+      "default": "h1",
+      "label": "t:sections.all.heading_size.label"
     },
     {
       "type": "color_scheme",
