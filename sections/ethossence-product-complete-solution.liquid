@@ -354,7 +354,7 @@
         }
 
         btn.disabled = true;
-        btn.textContent = '{{ "products.product.adding" | t | default: "Adding..." }}';
+        btn.textContent = 'Adding...';
 
         const cart = document.querySelector('cart-notification') || document.querySelector('cart-drawer');
         const rootUrl = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root)
@@ -385,7 +385,7 @@
           return response.json();
         })
         .then(response => {
-          btn.textContent = '{{ "products.product.added" | t | default: "Added!" }}';
+          btn.textContent = '{{ "Item added to cart." }}';
 
           // Show the cart notification/drawer using the theme's built-in method
           if (cart && typeof cart.renderContents === 'function') {
