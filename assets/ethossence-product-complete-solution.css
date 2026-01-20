@@ -118,6 +118,7 @@
 
 .complete-solution__item-sku {
   margin: 0;
+  font-size: 1.227rem;  
   color: rgba(var(--color-foreground), 0.5);
 }
 
@@ -159,7 +160,6 @@
 
 .complete-solution__price,
 .complete-solution__price--sale {
-  font-size: 1.125rem;
   font-weight: 600;
 }
 
