@@ -194,7 +194,7 @@
 }
 
 .complete-solution__add-btn:not([disabled]):hover {
-  color: rgb(var(--color-button-text));
+  color: rgb(var(--color-foreground)) !important;
 }
 
 /* Mobile Responsive */
