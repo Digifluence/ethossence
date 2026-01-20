@@ -193,6 +193,10 @@
   cursor: not-allowed;
 }
 
+.complete-solution__add-btn:not([disabled]):hover {
+  color: rgb(var(--color-button-text));
+}
+
 /* Mobile Responsive */
 @media screen and (max-width: 749px) {
   .complete-solution__item {
