@@ -39,6 +39,7 @@
       }
     },
     "continue_shopping": "Find products",
+    "continue_reading": "Learn more",
     "pagination": {
       "label": "Pagination",
       "page": "Page {{ number }}",
