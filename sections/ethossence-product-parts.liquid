@@ -2,7 +2,7 @@
   ETHOSSENCE PRODUCT PARTS SECTION
 
   Displays products from a selected collection in a list format.
-  Each product variant is shown as a separate row with image, details, price, and add-to-cart.
+  Each product is shown as a row with image, details, variant selector (if multiple), price, and add-to-cart.
 
   Settings:
   - collection: Collection to display products from
@@ -96,108 +96,136 @@
 
           <div class="product-parts__items-list">
 
-            {%- comment -%} Loop through products and their variants {%- endcomment -%}
+            {%- comment -%} Loop through products (one row per product, with variant selector if needed) {%- endcomment -%}
             {%- for collection_product in collection.products -%}
-              {%- for variant in collection_product.variants -%}
-                <div class="product-parts__item">
+              {%- assign first_available_variant = collection_product.selected_or_first_available_variant -%}
+              {%- assign has_multiple_variants = false -%}
+              {%- if collection_product.variants.size > 1 -%}
+                {%- assign has_multiple_variants = true -%}
+              {%- endif -%}
 
-                  {%- comment -%} Variant Image {%- endcomment -%}
-                  <div class="product-parts__item-image">
-                    {%- if variant.image != blank -%}
-                      {{ variant.image | image_url: width: 300 | image_tag:
-                        loading: 'lazy',
-                        widths: '150, 300, 450',
-                        sizes: '(min-width: 750px) 200px, 150px',
-                        alt: variant.title
-                      }}
-                    {%- elsif collection_product.featured_image != blank -%}
-                      {{ collection_product.featured_image | image_url: width: 300 | image_tag:
-                        loading: 'lazy',
-                        widths: '150, 300, 450',
-                        sizes: '(min-width: 750px) 200px, 150px',
-                        alt: collection_product.title
-                      }}
-                    {%- else -%}
-                      <div class="product-parts__no-image">
-                        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
-                      </div>
-                    {%- endif -%}
-                  </div>
+              {%- comment -%} Prepare price display variables {%- endcomment -%}
+              {%- liquid
+                assign money_price = first_available_variant.price | money
+                if settings.currency_code_enabled
+                  assign money_price = first_available_variant.price | money_with_currency
+                endif
+                if collection_product.price_varies
+                  assign money_price = 'products.product.price.from_price_html' | t: price: money_price
+                endif
+              -%}
 
-                  {%- comment -%} Item Details {%- endcomment -%}
-                  <div class="product-parts__item-details">
-                    <h5 class="product-parts__item-title">
-                      <a href="{{ collection_product.url }}">
-                        {{ collection_product.title }}
-                      </a>
-                    </h5>
+              <div class="product-parts__item" data-product-id="{{ collection_product.id }}">
 
-                    {%- if variant.title != 'Default Title' -%}
-                      <p class="product-parts__item-variant">
-                        {{ variant.title }}
-                      </p>
-                    {%- endif -%}
+                {%- comment -%} Product Image {%- endcomment -%}
+                <div class="product-parts__item-image">
+                  {%- if collection_product.featured_image != blank -%}
+                    {{ collection_product.featured_image | image_url: width: 300 | image_tag:
+                      loading: 'lazy',
+                      widths: '150, 300, 450',
+                      sizes: '(min-width: 750px) 200px, 150px',
+                      alt: collection_product.title
+                    }}
+                  {%- else -%}
+                    <div class="product-parts__no-image">
+                      {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                    </div>
+                  {%- endif -%}
+                </div>
 
-                    {%- if variant.sku != blank -%}
-                      <p class="product-parts__item-sku">
-                        SKU: {{ variant.sku }}
-                      </p>
-                    {%- endif -%}
-                  </div>
+                {%- comment -%} Item Details {%- endcomment -%}
+                <div class="product-parts__item-details">
+                  <h5 class="product-parts__item-title">
+                    <a href="{{ collection_product.url }}">
+                      {{ collection_product.title }}
+                    </a>
+                  </h5>
 
-                  {%- comment -%} Description {%- endcomment -%}
-                  {%- if collection_product.description != blank -%}
-                    <div class="product-parts__item-description">
-                      {%- assign description_text = collection_product.description | strip_html -%}
-                      {%- if description_text.size > 227 -%}
-                        {{ description_text | truncate: 227, '...' }}
-                        <a href="{{ collection_product.url }}" class="product-parts__learn-more">{{ 'general.continue_reading' | t | default: 'Learn more' }}</a>
-                      {%- else -%}
-                        {{ description_text }}
-                      {%- endif -%}
+                  {%- comment -%} Variant Selector (if multiple variants) {%- endcomment -%}
+                  {%- if has_multiple_variants -%}
+                    <div class="product-parts__variant-selector">
+                      <select
+                        class="product-parts__variant-select"
+                        data-product-id="{{ collection_product.id }}"
+                        onchange="productPartsUpdateVariant(this)"
+                      >
+                        {%- for variant in collection_product.variants -%}
+                          <option
+                            value="{{ variant.id }}"
+                            data-price="{{ variant.price | money }}"
+                            data-compare-price="{{ variant.compare_at_price | money }}"
+                            data-available="{{ variant.available }}"
+                            data-sku="{{ variant.sku }}"
+                            {% if variant == first_available_variant %}selected{% endif %}
+                          >
+                            {{ variant.title }}{% unless variant.available %} - {{ 'products.product.sold_out' | t }}{% endunless %} - {{ variant.price | money }}
+                          </option>
+                        {%- endfor -%}
+                      </select>
                     </div>
                   {%- endif -%}
 
-                  {%- comment -%} Price {%- endcomment -%}
-                  <div class="product-parts__item-price">
-                    {%- if variant.compare_at_price > variant.price -%}
-                      <span class="product-parts__price--sale">
-                        {{ variant.price | money }}
-                      </span>
-                      <span class="product-parts__price--compare">
-                        <s>{{ variant.compare_at_price | money }}</s>
-                      </span>
+                  {%- if first_available_variant.sku != blank -%}
+                    <p class="product-parts__item-sku" data-sku-display="{{ collection_product.id }}">
+                      SKU: {{ first_available_variant.sku }}
+                    </p>
+                  {%- endif -%}
+                </div>
+
+                {%- comment -%} Description {%- endcomment -%}
+                {%- if collection_product.description != blank -%}
+                  <div class="product-parts__item-description">
+                    {%- assign description_text = collection_product.description | strip_html -%}
+                    {%- if description_text.size > 227 -%}
+                      {{ description_text | truncate: 227, '...' }}
+                      <a href="{{ collection_product.url }}" class="product-parts__learn-more">{{ 'general.continue_reading' | t | default: 'Learn more' }}</a>
                     {%- else -%}
-                      <span class="product-parts__price">
-                        {{ variant.price | money }}
-                      </span>
+                      {{ description_text }}
                     {%- endif -%}
                   </div>
+                {%- endif -%}
 
-                  {%- comment -%} Add to Cart {%- endcomment -%}
-                  <div class="product-parts__item-action">
-                    <button
-                      type="button"
-                      class="button product-parts__add-btn js-product-parts-add-to-cart"
-                      data-variant-id="{{ variant.id }}"
-                      data-product-title="{{ collection_product.title | escape }}{% if variant.title != 'Default Title' %} - {{ variant.title | escape }}{% endif %}"
-                      data-add-to-cart-text="{{ 'products.product.add_to_cart' | t }}"
-                      data-sold-out-text="{{ 'products.product.sold_out' | t }}"
-                      data-adding-text="{{ 'products.product.adding' | t | default: 'Adding...' }}"
-                      data-added-text="{{ 'products.product.added' | t | default: 'Added!' }}"
-                      data-error-text="{{ 'products.product.error' | t | default: 'Error - Try Again' }}"
-                      {% unless variant.available %}disabled{% endunless %}
-                    >
-                      {%- if variant.available -%}
-                        {{ 'products.product.add_to_cart' | t }}
-                      {%- else -%}
-                        {{ 'products.product.sold_out' | t }}
-                      {%- endif -%}
-                    </button>
-                  </div>
-
+                {%- comment -%} Price {%- endcomment -%}
+                <div class="product-parts__item-price" data-price-display="{{ collection_product.id }}" data-price-varies="{{ collection_product.price_varies }}">
+                  {%- if first_available_variant.compare_at_price > first_available_variant.price -%}
+                    <span class="product-parts__price--sale">
+                      {{ money_price }}
+                    </span>
+                    <span class="product-parts__price--compare">
+                      <s>{{ first_available_variant.compare_at_price | money }}</s>
+                    </span>
+                  {%- else -%}
+                    <span class="product-parts__price">
+                      {{ money_price }}
+                    </span>
+                  {%- endif -%}
                 </div>
-              {%- endfor -%}
+
+                {%- comment -%} Add to Cart {%- endcomment -%}
+                <div class="product-parts__item-action">
+                  <button
+                    type="button"
+                    class="button product-parts__add-btn js-product-parts-add-to-cart"
+                    data-variant-id="{{ first_available_variant.id }}"
+                    data-variant-input="{{ collection_product.id }}"
+                    data-product-title="{{ collection_product.title | escape }}"
+                    data-add-btn="{{ collection_product.id }}"
+                    data-add-to-cart-text="{{ 'products.product.add_to_cart' | t }}"
+                    data-sold-out-text="{{ 'products.product.sold_out' | t }}"
+                    data-adding-text="{{ 'products.product.adding' | t | default: 'Adding...' }}"
+                    data-added-text="{{ 'products.product.added' | t | default: 'Added!' }}"
+                    data-error-text="{{ 'products.product.error' | t | default: 'Error - Try Again' }}"
+                    {% unless first_available_variant.available %}disabled{% endunless %}
+                  >
+                    {%- if first_available_variant.available -%}
+                      {{ 'products.product.add_to_cart' | t }}
+                    {%- else -%}
+                      {{ 'products.product.sold_out' | t }}
+                    {%- endif -%}
+                  </button>
+                </div>
+
+              </div>
             {%- endfor -%}
 
           </div>

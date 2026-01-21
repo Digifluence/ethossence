@@ -1,7 +1,61 @@
 /**
  * Ethossence Product Parts
- * Handles add-to-cart functionality for collection-based product parts display
+ * Handles variant selection and add-to-cart functionality for collection-based product parts display
  */
+
+/**
+ * Update variant selection within a product item
+ * Called when user changes the variant dropdown for a product
+ */
+function productPartsUpdateVariant(selectElement) {
+  const productId = selectElement.dataset.productId;
+  const selectedOption = selectElement.options[selectElement.selectedIndex];
+  const variantId = selectedOption.value;
+  const price = selectedOption.dataset.price;
+  const comparePrice = selectedOption.dataset.comparePrice;
+  const available = selectedOption.dataset.available === 'true';
+  const sku = selectedOption.dataset.sku;
+
+  // Update the button's variant ID
+  const addBtn = document.querySelector(`.product-parts [data-variant-input="${productId}"]`);
+  if (addBtn) {
+    addBtn.dataset.variantId = variantId;
+  }
+
+  // Update price display (remove "From" prefix when variant is selected)
+  const priceDisplay = document.querySelector(`.product-parts [data-price-display="${productId}"]`);
+  if (priceDisplay) {
+    if (comparePrice && comparePrice !== price) {
+      priceDisplay.innerHTML = `
+        <span class="product-parts__price--sale">${price}</span>
+        <span class="product-parts__price--compare"><s>${comparePrice}</s></span>
+      `;
+    } else {
+      priceDisplay.innerHTML = `<span class="product-parts__price">${price}</span>`;
+    }
+  }
+
+  // Update SKU display
+  const skuDisplay = document.querySelector(`.product-parts [data-sku-display="${productId}"]`);
+  if (skuDisplay) {
+    skuDisplay.textContent = sku ? `SKU: ${sku}` : '';
+  }
+
+  // Update add to cart button availability
+  const btn = document.querySelector(`.product-parts [data-add-btn="${productId}"]`);
+  if (btn) {
+    const addToCartText = btn.dataset.addToCartText || 'Add to cart';
+    const soldOutText = btn.dataset.soldOutText || 'Sold out';
+
+    if (available) {
+      btn.disabled = false;
+      btn.textContent = addToCartText;
+    } else {
+      btn.disabled = true;
+      btn.textContent = soldOutText;
+    }
+  }
+}
 
 document.addEventListener('DOMContentLoaded', function() {
   // Set up add-to-cart button handlers
