@@ -1,0 +1,356 @@
+{%- comment -%}
+  ETHOSSENCE PRODUCT PARTS SECTION
+
+  Displays products from a selected collection in a list format.
+  Each product variant is shown as a separate row with image, details, price, and add-to-cart.
+
+  Settings:
+  - collection: Collection to display products from
+  - show_collection_description: Toggle to show/hide collection description
+  - alternate_row_colors: Enable alternating background colors for rows
+  - alternate_row_color: Color for even rows when alternating is enabled
+{%- endcomment -%}
+
+{%- assign collection = section.settings.collection -%}
+
+{%- if collection != blank and collection.products.size > 0 -%}
+  {{ 'ethossence-product-parts.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'ethossence-product-parts.js' | asset_url }}" defer="defer"></script>
+
+  {%- style -%}
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    }
+
+    @media screen and (min-width: 750px) {
+      .section-{{ section.id }}-padding {
+        padding-top: {{ section.settings.padding_top }}px;
+        padding-bottom: {{ section.settings.padding_bottom }}px;
+      }
+    }
+
+    /* Group heading styles */
+    .section-{{ section.id }}-padding .product-parts__group-heading {
+      font-size: {{ section.settings.group_heading_font_size }}px;
+      {% if section.settings.group_heading_bold %}font-weight: bold;{% endif %}
+    }
+
+    /* Line separators */
+    {% if section.settings.show_top_line %}
+    .section-{{ section.id }}-padding .product-parts::before {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 1px;
+      background-color: rgba(var(--color-foreground), 0.1);
+      margin-bottom: 2rem;
+    }
+    {% endif %}
+
+    {% if section.settings.show_bottom_line %}
+    .section-{{ section.id }}-padding .product-parts::after {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 1px;
+      background-color: rgba(var(--color-foreground), 0.1);
+      margin-top: 2rem;
+    }
+    {% endif %}
+
+    /* Alternating row colors */
+    {% if section.settings.alternate_row_colors %}
+    .section-{{ section.id }}-padding .product-parts__item:nth-child(even) {
+      background-color: {{ section.settings.alternate_row_color }};
+    }
+    {% endif %}
+  {%- endstyle -%}
+
+  <div class="section-{{ section.id }}-padding color-{{ section.settings.color_scheme }} gradient">
+    <div class="page-width">
+      <div class="product-parts" data-section-id="{{ section.id }}">
+
+        {%- comment -%} Section Heading {%- endcomment -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="product-parts__section-heading {{ section.settings.heading_size }}">
+            {{ section.settings.heading }}
+          </h2>
+        {%- endif -%}
+
+        <div class="product-parts__group">
+
+          {%- comment -%} Group Heading = Collection Title {%- endcomment -%}
+          <div class="product-parts__group-header">
+            <h3 class="product-parts__group-heading">
+              {{ collection.title }}
+            </h3>
+          </div>
+
+          {%- comment -%} Group Note = Collection Description (optional) {%- endcomment -%}
+          {%- if section.settings.show_collection_description and collection.description != blank -%}
+            <div class="product-parts__group-note rte">
+              {{ collection.description }}
+            </div>
+          {%- endif -%}
+
+          <div class="product-parts__items-list">
+
+            {%- comment -%} Loop through products and their variants {%- endcomment -%}
+            {%- for collection_product in collection.products -%}
+              {%- for variant in collection_product.variants -%}
+                <div class="product-parts__item">
+
+                  {%- comment -%} Variant Image {%- endcomment -%}
+                  <div class="product-parts__item-image">
+                    {%- if variant.image != blank -%}
+                      {{ variant.image | image_url: width: 300 | image_tag:
+                        loading: 'lazy',
+                        widths: '150, 300, 450',
+                        sizes: '(min-width: 750px) 200px, 150px',
+                        alt: variant.title
+                      }}
+                    {%- elsif collection_product.featured_image != blank -%}
+                      {{ collection_product.featured_image | image_url: width: 300 | image_tag:
+                        loading: 'lazy',
+                        widths: '150, 300, 450',
+                        sizes: '(min-width: 750px) 200px, 150px',
+                        alt: collection_product.title
+                      }}
+                    {%- else -%}
+                      <div class="product-parts__no-image">
+                        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                      </div>
+                    {%- endif -%}
+                  </div>
+
+                  {%- comment -%} Item Details {%- endcomment -%}
+                  <div class="product-parts__item-details">
+                    <h5 class="product-parts__item-title">
+                      <a href="{{ collection_product.url }}">
+                        {{ collection_product.title }}
+                      </a>
+                    </h5>
+
+                    {%- if variant.title != 'Default Title' -%}
+                      <p class="product-parts__item-variant">
+                        {{ variant.title }}
+                      </p>
+                    {%- endif -%}
+
+                    {%- if variant.sku != blank -%}
+                      <p class="product-parts__item-sku">
+                        SKU: {{ variant.sku }}
+                      </p>
+                    {%- endif -%}
+                  </div>
+
+                  {%- comment -%} Description {%- endcomment -%}
+                  {%- if collection_product.description != blank -%}
+                    <div class="product-parts__item-description">
+                      {%- assign description_text = collection_product.description | strip_html -%}
+                      {%- if description_text.size > 227 -%}
+                        {{ description_text | truncate: 227, '...' }}
+                        <a href="{{ collection_product.url }}" class="product-parts__learn-more">{{ 'general.continue_reading' | t | default: 'Learn more' }}</a>
+                      {%- else -%}
+                        {{ description_text }}
+                      {%- endif -%}
+                    </div>
+                  {%- endif -%}
+
+                  {%- comment -%} Price {%- endcomment -%}
+                  <div class="product-parts__item-price">
+                    {%- if variant.compare_at_price > variant.price -%}
+                      <span class="product-parts__price--sale">
+                        {{ variant.price | money }}
+                      </span>
+                      <span class="product-parts__price--compare">
+                        <s>{{ variant.compare_at_price | money }}</s>
+                      </span>
+                    {%- else -%}
+                      <span class="product-parts__price">
+                        {{ variant.price | money }}
+                      </span>
+                    {%- endif -%}
+                  </div>
+
+                  {%- comment -%} Add to Cart {%- endcomment -%}
+                  <div class="product-parts__item-action">
+                    <button
+                      type="button"
+                      class="button product-parts__add-btn js-product-parts-add-to-cart"
+                      data-variant-id="{{ variant.id }}"
+                      data-product-title="{{ collection_product.title | escape }}{% if variant.title != 'Default Title' %} - {{ variant.title | escape }}{% endif %}"
+                      data-add-to-cart-text="{{ 'products.product.add_to_cart' | t }}"
+                      data-sold-out-text="{{ 'products.product.sold_out' | t }}"
+                      data-adding-text="{{ 'products.product.adding' | t | default: 'Adding...' }}"
+                      data-added-text="{{ 'products.product.added' | t | default: 'Added!' }}"
+                      data-error-text="{{ 'products.product.error' | t | default: 'Error - Try Again' }}"
+                      {% unless variant.available %}disabled{% endunless %}
+                    >
+                      {%- if variant.available -%}
+                        {{ 'products.product.add_to_cart' | t }}
+                      {%- else -%}
+                        {{ 'products.product.sold_out' | t }}
+                      {%- endif -%}
+                    </button>
+                  </div>
+
+                </div>
+              {%- endfor -%}
+            {%- endfor -%}
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product parts",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section heading",
+      "default": "Product Parts"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_size.options__1.label"
+        },
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_size.options__2.label"
+        },
+        {
+          "value": "h0",
+          "label": "t:sections.all.heading_size.options__3.label"
+        },
+        {
+          "value": "hxl",
+          "label": "t:sections.all.heading_size.options__4.label"
+        },
+        {
+          "value": "hxxl",
+          "label": "t:sections.all.heading_size.options__5.label"
+        }
+      ],
+      "default": "h1",
+      "label": "t:sections.all.heading_size.label"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Collection description"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_description",
+      "label": "Show collection description",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Group heading styling"
+    },
+    {
+      "type": "range",
+      "id": "group_heading_font_size",
+      "min": 12,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Group heading font size",
+      "default": 18
+    },
+    {
+      "type": "checkbox",
+      "id": "group_heading_bold",
+      "label": "Group heading bold",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Row styling"
+    },
+    {
+      "type": "checkbox",
+      "id": "alternate_row_colors",
+      "label": "Alternate row background colors",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "alternate_row_color",
+      "label": "Alternate row background color",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "header",
+      "content": "Line separators"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_top_line",
+      "label": "Show line at top of section",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_bottom_line",
+      "label": "Show line at bottom of section",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product parts",
+      "category": "Ethossence"
+    }
+  ]
+}
+{% endschema %}
