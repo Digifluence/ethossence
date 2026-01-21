@@ -1,0 +1,55 @@
+/* Ethossence Accordion - Shared expand/collapse styles */
+
+/* Accordion header with toggle */
+.ethossence-accordion__header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Toggle button styled like recommended badge */
+.ethossence-accordion__toggle {
+  display: inline-block;
+  background-color: rgba(var(--color-foreground), 0.1);
+  color: rgb(var(--color-foreground));
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.2s ease;
+  text-decoration: none;
+}
+
+.ethossence-accordion__toggle:hover {
+  background-color: rgba(var(--color-foreground), 0.15);
+}
+
+/* Toggle text states */
+.ethossence-accordion__toggle [data-collapse-text] {
+  display: none;
+}
+
+.is-expanded .ethossence-accordion__toggle [data-expand-text] {
+  display: none;
+}
+
+.is-expanded .ethossence-accordion__toggle [data-collapse-text] {
+  display: inline;
+}
+
+/* Accordion content with slide animation */
+.ethossence-accordion__content {
+  transition: height 0.35s ease;
+  overflow: hidden;
+}
+
+/* When not using accordion, content displays normally */
+.ethossence-accordion__content:not([data-accordion-content]) {
+  height: auto !important;
+  overflow: visible;
+}
