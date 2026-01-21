@@ -215,6 +215,35 @@
         "padding_bottom": 24
       }
     },
+    "ethossence_product_solutions_4emUiB": {
+      "type": "ethossence-product-solutions",
+      "name": "Product Solutions",
+      "settings": {
+        "heading": "Recommended Solutions",
+        "heading_size": "h1",
+        "color_scheme": "",
+        "solution_name_font_size": 22,
+        "solution_name_bold": true,
+        "group_heading_font_size": 18,
+        "group_heading_bold": true,
+        "show_top_line": true,
+        "show_bottom_line": true,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "ethossence_product_complete_solution_brwGtE": {
+      "type": "ethossence-product-complete-solution",
+      "disabled": true,
+      "name": "Complete Solution",
+      "settings": {
+        "heading": "Complete Your System",
+        "heading_size": "h1",
+        "color_scheme": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
     "related-products": {
       "type": "related-products",
       "disabled": true,
@@ -252,18 +281,6 @@
       ],
       "settings": {
         "include_margins": true
-      }
-    },
-    "ethossence_product_complete_solution_brwGtE": {
-      "type": "ethossence-product-complete-solution",
-      "disabled": true,
-      "name": "Complete Solution",
-      "settings": {
-        "heading": "Complete Your System",
-        "heading_size": "h1",
-        "color_scheme": "",
-        "padding_top": 36,
-        "padding_bottom": 36
       }
     },
     "ethossence_products_more_jjBdBw": {
@@ -309,17 +326,6 @@
         "show_image": false,
         "show_sku": false,
         "show_vendor": false,
-        "color_scheme": "",
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
-    "ethossence_product_solutions_4emUiB": {
-      "type": "ethossence-product-solutions",
-      "name": "Product Solutions",
-      "settings": {
-        "heading": "Recommended Solutions",
-        "heading_size": "h1",
         "color_scheme": "",
         "padding_top": 36,
         "padding_bottom": 36
