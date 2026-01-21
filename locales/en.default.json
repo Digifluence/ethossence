@@ -287,6 +287,10 @@
       "no_solutions": "No Solutions exist for this Product Variant",
       "recommended": "Recommended"
     },
+    "accordion": {
+      "expand": "expand",
+      "collapse": "collapse"
+    },
     "announcements": {
       "previous_announcement": "Previous announcement",
       "next_announcement": "Next announcement",
