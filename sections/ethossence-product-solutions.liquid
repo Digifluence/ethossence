@@ -37,7 +37,7 @@
 
   # Check if there are any solutions defined
   assign has_solutions = false
-  if solutions_list != blank and solutions_list.size > 0
+  if solutions_list != blank
     assign has_solutions = true
   endif
 
@@ -58,7 +58,7 @@
   endif
 -%}
 
-<pre>DEBUG TEMP: 2026-01-20 ETHOSSENCE PRODUCT SOLUTIONS SECTION 002 </pre>
+<pre>DEBUG TEMP: 2026-01-20 ETHOSSENCE PRODUCT SOLUTIONS SECTION 003 </pre>
 
 {%- if has_solutions -%}
   {{ 'ethossence-product-solutions.css' | asset_url | stylesheet_tag }}
