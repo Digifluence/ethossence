@@ -105,6 +105,7 @@
       "name": "Characteristics",
       "settings": {
         "color_scheme": "",
+        "enable_accordion": false,
         "padding_top": 24,
         "padding_bottom": 24
       }
@@ -201,6 +202,7 @@
         "content_alignment": "left",
         "color_scheme": "",
         "full_width": true,
+        "enable_accordion": true,
         "padding_top": 48,
         "padding_bottom": 24
       }
@@ -214,6 +216,7 @@
         "heading_alignment": "left",
         "paragraph": "",
         "color_scheme": "",
+        "enable_accordion": true,
         "padding_top": 24,
         "padding_bottom": 24
       }
@@ -232,6 +235,7 @@
         "group_heading_bold": true,
         "show_top_line": true,
         "show_bottom_line": true,
+        "enable_accordion": false,
         "padding_top": 24,
         "padding_bottom": 24
       }
@@ -252,6 +256,7 @@
         "alternate_row_color": "#f5f5f5",
         "show_top_line": true,
         "show_bottom_line": true,
+        "enable_accordion": false,
         "padding_top": 0,
         "padding_bottom": 24
       }
