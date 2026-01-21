@@ -113,6 +113,10 @@
     "main": {
       "type": "ethossence-main-product",
       "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
         "variant_list_kNxW34": {
           "type": "variant_list",
           "settings": {
@@ -120,11 +124,6 @@
             "padding_top": 0,
             "padding_bottom": 8
           }
-        },
-        "title": {
-          "type": "title",
-          "disabled": true,
-          "settings": {}
         },
         "variant_picker_EWA7dm": {
           "type": "variant_picker",
@@ -156,8 +155,8 @@
         }
       },
       "block_order": [
-        "variant_list_kNxW34",
         "title",
+        "variant_list_kNxW34",
         "variant_picker_EWA7dm",
         "quantity_selector",
         "price",
