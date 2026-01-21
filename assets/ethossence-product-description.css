@@ -1,0 +1,34 @@
+/* Ethossence Product Description Styles */
+
+@media screen and (min-width: 750px) {
+  .rich-text__blocks {
+    max-width: 100%;
+  }
+
+  .rich-text__wrapper--left {
+    justify-content: normal;
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .rich-text__blocks {
+    max-width: 100%;
+  }
+
+  .rich-text__wrapper--left {
+    justify-content: normal;
+  }
+}
+
+/* Heading alignment */
+.rich-text__heading.left {
+  text-align: left;
+}
+
+.rich-text__heading.center {
+  text-align: center;
+}
+
+.rich-text__heading.right {
+  text-align: right;
+}
