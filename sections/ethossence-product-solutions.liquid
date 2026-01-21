@@ -1,0 +1,492 @@
+{%- comment -%}
+  ETHOSSENCE PRODUCT SOLUTIONS SECTION
+
+  Displays complete system/solution recommendations for products based on selected variant.
+  Shows groups of recommended products and variants to complement the main product.
+  Solutions are only shown when the current variant is in the solution's applicable variants list.
+
+  Metafield
+  Namespace: ethossence
+  Key: product_solutions
+  Type: List metaobject reference, reference to Metaobject type "product_solutions".
+
+  MetaObject
+  Name: Product systems
+  Type: product_solutions
+  Fields: Name: System name || Type: Single line text || Key: solution_name
+  Fields: Name: System note  || Type: Multi line text || Key: solution_note
+  Fields: Name: Applicable product variant(s)  || Type: list product variant || Key: solution_variants_applicable
+  Name: Included product system group(s) || Type: List Metaobject reference (Metaobject type: product_solution_groups) || Key: solution_groups_included
+
+
+  MetaObject
+  Name: Product system groups
+  Type: product_solution_groups
+  Fields:
+  Name: Group heading || Type: Single line text || Key: solution_group_heading
+  Name: Group note || Type: Multi line text || Key: solution_group_note
+  Name: Group choice recommended || Type:  true or false || Key: solution_group_recommended
+  Name: Products included || Type:  list product || Key: solution_include_products
+  Name: Product variants included || Type:  list product variant || Key: solution_include_variants
+{%- endcomment -%}
+
+{%- liquid
+  # Get the product_solutions metaobject list from the product
+  assign solutions_list = product.metafields.ethossence.product_solutions.value
+  assign current_variant = product.selected_or_first_available_variant
+
+  # Check if there are any solutions defined
+  assign has_solutions = false
+  if solutions_list != blank and solutions_list.size > 0
+    assign has_solutions = true
+  endif
+
+  # Check if any solutions apply to the current variant
+  assign has_applicable_solutions = false
+  if has_solutions
+    for solution in solutions_list
+      for applicable_variant in solution.solution_variants_applicable.value
+        if applicable_variant.id == current_variant.id
+          assign has_applicable_solutions = true
+          break
+        endif
+      endfor
+      if has_applicable_solutions
+        break
+      endif
+    endfor
+  endif
+-%}
+
+{%- if has_solutions -%}
+  {{ 'ethossence-product-solutions.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'ethossence-product-solutions.js' | asset_url }}" defer="defer"></script>
+
+  {%- style -%}
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    }
+
+    @media screen and (min-width: 750px) {
+      .section-{{ section.id }}-padding {
+        padding-top: {{ section.settings.padding_top }}px;
+        padding-bottom: {{ section.settings.padding_bottom }}px;
+      }
+    }
+  {%- endstyle -%}
+
+  <div class="section-{{ section.id }}-padding color-{{ section.settings.color_scheme }} gradient">
+    <div class="page-width">
+      <div class="product-solutions" data-section-id="{{ section.id }}" data-current-variant-id="{{ current_variant.id }}">
+
+        {%- comment -%} Section Heading {%- endcomment -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="product-solutions__section-heading {{ section.settings.heading_size }}">
+            {{ section.settings.heading }}
+          </h2>
+        {%- endif -%}
+
+        {%- comment -%} No Solutions Message {%- endcomment -%}
+        <div class="product-solutions__no-solutions" {% if has_applicable_solutions %}style="display:none"{% endif %}>
+          <p>{{ 'sections.product_solutions.no_solutions' | t | default: 'No Solutions exist for this Product Variant' }}</p>
+        </div>
+
+        {%- comment -%} Loop through each solution system {%- endcomment -%}
+        {%- for solution in solutions_list -%}
+          {%- comment -%} Build comma-separated list of applicable variant IDs {%- endcomment -%}
+          {%- assign applicable_variant_ids = '' -%}
+          {%- for v in solution.solution_variants_applicable.value -%}
+            {%- if applicable_variant_ids != '' -%}
+              {%- assign applicable_variant_ids = applicable_variant_ids | append: ',' -%}
+            {%- endif -%}
+            {%- assign applicable_variant_ids = applicable_variant_ids | append: v.id -%}
+          {%- endfor -%}
+
+          {%- comment -%} Check if this solution applies to current variant {%- endcomment -%}
+          {%- assign is_applicable = false -%}
+          {%- for v in solution.solution_variants_applicable.value -%}
+            {%- if v.id == current_variant.id -%}
+              {%- assign is_applicable = true -%}
+              {%- break -%}
+            {%- endif -%}
+          {%- endfor -%}
+
+          <div class="product-solutions__system"
+               data-applicable-variants="{{ applicable_variant_ids }}"
+               {% unless is_applicable %}style="display:none"{% endunless %}>
+
+            {%- comment -%} System Name (Heading) {%- endcomment -%}
+            {%- if solution.solution_name != blank -%}
+              <h3 class="product-solutions__system-heading">
+                {{ solution.solution_name }}
+              </h3>
+            {%- endif -%}
+
+            {%- comment -%} System Note {%- endcomment -%}
+            {%- if solution.solution_note != blank -%}
+              <div class="product-solutions__system-note rte">
+                {{ solution.solution_note }}
+              </div>
+            {%- endif -%}
+
+            {%- comment -%} Loop through solution groups {%- endcomment -%}
+            {%- for group in solution.solution_groups_included.value -%}
+              <div class="product-solutions__group">
+
+                {%- comment -%} Group Heading {%- endcomment -%}
+                {%- if group.solution_group_heading != blank -%}
+                  <div class="product-solutions__group-header">
+                    <h4 class="product-solutions__group-heading">
+                      {{ group.solution_group_heading }}
+                      {%- if group.solution_group_recommended -%}
+                        <span class="product-solutions__recommended-badge">{{ 'sections.product_solutions.recommended' | t | default: 'Recommended' }}</span>
+                      {%- endif -%}
+                    </h4>
+                  </div>
+                {%- endif -%}
+
+                {%- comment -%} Group Note {%- endcomment -%}
+                {%- if group.solution_group_note != blank -%}
+                  <div class="product-solutions__group-note rte">
+                    {{ group.solution_group_note }}
+                  </div>
+                {%- endif -%}
+
+                <div class="product-solutions__items-list">
+
+                  {%- comment -%} Products Included - Display product with variant selector {%- endcomment -%}
+                  {%- assign group_products = group.solution_include_products.value -%}
+                  {%- if group_products != blank -%}
+                    {%- for group_product in group_products -%}
+                      {%- assign first_available_variant = group_product.selected_or_first_available_variant -%}
+                      {%- assign has_multiple_variants = false -%}
+                      {%- if group_product.variants.size > 1 -%}
+                        {%- assign has_multiple_variants = true -%}
+                      {%- endif -%}
+
+                      {%- comment -%} Prepare price display variables {%- endcomment -%}
+                      {%- liquid
+                        assign money_price = first_available_variant.price | money
+                        if settings.currency_code_enabled
+                          assign money_price = first_available_variant.price | money_with_currency
+                        endif
+                        if group_product.price_varies
+                          assign money_price = 'products.product.price.from_price_html' | t: price: money_price
+                        endif
+                      -%}
+
+                      <div class="product-solutions__item" data-product-id="{{ group_product.id }}">
+
+                        {%- comment -%} Product Image {%- endcomment -%}
+                        <div class="product-solutions__item-image">
+                          {%- if group_product.featured_image != blank -%}
+                            {{ group_product.featured_image | image_url: width: 300 | image_tag:
+                              loading: 'lazy',
+                              widths: '150, 300, 450',
+                              sizes: '(min-width: 750px) 200px, 150px',
+                              alt: group_product.title
+                            }}
+                          {%- else -%}
+                            <div class="product-solutions__no-image">
+                              {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                            </div>
+                          {%- endif -%}
+                        </div>
+
+                        {%- comment -%} Item Details {%- endcomment -%}
+                        <div class="product-solutions__item-details">
+                          <h5 class="product-solutions__item-title">
+                            <a href="{{ group_product.url }}">
+                              {{ group_product.title }}
+                            </a>
+                          </h5>
+
+                          {%- comment -%} Variant Selector (if multiple variants) {%- endcomment -%}
+                          {%- if has_multiple_variants -%}
+                            <div class="product-solutions__variant-selector">
+                              <select
+                                class="product-solutions__variant-select"
+                                data-product-id="{{ group_product.id }}"
+                                onchange="productSolutionsUpdateVariant(this)"
+                              >
+                                {%- for variant in group_product.variants -%}
+                                  <option
+                                    value="{{ variant.id }}"
+                                    data-price="{{ variant.price | money }}"
+                                    data-compare-price="{{ variant.compare_at_price | money }}"
+                                    data-available="{{ variant.available }}"
+                                    data-sku="{{ variant.sku }}"
+                                    {% if variant == first_available_variant %}selected{% endif %}
+                                  >
+                                    {{ variant.title }}{% unless variant.available %} - {{ 'products.product.sold_out' | t }}{% endunless %} - {{ variant.price | money }}
+                                  </option>
+                                {%- endfor -%}
+                              </select>
+                            </div>
+                          {%- endif -%}
+
+                          {%- if first_available_variant.sku != blank -%}
+                            <p class="product-solutions__item-sku" data-sku-display="{{ group_product.id }}">
+                              SKU: {{ first_available_variant.sku }}
+                            </p>
+                          {%- endif -%}
+                        </div>
+
+                        {%- comment -%} Description {%- endcomment -%}
+                        {%- if group_product.description != blank -%}
+                          <div class="product-solutions__item-description">
+                            {%- assign description_text = group_product.description | strip_html -%}
+                            {%- if description_text.size > 300 -%}
+                              {{ description_text | truncate: 300, '...' }}
+                              <a href="{{ group_product.url }}" class="product-solutions__learn-more">{{ 'general.continue_reading' | t | default: 'Learn more' }}</a>
+                            {%- else -%}
+                              {{ description_text }}
+                            {%- endif -%}
+                          </div>
+                        {%- endif -%}
+
+                        {%- comment -%} Price {%- endcomment -%}
+                        <div class="product-solutions__item-price" data-price-display="{{ group_product.id }}" data-price-varies="{{ group_product.price_varies }}">
+                          {%- if first_available_variant.compare_at_price > first_available_variant.price -%}
+                            <span class="product-solutions__price--sale">
+                              {{ money_price }}
+                            </span>
+                            <span class="product-solutions__price--compare">
+                              <s>{{ first_available_variant.compare_at_price | money }}</s>
+                            </span>
+                          {%- else -%}
+                            <span class="product-solutions__price">
+                              {{ money_price }}
+                            </span>
+                          {%- endif -%}
+                        </div>
+
+                        {%- comment -%} Add to Cart {%- endcomment -%}
+                        <div class="product-solutions__item-action">
+                          <button
+                            type="button"
+                            class="button product-solutions__add-btn js-product-solutions-add-to-cart"
+                            data-variant-id="{{ first_available_variant.id }}"
+                            data-variant-input="{{ group_product.id }}"
+                            data-product-title="{{ group_product.title | escape }}"
+                            data-add-btn="{{ group_product.id }}"
+                            data-add-to-cart-text="{{ 'products.product.add_to_cart' | t }}"
+                            data-sold-out-text="{{ 'products.product.sold_out' | t }}"
+                            data-adding-text="{{ 'products.product.adding' | t | default: 'Adding...' }}"
+                            data-added-text="{{ 'products.product.added' | t | default: 'Added!' }}"
+                            data-error-text="{{ 'products.product.error' | t | default: 'Error - Try Again' }}"
+                            {% unless first_available_variant.available %}disabled{% endunless %}
+                          >
+                            {%- if first_available_variant.available -%}
+                              {{ 'products.product.add_to_cart' | t }}
+                            {%- else -%}
+                              {{ 'products.product.sold_out' | t }}
+                            {%- endif -%}
+                          </button>
+                        </div>
+
+                      </div>
+                    {%- endfor -%}
+                  {%- endif -%}
+
+                  {%- comment -%} Product Variants Included - Display specific pre-selected variants {%- endcomment -%}
+                  {%- assign group_variants = group.solution_include_variants.value -%}
+                  {%- if group_variants != blank and group_variants.size > 0 -%}
+                    {%- for variant in group_variants -%}
+                      {%- assign variant_product = variant.product -%}
+                      <div class="product-solutions__item">
+
+                        {%- comment -%} Variant Image {%- endcomment -%}
+                        <div class="product-solutions__item-image">
+                          {%- if variant.image != blank -%}
+                            {{ variant.image | image_url: width: 300 | image_tag:
+                              loading: 'lazy',
+                              widths: '150, 300, 450',
+                              sizes: '(min-width: 750px) 200px, 150px',
+                              alt: variant.title
+                            }}
+                          {%- elsif variant_product.featured_image != blank -%}
+                            {{ variant_product.featured_image | image_url: width: 300 | image_tag:
+                              loading: 'lazy',
+                              widths: '150, 300, 450',
+                              sizes: '(min-width: 750px) 200px, 150px',
+                              alt: variant_product.title
+                            }}
+                          {%- else -%}
+                            <div class="product-solutions__no-image">
+                              {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                            </div>
+                          {%- endif -%}
+                        </div>
+
+                        {%- comment -%} Item Details {%- endcomment -%}
+                        <div class="product-solutions__item-details">
+                          <h5 class="product-solutions__item-title">
+                            <a href="{{ variant_product.url }}">
+                              {{ variant_product.title }}
+                            </a>
+                          </h5>
+
+                          {%- if variant.title != 'Default Title' -%}
+                            <p class="product-solutions__item-variant">
+                              {{ variant.title }}
+                            </p>
+                          {%- endif -%}
+
+                          {%- if variant.sku != blank -%}
+                            <p class="product-solutions__item-sku">
+                              SKU: {{ variant.sku }}
+                            </p>
+                          {%- endif -%}
+                        </div>
+
+                        {%- comment -%} Description {%- endcomment -%}
+                        {%- if variant_product.description != blank -%}
+                          <div class="product-solutions__item-description">
+                            {%- assign description_text = variant_product.description | strip_html -%}
+                            {%- if description_text.size > 300 -%}
+                              {{ description_text | truncate: 300, '...' }}
+                              <a href="{{ variant_product.url }}" class="product-solutions__learn-more">{{ 'general.continue_reading' | t | default: 'Learn more' }}</a>
+                            {%- else -%}
+                              {{ description_text }}
+                            {%- endif -%}
+                          </div>
+                        {%- endif -%}
+
+                        {%- comment -%} Price {%- endcomment -%}
+                        <div class="product-solutions__item-price">
+                          {%- if variant.compare_at_price > variant.price -%}
+                            <span class="product-solutions__price--sale">
+                              {{ variant.price | money }}
+                            </span>
+                            <span class="product-solutions__price--compare">
+                              <s>{{ variant.compare_at_price | money }}</s>
+                            </span>
+                          {%- else -%}
+                            <span class="product-solutions__price">
+                              {{ variant.price | money }}
+                            </span>
+                          {%- endif -%}
+                        </div>
+
+                        {%- comment -%} Add to Cart {%- endcomment -%}
+                        <div class="product-solutions__item-action">
+                          <button
+                            type="button"
+                            class="button product-solutions__add-btn js-product-solutions-add-to-cart"
+                            data-variant-id="{{ variant.id }}"
+                            data-product-title="{{ variant_product.title | escape }}{% if variant.title != 'Default Title' %} - {{ variant.title | escape }}{% endif %}"
+                            data-add-to-cart-text="{{ 'products.product.add_to_cart' | t }}"
+                            data-sold-out-text="{{ 'products.product.sold_out' | t }}"
+                            data-adding-text="{{ 'products.product.adding' | t | default: 'Adding...' }}"
+                            data-added-text="{{ 'products.product.added' | t | default: 'Added!' }}"
+                            data-error-text="{{ 'products.product.error' | t | default: 'Error - Try Again' }}"
+                            {% unless variant.available %}disabled{% endunless %}
+                          >
+                            {%- if variant.available -%}
+                              {{ 'products.product.add_to_cart' | t }}
+                            {%- else -%}
+                              {{ 'products.product.sold_out' | t }}
+                            {%- endif -%}
+                          </button>
+                        </div>
+
+                      </div>
+                    {%- endfor -%}
+                  {%- endif -%}
+
+                </div>
+              </div>
+            {%- endfor -%}
+
+          </div>
+        {%- endfor -%}
+
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product Solutions",
+  "tag": "section",
+  "class": "section",
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section heading",
+      "default": "Recommended Solutions"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_size.options__1.label"
+        },
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_size.options__2.label"
+        },
+        {
+          "value": "h0",
+          "label": "t:sections.all.heading_size.options__3.label"
+        },
+        {
+          "value": "hxl",
+          "label": "t:sections.all.heading_size.options__4.label"
+        },
+        {
+          "value": "hxxl",
+          "label": "t:sections.all.heading_size.options__5.label"
+        }
+      ],
+      "default": "h1",
+      "label": "t:sections.all.heading_size.label"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Solutions",
+      "category": "Ethossence"
+    }
+  ]
+}
+{% endschema %}

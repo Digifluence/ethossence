@@ -283,6 +283,10 @@
     }
   },
   "sections": {
+    "product_solutions": {
+      "no_solutions": "No Solutions exist for this Product Variant",
+      "recommended": "Recommended"
+    },
     "announcements": {
       "previous_announcement": "Previous announcement",
       "next_announcement": "Next announcement",
