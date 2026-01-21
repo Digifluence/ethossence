@@ -203,8 +203,8 @@
         "color_scheme": "",
         "full_width": true,
         "enable_accordion": true,
-        "padding_top": 48,
-        "padding_bottom": 24
+        "padding_top": 0,
+        "padding_bottom": 0
       }
     },
     "ethossence_product_specifications_xywkNW": {
@@ -217,8 +217,8 @@
         "paragraph": "",
         "color_scheme": "",
         "enable_accordion": true,
-        "padding_top": 24,
-        "padding_bottom": 24
+        "padding_top": 0,
+        "padding_bottom": 0
       }
     },
     "ethossence_product_solutions_NacJP7": {
@@ -233,11 +233,11 @@
         "solution_name_bold": true,
         "group_heading_font_size": 18,
         "group_heading_bold": true,
-        "show_top_line": true,
-        "show_bottom_line": true,
-        "enable_accordion": false,
-        "padding_top": 24,
-        "padding_bottom": 24
+        "show_top_line": false,
+        "show_bottom_line": false,
+        "enable_accordion": true,
+        "padding_top": 0,
+        "padding_bottom": 0
       }
     },
     "ethossence_product_parts_gGR6pW": {
@@ -252,11 +252,11 @@
         "show_collection_description": false,
         "group_heading_font_size": 18,
         "group_heading_bold": true,
-        "alternate_row_colors": false,
+        "alternate_row_colors": true,
         "alternate_row_color": "#f5f5f5",
-        "show_top_line": true,
-        "show_bottom_line": true,
-        "enable_accordion": false,
+        "show_top_line": false,
+        "show_bottom_line": false,
+        "enable_accordion": true,
         "padding_top": 0,
         "padding_bottom": 24
       }
@@ -287,7 +287,7 @@
         "quick_add": "none",
         "columns_mobile": "2",
         "swipe_on_mobile": false,
-        "padding_top": 36,
+        "padding_top": 0,
         "padding_bottom": 84
       }
     },
