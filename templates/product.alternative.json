@@ -84,10 +84,21 @@
         "padding_bottom": 0
       }
     },
-    "rich_text_rN6ALf": {
-      "type": "rich-text",
+    "ethossence_product_characteristics_bey7JG": {
+      "type": "ethossence-product-characteristics",
       "blocks": {
-        "text_zQwnYn": {
+        "heading_ypMtXd": {
+          "type": "heading",
+          "settings": {
+            "heading": "Characteristics",
+            "heading_size": "h1"
+          }
+        },
+        "characteristics_iwmJkE": {
+          "type": "characteristics",
+          "settings": {}
+        },
+        "text_MQFpmU": {
           "type": "text",
           "settings": {
             "text": "<p>Need a camera for a different process?  <a href=\"/pages/contact\" title=\"Contact\">Message us your needs</a> or <a href=\"/pages/welding-camera-consultation-ai-welding-introduction\" title=\"Appointment Booking: Sales Introduction Consultation\">schedule an online meeting.</a></p>"
@@ -95,16 +106,15 @@
         }
       },
       "block_order": [
-        "text_zQwnYn"
+        "heading_ypMtXd",
+        "characteristics_iwmJkE",
+        "text_MQFpmU"
       ],
-      "name": "t:sections.rich-text.presets.name",
+      "name": "Characteristics",
       "settings": {
-        "desktop_content_position": "center",
-        "content_alignment": "center",
         "color_scheme": "",
-        "full_width": true,
-        "padding_top": 8,
-        "padding_bottom": 24
+        "padding_top": 40,
+        "padding_bottom": 52
       }
     },
     "main": {
@@ -252,7 +262,7 @@
     "image_banner_tkihzn",
     "ethossence_breadcrumbs_X64tn3",
     "rich_text_d6Vjce",
-    "rich_text_rN6ALf",
+    "ethossence_product_characteristics_bey7JG",
     "main",
     "featured_collection_t9hYGD",
     "related-products",
