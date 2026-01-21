@@ -87,13 +87,6 @@
     "ethossence_product_characteristics_bey7JG": {
       "type": "ethossence-product-characteristics",
       "blocks": {
-        "heading_ypMtXd": {
-          "type": "heading",
-          "settings": {
-            "heading": "Characteristics",
-            "heading_size": "h1"
-          }
-        },
         "characteristics_iwmJkE": {
           "type": "characteristics",
           "settings": {}
@@ -101,12 +94,11 @@
         "text_MQFpmU": {
           "type": "text",
           "settings": {
-            "text": "<p>Need a camera for a different process?  <a href=\"/pages/contact\" title=\"Contact\">Message us your needs</a> or <a href=\"/pages/welding-camera-consultation-ai-welding-introduction\" title=\"Appointment Booking: Sales Introduction Consultation\">schedule an online meeting.</a></p>"
+            "paragraph": ""
           }
         }
       },
       "block_order": [
-        "heading_ypMtXd",
         "characteristics_iwmJkE",
         "text_MQFpmU"
       ],
@@ -188,6 +180,82 @@
         "padding_bottom": 12
       }
     },
+    "ethossence_product_description_yWrPdG": {
+      "type": "ethossence-product-description",
+      "blocks": {
+        "heading_fx6Vm4": {
+          "type": "heading",
+          "settings": {
+            "heading": "Description",
+            "heading_size": "h1",
+            "heading_alignment": "left"
+          }
+        }
+      },
+      "block_order": [
+        "heading_fx6Vm4"
+      ],
+      "name": "Description",
+      "settings": {
+        "desktop_content_position": "left",
+        "content_alignment": "left",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "ethossence_product_specifications_xywkNW": {
+      "type": "ethossence-product-specifications",
+      "name": "Specifications",
+      "settings": {
+        "heading": "Specifications",
+        "heading_size": "h1",
+        "heading_alignment": "left",
+        "paragraph": "",
+        "color_scheme": "",
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "ethossence_product_solutions_NacJP7": {
+      "type": "ethossence-product-solutions",
+      "name": "Solutions",
+      "settings": {
+        "heading": "Recommended Solutions",
+        "heading_size": "h1",
+        "heading_alignment": "left",
+        "color_scheme": "",
+        "solution_name_font_size": 22,
+        "solution_name_bold": false,
+        "group_heading_font_size": 18,
+        "group_heading_bold": false,
+        "show_top_line": false,
+        "show_bottom_line": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "ethossence_product_parts_gGR6pW": {
+      "type": "ethossence-product-parts",
+      "name": "Parts",
+      "settings": {
+        "collection": "meltview®-pixi-replacement-parts",
+        "heading": "Product Parts",
+        "heading_size": "h1",
+        "heading_alignment": "left",
+        "color_scheme": "",
+        "show_collection_description": false,
+        "group_heading_font_size": 18,
+        "group_heading_bold": false,
+        "alternate_row_colors": false,
+        "alternate_row_color": "#f5f5f5",
+        "show_top_line": false,
+        "show_bottom_line": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
     "featured_collection_t9hYGD": {
       "type": "featured-collection",
       "name": "t:sections.featured-collection.presets.name",
@@ -264,6 +332,10 @@
     "rich_text_d6Vjce",
     "ethossence_product_characteristics_bey7JG",
     "main",
+    "ethossence_product_description_yWrPdG",
+    "ethossence_product_specifications_xywkNW",
+    "ethossence_product_solutions_NacJP7",
+    "ethossence_product_parts_gGR6pW",
     "featured_collection_t9hYGD",
     "related-products",
     "17564162700878961e"
