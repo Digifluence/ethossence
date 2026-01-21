@@ -256,6 +256,7 @@
     },
     "ethossence_product_complete_solution_brwGtE": {
       "type": "ethossence-product-complete-solution",
+      "disabled": true,
       "name": "Complete Solution",
       "settings": {
         "heading": "Complete Your System",
@@ -267,6 +268,7 @@
     },
     "ethossence_products_more_jjBdBw": {
       "type": "ethossence-products-more",
+      "disabled": true,
       "name": "Parts & components",
       "settings": {
         "collection": "camera-mounts-welding-visual-technologies",
@@ -296,6 +298,7 @@
     },
     "ethossence_product_components_xLHezU": {
       "type": "ethossence-product-components",
+      "disabled": true,
       "name": "Product components",
       "settings": {
         "heading": "Product Components",
@@ -310,6 +313,17 @@
         "padding_top": 36,
         "padding_bottom": 36
       }
+    },
+    "ethossence_product_solutions_4emUiB": {
+      "type": "ethossence-product-solutions",
+      "name": "Product Solutions",
+      "settings": {
+        "heading": "Recommended Solutions",
+        "heading_size": "h1",
+        "color_scheme": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
     }
   },
   "order": [
@@ -320,9 +334,10 @@
     "main",
     "melttools_welding_processes_Mhzzeh",
     "rich_text_rN6ALf",
+    "ethossence_product_solutions_4emUiB",
+    "ethossence_product_complete_solution_brwGtE",
     "related-products",
     "17564162700878961e",
-    "ethossence_product_complete_solution_brwGtE",
     "ethossence_products_more_jjBdBw",
     "ethossence_product_components_xLHezU"
   ]
