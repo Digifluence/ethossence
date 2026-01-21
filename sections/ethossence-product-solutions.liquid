@@ -59,9 +59,8 @@
 -%}
 
 <pre>
-  DEBUG TEMP: 2026-01-20 ETHOSSENCE PRODUCT SOLUTIONS SECTION 004 
-  {{ has_solutions | prepend: 'Has Solutions: ' }}
-  {{ has_applicable_solutions | prepend: 'Has Applicable Solutions: ' }}
+  DEBUG TEMP: 2026-01-20 
+  ETHOSSENCE PRODUCT SOLUTIONS SECTION 006 
 </pre>
 
 {%- if has_solutions -%}
@@ -80,6 +79,41 @@
         padding-bottom: {{ section.settings.padding_bottom }}px;
       }
     }
+
+    /* Solution name heading styles */
+    .section-{{ section.id }}-padding .product-solutions__system-heading {
+      font-size: {{ section.settings.solution_name_font_size }}px;
+      {% if section.settings.solution_name_bold %}font-weight: bold;{% endif %}
+    }
+
+    /* Group heading styles */
+    .section-{{ section.id }}-padding .product-solutions__group-heading {
+      font-size: {{ section.settings.group_heading_font_size }}px;
+      {% if section.settings.group_heading_bold %}font-weight: bold;{% endif %}
+    }
+
+    /* Line separators */
+    {% if section.settings.show_top_line %}
+    .section-{{ section.id }}-padding .product-solutions::before {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 1px;
+      background-color: rgba(var(--color-foreground), 0.1);
+      margin-bottom: 2rem;
+    }
+    {% endif %}
+
+    {% if section.settings.show_bottom_line %}
+    .section-{{ section.id }}-padding .product-solutions::after {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 1px;
+      background-color: rgba(var(--color-foreground), 0.1);
+      margin-top: 2rem;
+    }
+    {% endif %}
   {%- endstyle -%}
 
   <div class="section-{{ section.id }}-padding color-{{ section.settings.color_scheme }} gradient">
@@ -243,8 +277,8 @@
                         {%- if group_product.description != blank -%}
                           <div class="product-solutions__item-description">
                             {%- assign description_text = group_product.description | strip_html -%}
-                            {%- if description_text.size > 300 -%}
-                              {{ description_text | truncate: 300, '...' }}
+                            {%- if description_text.size > 227 -%}
+                              {{ description_text | truncate: 227, '...' }}
                               <a href="{{ group_product.url }}" class="product-solutions__learn-more">{{ 'general.continue_reading' | t | default: 'Learn more' }}</a>
                             {%- else -%}
                               {{ description_text }}
@@ -351,8 +385,8 @@
                         {%- if variant_product.description != blank -%}
                           <div class="product-solutions__item-description">
                             {%- assign description_text = variant_product.description | strip_html -%}
-                            {%- if description_text.size > 300 -%}
-                              {{ description_text | truncate: 300, '...' }}
+                            {%- if description_text.size > 227 -%}
+                              {{ description_text | truncate: 227, '...' }}
                               <a href="{{ variant_product.url }}" class="product-solutions__learn-more">{{ 'general.continue_reading' | t | default: 'Learn more' }}</a>
                             {%- else -%}
                               {{ description_text }}
@@ -462,6 +496,62 @@
       "id": "color_scheme",
       "label": "t:sections.all.colors.label",
       "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Solution name styling"
+    },
+    {
+      "type": "range",
+      "id": "solution_name_font_size",
+      "min": 14,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "label": "Solution name font size",
+      "default": 22
+    },
+    {
+      "type": "checkbox",
+      "id": "solution_name_bold",
+      "label": "Solution name bold",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Group heading styling"
+    },
+    {
+      "type": "range",
+      "id": "group_heading_font_size",
+      "min": 12,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Group heading font size",
+      "default": 18
+    },
+    {
+      "type": "checkbox",
+      "id": "group_heading_bold",
+      "label": "Group heading bold",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Line separators"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_top_line",
+      "label": "Show line at top of section",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_bottom_line",
+      "label": "Show line at bottom of section",
+      "default": false
     },
     {
       "type": "header",

@@ -45,6 +45,12 @@
   margin-bottom: 2rem;
 }
 
+@media screen and (min-width: 750px) {
+  .product-solutions__group {
+    width: 90%;
+  }
+}
+
 .product-solutions__group:last-child {
   margin-bottom: 0;
 }
@@ -156,7 +162,7 @@
 
 /* Item Description */
 .product-solutions__item-description {
-  font-size: 0.875rem;
+  font-size: 1rem;
   line-height: 1.5;
   color: rgba(var(--color-foreground), 0.75);
 }
