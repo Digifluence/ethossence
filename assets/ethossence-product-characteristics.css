@@ -1,0 +1,68 @@
+/* Ethossence Product Characteristics Styles */
+
+.product-characteristics__blocks {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.product-characteristics__heading {
+  margin: 0 0 1rem 0;
+  text-align: center;
+}
+
+.product-characteristics__text {
+  margin-bottom: 1.5rem;
+  text-align: center;
+  max-width: 800px;
+}
+
+/* Characteristics Icons Container */
+.product-characteristics__icons {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin: 2rem 0;
+  padding: 1rem 0;
+  width: 100%;
+}
+
+.product-characteristics__icon-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.product-characteristics__icon-item img {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  display: block;
+}
+
+/* Responsive adjustments for smaller screens */
+@media screen and (max-width: 749px) {
+  .product-characteristics__icons {
+    gap: 15px;
+  }
+
+  .product-characteristics__icon-item img {
+    width: 70px;
+    height: 70px;
+  }
+}
+
+/* Extra small screens */
+@media screen and (max-width: 480px) {
+  .product-characteristics__icons {
+    gap: 10px;
+  }
+
+  .product-characteristics__icon-item img {
+    width: 60px;
+    height: 60px;
+  }
+}
