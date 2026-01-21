@@ -58,7 +58,11 @@
   endif
 -%}
 
-<pre>DEBUG TEMP: 2026-01-20 ETHOSSENCE PRODUCT SOLUTIONS SECTION 003 </pre>
+<pre>
+  DEBUG TEMP: 2026-01-20 ETHOSSENCE PRODUCT SOLUTIONS SECTION 004 
+  {{ has_solutions | prepend: 'Has Solutions: ' }}
+  {{ has_applicable_solutions | prepend: 'Has Applicable Solutions: ' }}
+</pre>
 
 {%- if has_solutions -%}
   {{ 'ethossence-product-solutions.css' | asset_url | stylesheet_tag }}
