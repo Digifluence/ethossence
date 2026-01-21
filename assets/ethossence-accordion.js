@@ -10,10 +10,16 @@
     const accordions = document.querySelectorAll('[data-ethossence-accordion]');
 
     accordions.forEach(function(accordion) {
+      // Skip if already initialized
+      if (accordion.hasAttribute('data-accordion-initialized')) return;
+
       const toggle = accordion.querySelector('[data-accordion-toggle]');
       const content = accordion.querySelector('[data-accordion-content]');
 
       if (!toggle || !content) return;
+
+      // Mark as initialized to prevent duplicate event listeners
+      accordion.setAttribute('data-accordion-initialized', 'true');
 
       // Set initial state - collapsed
       content.style.height = '0px';
@@ -21,6 +27,7 @@
 
       toggle.addEventListener('click', function(e) {
         e.preventDefault();
+        e.stopPropagation();
 
         const isExpanded = accordion.classList.contains('is-expanded');
 
@@ -88,6 +95,9 @@
   } else {
     initAccordions();
   }
+
+  // Fallback initialization with slight delay for deferred scripts
+  setTimeout(initAccordions, 100);
 
   // Re-initialize on Shopify section load (for theme editor)
   document.addEventListener('shopify:section:load', function(event) {

@@ -29,16 +29,21 @@
   background-color: rgba(var(--color-foreground), 0.15);
 }
 
-/* Toggle text states */
-.ethossence-accordion__toggle [data-collapse-text] {
+/* Toggle text states - initial collapsed state */
+[data-ethossence-accordion] .ethossence-accordion__toggle [data-collapse-text] {
   display: none;
 }
 
-.is-expanded .ethossence-accordion__toggle [data-expand-text] {
+[data-ethossence-accordion] .ethossence-accordion__toggle [data-expand-text] {
+  display: inline;
+}
+
+/* Expanded state */
+[data-ethossence-accordion].is-expanded .ethossence-accordion__toggle [data-expand-text] {
   display: none;
 }
 
-.is-expanded .ethossence-accordion__toggle [data-collapse-text] {
+[data-ethossence-accordion].is-expanded .ethossence-accordion__toggle [data-collapse-text] {
   display: inline;
 }
 
