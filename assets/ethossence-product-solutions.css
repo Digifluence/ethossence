@@ -8,6 +8,18 @@
   margin-bottom: 2rem;
 }
 
+.product-solutions__section-heading.left {
+  text-align: left;
+}
+
+.product-solutions__section-heading.center {
+  text-align: center;
+}
+
+.product-solutions__section-heading.right {
+  text-align: right;
+}
+
 /* No Solutions Message */
 .product-solutions__no-solutions {
   padding: 2rem;

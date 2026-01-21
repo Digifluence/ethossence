@@ -73,7 +73,7 @@
 
         {%- comment -%} Section Heading {%- endcomment -%}
         {%- if section.settings.heading != blank -%}
-          <h2 class="product-parts__section-heading {{ section.settings.heading_size }}">
+          <h2 class="product-parts__section-heading {{ section.settings.heading_size }} {{ section.settings.heading_alignment }}">
             {{ section.settings.heading }}
           </h2>
         {%- endif -%}
@@ -238,9 +238,12 @@
 
 {% schema %}
 {
-  "name": "Product parts",
+  "name": "Parts",
   "tag": "section",
   "class": "section",
+  "enabled_on": {
+    "templates": ["product"]
+  },
   "settings": [
     {
       "type": "collection",
@@ -248,9 +251,9 @@
       "label": "Collection"
     },
     {
-      "type": "text",
+      "type": "inline_richtext",
       "id": "heading",
-      "label": "Section heading",
+      "label": "Heading",
       "default": "Product Parts"
     },
     {
@@ -280,6 +283,26 @@
       ],
       "default": "h1",
       "label": "t:sections.all.heading_size.label"
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left",
+      "label": "Heading alignment"
     },
     {
       "type": "color_scheme",
@@ -376,7 +399,7 @@
   ],
   "presets": [
     {
-      "name": "Product parts",
+      "name": "Parts",
       "category": "Ethossence - products"
     }
   ]

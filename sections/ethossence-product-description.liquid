@@ -40,7 +40,20 @@
       justify-content: normal;
     }
 
-  }    
+  }
+
+  /* Heading alignment */
+  .rich-text__heading.left {
+    text-align: left;
+  }
+
+  .rich-text__heading.center {
+    text-align: center;
+  }
+
+  .rich-text__heading.right {
+    text-align: right;
+  }
 {%- endstyle -%}
 
 {%- assign animation_count = section.blocks.size |  plus: 1 -%}
@@ -51,7 +64,7 @@
          <div class="rich-text__blocks {{ section.settings.content_alignment }}">
             {%- for block in section.blocks -%}
                <h2
-                  class="rich-text__heading rte inline-richtext {{ block.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+                  class="rich-text__heading rte inline-richtext {{ block.settings.heading_size }} {{ block.settings.heading_alignment }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
                   {{ block.shopify_attributes }}
                   {% if settings.animations_reveal_on_scroll %}
                      data-cascade
@@ -77,7 +90,7 @@
 
 {% schema %}
 {
-   "name": "Product description",
+   "name": "Description",
    "tag": "section",
    "class": "section",
       "enabled_on": {
@@ -164,14 +177,14 @@
   "blocks": [
     {
       "type": "heading",
-      "name": "t:sections.rich-text.blocks.heading.name",
-      "limit": 3,
+      "name": "Heading",
+      "limit": 1,
       "settings": [
         {
           "type": "inline_richtext",
           "id": "heading",
           "default": "Description",
-          "label": "Description"
+          "label": "Heading"
         },
         {
           "type": "select",
@@ -200,13 +213,45 @@
           ],
           "default": "h1",
           "label": "t:sections.all.heading_size.label"
+        },
+        {
+          "type": "select",
+          "id": "heading_alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "left",
+          "label": "Heading alignment"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Rich text",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "paragraph",
+          "label": "Paragraph",
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Product description",
+      "name": "Description",
       "category": "Ethossence - products"
     }
   ]

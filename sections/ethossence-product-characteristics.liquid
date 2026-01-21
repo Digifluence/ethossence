@@ -25,7 +25,7 @@
         {%- case block.type -%}
           {%- when 'heading' -%}
             <h2
-              class="product-characteristics__heading inline-richtext {{ block.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+              class="product-characteristics__heading inline-richtext {{ block.settings.heading_size }} {{ block.settings.heading_alignment }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
               {{ block.shopify_attributes }}
               {% if settings.animations_reveal_on_scroll %}
                 data-cascade
@@ -44,7 +44,7 @@
                 style="--animation-order: {{ forloop.index }};"
               {% endif %}
             >
-              {{ block.settings.text }}
+              {{ block.settings.paragraph }}
             </div>
 
           {%- when 'characteristics' -%}
@@ -150,6 +150,26 @@
           ],
           "default": "h1",
           "label": "t:sections.all.heading_size.label"
+        },
+        {
+          "type": "select",
+          "id": "heading_alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "left",
+          "label": "Heading alignment"
         }
       ]
     },
@@ -160,8 +180,8 @@
       "settings": [
         {
           "type": "richtext",
-          "id": "text",
-          "label": "Content"
+          "id": "paragraph",
+          "label": "Paragraph"
         }
       ]
     },

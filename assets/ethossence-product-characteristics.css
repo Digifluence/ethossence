@@ -8,7 +8,19 @@
 
 .product-characteristics__heading {
   margin: 0 0 1rem 0;
+  width: 100%;
+}
+
+.product-characteristics__heading.left {
+  text-align: left;
+}
+
+.product-characteristics__heading.center {
   text-align: center;
+}
+
+.product-characteristics__heading.right {
+  text-align: right;
 }
 
 .product-characteristics__text {

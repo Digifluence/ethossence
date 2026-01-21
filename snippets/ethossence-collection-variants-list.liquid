@@ -73,7 +73,7 @@
               {%- if collection -%}
                 {%- for collection_product in collection.products -%}
                   {%- for variant in collection_product.variants -%}
-                    {%- render 'ethossence-product-collection-variants-list-row',
+                    {%- render 'ethossence-collection-variants-list-row',
                         item: variant,
                         image: variant.image,
                         sku: variant.sku,

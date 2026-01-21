@@ -6,6 +6,18 @@
   margin: 0 0 1.5rem;
 }
 
+.product-specifications__heading.left {
+  text-align: left;
+}
+
+.product-specifications__heading.center {
+  text-align: center;
+}
+
+.product-specifications__heading.right {
+  text-align: right;
+}
+
 .product-specifications__introduction {
   margin: 0 0 2rem;
   max-width: 100%;

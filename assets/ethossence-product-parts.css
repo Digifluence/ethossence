@@ -8,6 +8,18 @@
   margin-bottom: 2rem;
 }
 
+.product-parts__section-heading.left {
+  text-align: left;
+}
+
+.product-parts__section-heading.center {
+  text-align: center;
+}
+
+.product-parts__section-heading.right {
+  text-align: right;
+}
+
 /* Group Styles */
 .product-parts__group {
   margin-bottom: 2rem;

@@ -23,14 +23,14 @@
 
     {% if specifications != blank %}
       {%- if section.settings.heading != blank -%}
-        <h2 class="product-specifications__heading inline-richtext {{ section.settings.heading_size }}">
+        <h2 class="product-specifications__heading inline-richtext {{ section.settings.heading_size }} {{ section.settings.heading_alignment }}">
           {{ section.settings.heading }}
         </h2>
       {%- endif -%}
 
-      {%- if section.settings.introduction != blank -%}
+      {%- if section.settings.paragraph != blank -%}
         <div class="product-specifications__introduction rte">
-          {{ section.settings.introduction }}
+          {{ section.settings.paragraph }}
         </div>
       {%- endif -%}
 
@@ -62,7 +62,7 @@
 
 {% schema %}
 {
-  "name": "Product specifications",
+  "name": "Specifications",
    "tag": "section",
    "class": "section",
       "enabled_on": {
@@ -104,10 +104,29 @@
       "label": "t:sections.all.heading_size.label"
     },
     {
+      "type": "select",
+      "id": "heading_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left",
+      "label": "Heading alignment"
+    },
+    {
       "type": "richtext",
-      "id": "introduction",
-      "label": "Introduction paragraph",
-      "info": "Optional introduction text to display before the specifications"
+      "id": "paragraph",
+      "label": "Paragraph"
     },
     {
       "type": "color_scheme",
@@ -142,7 +161,7 @@
   ],
   "presets": [
     {
-      "name": "Product specifications",
+      "name": "Specifications",
       "category": "Ethossence - products"
     }
   ]
