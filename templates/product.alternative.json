@@ -94,7 +94,7 @@
         "text_MQFpmU": {
           "type": "text",
           "settings": {
-            "paragraph": ""
+            "paragraph": "<p>Different welding process?  View our complete <a href=\"/collections/meltview-weld-monitoring-cameras-cro\" title=\"Weld Monitoring Cameras\">welding camera line</a>, or <a href=\"/pages/welding-camera-consultation-ai-welding-introduction\" title=\"Appointment Booking: Sales Introduction Consultation\">schedule an online meeting</a> with one of our welding engineers to discuss all our solutions include custom cameras.</p>"
           }
         }
       },
@@ -105,8 +105,8 @@
       "name": "Characteristics",
       "settings": {
         "color_scheme": "",
-        "padding_top": 40,
-        "padding_bottom": 52
+        "padding_top": 24,
+        "padding_bottom": 24
       }
     },
     "main": {
@@ -201,8 +201,8 @@
         "content_alignment": "left",
         "color_scheme": "",
         "full_width": true,
-        "padding_top": 40,
-        "padding_bottom": 52
+        "padding_top": 48,
+        "padding_bottom": 24
       }
     },
     "ethossence_product_specifications_xywkNW": {
@@ -214,8 +214,8 @@
         "heading_alignment": "left",
         "paragraph": "",
         "color_scheme": "",
-        "padding_top": 40,
-        "padding_bottom": 52
+        "padding_top": 24,
+        "padding_bottom": 24
       }
     },
     "ethossence_product_solutions_NacJP7": {
@@ -227,13 +227,13 @@
         "heading_alignment": "left",
         "color_scheme": "",
         "solution_name_font_size": 22,
-        "solution_name_bold": false,
+        "solution_name_bold": true,
         "group_heading_font_size": 18,
-        "group_heading_bold": false,
-        "show_top_line": false,
-        "show_bottom_line": false,
-        "padding_top": 36,
-        "padding_bottom": 36
+        "group_heading_bold": true,
+        "show_top_line": true,
+        "show_bottom_line": true,
+        "padding_top": 24,
+        "padding_bottom": 24
       }
     },
     "ethossence_product_parts_gGR6pW": {
@@ -247,13 +247,13 @@
         "color_scheme": "",
         "show_collection_description": false,
         "group_heading_font_size": 18,
-        "group_heading_bold": false,
+        "group_heading_bold": true,
         "alternate_row_colors": false,
         "alternate_row_color": "#f5f5f5",
-        "show_top_line": false,
-        "show_bottom_line": false,
-        "padding_top": 36,
-        "padding_bottom": 36
+        "show_top_line": true,
+        "show_bottom_line": true,
+        "padding_top": 0,
+        "padding_bottom": 24
       }
     },
     "featured_collection_t9hYGD": {
