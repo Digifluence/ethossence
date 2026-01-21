@@ -267,7 +267,7 @@
       }
     },
     "ethossence_product_components_V6NUmf": {
-      "type": "ethossence-product-components",
+      "type": "ethossence-collection-variants-list",
       "name": "Product components",
       "settings": {
         "heading": "Replacement parts",
