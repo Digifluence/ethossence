@@ -315,13 +315,12 @@
     },
     "ethossence_product_components_xLHezU": {
       "type": "ethossence-product-components",
-      "disabled": true,
       "name": "Product components",
       "settings": {
         "heading": "Product Components",
         "heading_size": "h1",
         "description": "",
-        "collection": "",
+        "collection": "welding-camera-monitors",
         "variants_per_page": 50,
         "show_image": false,
         "show_sku": false,
