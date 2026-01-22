@@ -215,7 +215,7 @@
         "heading_alignment": "left",
         "paragraph": "",
         "color_scheme": "",
-        "enable_accordion": true,
+        "enable_accordion": false,
         "padding_top": 24,
         "padding_bottom": 0
       }
