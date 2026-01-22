@@ -260,12 +260,28 @@
         "padding_bottom": 0
       }
     },
+    "ethossence_image_resources_M3zPr7": {
+      "type": "ethossence-image-resources",
+      "name": "Image resources",
+      "settings": {
+        "heading": "Image resources",
+        "heading_size": "h1",
+        "color_scheme": "",
+        "include_image_title": true,
+        "title_size": "h3",
+        "include_image_description": true,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
     "ethossence_video_resources_ikQQqp": {
       "type": "ethossence-video-resources",
       "name": "Video resources",
       "settings": {
         "heading": "Video resources",
-        "heading_size": "h2",
+        "heading_size": "h1",
         "color_scheme": "",
         "include_video_title": true,
         "title_size": "h3",
@@ -356,22 +372,6 @@
       ],
       "settings": {
         "include_margins": true
-      }
-    },
-    "ethossence_image_resources_M3zPr7": {
-      "type": "ethossence-image-resources",
-      "name": "Image resources",
-      "settings": {
-        "heading": "Image resources",
-        "heading_size": "h2",
-        "color_scheme": "",
-        "include_image_title": true,
-        "title_size": "h3",
-        "include_image_description": true,
-        "columns_desktop": 4,
-        "columns_mobile": "2",
-        "padding_top": 28,
-        "padding_bottom": 28
       }
     }
   },
