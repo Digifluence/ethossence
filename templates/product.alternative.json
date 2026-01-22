@@ -260,6 +260,18 @@
         "padding_bottom": 0
       }
     },
+    "ethossence_faqs_WNR4JJ": {
+      "type": "ethossence-faqs",
+      "name": "FAQS",
+      "settings": {
+        "heading": "Frequently Asked Questions",
+        "heading_size": "h1",
+        "heading_alignment": "left",
+        "color_scheme": "",
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
     "featured_collection_t9hYGD": {
       "type": "featured-collection",
       "name": "t:sections.featured-collection.presets.name",
@@ -327,18 +339,6 @@
       ],
       "settings": {
         "include_margins": true
-      }
-    },
-    "ethossence_faqs_WNR4JJ": {
-      "type": "ethossence-faqs",
-      "name": "FAQS",
-      "settings": {
-        "heading": "Frequently Asked Questions",
-        "heading_size": "h2",
-        "heading_alignment": "center",
-        "color_scheme": "",
-        "padding_top": 28,
-        "padding_bottom": 28
       }
     }
   },
