@@ -84,37 +84,12 @@
         "padding_bottom": 0
       }
     },
-    "ethossence_product_characteristics_bey7JG": {
-      "type": "ethossence-product-characteristics",
-      "blocks": {
-        "characteristics_iwmJkE": {
-          "type": "characteristics",
-          "settings": {}
-        },
-        "text_MQFpmU": {
-          "type": "text",
-          "settings": {
-            "paragraph": "<p>Different welding process?  View our complete <a href=\"/collections/meltview-weld-monitoring-cameras-cro\" title=\"Weld Monitoring Cameras\">welding camera line</a>, or <a href=\"/pages/welding-camera-consultation-ai-welding-introduction\" title=\"Appointment Booking: Sales Introduction Consultation\">schedule an online meeting</a> with one of our welding engineers to discuss all our solutions include custom cameras.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "characteristics_iwmJkE",
-        "text_MQFpmU"
-      ],
-      "name": "Characteristics",
-      "settings": {
-        "color_scheme": "",
-        "enable_accordion": false,
-        "padding_top": 24,
-        "padding_bottom": 24
-      }
-    },
     "main": {
       "type": "ethossence-main-product",
       "blocks": {
         "title": {
           "type": "title",
+          "disabled": true,
           "settings": {}
         },
         "variant_list_kNxW34": {
@@ -180,6 +155,32 @@
         "padding_bottom": 12
       }
     },
+    "ethossence_product_characteristics_bey7JG": {
+      "type": "ethossence-product-characteristics",
+      "blocks": {
+        "characteristics_iwmJkE": {
+          "type": "characteristics",
+          "settings": {}
+        },
+        "text_MQFpmU": {
+          "type": "text",
+          "settings": {
+            "paragraph": "<p>Different welding process?  View our complete <a href=\"/collections/meltview-weld-monitoring-cameras-cro\" title=\"Weld Monitoring Cameras\">welding camera line</a>, or <a href=\"/pages/welding-camera-consultation-ai-welding-introduction\" title=\"Appointment Booking: Sales Introduction Consultation\">schedule an online meeting</a> with one of our welding engineers to discuss all our solutions include custom cameras.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "characteristics_iwmJkE",
+        "text_MQFpmU"
+      ],
+      "name": "Characteristics",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "enable_accordion": false,
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
+    },
     "ethossence_product_description_yWrPdG": {
       "type": "ethossence-product-description",
       "blocks": {
@@ -224,17 +225,17 @@
       "type": "ethossence-product-solutions",
       "name": "Solutions",
       "settings": {
-        "heading": "Recommended Solutions",
+        "heading": "Build a Complete System",
         "heading_size": "h1",
         "heading_alignment": "left",
         "color_scheme": "",
         "solution_name_font_size": 22,
         "solution_name_bold": true,
         "group_heading_font_size": 18,
-        "group_heading_bold": true,
-        "show_top_line": false,
+        "group_heading_bold": false,
+        "show_top_line": true,
         "show_bottom_line": false,
-        "enable_accordion": true,
+        "enable_accordion": false,
         "padding_top": 24,
         "padding_bottom": 0
       }
@@ -255,7 +256,7 @@
         "alternate_row_color": "#f5f5f5",
         "show_top_line": false,
         "show_bottom_line": false,
-        "enable_accordion": true,
+        "enable_accordion": false,
         "padding_top": 24,
         "padding_bottom": 0
       }
@@ -285,8 +286,8 @@
         "color_scheme": "",
         "include_video_title": true,
         "title_size": "h3",
-        "include_video_description": true,
-        "columns_desktop": 2,
+        "include_video_description": false,
+        "columns_desktop": 4,
         "columns_mobile": "1",
         "lazy_load": true,
         "padding_top": 28,
@@ -379,8 +380,8 @@
     "image_banner_tkihzn",
     "ethossence_breadcrumbs_X64tn3",
     "rich_text_d6Vjce",
-    "ethossence_product_characteristics_bey7JG",
     "main",
+    "ethossence_product_characteristics_bey7JG",
     "ethossence_product_description_yWrPdG",
     "ethossence_product_specifications_xywkNW",
     "ethossence_product_solutions_NacJP7",
