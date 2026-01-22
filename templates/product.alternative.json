@@ -260,6 +260,23 @@
         "padding_bottom": 0
       }
     },
+    "ethossence_video_resources_ikQQqp": {
+      "type": "ethossence-video-resources",
+      "name": "Video resources",
+      "settings": {
+        "heading": "Video resources",
+        "heading_size": "h2",
+        "color_scheme": "",
+        "include_video_title": true,
+        "title_size": "h3",
+        "include_video_description": true,
+        "columns_desktop": 2,
+        "columns_mobile": "1",
+        "lazy_load": true,
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
     "ethossence_faqs_WNR4JJ": {
       "type": "ethossence-faqs",
       "name": "FAQS",
@@ -340,6 +357,22 @@
       "settings": {
         "include_margins": true
       }
+    },
+    "ethossence_image_resources_M3zPr7": {
+      "type": "ethossence-image-resources",
+      "name": "Image resources",
+      "settings": {
+        "heading": "Image resources",
+        "heading_size": "h2",
+        "color_scheme": "",
+        "include_image_title": true,
+        "title_size": "h3",
+        "include_image_description": true,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
     }
   },
   "order": [
@@ -352,6 +385,8 @@
     "ethossence_product_specifications_xywkNW",
     "ethossence_product_solutions_NacJP7",
     "ethossence_product_parts_gGR6pW",
+    "ethossence_image_resources_M3zPr7",
+    "ethossence_video_resources_ikQQqp",
     "ethossence_faqs_WNR4JJ",
     "featured_collection_t9hYGD",
     "related-products",
