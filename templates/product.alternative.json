@@ -328,6 +328,18 @@
       "settings": {
         "include_margins": true
       }
+    },
+    "ethossence_faqs_WNR4JJ": {
+      "type": "ethossence-faqs",
+      "name": "FAQS",
+      "settings": {
+        "heading": "Frequently Asked Questions",
+        "heading_size": "h2",
+        "heading_alignment": "center",
+        "color_scheme": "",
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
     }
   },
   "order": [
@@ -340,6 +352,7 @@
     "ethossence_product_specifications_xywkNW",
     "ethossence_product_solutions_NacJP7",
     "ethossence_product_parts_gGR6pW",
+    "ethossence_faqs_WNR4JJ",
     "featured_collection_t9hYGD",
     "related-products",
     "17564162700878961e"
