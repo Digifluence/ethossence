@@ -26,6 +26,17 @@
         "show_text_below": true
       }
     },
+    "ethossence_content_headings_4WYTgk": {
+      "type": "ethossence-content-headings",
+      "name": "Content headings",
+      "settings": {
+        "heading_size": "h1",
+        "subheading_size": "h2",
+        "color_scheme": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
     "banner": {
       "type": "main-collection-banner",
       "settings": {
@@ -58,15 +69,17 @@
         "padding_bottom": 36
       }
     },
-    "ethossence_content_headings_4WYTgk": {
-      "type": "ethossence-content-headings",
-      "name": "Content headings",
+    "ethossence_page_additional_TFnztm": {
+      "type": "ethossence-page-additional",
+      "name": "Page additional",
       "settings": {
+        "heading_hide": false,
         "heading_size": "h1",
-        "subheading_size": "h2",
         "color_scheme": "",
         "padding_top": 36,
-        "padding_bottom": 36
+        "padding_bottom": 36,
+        "authoriz_enabled": false,
+        "authoriz_require_msg": ""
       }
     }
   },
@@ -74,6 +87,7 @@
     "image_banner_MtL38k",
     "ethossence_content_headings_4WYTgk",
     "banner",
-    "product-grid"
+    "product-grid",
+    "ethossence_page_additional_TFnztm"
   ]
 }
