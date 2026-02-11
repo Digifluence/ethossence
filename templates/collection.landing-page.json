@@ -1,6 +1,6 @@
 /*
  * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated!
+ * IMPORTANT: The contents of this file are auto-generated.
  *
  * This file may be updated by the Shopify admin theme editor
  * or related systems. Please exercise caution as any changes
@@ -174,19 +174,6 @@
         "padding_top": 36,
         "padding_bottom": 36
       }
-    },
-    "ethossence_page_additional_yQVzxb": {
-      "type": "ethossence-page-additional",
-      "name": "Page additional",
-      "settings": {
-        "heading_hide": false,
-        "heading_size": "h1",
-        "color_scheme": "",
-        "padding_top": 36,
-        "padding_bottom": 36,
-        "authoriz_enabled": false,
-        "authoriz_require_msg": ""
-      }
     }
   },
   "order": [
@@ -195,7 +182,6 @@
     "ethossence_content_headings_rnXBtt",
     "banner",
     "product-grid",
-    "ethossence_page_additional_yQVzxb",
     "rich_text_T8f7yr",
     "featured_collection_X3Cypr",
     "featured_collection_EQ778h"
