@@ -1,0 +1,207 @@
+{%- liquid
+  # ETHOSSENCE ~ MOD: Added authorization logic to control page visibility based on customer metafields and page metafields.
+  # Modified to use metafield for page selection and support multiple pages
+
+  # Get the list of pages from the parent page's metafield
+  assign selected_pages = blank
+
+  if template contains 'page'
+    assign selected_pages = page.metafields.ethossence.page_additional.value
+  elsif template contains 'article'
+    assign selected_pages = article.metafields.ethossence.page_additional.value
+  elsif template contains 'blog'
+    assign selected_pages = blog.metafields.ethossence.page_additional.value
+  elsif template contains 'collection'
+    assign selected_pages = collection.metafields.ethossence.page_additional.value
+  elsif template contains 'product'
+    assign selected_pages = product.metafields.ethossence.page_additional.value
+  endif
+
+-%}
+
+{{ 'section-main-page.css' | asset_url | stylesheet_tag }}
+{{ 'ethossence-content-grid.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  .page-additional-separator {
+    margin: 4rem 0;
+    border-top: 0.1rem solid rgba(var(--color-foreground), 0.08);
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width section-{{ section.id }}-padding">
+
+    {%- if selected_pages != blank -%}
+      {%- for selected_page in selected_pages -%}
+
+        {%- comment -%} Check authorization for this page {%- endcomment -%}
+        {%- capture auth_result -%}
+          {%- render 'ethossence-authorization',
+            resource: selected_page,
+            authorization_enabled: section.settings.authoriz_enabled
+          -%}
+        {%- endcapture -%}
+        {%- assign auth_result_clean = auth_result | strip -%}
+        {%- if auth_result_clean == 'true' -%}
+          {%- assign display_content = true -%}
+        {%- else -%}
+          {%- assign display_content = false -%}
+        {%- endif -%}
+
+        {%- if display_content -%}
+          {%- assign img_hero_class = selected_page.metafields.ethossence.img_hero_placement | prepend: 'img-' | replace: ' ', '-' | replace: '-|-', ' img-' | downcase | strip -%}
+
+          {%- unless forloop.first -%}
+            <div class="page-additional-separator"></div>
+          {%- endunless -%}
+
+          {%- if section.settings.heading_hide != true -%}
+            <h2 class="page-title {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+              {%- if selected_page.title != blank -%}
+                {{ selected_page.title | escape }}
+              {%- else -%}
+                {{ 'sections.page.title' | t }}
+              {%- endif -%}
+            </h2>
+          {%- endif -%}
+
+          <div class="rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+            {%- render 'ethossence-content-display',
+              content: selected_page.content,
+              img_hero: selected_page.metafields.ethossence.img_hero,
+              img_hero_class: img_hero_class
+            -%}
+          </div>
+
+        {%- else -%}
+          {%- comment -%} Page not authorized - show message {%- endcomment -%}
+          {%- unless forloop.first -%}
+            <div class="page-additional-separator"></div>
+          {%- endunless -%}
+
+          <div class="rte">
+            <p>{{ section.settings.authoriz_require_msg }}</p>
+          </div>
+        {%- endif -%}
+
+      {%- endfor -%}
+    {%- endif -%}
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Page additional",
+  "tag": "section",
+  "class": "section",
+  "enabled_on": {
+    "templates": ["article", "blog", "collection", "page", "product"]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "This section displays additional pages from the metafield 'ethossence.page_additional' (List of Pages). Add this metafield to your page, article, blog, collection, or product to display additional page content."
+    },
+    {
+      "type": "checkbox",
+      "id": "heading_hide",
+      "default": false,
+      "label": "Hide page titles"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_size.options__1.label"
+        },
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_size.options__2.label"
+        },
+        {
+          "value": "h0",
+          "label": "t:sections.all.heading_size.options__3.label"
+        },
+        {
+          "value": "hxl",
+          "label": "t:sections.all.heading_size.options__4.label"
+        },
+        {
+          "value": "hxxl",
+          "label": "t:sections.all.heading_size.options__5.label"
+        }
+      ],
+      "default": "h1",
+      "label": "t:sections.all.heading_size.label"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    },
+    {
+      "type": "header",
+      "content": "Authorization settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "authoriz_enabled",
+      "default": false,
+      "label": "Enforce authorization to view"
+    },
+    {
+      "type": "richtext",
+      "id": "authoriz_require_msg",
+      "label": "Authorization required message",
+      "info": "Message to display when authorization is required but not met"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Page additional",
+      "category": "Ethossence"
+    }
+  ]
+}
+{% endschema %}
