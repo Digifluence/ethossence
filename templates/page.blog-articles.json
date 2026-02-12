@@ -26,6 +26,27 @@
         "show_text_below": true
       }
     },
+    "ethossence_breadcrumbs_RhCmb3": {
+      "type": "ethossence-breadcrumbs",
+      "name": "Breadcrumbs",
+      "settings": {
+        "color_scheme": "scheme-3",
+        "full_width": false,
+        "padding_top": 12,
+        "padding_bottom": 12
+      }
+    },
+    "ethossence_content_headings_MgbHdj": {
+      "type": "ethossence-content-headings",
+      "name": "Content headings",
+      "settings": {
+        "heading_size": "h1",
+        "subheading_size": "h2",
+        "color_scheme": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
     "main": {
       "type": "main-page",
       "settings": {
@@ -36,44 +57,22 @@
         "authoriz_require_msg": ""
       }
     },
-    "ethossence_image_resources_NGcFLE": {
-      "type": "ethossence-image-resources",
-      "name": "Image resources",
+    "featured_blog_dCtMdL": {
+      "type": "featured-blog",
+      "name": "t:sections.featured-blog.presets.name",
       "settings": {
-        "heading": "",
-        "heading_size": "h2",
-        "color_scheme": "",
-        "include_image_title": false,
-        "title_size": "h3",
-        "include_image_description": true,
-        "columns_desktop": 3,
-        "columns_mobile": "2",
-        "padding_top": 12,
-        "padding_bottom": 28
-      }
-    },
-    "ethossence_faqs_jqtdje": {
-      "type": "ethossence-faqs",
-      "name": "FAQS",
-      "settings": {
-        "heading": "Frequently Asked Questions",
+        "blog": "insight",
+        "post_limit": 3,
+        "heading": "Blog posts",
         "heading_size": "h1",
-        "heading_alignment": "left",
+        "columns_desktop": 3,
+        "show_view_all": true,
+        "show_image": true,
+        "show_date": true,
+        "show_author": false,
         "color_scheme": "",
-        "padding_top": 12,
-        "padding_bottom": 12
-      }
-    },
-    "ethossence_embed_script_EDwrMP": {
-      "type": "ethossence-embed-script",
-      "name": "Embed Script",
-      "settings": {
-        "heading": "",
-        "heading_size": "h2",
-        "heading_alignment": "center",
-        "color_scheme": "",
-        "padding_top": 28,
-        "padding_bottom": 28
+        "padding_top": 36,
+        "padding_bottom": 36
       }
     },
     "multicolumn_3f88yA": {
@@ -134,11 +133,11 @@
   },
   "order": [
     "image_banner_g8wC6R",
+    "ethossence_breadcrumbs_RhCmb3",
+    "ethossence_content_headings_MgbHdj",
     "main",
-    "ethossence_image_resources_NGcFLE",
-    "ethossence_faqs_jqtdje",
-    "ethossence_embed_script_EDwrMP",
+    "featured_blog_dCtMdL",
     "multicolumn_3f88yA",
-    "174017485838edd9b6",
+    "174017485838edd9b6"
   ]
 }
