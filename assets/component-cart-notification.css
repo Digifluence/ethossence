@@ -121,3 +121,8 @@
   margin-bottom: 0.5rem;
   margin-top: 0;
 }
+
+.cart-notification .button--primary:not([disabled]):hover {
+  background-color: rgba(var(--color-button), 0.85);
+  color: rgb(var(--color-button-text));
+}
