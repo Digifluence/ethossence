@@ -72,6 +72,13 @@
     "rich_text_4Wi8Lx": {
       "type": "rich-text",
       "blocks": {
+        "heading_kfVB4V": {
+          "type": "heading",
+          "settings": {
+            "heading": "Technical Support Pages",
+            "heading_size": "h1"
+          }
+        },
         "text_tcqrUd": {
           "type": "text",
           "settings": {
@@ -80,16 +87,17 @@
         }
       },
       "block_order": [
+        "heading_kfVB4V",
         "text_tcqrUd"
       ],
       "name": "t:sections.rich-text.presets.name",
       "settings": {
-        "desktop_content_position": "center",
-        "content_alignment": "center",
+        "desktop_content_position": "left",
+        "content_alignment": "left",
         "color_scheme": "",
         "full_width": true,
-        "padding_top": 40,
-        "padding_bottom": 52
+        "padding_top": 12,
+        "padding_bottom": 12
       }
     },
     "174017485838edd9b6": {
