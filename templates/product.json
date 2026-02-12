@@ -239,25 +239,6 @@
         "padding_bottom": 0
       }
     },
-    "ethossence_product_solutions_9Gt4cU": {
-      "type": "ethossence-product-solutions",
-      "name": "Solutions",
-      "settings": {
-        "heading": "Recommended Solutions",
-        "heading_size": "h1",
-        "heading_alignment": "left",
-        "color_scheme": "",
-        "solution_name_font_size": 22,
-        "solution_name_bold": false,
-        "group_heading_font_size": 18,
-        "group_heading_bold": false,
-        "show_top_line": false,
-        "show_bottom_line": false,
-        "enable_accordion": false,
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
     "ethossence_image_resources_EJwUk6": {
       "type": "ethossence-image-resources",
       "name": "Image resources",
@@ -289,6 +270,25 @@
         "lazy_load": true,
         "padding_top": 28,
         "padding_bottom": 28
+      }
+    },
+    "ethossence_product_solutions_9Gt4cU": {
+      "type": "ethossence-product-solutions",
+      "name": "Solutions",
+      "settings": {
+        "heading": "Build a Complete System",
+        "heading_size": "h1",
+        "heading_alignment": "left",
+        "color_scheme": "",
+        "solution_name_font_size": 22,
+        "solution_name_bold": false,
+        "group_heading_font_size": 18,
+        "group_heading_bold": false,
+        "show_top_line": false,
+        "show_bottom_line": false,
+        "enable_accordion": false,
+        "padding_top": 36,
+        "padding_bottom": 36
       }
     },
     "featured_collection_watGFE": {
@@ -399,9 +399,9 @@
     "ethossence_product_desc_3FH7xM",
     "ethossence_product_specifications_eYJQ4A",
     "ethossence_product_characteristics_jMVVr3",
-    "ethossence_product_solutions_9Gt4cU",
     "ethossence_image_resources_EJwUk6",
     "ethossence_video_resources_QWP7UH",
+    "ethossence_product_solutions_9Gt4cU",
     "featured_collection_watGFE",
     "featured_collection_MYgRwP",
     "related-products",
