@@ -59,7 +59,7 @@
     "product-grid": {
       "type": "ethossence-main-collection-product-grid",
       "settings": {
-        "products_per_page": 16,
+        "products_per_page": 20,
         "columns_desktop": 4,
         "columns_mobile": "2",
         "color_scheme": "scheme-1",
@@ -77,6 +77,19 @@
         "enable_sorting": false,
         "padding_top": 36,
         "padding_bottom": 36
+      }
+    },
+    "ethossence_page_additional_yQVzxb": {
+      "type": "ethossence-page-additional",
+      "name": "Page additional",
+      "settings": {
+        "heading_hide": false,
+        "heading_size": "h1",
+        "color_scheme": "",
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "authoriz_enabled": false,
+        "authoriz_require_msg": ""
       }
     },
     "rich_text_T8f7yr": {
@@ -173,19 +186,6 @@
         "swipe_on_mobile": true,
         "padding_top": 36,
         "padding_bottom": 36
-      }
-    },
-    "ethossence_page_additional_yQVzxb": {
-      "type": "ethossence-page-additional",
-      "name": "Page additional",
-      "settings": {
-        "heading_hide": false,
-        "heading_size": "h1",
-        "color_scheme": "",
-        "padding_top": 36,
-        "padding_bottom": 36,
-        "authoriz_enabled": false,
-        "authoriz_require_msg": ""
       }
     }
   },
