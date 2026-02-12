@@ -16,10 +16,10 @@
           "type": "buttons",
           "settings": {
             "button_label_1": "Ask a Question",
-            "button_link_1": "",
+            "button_link_1": "shopify://pages/contact",
             "button_style_secondary_1": false,
             "button_label_2": "Product Finder",
-            "button_link_2": "",
+            "button_link_2": "shopify://pages/meltview-camera-finder",
             "button_style_secondary_2": false
           }
         }
@@ -256,7 +256,7 @@
         "alternate_row_color": "#f5f5f5",
         "show_top_line": false,
         "show_bottom_line": false,
-        "enable_accordion": false,
+        "enable_accordion": true,
         "padding_top": 24,
         "padding_bottom": 0
       }
