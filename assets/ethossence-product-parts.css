@@ -162,7 +162,7 @@
 
 /* Item Description */
 .product-parts__item-description {
-  font-size: 1rem;
+  font-size: 1.27rem;
   line-height: 1.5;
   color: rgba(var(--color-foreground), 0.75);
 }

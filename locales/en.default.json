@@ -39,7 +39,7 @@
       }
     },
     "continue_shopping": "Find products",
-    "continue_reading": "Learn more",
+    "continue_reading": "View product",
     "pagination": {
       "label": "Pagination",
       "page": "Page {{ number }}",

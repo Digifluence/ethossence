@@ -190,9 +190,9 @@
                 {%- if collection_product.description != blank -%}
                   <div class="product-parts__item-description">
                     {%- assign description_text = collection_product.description | strip_html -%}
-                    {%- if description_text.size > 227 -%}
-                      {{ description_text | truncate: 227, '...' }}
-                      <a href="{{ collection_product.url }}" class="product-parts__learn-more">{{ 'general.continue_reading' | t | default: 'Learn more' }}</a>
+                    {%- if description_text.size > 174 -%}
+                      {{ description_text | truncate: 174, '...' }}
+                      <a href="{{ collection_product.url }}" class="product-parts__learn-more">{{ 'general.continue_reading' | t | default: 'View product' }}</a>
                     {%- else -%}
                       {{ description_text }}
                     {%- endif -%}

@@ -1274,7 +1274,7 @@ button.shopify-payment-button__button--unbranded {
 .button:not([disabled]):hover,
 .shopify-challenge__button:hover,
 .customer button:hover {
-  background-color: rgba(var(--color-button-text), 0.1);
+  background-color: rgba(var(--color-button), 0.85);
 }
 
 .button--secondary:after {
