@@ -286,6 +286,27 @@
         "group_heading_bold": false,
         "show_top_line": false,
         "show_bottom_line": false,
+        "enable_accordion": true,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "ethossence_product_parts_Yp7GYc": {
+      "type": "ethossence-product-parts",
+      "name": "Parts",
+      "settings": {
+        "collection": "",
+        "heading": "Product Parts",
+        "heading_size": "h1",
+        "heading_alignment": "left",
+        "color_scheme": "",
+        "show_collection_description": true,
+        "group_heading_font_size": 18,
+        "group_heading_bold": false,
+        "alternate_row_colors": false,
+        "alternate_row_color": "#f5f5f5",
+        "show_top_line": false,
+        "show_bottom_line": false,
         "enable_accordion": false,
         "padding_top": 36,
         "padding_bottom": 36
@@ -293,6 +314,7 @@
     },
     "featured_collection_watGFE": {
       "type": "featured-collection",
+      "disabled": true,
       "name": "t:sections.featured-collection.presets.name",
       "settings": {
         "collection": "camera-system-meltview-pixi",
@@ -402,6 +424,7 @@
     "ethossence_image_resources_EJwUk6",
     "ethossence_video_resources_QWP7UH",
     "ethossence_product_solutions_9Gt4cU",
+    "ethossence_product_parts_Yp7GYc",
     "featured_collection_watGFE",
     "featured_collection_MYgRwP",
     "related-products",
