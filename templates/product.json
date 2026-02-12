@@ -295,7 +295,7 @@
       "type": "ethossence-product-parts",
       "name": "Parts",
       "settings": {
-        "collection": "",
+        "collection": "meltview®-dart2-replacement-parts",
         "heading": "Product Parts",
         "heading_size": "h1",
         "heading_alignment": "left",
