@@ -1,0 +1,144 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "image_banner_g8wC6R": {
+      "type": "image-banner",
+      "name": "t:sections.image-banner.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/weld_porosity_detection_meltview_torq-2.jpg",
+        "image_overlay_opacity": 0,
+        "image_height": "small",
+        "image_behavior": "ambient",
+        "desktop_content_position": "middle-center",
+        "desktop_content_alignment": "center",
+        "show_text_box": true,
+        "color_scheme": "",
+        "stack_images_on_mobile": true,
+        "mobile_content_alignment": "center",
+        "show_text_below": true
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "hide_title": true,
+        "padding_top": 0,
+        "padding_bottom": 12,
+        "authoriz_enabled": false,
+        "authoriz_require_msg": ""
+      }
+    },
+    "ethossence_image_resources_NGcFLE": {
+      "type": "ethossence-image-resources",
+      "name": "Image resources",
+      "settings": {
+        "heading": "",
+        "heading_size": "h2",
+        "color_scheme": "",
+        "include_image_title": false,
+        "title_size": "h3",
+        "include_image_description": true,
+        "columns_desktop": 3,
+        "columns_mobile": "2",
+        "padding_top": 12,
+        "padding_bottom": 28
+      }
+    },
+    "ethossence_faqs_jqtdje": {
+      "type": "ethossence-faqs",
+      "name": "FAQS",
+      "settings": {
+        "heading": "Frequently Asked Questions",
+        "heading_size": "h1",
+        "heading_alignment": "left",
+        "color_scheme": "",
+        "padding_top": 12,
+        "padding_bottom": 12
+      }
+    },
+    "ethossence_embed_script_EDwrMP": {
+      "type": "ethossence-embed-script",
+      "name": "Embed Script",
+      "settings": {
+        "heading": "",
+        "heading_size": "h2",
+        "heading_alignment": "center",
+        "color_scheme": "",
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "multicolumn_3f88yA": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_ddLNFH": {
+          "type": "column",
+          "settings": {
+            "title": "Start a Conversation",
+            "heading_size": "h1",
+            "text": "",
+            "link_label": "Contact Us",
+            "link": "shopify://pages/contact",
+            "column_alignment": "default"
+          }
+        },
+        "column_gFeKaQ": {
+          "type": "column",
+          "settings": {
+            "title": "Let's Meet Online",
+            "heading_size": "h1",
+            "text": "",
+            "link_label": "Book an Appointment",
+            "link": "shopify://pages/welding-camera-consultation-demonstration-appointments",
+            "column_alignment": "default"
+          }
+        }
+      },
+      "block_order": [
+        "column_ddLNFH",
+        "column_gFeKaQ"
+      ],
+      "name": "Start Convo / Meet Online",
+      "settings": {
+        "title": "",
+        "heading_size": "h1",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "button_label": "",
+        "button_link": "",
+        "columns_desktop": 2,
+        "column_alignment": "center",
+        "background_style": "none",
+        "color_scheme": "",
+        "link_color": "link_primary",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 40,
+        "padding_bottom": 84
+      }
+    },
+    "174017485838edd9b6": {
+      "type": "apps",
+      "settings": {
+        "include_margins": true
+      }
+    }
+  },
+  "order": [
+    "image_banner_g8wC6R",
+    "main",
+    "ethossence_image_resources_NGcFLE",
+    "ethossence_faqs_jqtdje",
+    "ethossence_embed_script_EDwrMP",
+    "multicolumn_3f88yA",
+    "174017485838edd9b6",
+  ]
+}
