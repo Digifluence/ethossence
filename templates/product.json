@@ -302,12 +302,33 @@
         "color_scheme": "",
         "show_collection_description": true,
         "group_heading_font_size": 18,
-        "group_heading_bold": false,
+        "group_heading_bold": true,
         "alternate_row_colors": true,
         "alternate_row_color": "#f5f5f5",
         "show_top_line": false,
         "show_bottom_line": false,
-        "enable_accordion": true,
+        "enable_accordion": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "ethossence_product_parts_cXTkbJ": {
+      "type": "ethossence-product-parts",
+      "name": "Parts",
+      "settings": {
+        "collection": "meltview®-dart2-replacement-parts",
+        "heading": "Replacement Parts",
+        "heading_size": "h1",
+        "heading_alignment": "left",
+        "color_scheme": "",
+        "show_collection_description": true,
+        "group_heading_font_size": 18,
+        "group_heading_bold": false,
+        "alternate_row_colors": false,
+        "alternate_row_color": "#f5f5f5",
+        "show_top_line": false,
+        "show_bottom_line": false,
+        "enable_accordion": false,
         "padding_top": 36,
         "padding_bottom": 36
       }
@@ -437,6 +458,7 @@
     "ethossence_video_resources_QWP7UH",
     "ethossence_product_solutions_9Gt4cU",
     "ethossence_product_parts_Yp7GYc",
+    "ethossence_product_parts_cXTkbJ",
     "ethossence_faqs_rdFi6X",
     "featured_collection_watGFE",
     "featured_collection_MYgRwP",
