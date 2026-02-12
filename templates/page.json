@@ -57,6 +57,23 @@
         "authoriz_require_msg": ""
       }
     },
+    "ethossence_video_resources_dPCTq3": {
+      "type": "ethossence-video-resources",
+      "name": "Video resources",
+      "settings": {
+        "heading": "Videoes",
+        "heading_size": "h2",
+        "color_scheme": "",
+        "include_video_title": true,
+        "title_size": "h3",
+        "include_video_description": false,
+        "columns_desktop": 3,
+        "columns_mobile": "1",
+        "lazy_load": true,
+        "padding_top": 8,
+        "padding_bottom": 8
+      }
+    },
     "ethossence_image_resources_NGcFLE": {
       "type": "ethossence-image-resources",
       "name": "Image resources",
@@ -240,6 +257,7 @@
     "ethossence_breadcrumbs_fiwKWd",
     "ethossence_content_headings_CCeiBk",
     "main",
+    "ethossence_video_resources_dPCTq3",
     "ethossence_image_resources_NGcFLE",
     "ethossence_faqs_jqtdje",
     "ethossence_embed_script_EDwrMP",
