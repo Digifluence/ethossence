@@ -64,7 +64,6 @@
         },
         "text_LCPRnw": {
           "type": "text",
-          "disabled": true,
           "settings": {
             "text": "<p>{{ product.metafields.ethossence.content_subheading.value }}</p>"
           }
