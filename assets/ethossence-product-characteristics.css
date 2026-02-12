@@ -11,16 +11,16 @@
   width: 100%;
 }
 
-.product-characteristics__heading.left {
-  text-align: left;
+.product-characteristics__heading--left {
+  justify-content: flex-start;
 }
 
-.product-characteristics__heading.center {
-  text-align: center;
+.product-characteristics__heading--center {
+  justify-content: center;
 }
 
-.product-characteristics__heading.right {
-  text-align: right;
+.product-characteristics__heading--right {
+  justify-content: flex-end;
 }
 
 .product-characteristics__text {

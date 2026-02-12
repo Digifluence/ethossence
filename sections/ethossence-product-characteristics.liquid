@@ -29,9 +29,9 @@
       {%- comment -%} Extract heading block for accordion header {%- endcomment -%}
       {%- for block in section.blocks -%}
         {%- if block.type == 'heading' -%}
-          <div class="ethossence-accordion__header">
+          <div class="ethossence-accordion__header product-characteristics__heading--{{ block.settings.heading_alignment }}">
             <h2
-              class="product-characteristics__heading inline-richtext {{ block.settings.heading_size }} {{ block.settings.heading_alignment }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+              class="product-characteristics__heading inline-richtext {{ block.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
               {{ block.shopify_attributes }}
               {% if settings.animations_reveal_on_scroll %}
                 data-cascade

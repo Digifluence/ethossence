@@ -42,7 +42,27 @@
 .ethossence-faqs__content {
   display: flex;
   flex-direction: column;
+  gap: 0;
+}
+
+.ethossence-faqs__question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  text-align: left;
+  color: inherit;
+  font-family: inherit;
   gap: 1rem;
+}
+
+.ethossence-faqs__question:hover {
+  opacity: 0.7;
 }
 
 .ethossence-faqs__question h3 {
@@ -52,9 +72,30 @@
   line-height: 1.4;
 }
 
+.ethossence-faqs__icon {
+  font-size: 1.5rem;
+  font-weight: 300;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+  line-height: 1;
+}
+
+.ethossence-faqs__item.is-open .ethossence-faqs__icon {
+  transform: rotate(45deg);
+}
+
 .ethossence-faqs__answer {
-  font-size: 1rem;
+  font-size: 1.27rem;
   line-height: 1.6;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease, padding-top 0.35s ease;
+  padding-top: 0;
+}
+
+.ethossence-faqs__item.is-open .ethossence-faqs__answer {
+  max-height: 100vh;
+  padding-top: 1rem;
 }
 
 .ethossence-faqs__answer p {
@@ -71,7 +112,7 @@
   color: rgba(var(--color-foreground), 0.5);
 }
 
-/* Desktop: 40/60 split layout */
+/* Desktop layout */
 @media screen and (min-width: 750px) {
   .ethossence-faqs__heading {
     margin-bottom: 3rem;
@@ -81,25 +122,12 @@
     padding: 3rem 2rem;
   }
 
-  .ethossence-faqs__content {
-    flex-direction: row;
-    gap: 3rem;
-    align-items: flex-start;
-  }
-
-  .ethossence-faqs__question {
-    flex: 0 0 40%;
-    max-width: 40%;
-  }
-
   .ethossence-faqs__question h3 {
     font-size: 1.25rem;
   }
 
   .ethossence-faqs__answer {
-    flex: 0 0 60%;
-    max-width: 60%;
-    font-size: 1.0625rem;
+    font-size: 1.27rem;
   }
 }
 
@@ -109,15 +137,11 @@
     padding: 3.5rem 3rem;
   }
 
-  .ethossence-faqs__content {
-    gap: 4rem;
-  }
-
   .ethossence-faqs__question h3 {
     font-size: 1.375rem;
   }
 
   .ethossence-faqs__answer {
-    font-size: 1.125rem;
+    font-size: 1.27rem;
   }
 }

@@ -52,9 +52,10 @@
                {%- for faq in faqs -%}
                   <div class="ethossence-faqs__item{% cycle ' ethossence-faqs__item--grey', '' %}">
                      <div class="ethossence-faqs__content">
-                        <div class="ethossence-faqs__question">
+                        <button type="button" class="ethossence-faqs__question" aria-expanded="false">
                            <h3>{{ faq.question }}</h3>
-                        </div>
+                           <span class="ethossence-faqs__icon" aria-hidden="true">+</span>
+                        </button>
                         <div class="ethossence-faqs__answer rte">
                            {{ faq.answer }}
                         </div>
@@ -69,6 +70,36 @@
 
 {%- endif -%}
 
+<script>
+  (function() {
+    function initFaqs() {
+      document.querySelectorAll('.ethossence-faqs__question').forEach(function(btn) {
+        if (btn.hasAttribute('data-faq-init')) return;
+        btn.setAttribute('data-faq-init', 'true');
+
+        btn.addEventListener('click', function() {
+          var item = btn.closest('.ethossence-faqs__item');
+          var isOpen = item.classList.contains('is-open');
+
+          if (isOpen) {
+            item.classList.remove('is-open');
+            btn.setAttribute('aria-expanded', 'false');
+          } else {
+            item.classList.add('is-open');
+            btn.setAttribute('aria-expanded', 'true');
+          }
+        });
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initFaqs);
+    } else {
+      initFaqs();
+    }
+    document.addEventListener('shopify:section:load', initFaqs);
+  })();
+</script>
 
 {% schema %}
 {
