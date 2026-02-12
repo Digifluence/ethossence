@@ -295,7 +295,7 @@
       "type": "ethossence-product-parts",
       "name": "Parts",
       "settings": {
-        "collection": "meltview®-dart2-replacement-parts",
+        "collection": "meltview®-mira3-replacement-parts",
         "heading": "Product Parts",
         "heading_size": "h1",
         "heading_alignment": "left",
@@ -307,9 +307,21 @@
         "alternate_row_color": "#f5f5f5",
         "show_top_line": false,
         "show_bottom_line": false,
-        "enable_accordion": false,
+        "enable_accordion": true,
         "padding_top": 36,
         "padding_bottom": 36
+      }
+    },
+    "ethossence_faqs_rdFi6X": {
+      "type": "ethossence-faqs",
+      "name": "FAQS",
+      "settings": {
+        "heading": "Frequently Asked Questions",
+        "heading_size": "h2",
+        "heading_alignment": "center",
+        "color_scheme": "",
+        "padding_top": 28,
+        "padding_bottom": 28
       }
     },
     "featured_collection_watGFE": {
@@ -410,18 +422,6 @@
       ],
       "settings": {
         "include_margins": true
-      }
-    },
-    "ethossence_faqs_rdFi6X": {
-      "type": "ethossence-faqs",
-      "name": "FAQS",
-      "settings": {
-        "heading": "Frequently Asked Questions",
-        "heading_size": "h2",
-        "heading_alignment": "center",
-        "color_scheme": "",
-        "padding_top": 28,
-        "padding_bottom": 28
       }
     }
   },
