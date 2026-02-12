@@ -69,6 +69,29 @@
         "padding_bottom": 12
       }
     },
+    "rich_text_4Wi8Lx": {
+      "type": "rich-text",
+      "blocks": {
+        "text_tcqrUd": {
+          "type": "text",
+          "settings": {
+            "text": "<ul><li><a href=\"/pages/camera-system-configuration\" title=\"Camera System Configuration\">Camera System Configuration</a></li><li><a href=\"/pages/camera-system-operation\" title=\"Camera System Operation\">Camera System Operation</a></li><li><a href=\"/pages/camera-system-maintenance\" title=\"Camera System Maintenance\">Camera System Maintenance</a></li><li><a href=\"/pages/camera-system-troubleshooting\" title=\"Camera System Troubleshooting\">Camera System Troubleshooting</a></li><li><a href=\"/pages/meltview-apex3-camera-for-welding-education\" title=\"MeltView APEX3 camera kit for welding education\">MeltView® APEX3 Kit for Welding Education</a></li><li><a href=\"/pages/purchasing-and-company\" title=\"Purchasing and company\">Purchasing and Company</a></li></ul>"
+          }
+        }
+      },
+      "block_order": [
+        "text_tcqrUd"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
     "174017485838edd9b6": {
       "type": "apps",
       "settings": {
@@ -135,6 +158,7 @@
     "ethossence_content_headings_CCeiBk",
     "main",
     "ethossence_faqs_jqtdje",
+    "rich_text_4Wi8Lx",
     "174017485838edd9b6",
     "multicolumn_Uw9GNN"
   ]
