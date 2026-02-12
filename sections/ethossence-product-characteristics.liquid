@@ -1,4 +1,5 @@
 {{ 'ethossence-product-characteristics.css' | asset_url | stylesheet_tag }}
+
 {%- if section.settings.enable_accordion -%}
   {{ 'ethossence-accordion.css' | asset_url | stylesheet_tag }}
   <script src="{{ 'ethossence-accordion.js' | asset_url }}" defer="defer"></script>
