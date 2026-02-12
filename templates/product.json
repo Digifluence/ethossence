@@ -162,29 +162,6 @@
         "padding_bottom": 12
       }
     },
-    "rich_text_rN6ALf": {
-      "type": "rich-text",
-      "blocks": {
-        "text_zQwnYn": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Need a camera for a different process?  <a href=\"/pages/contact\" title=\"Contact\">Message us your needs</a> or <a href=\"/pages/welding-camera-consultation-ai-welding-introduction\" title=\"Appointment Booking: Sales Introduction Consultation\">schedule an online meeting.</a></p>"
-          }
-        }
-      },
-      "block_order": [
-        "text_zQwnYn"
-      ],
-      "name": "t:sections.rich-text.presets.name",
-      "settings": {
-        "desktop_content_position": "center",
-        "content_alignment": "center",
-        "color_scheme": "",
-        "full_width": true,
-        "padding_top": 8,
-        "padding_bottom": 24
-      }
-    },
     "ethossence_product_desc_3FH7xM": {
       "type": "ethossence-product-description",
       "blocks": {
@@ -223,6 +200,42 @@
         "enable_accordion": false,
         "padding_top": 16,
         "padding_bottom": 16
+      }
+    },
+    "ethossence_product_characteristics_jMVVr3": {
+      "type": "ethossence-product-characteristics",
+      "blocks": {
+        "heading_rx8qTJ": {
+          "type": "heading",
+          "disabled": true,
+          "settings": {
+            "heading": "Characteristics",
+            "heading_size": "h1",
+            "heading_alignment": "left"
+          }
+        },
+        "characteristics_MziHxw": {
+          "type": "characteristics",
+          "settings": {}
+        },
+        "text_Gnz46B": {
+          "type": "text",
+          "settings": {
+            "paragraph": "<p>If you want to image a different welding process than those shown here, view our complete <a href=\"/collections/meltview-weld-monitoring-cameras-cro\" title=\"Weld Monitoring Cameras\">welding camera line</a>, or <a href=\"/pages/welding-camera-consultation-ai-welding-introduction\" title=\"Appointment Booking: Sales Introduction Consultation\">schedule an online meeting</a> with one of our welding engineers to discuss all our solutions including custom cameras.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_rx8qTJ",
+        "characteristics_MziHxw",
+        "text_Gnz46B"
+      ],
+      "name": "Characteristics",
+      "settings": {
+        "color_scheme": "",
+        "enable_accordion": false,
+        "padding_top": 0,
+        "padding_bottom": 0
       }
     },
     "ethossence_product_solutions_9Gt4cU": {
@@ -382,9 +395,9 @@
     "ethossence_breadcrumbs_X64tn3",
     "rich_text_d6Vjce",
     "main",
-    "rich_text_rN6ALf",
     "ethossence_product_desc_3FH7xM",
     "ethossence_product_specifications_eYJQ4A",
+    "ethossence_product_characteristics_jMVVr3",
     "ethossence_product_solutions_9Gt4cU",
     "ethossence_image_resources_EJwUk6",
     "ethossence_video_resources_QWP7UH",
