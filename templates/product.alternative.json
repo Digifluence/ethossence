@@ -34,7 +34,7 @@
         "image_height": "small",
         "image_behavior": "none",
         "desktop_content_position": "bottom-left",
-        "desktop_content_alignment": "center",
+        "desktop_content_alignment": "left",
         "show_text_box": false,
         "color_scheme": "scheme-3",
         "stack_images_on_mobile": true,
