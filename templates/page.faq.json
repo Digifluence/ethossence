@@ -66,44 +66,7 @@
         "heading_alignment": "left",
         "color_scheme": "",
         "padding_top": 12,
-        "padding_bottom": 12
-      }
-    },
-    "rich_text_4Wi8Lx": {
-      "type": "rich-text",
-      "blocks": {
-        "heading_kfVB4V": {
-          "type": "heading",
-          "settings": {
-            "heading": "Technical Support Pages",
-            "heading_size": "h1"
-          }
-        },
-        "text_tcqrUd": {
-          "type": "text",
-          "settings": {
-            "text": "<ul><li><a href=\"/pages/camera-system-configuration\" title=\"Camera System Configuration\">Camera System Configuration</a></li><li><a href=\"/pages/camera-system-operation\" title=\"Camera System Operation\">Camera System Operation</a></li><li><a href=\"/pages/camera-system-maintenance\" title=\"Camera System Maintenance\">Camera System Maintenance</a></li><li><a href=\"/pages/camera-system-troubleshooting\" title=\"Camera System Troubleshooting\">Camera System Troubleshooting</a></li><li><a href=\"/pages/meltview-apex3-camera-for-welding-education\" title=\"MeltView APEX3 camera kit for welding education\">MeltView® APEX3 Kit for Welding Education</a></li><li><a href=\"/pages/purchasing-and-company\" title=\"Purchasing and company\">Purchasing and Company</a></li></ul>"
-          }
-        }
-      },
-      "block_order": [
-        "heading_kfVB4V",
-        "text_tcqrUd"
-      ],
-      "name": "t:sections.rich-text.presets.name",
-      "settings": {
-        "desktop_content_position": "left",
-        "content_alignment": "left",
-        "color_scheme": "",
-        "full_width": true,
-        "padding_top": 24,
-        "padding_bottom": 24
-      }
-    },
-    "174017485838edd9b6": {
-      "type": "apps",
-      "settings": {
-        "include_margins": true
+        "padding_bottom": 48
       }
     },
     "multicolumn_Uw9GNN": {
@@ -150,13 +113,50 @@
         "button_link": "",
         "columns_desktop": 2,
         "column_alignment": "center",
-        "background_style": "primary",
-        "color_scheme": "",
+        "background_style": "none",
+        "color_scheme": "scheme-2",
         "link_color": "link_primary",
         "columns_mobile": "1",
         "swipe_on_mobile": false,
         "padding_top": 36,
         "padding_bottom": 36
+      }
+    },
+    "rich_text_4Wi8Lx": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_kfVB4V": {
+          "type": "heading",
+          "settings": {
+            "heading": "Technical Support Pages",
+            "heading_size": "h1"
+          }
+        },
+        "text_tcqrUd": {
+          "type": "text",
+          "settings": {
+            "text": "<ul><li><a href=\"/pages/camera-system-configuration\" title=\"Camera System Configuration\">Camera System Configuration</a></li><li><a href=\"/pages/camera-system-operation\" title=\"Camera System Operation\">Camera System Operation</a></li><li><a href=\"/pages/camera-system-maintenance\" title=\"Camera System Maintenance\">Camera System Maintenance</a></li><li><a href=\"/pages/camera-system-troubleshooting\" title=\"Camera System Troubleshooting\">Camera System Troubleshooting</a></li><li><a href=\"/pages/meltview-apex3-camera-for-welding-education\" title=\"MeltView APEX3 camera kit for welding education\">MeltView® APEX3 Kit for Welding Education</a></li><li><a href=\"/pages/purchasing-and-company\" title=\"Purchasing and company\">Purchasing and Company</a></li><li><a href=\"/pages/contact\" title=\"Contact\">Contact Us</a></li></ul>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_kfVB4V",
+        "text_tcqrUd"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "left",
+        "content_alignment": "left",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 48,
+        "padding_bottom": 84
+      }
+    },
+    "174017485838edd9b6": {
+      "type": "apps",
+      "settings": {
+        "include_margins": true
       }
     }
   },
@@ -166,8 +166,8 @@
     "ethossence_content_headings_CCeiBk",
     "main",
     "ethossence_faqs_jqtdje",
+    "multicolumn_Uw9GNN",
     "rich_text_4Wi8Lx",
-    "174017485838edd9b6",
-    "multicolumn_Uw9GNN"
+    "174017485838edd9b6"
   ]
 }
