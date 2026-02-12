@@ -158,14 +158,6 @@
     "ethossence_product_characteristics_bey7JG": {
       "type": "ethossence-product-characteristics",
       "blocks": {
-        "heading_ycEbnq": {
-          "type": "heading",
-          "settings": {
-            "heading": "Characteristics",
-            "heading_size": "h2",
-            "heading_alignment": "left"
-          }
-        },
         "characteristics_iwmJkE": {
           "type": "characteristics",
           "settings": {}
@@ -178,7 +170,6 @@
         }
       },
       "block_order": [
-        "heading_ycEbnq",
         "characteristics_iwmJkE",
         "text_MQFpmU"
       ],
