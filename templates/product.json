@@ -64,6 +64,7 @@
         },
         "text_LCPRnw": {
           "type": "text",
+          "disabled": true,
           "settings": {
             "text": "<p>{{ product.metafields.iqx.product_subheader.value }}</p>"
           }
@@ -162,18 +163,6 @@
         "padding_bottom": 12
       }
     },
-    "melttools_welding_processes_Mhzzeh": {
-      "type": "melttools-welding-processes",
-      "name": "Welding processes",
-      "settings": {
-        "heading": "Welding processes",
-        "heading_size": "h1",
-        "introduction": "",
-        "color_scheme": "",
-        "padding_top": 16,
-        "padding_bottom": 16
-      }
-    },
     "rich_text_rN6ALf": {
       "type": "rich-text",
       "blocks": {
@@ -204,7 +193,8 @@
           "type": "heading",
           "settings": {
             "heading": "Description",
-            "heading_size": "h1"
+            "heading_size": "h1",
+            "heading_alignment": "left"
           }
         }
       },
@@ -217,6 +207,7 @@
         "content_alignment": "left",
         "color_scheme": "",
         "full_width": true,
+        "enable_accordion": false,
         "padding_top": 16,
         "padding_bottom": 16
       }
@@ -227,8 +218,10 @@
       "settings": {
         "heading": "Specifications",
         "heading_size": "h1",
-        "introduction": "",
+        "heading_alignment": "left",
+        "paragraph": "",
         "color_scheme": "scheme-1",
+        "enable_accordion": false,
         "padding_top": 16,
         "padding_bottom": 16
       }
@@ -264,33 +257,6 @@
         "lazy_load": true,
         "padding_top": 28,
         "padding_bottom": 28
-      }
-    },
-    "ethossence_product_components_V6NUmf": {
-      "type": "ethossence-collection-variants-list",
-      "name": "Product components",
-      "settings": {
-        "heading": "Replacement parts",
-        "heading_size": "h1",
-        "description": "",
-        "collection": "meltview®-pixi-camera-replacement-parts",
-        "variants_per_page": 50,
-        "show_image": true,
-        "show_sku": true,
-        "show_vendor": false,
-        "color_scheme": "",
-        "padding_top": 56,
-        "padding_bottom": 40
-      }
-    },
-    "ethossence_products_complementary_VHVX4X": {
-      "type": "ethossence-products-complementary",
-      "name": "Complementary products",
-      "settings": {
-        "heading_size": "h1",
-        "color_scheme": "",
-        "padding_top": 56,
-        "padding_bottom": 40
       }
     },
     "featured_collection_watGFE": {
@@ -391,6 +357,25 @@
       "settings": {
         "include_margins": true
       }
+    },
+    "ethossence_product_solutions_9Gt4cU": {
+      "type": "ethossence-product-solutions",
+      "name": "Solutions",
+      "settings": {
+        "heading": "Recommended Solutions",
+        "heading_size": "h1",
+        "heading_alignment": "left",
+        "color_scheme": "",
+        "solution_name_font_size": 22,
+        "solution_name_bold": false,
+        "group_heading_font_size": 18,
+        "group_heading_bold": false,
+        "show_top_line": false,
+        "show_bottom_line": false,
+        "enable_accordion": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
     }
   },
   "order": [
@@ -398,14 +383,12 @@
     "ethossence_breadcrumbs_X64tn3",
     "rich_text_d6Vjce",
     "main",
-    "melttools_welding_processes_Mhzzeh",
     "rich_text_rN6ALf",
     "ethossence_product_desc_3FH7xM",
     "ethossence_product_specifications_eYJQ4A",
+    "ethossence_product_solutions_9Gt4cU",
     "ethossence_image_resources_EJwUk6",
     "ethossence_video_resources_QWP7UH",
-    "ethossence_product_components_V6NUmf",
-    "ethossence_products_complementary_VHVX4X",
     "featured_collection_watGFE",
     "featured_collection_MYgRwP",
     "related-products",
