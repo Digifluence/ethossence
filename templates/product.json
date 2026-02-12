@@ -129,6 +129,7 @@
         },
         "popup_yxTwY6": {
           "type": "popup",
+          "disabled": true,
           "settings": {
             "text": "Need custom features?",
             "page": ""
