@@ -8,6 +8,15 @@
 
 .product-characteristics__heading {
   margin: 0 0 1rem 0;
+}
+
+.product-characteristics__heading--left,
+.product-characteristics__heading--center,
+.product-characteristics__heading--right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
   width: 100%;
 }
 
