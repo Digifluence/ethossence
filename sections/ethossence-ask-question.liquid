@@ -157,6 +157,45 @@
                             {{ block.settings.phone_label }}
                           </label>
                         </div>
+                        <div class="field">
+                          <select
+                            id="AskQuestionTimezone-{{ section.id }}"
+                            name="contact[Time Zone]"
+                            class="field__input ask-question__timezone-select"
+                          >
+                            <option value="" disabled selected>{{ block.settings.timezone_label }}</option>
+                            <option value="UTC-12:00">(UTC-12:00) Baker Island</option>
+                            <option value="UTC-11:00">(UTC-11:00) Pago Pago</option>
+                            <option value="UTC-10:00">(UTC-10:00) Honolulu</option>
+                            <option value="UTC-09:00">(UTC-09:00) Anchorage</option>
+                            <option value="UTC-08:00">(UTC-08:00) Los Angeles</option>
+                            <option value="UTC-07:00">(UTC-07:00) Denver</option>
+                            <option value="UTC-06:00">(UTC-06:00) Chicago</option>
+                            <option value="UTC-05:00">(UTC-05:00) New York</option>
+                            <option value="UTC-04:00">(UTC-04:00) Halifax</option>
+                            <option value="UTC-03:00">(UTC-03:00) Buenos Aires</option>
+                            <option value="UTC-02:00">(UTC-02:00) Mid-Atlantic</option>
+                            <option value="UTC-01:00">(UTC-01:00) Azores</option>
+                            <option value="UTC+00:00">(UTC+00:00) London</option>
+                            <option value="UTC+01:00">(UTC+01:00) Paris</option>
+                            <option value="UTC+02:00">(UTC+02:00) Cairo</option>
+                            <option value="UTC+03:00">(UTC+03:00) Moscow</option>
+                            <option value="UTC+04:00">(UTC+04:00) Dubai</option>
+                            <option value="UTC+05:00">(UTC+05:00) Karachi</option>
+                            <option value="UTC+05:30">(UTC+05:30) Mumbai</option>
+                            <option value="UTC+06:00">(UTC+06:00) Dhaka</option>
+                            <option value="UTC+07:00">(UTC+07:00) Bangkok</option>
+                            <option value="UTC+08:00">(UTC+08:00) Singapore</option>
+                            <option value="UTC+09:00">(UTC+09:00) Tokyo</option>
+                            <option value="UTC+09:30">(UTC+09:30) Adelaide</option>
+                            <option value="UTC+10:00">(UTC+10:00) Sydney</option>
+                            <option value="UTC+11:00">(UTC+11:00) Noumea</option>
+                            <option value="UTC+12:00">(UTC+12:00) Auckland</option>
+                          </select>
+                          <label for="AskQuestionTimezone-{{ section.id }}" class="field__label">
+                            {{ block.settings.timezone_label }}
+                          </label>
+                        </div>
                       </div>
                     </div>
 
@@ -411,6 +450,12 @@
           "id": "phone_label",
           "default": "Phone number",
           "label": "Phone field label"
+        },
+        {
+          "type": "text",
+          "id": "timezone_label",
+          "default": "Time zone",
+          "label": "Time zone field label"
         },
         {
           "type": "text",
