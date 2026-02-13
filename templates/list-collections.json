@@ -80,21 +80,21 @@
       "settings": {
         "desktop_content_position": "left",
         "content_alignment": "left",
-        "color_scheme": "scheme-2",
+        "color_scheme": "scheme-1",
         "full_width": true,
-        "padding_top": 16,
+        "padding_top": 32,
         "padding_bottom": 16
       }
     },
     "main": {
       "type": "main-list-collections",
       "settings": {
-        "title": "Collections",
+        "title": "Product Collections",
         "sort": "alphabetical",
         "image_ratio": "square",
         "columns_desktop": 5,
         "columns_mobile": "2",
-        "padding_top": 84,
+        "padding_top": 16,
         "padding_bottom": 52
       }
     }
