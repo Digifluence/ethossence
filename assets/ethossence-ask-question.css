@@ -120,3 +120,7 @@
 .ask-question__errors {
   margin: 0 0 1rem;
 }
+
+.field__input:focus, .field__input:not(:placeholder-shown), .field__input:-webkit-autofill, .customer .field input:focus, .customer .field input:not(:placeholder-shown), .customer .field input:-webkit-autofill {
+   padding-top: 0.5rem !important;
+}
