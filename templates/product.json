@@ -293,6 +293,7 @@
     },
     "ethossence_product_parts_QR3q7e": {
       "type": "ethossence-product-parts",
+      "disabled": true,
       "name": "Parts",
       "settings": {
         "collection": "meltview®-dart2-replacement-parts",
