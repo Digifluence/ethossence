@@ -35,7 +35,7 @@
       "settings": {
         "image": "shopify://shop_images/melttools-insight_banner.jpg",
         "image_overlay_opacity": 0,
-        "image_height": "medium",
+        "image_height": "small",
         "image_behavior": "none",
         "desktop_content_position": "middle-right",
         "desktop_content_alignment": "right",
@@ -93,10 +93,11 @@
     "main": {
       "type": "main-blog",
       "settings": {
-        "layout": "collage",
+        "show_title": true,
+        "layout": "grid",
         "show_image": true,
-        "image_height": "medium",
-        "show_date": true,
+        "image_height": "small",
+        "show_date": false,
         "show_author": false,
         "padding_top": 8,
         "padding_bottom": 16
