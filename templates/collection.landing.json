@@ -26,6 +26,16 @@
         "show_text_below": true
       }
     },
+    "ethossence_breadcrumbs_pV6Ryr": {
+      "type": "ethossence-breadcrumbs",
+      "name": "Breadcrumbs",
+      "settings": {
+        "color_scheme": "scheme-3",
+        "full_width": false,
+        "padding_top": 12,
+        "padding_bottom": 12
+      }
+    },
     "ethossence_content_headings_cm6A7G": {
       "type": "ethossence-content-headings",
       "name": "Content headings",
@@ -85,6 +95,7 @@
   },
   "order": [
     "image_banner_MtL38k",
+    "ethossence_breadcrumbs_pV6Ryr",
     "ethossence_content_headings_cm6A7G",
     "banner",
     "product-grid",
