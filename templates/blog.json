@@ -93,9 +93,10 @@
     "main": {
       "type": "main-blog",
       "settings": {
+        "show_title": true,
         "layout": "collage",
         "show_image": true,
-        "image_height": "medium",
+        "image_height": "small",
         "show_date": true,
         "show_author": false,
         "padding_top": 8,
