@@ -26,6 +26,27 @@
         "show_text_below": true
       }
     },
+    "ethossence_breadcrumbs_WNzizc": {
+      "type": "ethossence-breadcrumbs",
+      "name": "Breadcrumbs",
+      "settings": {
+        "menu": "main-menu",
+        "label_collections": "Collections",
+        "label_products": "Products",
+        "label_cart": "Cart",
+        "label_search": "Search",
+        "label_contact": "Contact us",
+        "label_portal": "Portal",
+        "label_login": "Login",
+        "label_order_list": "Order list",
+        "label_order": "Order",
+        "label_password": "Password",
+        "color_scheme": "scheme-3",
+        "full_width": false,
+        "padding_top": 12,
+        "padding_bottom": 12
+      }
+    },
     "main": {
       "type": "main-search",
       "settings": {
@@ -48,6 +69,7 @@
   },
   "order": [
     "image_banner_Qc9a4e",
+    "ethossence_breadcrumbs_WNzizc",
     "main"
   ]
 }
