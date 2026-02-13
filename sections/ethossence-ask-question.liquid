@@ -62,6 +62,9 @@
               <div
                 class="ask-question__form-wrapper{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
                 {{ block.shopify_attributes }}
+                data-ask-question-section="{{ section.id }}"
+                data-webhook-url="{{ block.settings.webhook_url }}"
+                data-success-message="{{ block.settings.success_message | escape }}"
                 {% if settings.animations_reveal_on_scroll %}
                   data-cascade
                   style="--animation-order: {{ forloop.index }};"
@@ -81,21 +84,6 @@
                   {%- endif -%}
 
                   <div class="ask-question__required-inputs">
-                    <div class="field">
-                      <input
-                        type="text"
-                        id="AskQuestionName-{{ section.id }}"
-                        name="contact[Full Name]"
-                        class="field__input"
-                        placeholder="{{ block.settings.name_label }}"
-                        required
-                        autocomplete="name"
-                      >
-                      <label for="AskQuestionName-{{ section.id }}" class="field__label">
-                        {{ block.settings.name_label }}
-                      </label>
-                    </div>
-
                     <div class="field">
                       <input
                         type="email"
@@ -118,7 +106,7 @@
                         name="contact[body]"
                         class="field__input text-area"
                         placeholder="{{ block.settings.question_label }}"
-                        rows="2"
+                        rows="1"
                         required
                       ></textarea>
                       <label for="AskQuestionBody-{{ section.id }}" class="field__label">
@@ -143,7 +131,20 @@
                         </label>
                       </div>
 
-                      <div class="ask-question__phone-wrapper" id="AskQuestionPhone-{{ section.id }}" hidden>
+                      <div class="ask-question__callback-details" id="AskQuestionCallbackDetails-{{ section.id }}" hidden>
+                        <div class="field">
+                          <input
+                            type="text"
+                            id="AskQuestionName-{{ section.id }}"
+                            name="contact[Full Name]"
+                            class="field__input"
+                            placeholder="{{ block.settings.name_label }}"
+                            autocomplete="name"
+                          >
+                          <label for="AskQuestionName-{{ section.id }}" class="field__label">
+                            {{ block.settings.name_label }}
+                          </label>
+                        </div>
                         <div class="field">
                           <input
                             type="tel"
@@ -214,17 +215,7 @@
   </div>
 </div>
 
-<script>
-  (function() {
-    var checkbox = document.querySelector('[data-ask-question-callback="{{ section.id }}"]');
-    var phoneWrapper = document.getElementById('AskQuestionPhone-{{ section.id }}');
-    if (checkbox && phoneWrapper) {
-      checkbox.addEventListener('change', function() {
-        phoneWrapper.hidden = !this.checked;
-      });
-    }
-  })();
-</script>
+<script src="{{ 'ethossence-ask-question.js' | asset_url }}" defer></script>
 
 {% schema %}
 {
@@ -421,6 +412,12 @@
       "name": "Question form",
       "limit": 1,
       "settings": [
+        {
+          "type": "text",
+          "id": "webhook_url",
+          "label": "Make webhook URL",
+          "info": "Paste the webhook URL from your Make scenario. Form data is sent as JSON."
+        },
         {
           "type": "text",
           "id": "name_label",
