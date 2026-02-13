@@ -30,10 +30,58 @@
       "type": "ethossence-breadcrumbs",
       "name": "Breadcrumbs",
       "settings": {
+        "menu": "main-menu",
+        "label_collections": "Collections",
+        "label_products": "Products",
+        "label_cart": "Cart",
+        "label_search": "Search",
+        "label_contact": "Contact us",
+        "label_portal": "Portal",
+        "label_login": "Login",
+        "label_order_list": "Order list",
+        "label_order": "Order",
+        "label_password": "Password",
         "color_scheme": "scheme-3",
         "full_width": false,
         "padding_top": 12,
         "padding_bottom": 12
+      }
+    },
+    "ethossence_ask_question_wrjjzE": {
+      "type": "ethossence-ask-question",
+      "blocks": {
+        "heading_Tk9Vi4": {
+          "type": "heading",
+          "settings": {
+            "heading": "Ask a Question",
+            "heading_size": "h1"
+          }
+        },
+        "form_iV7bAb": {
+          "type": "form",
+          "settings": {
+            "name_label": "Full name",
+            "email_label": "Email",
+            "question_label": "Your question",
+            "callback_label": "Please call me to discuss my question in more detail",
+            "phone_label": "Phone number",
+            "button_label": "Submit",
+            "success_message": "Thank you for your question. We'll get back to you shortly."
+          }
+        }
+      },
+      "block_order": [
+        "heading_Tk9Vi4",
+        "form_iV7bAb"
+      ],
+      "name": "Ask a question",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
       }
     },
     "main": {
@@ -50,6 +98,7 @@
   "order": [
     "image_banner_aJmm8Y",
     "ethossence_breadcrumbs_KPCih8",
+    "ethossence_ask_question_wrjjzE",
     "main"
   ]
 }
