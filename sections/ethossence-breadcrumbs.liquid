@@ -1,3 +1,5 @@
+<!-- block-breadcrumbs \\\ START /// -->
+
 {%- liquid
 
    assign pos_2 = 'n0ne'
@@ -6,29 +8,30 @@
 
    if template contains 'page' 
 
-      for link in linklists.main-menu.links 
+      for link in linklists[section.settings.menu].links
          if page.url == link.url  
             assign s_menu_links_exist = true 
             assign pos_1 = link.title  
             assign pos_1_url = link.url 
          endif 
-         if link.links != blank 
-            assign s_menu_links_exist = true 
-            for sub_link in link.links 
-               if page.url == sub_link.url  
-                  assign pos_1 = link.title 
-                  assign pos_1_url = link.url 
-                  assign pos_2 = sub_link.title 
+         if link.links != blank
+            for sub_link in link.links
+               if page.url == sub_link.url
+                  assign s_menu_links_exist = true
+                  assign pos_1 = link.title
+                  assign pos_1_url = link.url
+                  assign pos_2 = sub_link.title
                   assign pos_2_url = sub_link.url 
                endif 
                if sub_link.links != blank 
                   for sub_sub_link in sub_link.links 
-                     if page.url == sub_sub_link.url  
-                        assign pos_1 = link.title 
-                        assign pos_1_url = link.url 
-                        assign pos_2 = sub_link.title 
-                        assign pos_2_url = sub_link.url 
-                        assign pos_3 = sub_sub_link.title 
+                     if page.url == sub_sub_link.url
+                        assign s_menu_links_exist = true
+                        assign pos_1 = link.title
+                        assign pos_1_url = link.url
+                        assign pos_2 = sub_link.title
+                        assign pos_2_url = sub_link.url
+                        assign pos_3 = sub_sub_link.title
                         assign pos_3_url = sub_sub_link.url 
                      endif 
                   endfor    
@@ -37,8 +40,8 @@
          endif 
       endfor 
 
-      if page.url contains 'contact-us' 
-         assign pos_1 = 'Contact us'
+      if page.url contains 'contact-us'
+         assign pos_1 = section.settings.label_contact
          assign pos_1_url = '' 
          assign pos_2 = ''
          assign pos_2_url = '' 
@@ -52,34 +55,34 @@
 
    elsif blog.url contains 'blog' or article.url contains 'blog' 
 
-      if blog.handle == '' 
-      assign pos_1 = '' 
-      assign pos_1_url = '' 
-      assign pos_2 = ''
-      assign pos_2_url = '' 
-      endif 
-
-      assign pos_1 = blog.title
-      assign pos_1_url = blog.url
-
-      if article.title != ''
-         if article.metafields.iqx.article_header != blank
-            assign pos_2 = article.metafields.iqx.article_header
-         else
-            assign pos_2 = article.title
-         endif
-         assign pos_2_url = article.url
-      else
+      if blog.handle == ''
+         assign pos_1 = ''
+         assign pos_1_url = ''
+         assign pos_2 = ''
          assign pos_2_url = ''
-      endif 
+      else
+         assign pos_1 = blog.title
+         assign pos_1_url = blog.url
+
+         if article.title != ''
+            if article.metafields.iqx.article_header != blank
+               assign pos_2 = article.metafields.iqx.article_header
+            else
+               assign pos_2 = article.title
+            endif
+            assign pos_2_url = article.url
+         else
+            assign pos_2_url = ''
+         endif
+      endif
 
    elsif template contains 'list-collection' 
 
-      assign pos_1 = 'Collections'
+      assign pos_1 = section.settings.label_collections
 
-   elsif template contains 'collection' 
+   elsif template contains 'collection'
 
-      assign pos_1 =  'Collections'   
+      assign pos_1 = section.settings.label_collections   
       assign pos_1_url = '/collections/'    
 
       if collection.metafields.iqx.collection_header != blank  
@@ -92,14 +95,12 @@
 
    elsif template contains 'product' 
 
-      if product.collections > 0 
-         for collection in product.collections.first 
-            assign pos_1 = collection.title 
-            assign pos_1_url = collection.url 
-         endfor 
-      else 
-         assign pos_1 = 'Products' 
-         assign pos_1_url = '/collections/all' 
+      if product.collections.size > 0
+         assign pos_1 = product.collections.first.title
+         assign pos_1_url = product.collections.first.url
+      else
+         assign pos_1 = section.settings.label_products
+         assign pos_1_url = '/collections/all'
       endif 
 
       if product.metafields.iqx.product_header != blank  
@@ -112,29 +113,29 @@
 
    elsif template contains 'cart'   
 
-      assign pos_1 = 'Cart' 
+      assign pos_1 = section.settings.label_cart
       assign pos_1_url = '/cart'  
 
    elsif template contains 'search'   
 
-      assign pos_1 = 'Search' 
+      assign pos_1 = section.settings.label_search
       assign pos_1_url = '/search'   
 
    elsif template contains 'customers'   
 
-      assign pos_1 = 'Portal' 
+      assign pos_1 = section.settings.label_portal
 
-      if template contains 'login' 
-      assign pos_1 = 'Login' 
+      if template contains 'login'
+      assign pos_1 = section.settings.label_login
 
-      elsif template contains 'order-list' 
-      assign pos_1 = 'Order list' 
-   
-      elsif template contains 'order' 
-      assign pos_1 = 'Order' 
+      elsif template contains 'order-list'
+      assign pos_1 = section.settings.label_order_list
 
-      elsif template contains 'password' 
-      assign pos_1 = 'Password' 
+      elsif template contains 'order'
+      assign pos_1 = section.settings.label_order
+
+      elsif template contains 'password'
+      assign pos_1 = section.settings.label_password 
 
       endif 
 
@@ -143,7 +144,7 @@
 -%}
 
 {%- style -%}
-  /* Section Padding - Requires Liquid variables */
+
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
@@ -156,7 +157,6 @@
     }
   }
 
-  /* Breadcrumb styles */
   .breadcrumbs {
     list-style: none;
     padding: 0;
@@ -192,10 +192,10 @@
   }
 {%- endstyle -%}
 
-<!-- block-breadcrumbs \\\ START /// -->
 {%- liquid
    comment
-      Clean position labels from menu prefixes and truncate to 74 characters
+      Clean position labels by removing sort-order prefixes (e.g. "A] ", "1] ")
+      used for menu item ordering in Shopify admin, then truncate to 74 characters.
    endcomment
    assign pos_1_clean = pos_1 | remove: 'A] ' | remove: 'B] ' | remove: 'C] ' | remove: 'D] ' | remove: '1] ' | remove: '2] ' | remove: '3] ' | remove: '4] ' | remove: '5] ' | remove: '6] ' | remove: '7] ' | remove: '8] ' | remove: '9] ' | remove: '10] ' | truncate: 74
    assign pos_2_clean = pos_2 | remove: 'A] ' | remove: 'B] ' | remove: 'C] ' | remove: 'D] ' | remove: '1] ' | remove: '2] ' | remove: '3] ' | remove: '4] ' | remove: '5] ' | remove: '6] ' | remove: '7] ' | remove: '8] ' | remove: '9] ' | remove: '10] ' | truncate: 74
@@ -272,6 +272,76 @@
     "groups": ["header", "footer"]
   },
   "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "default": "main-menu",
+      "label": "Navigation menu"
+    },
+    {
+      "type": "header",
+      "content": "Labels"
+    },
+    {
+      "type": "text",
+      "id": "label_collections",
+      "default": "Collections",
+      "label": "Collections"
+    },
+    {
+      "type": "text",
+      "id": "label_products",
+      "default": "Products",
+      "label": "Products"
+    },
+    {
+      "type": "text",
+      "id": "label_cart",
+      "default": "Cart",
+      "label": "Cart"
+    },
+    {
+      "type": "text",
+      "id": "label_search",
+      "default": "Search",
+      "label": "Search"
+    },
+    {
+      "type": "text",
+      "id": "label_contact",
+      "default": "Contact us",
+      "label": "Contact us"
+    },
+    {
+      "type": "text",
+      "id": "label_portal",
+      "default": "Portal",
+      "label": "Customer portal"
+    },
+    {
+      "type": "text",
+      "id": "label_login",
+      "default": "Login",
+      "label": "Login"
+    },
+    {
+      "type": "text",
+      "id": "label_order_list",
+      "default": "Order list",
+      "label": "Order list"
+    },
+    {
+      "type": "text",
+      "id": "label_order",
+      "default": "Order",
+      "label": "Order"
+    },
+    {
+      "type": "text",
+      "id": "label_password",
+      "default": "Password",
+      "label": "Password"
+    },
     {
       "type": "header",
       "content": "Appearance"

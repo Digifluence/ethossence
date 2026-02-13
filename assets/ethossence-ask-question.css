@@ -1,0 +1,70 @@
+/* ask a question */
+
+.ask-question__form-wrapper {
+  width: 100%;
+}
+
+.ask-question__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  width: 100%;
+  max-width: 54rem;
+}
+
+.left .ask-question__form {
+  margin-right: auto;
+}
+
+.center .ask-question__form {
+  margin-inline: auto;
+}
+
+.right .ask-question__form {
+  margin-left: auto;
+}
+
+.ask-question__required-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
+.ask-question__checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ask-question__checkbox {
+  width: 1.8rem;
+  height: 1.8rem;
+  flex-shrink: 0;
+  accent-color: rgb(var(--color-foreground));
+  cursor: pointer;
+}
+
+.ask-question__checkbox-label {
+  font-size: 1.4rem;
+  line-height: 1.4;
+  cursor: pointer;
+}
+
+.ask-question__phone-wrapper {
+  margin-top: 1.2rem;
+}
+
+.ask-question__submit-button {
+  margin-top: 0.4rem;
+}
+
+.ask-question__success {
+  padding: 1.2rem 1.6rem;
+  margin: 0 0 1rem;
+  border: 1px solid rgba(var(--color-foreground), 0.2);
+  background: rgba(var(--color-foreground), 0.04);
+}
+
+.ask-question__errors {
+  margin: 0 0 1rem;
+}
