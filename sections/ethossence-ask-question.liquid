@@ -70,9 +70,6 @@
                   style="--animation-order: {{ forloop.index }};"
                 {% endif %}
               >
-
-<pre>test 002</pre>
-
                 {%- form 'contact', id: 'AskQuestionForm', class: 'ask-question__form' -%}
                   {%- if form.posted_successfully? -%}
                     <p class="ask-question__success" tabindex="-1" autofocus>
