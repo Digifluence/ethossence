@@ -127,42 +127,44 @@
                     </div>
                   </div>
 
-                  <div class="ask-question__request-callback">
-                    <div class="ask-question__checkbox-wrapper">
-                      <input
-                        type="checkbox"
-                        id="AskQuestionCallback-{{ section.id }}"
-                        name="contact[Callback Requested]"
-                        value="Yes"
-                        class="ask-question__checkbox"
-                        data-ask-question-callback="{{ section.id }}"
-                      >
-                      <label for="AskQuestionCallback-{{ section.id }}" class="ask-question__checkbox-label">
-                        {{ block.settings.callback_label }}
-                      </label>
-                    </div>
-
-                    <div class="ask-question__phone-wrapper" id="AskQuestionPhone-{{ section.id }}" hidden>
-                      <div class="field">
+                  <div class="ask-question__footer">
+                    <div class="ask-question__request-callback">
+                      <div class="ask-question__checkbox-wrapper">
                         <input
-                          type="tel"
-                          id="AskQuestionPhoneInput-{{ section.id }}"
-                          name="contact[Phone Number]"
-                          class="field__input"
-                          placeholder="{{ block.settings.phone_label }}"
-                          autocomplete="tel"
+                          type="checkbox"
+                          id="AskQuestionCallback-{{ section.id }}"
+                          name="contact[Callback Requested]"
+                          value="Yes"
+                          class="ask-question__checkbox"
+                          data-ask-question-callback="{{ section.id }}"
                         >
-                        <label for="AskQuestionPhoneInput-{{ section.id }}" class="field__label">
-                          {{ block.settings.phone_label }}
+                        <label for="AskQuestionCallback-{{ section.id }}" class="ask-question__checkbox-label">
+                          {{ block.settings.callback_label }}
                         </label>
                       </div>
-                    </div>
-                  </div>
 
-                  <div class="ask-question__submit-button">
-                    <button type="submit" class="button">
-                      {{ block.settings.button_label }}
-                    </button>
+                      <div class="ask-question__phone-wrapper" id="AskQuestionPhone-{{ section.id }}" hidden>
+                        <div class="field">
+                          <input
+                            type="tel"
+                            id="AskQuestionPhoneInput-{{ section.id }}"
+                            name="contact[Phone Number]"
+                            class="field__input"
+                            placeholder="{{ block.settings.phone_label }}"
+                            autocomplete="tel"
+                          >
+                          <label for="AskQuestionPhoneInput-{{ section.id }}" class="field__label">
+                            {{ block.settings.phone_label }}
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="ask-question__submit-button">
+                      <button type="submit" class="button">
+                        {{ block.settings.button_label }}
+                      </button>
+                    </div>
                   </div>
                 {%- endform -%}
               </div>
