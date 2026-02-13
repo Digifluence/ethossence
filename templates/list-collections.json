@@ -92,8 +92,10 @@
         "title": "Collections",
         "sort": "alphabetical",
         "image_ratio": "square",
-        "columns_desktop": 3,
-        "columns_mobile": "2"
+        "columns_desktop": 5,
+        "columns_mobile": "2",
+        "padding_top": 84,
+        "padding_bottom": 52
       }
     }
   },
