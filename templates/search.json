@@ -1,24 +1,75 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
+    "image_banner_Qc9a4e": {
+      "type": "image-banner",
+      "name": "t:sections.image-banner.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/PIXI-color-trailing.jpg",
+        "image_overlay_opacity": 0,
+        "image_height": "small",
+        "image_behavior": "none",
+        "desktop_content_position": "middle-center",
+        "desktop_content_alignment": "center",
+        "show_text_box": true,
+        "color_scheme": "",
+        "stack_images_on_mobile": true,
+        "mobile_content_alignment": "center",
+        "show_text_below": true
+      }
+    },
+    "ethossence_breadcrumbs_WNzizc": {
+      "type": "ethossence-breadcrumbs",
+      "name": "Breadcrumbs",
+      "settings": {
+        "menu": "main-menu",
+        "label_collections": "Collections",
+        "label_products": "Products",
+        "label_cart": "Cart",
+        "label_search": "Search",
+        "label_contact": "Contact us",
+        "label_portal": "Portal",
+        "label_login": "Login",
+        "label_order_list": "Order list",
+        "label_order": "Order",
+        "label_password": "Password",
+        "color_scheme": "scheme-3",
+        "full_width": false,
+        "padding_top": 12,
+        "padding_bottom": 12
+      }
+    },
     "main": {
       "type": "main-search",
       "settings": {
         "columns_desktop": 4,
+        "columns_mobile": "2",
         "image_ratio": "adapt",
+        "image_shape": "default",
         "show_secondary_image": false,
         "show_vendor": false,
         "show_rating": false,
         "enable_filtering": true,
+        "filter_type": "horizontal",
         "enable_sorting": true,
         "article_show_date": true,
         "article_show_author": false,
-        "columns_mobile": "2",
         "padding_top": 36,
         "padding_bottom": 36
       }
     }
   },
   "order": [
+    "image_banner_Qc9a4e",
+    "ethossence_breadcrumbs_WNzizc",
     "main"
   ]
 }
