@@ -38,16 +38,28 @@
          endif
       endfor
 
+      if page.metafields.ethossence.content_heading != blank
+         if pos_2 != 'n0ne'
+            assign pos_2 = page.metafields.ethossence.content_heading
+         elsif s_menu_links_exist
+            assign pos_1 = page.metafields.ethossence.content_heading
+         endif
+      endif
+
       if page.url contains 'contact-us'
          assign pos_1 = section.settings.label_contact
          assign pos_1_url = '' 
          assign pos_2 = ''
          assign pos_2_url = '' 
       else 
-         unless s_menu_links_exist 
-            assign pos_1 = page.title   
-            assign pos_1_url = page.url 
-         endunless 
+         unless s_menu_links_exist
+            if page.metafields.ethossence.content_heading != blank
+               assign pos_1 = page.metafields.ethossence.content_heading
+            else
+               assign pos_1 = page.title
+            endif
+            assign pos_1_url = page.url
+         endunless
       endif 
  
 
@@ -63,8 +75,8 @@
          assign pos_1_url = blog.url
 
          if article.title != blank
-            if article.metafields.iqx.article_header != blank
-               assign pos_2 = article.metafields.iqx.article_header
+            if article.metafields.ethossence.content_heading != blank
+               assign pos_2 = article.metafields.ethossence.content_heading
             else
                assign pos_2 = article.title
             endif
@@ -87,8 +99,8 @@
       assign pos_1 = section.settings.label_collections   
       assign pos_1_url = '/collections/'    
 
-      if collection.metafields.iqx.collection_header != blank  
-         assign pos_2 = collection.metafields.iqx.collection_header 
+      if collection.metafields.ethossence.content_heading != blank
+         assign pos_2 = collection.metafields.ethossence.content_heading
       else  
          assign pos_2 = collection.title 
       endif 
@@ -105,8 +117,8 @@
          assign pos_1_url = '/collections/all'
       endif 
 
-      if product.metafields.iqx.product_header != blank  
-         assign pos_2 = product.metafields.iqx.product_header 
+      if product.metafields.ethossence.content_heading != blank
+         assign pos_2 = product.metafields.ethossence.content_heading
       else  
          assign pos_2 = product.title 
       endif 
@@ -205,7 +217,7 @@
    assign pos_4_clean = pos_4 | remove: 'A] ' | remove: 'B] ' | remove: 'C] ' | remove: 'D] ' | remove: '1] ' | remove: '2] ' | remove: '3] ' | remove: '4] ' | remove: '5] ' | remove: '6] ' | remove: '7] ' | remove: '8] ' | remove: '9] ' | remove: '10] ' | truncate: 74
 -%}
 
-<pre>version confirm 0216-006</pre>
+<pre>version confirm 0216-007</pre>
 
 <div class="color-{{ section.settings.color_scheme }} gradient">
   <div id="block-breadcrumbs" class="{% unless section.settings.full_width %}page-width {% endunless %}section-{{ section.id }}-padding isolate">
