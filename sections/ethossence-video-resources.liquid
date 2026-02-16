@@ -1,5 +1,9 @@
 {{ 'ethossence-video-resources.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'ethossence-video-resources.js' | asset_url }}" defer="defer"></script>
+{%- if section.settings.enable_accordion -%}
+  {{ 'ethossence-accordion.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'ethossence-accordion.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
 
 {%- style -%}
   .section-{{ section.id }}-padding {
@@ -120,14 +124,23 @@
 {%- if filtered_resource_count > 0 -%}
   <div class="color-{{ section.settings.color_scheme }} gradient">
     <div class="ethossence-video-resources section-{{ section.id }}-padding">
-      <div class="ethossence-video-resources__wrapper page-width isolate">
+      <div class="ethossence-video-resources__wrapper page-width isolate"{% if section.settings.enable_accordion %} data-ethossence-accordion{% endif %}>
 
       {%- if section.settings.heading != blank -%}
-        <h2 class="ethossence-video-resources__heading {{ section.settings.heading_size }}">
-          {{ section.settings.heading }}
-        </h2>
+        <div class="ethossence-accordion__header">
+          <h2 class="ethossence-video-resources__heading {{ section.settings.heading_size }}">
+            {{ section.settings.heading }}
+          </h2>
+          {%- if section.settings.enable_accordion -%}
+            <button type="button" class="ethossence-accordion__toggle" data-accordion-toggle>
+              <span data-expand-text>+ {{ 'sections.accordion.expand' | t | default: 'expand' }}</span>
+              <span data-collapse-text>- {{ 'sections.accordion.collapse' | t | default: 'collapse' }}</span>
+            </button>
+          {%- endif -%}
+        </div>
       {%- endif -%}
 
+      <div class="{% if section.settings.enable_accordion %}ethossence-accordion__content{% endif %}"{% if section.settings.enable_accordion %} data-accordion-content{% endif %}>
       <div class="ethossence-video-resources__grid grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down">
         {%- for resource in video_resources -%}
           {%- liquid
@@ -332,6 +345,7 @@
         {%- endfor -%}
       </div>
       </div>
+      </div>
     </div>
   </div>
 {%- endif -%}
@@ -468,6 +482,16 @@
       "label": "Enable lazy loading for external videos",
       "info": "Shows YouTube/Vimeo thumbnails with play buttons. Videos load when clicked.",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "Accordion"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_accordion",
+      "label": "Enable accordion expand/collapse",
+      "default": false
     },
     {
       "type": "header",
