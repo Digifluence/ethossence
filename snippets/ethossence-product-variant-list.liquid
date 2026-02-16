@@ -79,6 +79,7 @@
       <div class="variant-list-modal__body">
          <h2 class="{{ heading_size }}">{{ product.metafields.ethossence.variant_list.value.variant_list_header | default: view_all_modal_header_default }}</h2>
          {{ product.metafields.ethossence.variant_list.value.variant_list_message | metafield_tag }}
+         <p class="variant-list-modal__instruction">Select a variant below to view its details</p>
          <ul class="variant-list-modal__list">
             {%- for variant in product.variants -%}
                <li>
@@ -86,7 +87,10 @@
                   href="{{ product.url }}?variant={{ variant.id }}"
                   class="variant-list-modal__link"
                >
-                  {{ variant.title }}
+                  <span class="variant-list-modal__variant-title">{{ variant.title }}</span>
+                  {%- if variant.barcode != blank -%}
+                     <span class="variant-list-modal__part-number">Part number: {{ variant.barcode }}</span>
+                  {%- endif -%}
                </a>
                </li>
             {%- endfor -%}
