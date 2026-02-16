@@ -28,6 +28,31 @@
   Name: Group choice recommended || Type:  true or false || Key: solution_group_recommended
   Name: Products included || Type:  list product || Key: solution_include_products
   Name: Product variants included || Type:  list product variant || Key: solution_include_variants
+
+  Rendered content layout
+    LOOP THRU Product (product_solutions) values
+    System name, as heading
+    System note, if not null
+      LOOP THRU Product system groups (product_solution_groups)
+      Group heading
+      Group note, if not null
+      Group choice recommended 
+      LOOP THRU Products include and then Product variants included list.
+        Column 1: image
+        Column 2: Title, Variants (if any), and SKU
+        Column 3 : Description (truncated)
+        Column 3 : Price (with from if multiple variants and default)
+        Column 4: Add to cart button
+
+        When displaying a product (Products include) if more than one variant, then Variants display in select menu and Price is prepended with “from”.
+        Upon selection of a Variant, then that Variant Price displays and the prepenned “from” is removed.
+
+  Functionality
+    Extract the all Metaobject references included in product.metafield.ethossence.product_solutions.
+    Create HTML for all Product systems and Product system groups as defined in content layout.
+    Show only Product systems where the current Product Variant matches Applicable product variants fields in Metaobject Product systems.
+    Clicking on Add to cart button should add to cart and trigger the toast display (as currently done).
+
 {%- endcomment -%}
 
 {%- liquid
