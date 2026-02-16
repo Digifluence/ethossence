@@ -72,7 +72,7 @@
             endif
             assign pos_2_url = article.url
          elsif current_tags.size > 0
-            assign pos_2 = current_tags.first
+            assign pos_2 = current_tags.first | camelcase
             assign tag_handle = current_tags.first | handleize
             assign pos_2_url = blog.url | append: '/tagged/' | append: tag_handle
          else
