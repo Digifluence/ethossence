@@ -17,7 +17,7 @@
   Fields: Name: System note  || Type: Multi line text || Key: solution_note
   Fields: Name: Applicable product variant(s)  || Type: list product variant || Key: solution_variants_applicable
   Name: Included product system group(s) || Type: List Metaobject reference (Metaobject type: product_solution_groups) || Key: solution_groups_included
-
+  Fields: Name: Authorization || Type: List Metaobject reference (Metaobject name: Authorization) || Key: solution_authorization
 
   MetaObject
   Name: Product system groups
@@ -117,7 +117,7 @@
 
   <div class="section-{{ section.id }}-padding color-{{ section.settings.color_scheme }} gradient">
     <div class="page-width">
-      <div class="product-solutions" data-section-id="{{ section.id }}" data-current-variant-id="{{ current_variant.id }}"{% if section.settings.enable_accordion %} data-ethossence-accordion{% endif %}>
+      <div class="product-solutions" data-section-id="{{ section.id }}" data-current-variant-id="{{ current_variant.id }}" data-currency-code-enabled="{{ settings.currency_code_enabled }}"{% if section.settings.enable_accordion %} data-ethossence-accordion{% endif %}>
 
         {%- comment -%} Section Heading with Accordion Toggle {%- endcomment -%}
         {%- if section.settings.heading != blank -%}
@@ -258,13 +258,14 @@
                               <select
                                 class="product-solutions__variant-select"
                                 data-product-id="{{ group_product.id }}"
-                                onchange="productSolutionsUpdateVariant(this)"
                               >
                                 {%- for variant in group_product.variants -%}
                                   <option
                                     value="{{ variant.id }}"
                                     data-price="{{ variant.price | money }}"
+                                    data-price-with-currency="{{ variant.price | money_with_currency }}"
                                     data-compare-price="{{ variant.compare_at_price | money }}"
+                                    data-compare-price-with-currency="{{ variant.compare_at_price | money_with_currency }}"
                                     data-available="{{ variant.available }}"
                                     data-sku="{{ variant.sku }}"
                                     {% if variant == first_available_variant %}selected{% endif %}
