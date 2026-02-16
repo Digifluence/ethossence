@@ -8,36 +8,38 @@
 
    if template contains 'page' 
 
+      assign page_path = '/pages/' | append: page.handle
+
       for link in linklists[section.settings.menu].links
-         if page.url == link.url  
-            assign s_menu_links_exist = true 
-            assign pos_1 = link.title  
-            assign pos_1_url = link.url 
-         endif 
+         if page.url == link.url or link.url contains page_path
+            assign s_menu_links_exist = true
+            assign pos_1 = link.title
+            assign pos_1_url = link.url
+         endif
          if link.links != blank
             for sub_link in link.links
-               if page.url == sub_link.url
+               if page.url == sub_link.url or sub_link.url contains page_path
                   assign s_menu_links_exist = true
                   assign pos_1 = link.title
                   assign pos_1_url = link.url
                   assign pos_2 = sub_link.title
-                  assign pos_2_url = sub_link.url 
-               endif 
-               if sub_link.links != blank 
-                  for sub_sub_link in sub_link.links 
-                     if page.url == sub_sub_link.url
+                  assign pos_2_url = sub_link.url
+               endif
+               if sub_link.links != blank
+                  for sub_sub_link in sub_link.links
+                     if page.url == sub_sub_link.url or sub_sub_link.url contains page_path
                         assign s_menu_links_exist = true
                         assign pos_1 = link.title
                         assign pos_1_url = link.url
                         assign pos_2 = sub_link.title
                         assign pos_2_url = sub_link.url
                         assign pos_3 = sub_sub_link.title
-                        assign pos_3_url = sub_sub_link.url 
-                     endif 
-                  endfor    
-               endif 
-            endfor 
-         endif 
+                        assign pos_3_url = sub_sub_link.url
+                     endif
+                  endfor
+               endif
+            endfor
+         endif
       endfor 
 
       if page.url contains 'contact-us'
@@ -207,7 +209,7 @@
    assign pos_4_clean = pos_4 | remove: 'A] ' | remove: 'B] ' | remove: 'C] ' | remove: 'D] ' | remove: '1] ' | remove: '2] ' | remove: '3] ' | remove: '4] ' | remove: '5] ' | remove: '6] ' | remove: '7] ' | remove: '8] ' | remove: '9] ' | remove: '10] ' | truncate: 74
 -%}
 
-<pre>version confirm 0216-004</pre>
+<pre>version confirm 0216-005</pre>
 
 <div class="color-{{ section.settings.color_scheme }} gradient">
   <div id="block-breadcrumbs" class="{% unless section.settings.full_width %}page-width {% endunless %}section-{{ section.id }}-padding isolate">
