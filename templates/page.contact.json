@@ -13,10 +13,10 @@
       "type": "image-banner",
       "name": "t:sections.image-banner.presets.name",
       "settings": {
-        "image": "shopify://shop_images/apex3-during-welding.jpg",
+        "image": "shopify://shop_images/Weld_United_APEX3.2-website_2784a724-c777-49eb-8924-d81edfe2ffbe.jpg",
         "image_overlay_opacity": 0,
         "image_height": "small",
-        "image_behavior": "ambient",
+        "image_behavior": "zoom-in",
         "desktop_content_position": "middle-center",
         "desktop_content_alignment": "center",
         "show_text_box": true,
@@ -30,6 +30,17 @@
       "type": "ethossence-breadcrumbs",
       "name": "Breadcrumbs",
       "settings": {
+        "menu": "main-menu",
+        "label_collections": "Collections",
+        "label_products": "Products",
+        "label_cart": "Cart",
+        "label_search": "Search",
+        "label_contact": "Contact us",
+        "label_portal": "Portal",
+        "label_login": "Login",
+        "label_order_list": "Order list",
+        "label_order": "Order",
+        "label_password": "Password",
         "color_scheme": "scheme-3",
         "full_width": false,
         "padding_top": 12,
@@ -52,7 +63,9 @@
       "settings": {
         "hide_title": true,
         "padding_top": 0,
-        "padding_bottom": 28
+        "padding_bottom": 28,
+        "authoriz_enabled": false,
+        "authoriz_require_msg": ""
       }
     },
     "form": {
@@ -114,11 +127,11 @@
         "location_include": true,
         "color_scheme": "scheme-1",
         "layout": "form-wide",
-        "padding_top": 0,
-        "padding_bottom": 84,
         "contact_header_treatment": "H2",
         "contact_header_align": "text-left",
-        "contact_text_align": "text-left"
+        "contact_text_align": "text-left",
+        "padding_top": 0,
+        "padding_bottom": 84
       }
     }
   },
