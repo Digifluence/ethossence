@@ -21,7 +21,6 @@
    * @param {HTMLSelectElement} selectElement
    */
   function updateVariant(selectElement) {
-    var productId = selectElement.dataset.productId;
     var selectedOption = selectElement.options[selectElement.selectedIndex];
     var variantId = selectedOption.value;
     var available = selectedOption.dataset.available === 'true';
@@ -35,14 +34,19 @@
       ? selectedOption.dataset.comparePriceWithCurrency
       : selectedOption.dataset.comparePrice;
 
+    // Scope all queries to the parent item row so duplicate product IDs
+    // across hidden/visible solution systems don't cause mis-targeting
+    var item = selectElement.closest('.product-solutions__item');
+    if (!item) return;
+
     // Update the button's variant ID
-    var addBtn = document.querySelector('.product-solutions [data-variant-input="' + productId + '"]');
+    var addBtn = item.querySelector('[data-variant-input]');
     if (addBtn) {
       addBtn.dataset.variantId = variantId;
     }
 
     // Update price display — a specific variant is selected so never show "from"
-    var priceDisplay = document.querySelector('.product-solutions [data-price-display="' + productId + '"]');
+    var priceDisplay = item.querySelector('[data-price-display]');
     if (priceDisplay) {
       if (comparePrice && comparePrice !== price) {
         priceDisplay.innerHTML =
@@ -54,13 +58,13 @@
     }
 
     // Update SKU display
-    var skuDisplay = document.querySelector('.product-solutions [data-sku-display="' + productId + '"]');
+    var skuDisplay = item.querySelector('[data-sku-display]');
     if (skuDisplay) {
       skuDisplay.textContent = sku ? 'SKU: ' + sku : '';
     }
 
     // Update add to cart button availability
-    var btn = document.querySelector('.product-solutions [data-add-btn="' + productId + '"]');
+    var btn = item.querySelector('[data-add-btn]');
     if (btn) {
       var addToCartText = btn.dataset.addToCartText || 'Add to cart';
       var soldOutText = btn.dataset.soldOutText || 'Sold out';
