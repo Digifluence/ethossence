@@ -72,7 +72,7 @@
             endif
             assign pos_2_url = article.url
          elsif current_tags.size > 0
-            assign pos_2 = current_tags.first | camelcase
+            assign pos_2 = current_tags.first
             assign tag_handle = current_tags.first | handleize
             assign pos_2_url = blog.url | append: '/tagged/' | append: tag_handle
          else
@@ -207,7 +207,7 @@
    assign pos_4_clean = pos_4 | remove: 'A] ' | remove: 'B] ' | remove: 'C] ' | remove: 'D] ' | remove: '1] ' | remove: '2] ' | remove: '3] ' | remove: '4] ' | remove: '5] ' | remove: '6] ' | remove: '7] ' | remove: '8] ' | remove: '9] ' | remove: '10] ' | truncate: 74
 -%}
 
-<pre>version confirm 0216-003</pre>
+<pre>version confirm 0216-004</pre>
 
 <div class="color-{{ section.settings.color_scheme }} gradient">
   <div id="block-breadcrumbs" class="{% unless section.settings.full_width %}page-width {% endunless %}section-{{ section.id }}-padding isolate">
