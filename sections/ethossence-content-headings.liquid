@@ -49,18 +49,22 @@
     margin-top: 0;
     color: rgb(var(--color-content_subheading));
   }
+
+  .content-headings--left, .content-subheadings--left { text-align: left; }
+  .content-headings--center, .content-subheadings--center { text-align: center; }
+  .content-headings--right, .content-subheadings--right { text-align: right; }
 {%- endstyle -%}
 
 <div class="color-{{ section.settings.color_scheme }} gradient">
   <div class="page-width section-{{ section.id }}-padding isolate">
 
     {%- if heading != blank -%}
-      <h1 class="content-headings {{ section.settings.heading_size }}">
+      <h1 class="content-headings {{ section.settings.heading_size }} content-headings--{{ section.settings.heading_alignment }}">
         {{ heading }}
       </h1>
     {%- endif -%}
     {%- if subheading != blank -%}
-      <h2 class="content-subheadings {{ section.settings.subheading_size }}">
+      <h2 class="content-subheadings {{ section.settings.subheading_size }} content-subheadings--{{ section.settings.heading_alignment }}">
         {{ subheading }}
       </h2>
     {%- endif -%}
@@ -133,7 +137,27 @@
       ],
       "default": "h2",
       "label": "t:sections.all.subheading_size.label"
-    },   
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left",
+      "label": "Heading alignment"
+    },
     {
       "type": "color_scheme",
       "id": "color_scheme",
@@ -152,7 +176,7 @@
       "step": 4,
       "unit": "px",
       "label": "t:sections.all.padding.padding_top",
-      "default": 36
+      "default": 24
     },
     {
       "type": "range",
@@ -162,7 +186,7 @@
       "step": 4,
       "unit": "px",
       "label": "t:sections.all.padding.padding_bottom",
-      "default": 36
+      "default": 24
     }
   ],
   "presets": [

@@ -128,7 +128,7 @@
 
       {%- if section.settings.heading != blank -%}
         <div class="ethossence-accordion__header">
-          <h2 class="image-resource-gallery__heading {{ section.settings.heading_size }}">
+          <h2 class="image-resource-gallery__heading {{ section.settings.heading_size }} image-resource-gallery__heading--{{ section.settings.heading_alignment }}">
             {{ section.settings.heading }}
           </h2>
           {%- if section.settings.enable_accordion -%}
@@ -397,10 +397,6 @@
   },
   "settings": [
     {
-      "type": "header",
-      "content": "Header"
-    },
-    {
       "type": "inline_richtext",
       "id": "heading",
       "label": "Heading",
@@ -433,6 +429,26 @@
       ],
       "default": "h2",
       "label": "Heading size"
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left",
+      "label": "Heading alignment"
     },
     {
       "type": "color_scheme",
@@ -535,7 +551,7 @@
       "step": 4,
       "unit": "px",
       "label": "t:sections.all.padding.padding_top",
-      "default": 28
+      "default": 24
     },
     {
       "type": "range",
@@ -545,7 +561,7 @@
       "step": 4,
       "unit": "px",
       "label": "t:sections.all.padding.padding_bottom",
-      "default": 28
+      "default": 24
     }
   ],
   "presets": [

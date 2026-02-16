@@ -19,6 +19,18 @@
   margin-bottom: 0;
 }
 
+.image-resource-gallery__heading--left {
+  text-align: left;
+}
+
+.image-resource-gallery__heading--center {
+  text-align: center;
+}
+
+.image-resource-gallery__heading--right {
+  text-align: right;
+}
+
 /* MOBILE/TABLET COLUMNS */
 .image-resource-gallery__grid.grid--1-col-tablet-down {
   grid-template-columns: repeat(1, minmax(0, 1fr));

@@ -5,6 +5,10 @@
   margin-bottom: 2rem;
 }
 
+.article-tags__heading--left { text-align: left; }
+.article-tags__heading--center { text-align: center; }
+.article-tags__heading--right { text-align: right; }
+
 /* Tags list container */
 .tags-list {
   display: flex;

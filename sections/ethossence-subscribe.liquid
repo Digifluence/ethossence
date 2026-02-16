@@ -27,13 +27,13 @@
     <div class="subscribe-section-container">
       <div id="subscribe-content">
         {%- if section.settings.heading != blank -%}
-          <h2 class="subscribe-heading {{ section.settings.heading_size }} center">
+          <h2 class="subscribe-heading {{ section.settings.heading_size }} subscribe-heading--{{ section.settings.heading_alignment }}">
             {{ section.settings.heading }}
           </h2>
         {%- endif -%}
 
         {%- if section.settings.description != blank -%}
-          <div class="subscribe-description rte center">
+          <div class="subscribe-description rte subscribe-description--{{ section.settings.heading_alignment }}">
             {{ section.settings.description }}
           </div>
         {%- endif -%}
@@ -98,7 +98,27 @@
       ],
       "default": "h1",
       "label": "t:sections.all.heading_size.label"
-    }, 
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left",
+      "label": "Heading alignment"
+    },
     {
       "type": "color_scheme",
       "id": "color_scheme",
@@ -117,7 +137,7 @@
       "step": 4,
       "unit": "px",
       "label": "t:sections.all.padding.padding_top",
-      "default": 36
+      "default": 24
     },
     {
       "type": "range",
@@ -127,7 +147,7 @@
       "step": 4,
       "unit": "px",
       "label": "t:sections.all.padding.padding_bottom",
-      "default": 36
+      "default": 24
     }
   ],
   "presets": [

@@ -5,6 +5,10 @@
   margin-bottom: 2rem;
 }
 
+.subscribe-heading--left, .subscribe-description--left { text-align: left; }
+.subscribe-heading--center, .subscribe-description--center { text-align: center; }
+.subscribe-heading--right, .subscribe-description--right { text-align: right; }
+
 /* Subscribe description */
 .subscribe-description {
   margin-bottom: 3rem;

@@ -10,8 +10,19 @@
 }
 
 .ethossence-video-resources__heading {
-  text-align: left;
   margin-bottom: 3rem;
+}
+
+.ethossence-video-resources__heading--left {
+  text-align: left;
+}
+
+.ethossence-video-resources__heading--center {
+  text-align: center;
+}
+
+.ethossence-video-resources__heading--right {
+  text-align: right;
 }
 
 .ethossence-video-resources__grid {
