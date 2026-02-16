@@ -46,6 +46,17 @@
       "type": "ethossence-breadcrumbs",
       "name": "Breadcrumbs",
       "settings": {
+        "menu": "main-menu",
+        "label_collections": "Collections",
+        "label_products": "Products",
+        "label_cart": "Cart",
+        "label_search": "Search",
+        "label_contact": "Contact us",
+        "label_portal": "Portal",
+        "label_login": "Login",
+        "label_order_list": "Order list",
+        "label_order": "Order",
+        "label_password": "Password",
         "color_scheme": "scheme-3",
         "full_width": false,
         "padding_top": 12,
@@ -86,6 +97,26 @@
     "main": {
       "type": "ethossence-main-product",
       "blocks": {
+        "product_alternatives_9Wg6ih": {
+          "type": "product_alternatives",
+          "settings": {
+            "heading_size": "h1",
+            "heading_alignment": "left",
+            "body_alignment": "left",
+            "columns_desktop": 4,
+            "enable_desktop_slider": false,
+            "full_width": false,
+            "image_ratio": "adapt",
+            "image_shape": "default",
+            "show_secondary_image": false,
+            "show_vendor": false,
+            "show_rating": false,
+            "product_card_alignment": "left",
+            "quick_add": "none",
+            "columns_mobile": "2",
+            "swipe_on_mobile": false
+          }
+        },
         "variant_list_kNxW34": {
           "type": "variant_list",
           "settings": {
@@ -137,6 +168,7 @@
         }
       },
       "block_order": [
+        "product_alternatives_9Wg6ih",
         "variant_list_kNxW34",
         "title",
         "variant_picker_EWA7dm",
@@ -245,12 +277,14 @@
       "settings": {
         "heading": "Image resources",
         "heading_size": "h1",
+        "heading_alignment": "left",
         "color_scheme": "",
         "include_image_title": true,
         "title_size": "h3",
         "include_image_description": true,
         "columns_desktop": 4,
         "columns_mobile": "2",
+        "enable_accordion": false,
         "padding_top": 28,
         "padding_bottom": 28
       }
@@ -261,6 +295,7 @@
       "settings": {
         "heading": "Video resources",
         "heading_size": "h1",
+        "heading_alignment": "left",
         "color_scheme": "",
         "include_video_title": true,
         "title_size": "h3",
@@ -268,6 +303,7 @@
         "columns_desktop": 4,
         "columns_mobile": "2",
         "lazy_load": true,
+        "enable_accordion": false,
         "padding_top": 28,
         "padding_bottom": 28
       }
@@ -321,6 +357,7 @@
         "heading_size": "h2",
         "heading_alignment": "center",
         "color_scheme": "",
+        "enable_accordion": false,
         "padding_top": 28,
         "padding_bottom": 28
       }
