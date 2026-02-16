@@ -138,7 +138,6 @@
 
       {%- for block in section.blocks -%}
         {%- case block.type -%}
-        
           {%- when 'product_alternatives' -%}
 
             {%- liquid
@@ -212,13 +211,13 @@
 
                 <div class="collection__title title-wrapper title-wrapper--no-top-margin{% if show_alt_mobile_slider %} title-wrapper--self-padded-tablet-down{% endif %}{% if show_alt_desktop_slider %} collection__title--desktop-slider{% endif %}">
                   {%- if alt_heading != blank -%}
-                    <h2 class="title inline-richtext {{ block.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" style="text-align: {{ block.settings.heading_alignment }};">
+                    <h2 class="title inline-richtext {{ block.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" style="text-align: {{ block.settings.heading_alignment }};{% if block.settings.heading_color != 'rgba(0,0,0,0)' %} color: {{ block.settings.heading_color }};{% endif %}">
                       {{ alt_heading }}
                     </h2>
                   {%- endif -%}
                   {%- if alt_body != blank -%}
-                    <div class="collection__description rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" style="text-align: {{ block.settings.body_alignment }};">
-                      {{ alt_body }}
+                    <div class="collection__description rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" style="text-align: {{ block.settings.body_alignment }};{% if block.settings.body_color != 'rgba(0,0,0,0)' %} color: {{ block.settings.body_color }};{% endif %}">
+                      {{ alt_body | metafield_tag }}
                     </div>
                   {%- endif -%}
                 </div>
@@ -2110,6 +2109,18 @@
           ],
           "default": "left",
           "label": "Body alignment"
+        },
+        {
+          "type": "color",
+          "id": "heading_color",
+          "label": "Heading color",
+          "default": "rgba(0,0,0,0)"
+        },
+        {
+          "type": "color",
+          "id": "body_color",
+          "label": "Body color",
+          "default": "rgba(0,0,0,0)"
         },
         {
           "type": "header",
