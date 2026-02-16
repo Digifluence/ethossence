@@ -13,10 +13,10 @@
       "type": "image-banner",
       "name": "t:sections.image-banner.presets.name",
       "settings": {
-        "image": "shopify://shop_images/Weld_United_APEX3.2-website_2784a724-c777-49eb-8924-d81edfe2ffbe.jpg",
+        "image": "shopify://shop_images/weld-united-March-weld-website.jpg",
         "image_overlay_opacity": 0,
         "image_height": "small",
-        "image_behavior": "zoom-in",
+        "image_behavior": "none",
         "desktop_content_position": "middle-center",
         "desktop_content_alignment": "center",
         "show_text_box": true,
