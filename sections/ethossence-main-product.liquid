@@ -594,7 +594,7 @@
 
               {%- when 'product_alternatives' -%}
 
-                <pre>Version 0216 001</pre>
+                <pre>version 0216 1546</pre>
 
                 {%- liquid
                   assign alt_meta = product.metafields.ethossence.product_alternatives.value
@@ -609,6 +609,12 @@
                     endif
                   endif
                 -%}
+
+                <pre>
+                  alt_meta.product_alternatives_display_when: 
+                  {{ alt_meta.product_alternatives_display_when }}  
+                </pre>
+
 
                 {%- if show_alternatives -%}
                   {%- liquid
