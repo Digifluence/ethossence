@@ -69,6 +69,7 @@
     },
     "ethossence_content_headings_Q6rCxU": {
       "type": "ethossence-content-headings",
+      "disabled": true,
       "name": "Content headings",
       "settings": {
         "heading_size": "h0",
