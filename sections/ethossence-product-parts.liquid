@@ -42,7 +42,7 @@
 
     /* Line separators */
     {% if section.settings.show_top_line %}
-    .section-{{ section.id }}-padding .product-parts::before {
+    .section-{{ section.id }}-padding .product-parts__wrapper::before {
       content: '';
       display: block;
       width: 100%;
@@ -53,7 +53,7 @@
     {% endif %}
 
     {% if section.settings.show_bottom_line %}
-    .section-{{ section.id }}-padding .product-parts::after {
+    .section-{{ section.id }}-padding .product-parts__wrapper::after {
       content: '';
       display: block;
       width: 100%;
@@ -71,9 +71,9 @@
     {% endif %}
   {%- endstyle -%}
 
-  <div class="section-{{ section.id }}-padding color-{{ section.settings.color_scheme }} gradient">
-    <div class="page-width">
-      <div class="product-parts" data-section-id="{{ section.id }}"{% if section.settings.enable_accordion %} data-ethossence-accordion{% endif %}>
+  <div class="color-{{ section.settings.color_scheme }} gradient">
+    <div class="product-parts section-{{ section.id }}-padding">
+      <div class="product-parts__wrapper page-width isolate" data-section-id="{{ section.id }}"{% if section.settings.enable_accordion %} data-ethossence-accordion{% endif %}>
 
         {%- comment -%} Section Heading with Accordion Toggle {%- endcomment -%}
         {%- if section.settings.heading != blank -%}

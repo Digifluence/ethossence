@@ -118,7 +118,7 @@
 
     /* Line separators */
     {% if section.settings.show_top_line %}
-    .section-{{ section.id }}-padding .product-solutions::before {
+    .section-{{ section.id }}-padding .product-solutions__wrapper::before {
       content: '';
       display: block;
       width: 100%;
@@ -129,7 +129,7 @@
     {% endif %}
 
     {% if section.settings.show_bottom_line %}
-    .section-{{ section.id }}-padding .product-solutions::after {
+    .section-{{ section.id }}-padding .product-solutions__wrapper::after {
       content: '';
       display: block;
       width: 100%;
@@ -140,9 +140,9 @@
     {% endif %}
   {%- endstyle -%}
 
-  <div class="section-{{ section.id }}-padding color-{{ section.settings.color_scheme }} gradient">
-    <div class="page-width">
-      <div class="product-solutions" data-section-id="{{ section.id }}" data-current-variant-id="{{ current_variant.id }}" data-currency-code-enabled="{{ settings.currency_code_enabled }}"{% if section.settings.enable_accordion %} data-ethossence-accordion{% endif %}>
+  <div class="color-{{ section.settings.color_scheme }} gradient">
+    <div class="product-solutions section-{{ section.id }}-padding">
+      <div class="product-solutions__wrapper page-width isolate" data-section-id="{{ section.id }}" data-current-variant-id="{{ current_variant.id }}" data-currency-code-enabled="{{ settings.currency_code_enabled }}"{% if section.settings.enable_accordion %} data-ethossence-accordion{% endif %}>
 
         {%- comment -%} Section Heading with Accordion Toggle {%- endcomment -%}
         {%- if section.settings.heading != blank -%}
