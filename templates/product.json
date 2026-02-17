@@ -356,7 +356,7 @@
         "group_heading_font_size": 18,
         "group_heading_bold": false,
         "show_top_line": true,
-        "show_bottom_line": true,
+        "show_bottom_line": false,
         "enable_accordion": true,
         "padding_top": 24,
         "padding_bottom": 24
