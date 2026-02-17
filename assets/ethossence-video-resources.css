@@ -1,10 +1,5 @@
 /* ETHOSSENCE VIDEO RESOURCES STYLES */
 
-.ethossence-video-resources {
-  margin-top: 0rem;
-  margin-bottom: 0rem;
-}
-
 .ethossence-video-resources__wrapper {
   width: 100%;
 }
@@ -268,10 +263,6 @@
 }
 
 @media screen and (max-width: 749px) {
-  .ethossence-video-resources {
-    margin-top: 3rem;
-    margin-bottom: 3rem;
-  }
 
   .ethossence-video-resources__heading {
     margin-bottom: 2rem;
