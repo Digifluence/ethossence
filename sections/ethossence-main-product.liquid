@@ -161,21 +161,10 @@
                 assign alt_products = alt_meta.product_alternatives_products.value
                 assign alt_columns_desktop = block.settings.columns_desktop
                 assign alt_columns_mobile = block.settings.columns_mobile
-                assign show_alt_mobile_slider = false
-                assign show_alt_desktop_slider = false
-
-                if block.settings.swipe_on_mobile
-                  assign show_alt_mobile_slider = true
-                endif
-
-                if block.settings.enable_desktop_slider
-                  assign show_alt_desktop_slider = true
-                endif
               -%}
 
               {{ 'component-card.css' | asset_url | stylesheet_tag }}
               {{ 'component-price.css' | asset_url | stylesheet_tag }}
-              {{ 'component-slider.css' | asset_url | stylesheet_tag }}
               {{ 'template-collection.css' | asset_url | stylesheet_tag }}
 
               {%- if block.settings.image_shape == 'blob' -%}
@@ -205,11 +194,20 @@
                 #shopify-section-{{ section.id }} .product-alternatives .card-information {
                   text-align: {{ block.settings.product_card_alignment }};
                 }
+
+                #shopify-section-{{ section.id }} .product-alternatives .collection__description p,
+                #shopify-section-{{ section.id }} .product-alternatives .collection__description li,
+                #shopify-section-{{ section.id }} .product-alternatives .collection__description span,
+                #shopify-section-{{ section.id }} .product-alternatives .collection__description h1,
+                #shopify-section-{{ section.id }} .product-alternatives .collection__description h2,
+                #shopify-section-{{ section.id }} .product-alternatives .collection__description h3 {
+                  text-align: inherit;
+                }
               {%- endstyle -%}
 
-              <div class="product-alternatives{% if block.settings.quick_add == 'bulk' %} collection-quick-add-bulk{% endif %}{% if block.settings.full_width %} collection--full-width{% endif %}" {{ block.shopify_attributes }}>
+              <div class="product-alternatives{% if block.settings.quick_add == 'bulk' %} collection-quick-add-bulk{% endif %}" {{ block.shopify_attributes }}>
 
-                <div class="collection__title title-wrapper title-wrapper--no-top-margin{% if show_alt_mobile_slider %} title-wrapper--self-padded-tablet-down{% endif %}{% if show_alt_desktop_slider %} collection__title--desktop-slider{% endif %}">
+                <div class="collection__title title-wrapper title-wrapper--no-top-margin">
                   {%- if alt_heading != blank -%}
                     <h2 class="title inline-richtext {{ block.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" style="text-align: {{ block.settings.heading_alignment }};{% if block.settings.heading_color != 'rgba(0,0,0,0)' %} color: {{ block.settings.heading_color }};{% endif %}">
                       {{ alt_heading }}
@@ -223,73 +221,39 @@
                 </div>
 
                 {%- if alt_products != blank and alt_products.size > 0 -%}
-                  <slider-component class="slider-mobile-gutter{% if block.settings.full_width %} slider-component-full-width{% endif %}{% if show_alt_mobile_slider == false and block.settings.full_width == false %} page-width-desktop{% endif %}{% if show_alt_desktop_slider %} slider-component-desktop{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-                    <ul
-                      id="Slider-alt-{{ block.id }}"
-                      data-id="{{ block.id }}"
-                      class="grid product-grid contains-card contains-card--product{% if settings.card_style == 'standard' %} contains-card--standard{% endif %} grid--{{ alt_columns_desktop }}-col-desktop grid--{{ alt_columns_mobile }}-col-tablet-down{% if show_alt_mobile_slider or show_alt_desktop_slider %} slider{% if show_alt_desktop_slider %} slider--desktop{% endif %}{% if show_alt_mobile_slider %} slider--tablet grid--peek{% endif %}{% endif %}"
-                      role="list"
-                      aria-label="{{ 'general.slider.name' | t }}"
-                    >
-                      {%- assign skip_alt_card_styles = false -%}
-                      {%- for alt_product in alt_products -%}
-                        <li
-                          id="Slide-alt-{{ block.id }}-{{ forloop.index }}"
-                          class="grid__item{% if show_alt_mobile_slider or show_alt_desktop_slider %} slider__slide{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-                          {% if settings.animations_reveal_on_scroll %}
-                            data-cascade
-                            style="--animation-order: {{ forloop.index }};"
-                          {% endif %}
-                        >
-                          {% render 'card-product',
-                            card_product: alt_product,
-                            media_aspect_ratio: block.settings.image_ratio,
-                            image_shape: block.settings.image_shape,
-                            lazy_load: true,
-                            show_secondary_image: block.settings.show_secondary_image,
-                            show_vendor: block.settings.show_vendor,
-                            show_rating: block.settings.show_rating,
-                            skip_styles: skip_alt_card_styles,
-                            section_id: section.id,
-                            quick_add: block.settings.quick_add
-                          %}
-                        </li>
-                        {%- assign skip_alt_card_styles = true -%}
-                      {%- endfor -%}
-                    </ul>
-                    {%- if show_alt_mobile_slider or show_alt_desktop_slider -%}
-                      <div class="slider-buttons">
-                        <button
-                          type="button"
-                          class="slider-button slider-button--prev"
-                          name="previous"
-                          aria-label="{{ 'general.slider.previous_slide' | t }}"
-                          aria-controls="Slider-alt-{{ block.id }}"
-                        >
-                          <span class="svg-wrapper">
-                            {{- 'icon-caret.svg' | inline_asset_content -}}
-                          </span>
-                        </button>
-                        <div class="slider-counter caption">
-                          <span class="slider-counter--current">1</span>
-                          <span aria-hidden="true"> / </span>
-                          <span class="visually-hidden">{{ 'general.slider.of' | t }}</span>
-                          <span class="slider-counter--total">{{ alt_products.size }}</span>
-                        </div>
-                        <button
-                          type="button"
-                          class="slider-button slider-button--next"
-                          name="next"
-                          aria-label="{{ 'general.slider.next_slide' | t }}"
-                          aria-controls="Slider-alt-{{ block.id }}"
-                        >
-                          <span class="svg-wrapper">
-                            {{- 'icon-caret.svg' | inline_asset_content -}}
-                          </span>
-                        </button>
-                      </div>
-                    {%- endif -%}
-                  </slider-component>
+                  <ul
+                    id="ProductAlternatives-{{ block.id }}"
+                    data-id="{{ block.id }}"
+                    class="grid product-grid contains-card contains-card--product{% if settings.card_style == 'standard' %} contains-card--standard{% endif %} grid--{{ alt_columns_desktop }}-col-desktop grid--{{ alt_columns_mobile }}-col-tablet-down"
+                    role="list"
+                    aria-label="{{ 'general.slider.name' | t }}"
+                  >
+                    {%- assign skip_alt_card_styles = false -%}
+                    {%- for alt_product in alt_products -%}
+                      <li
+                        id="ProductAlternative-{{ block.id }}-{{ forloop.index }}"
+                        class="grid__item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+                        {% if settings.animations_reveal_on_scroll %}
+                          data-cascade
+                          style="--animation-order: {{ forloop.index }};"
+                        {% endif %}
+                      >
+                        {% render 'card-product',
+                          card_product: alt_product,
+                          media_aspect_ratio: block.settings.image_ratio,
+                          image_shape: block.settings.image_shape,
+                          lazy_load: true,
+                          show_secondary_image: block.settings.show_secondary_image,
+                          show_vendor: block.settings.show_vendor,
+                          show_rating: block.settings.show_rating,
+                          skip_styles: skip_alt_card_styles,
+                          section_id: section.id,
+                          quick_add: block.settings.quick_add
+                        %}
+                      </li>
+                      {%- assign skip_alt_card_styles = true -%}
+                    {%- endfor -%}
+                  </ul>
                 {%- endif -%}
 
                 {%- if block.settings.image_shape == 'arch' -%}
@@ -2136,18 +2100,6 @@
           "label": "t:sections.featured-collection.settings.columns_desktop.label"
         },
         {
-          "type": "checkbox",
-          "id": "enable_desktop_slider",
-          "label": "t:sections.featured-collection.settings.enable_desktop_slider.label",
-          "default": false
-        },
-        {
-          "type": "checkbox",
-          "id": "full_width",
-          "label": "t:sections.featured-collection.settings.full_width.label",
-          "default": false
-        },
-        {
           "type": "header",
           "content": "t:sections.featured-collection.settings.header.content"
         },
@@ -2289,12 +2241,6 @@
               "label": "t:sections.featured-collection.settings.columns_mobile.options__2.label"
             }
           ]
-        },
-        {
-          "type": "checkbox",
-          "id": "swipe_on_mobile",
-          "default": false,
-          "label": "t:sections.featured-collection.settings.swipe_on_mobile.label"
         }
       ]
     }

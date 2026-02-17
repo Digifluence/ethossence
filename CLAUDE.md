@@ -252,3 +252,9 @@ Sections that pull content from metafields use namespace `ethossence` and suppor
 ```
 
 Sections using this pattern: `content-headings`, `embed-script`, `faqs`, `image-resources`, `video-resources`, `product-solutions`, `product-parts`, `product-description`, `product-specifications`, `product-characteristics`
+
+**Rich text metaobject fields** require the `metafield_tag` filter to render as HTML. Without it, the raw JSON structure is output to the browser.
+
+```liquid
+{{ metaobject.rich_text_field | metafield_tag }}
+```
