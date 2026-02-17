@@ -232,6 +232,79 @@
       "settings": {
         "include_margins": true
       }
+    },
+    "ethossence_product_characteristics_4qjACh": {
+      "type": "ethossence-product-characteristics",
+      "blocks": {
+        "heading_4HjYqb": {
+          "type": "heading",
+          "disabled": true,
+          "settings": {
+            "heading": "Characteristics",
+            "heading_size": "h1",
+            "heading_alignment": "left"
+          }
+        },
+        "characteristics_qkhGHi": {
+          "type": "characteristics",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "heading_4HjYqb",
+        "characteristics_qkhGHi"
+      ],
+      "name": "Characteristics",
+      "settings": {
+        "color_scheme": "",
+        "enable_accordion": false,
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
+    },
+    "ethossence_product_description_NePtCU": {
+      "type": "ethossence-product-description",
+      "blocks": {
+        "heading_fxUPm4": {
+          "type": "heading",
+          "settings": {
+            "heading": "Description",
+            "heading_size": "h1",
+            "heading_alignment": "left"
+          }
+        }
+      },
+      "block_order": [
+        "heading_fxUPm4"
+      ],
+      "name": "Description",
+      "settings": {
+        "desktop_content_position": "left",
+        "content_alignment": "left",
+        "color_scheme": "",
+        "full_width": true,
+        "enable_accordion": false,
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
+    },
+    "ethossence_image_resources_8BHjr4": {
+      "type": "ethossence-image-resources",
+      "name": "Image resources",
+      "settings": {
+        "heading": "Image Resources",
+        "heading_size": "h2",
+        "heading_alignment": "left",
+        "color_scheme": "",
+        "include_image_title": true,
+        "title_size": "h3",
+        "include_image_description": true,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "enable_accordion": false,
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
     }
   },
   "order": [
@@ -240,6 +313,9 @@
     "rich_text_d6Vjce",
     "main",
     "related-products",
-    "17564162700878961e"
+    "17564162700878961e",
+    "ethossence_product_characteristics_4qjACh",
+    "ethossence_product_description_NePtCU",
+    "ethossence_image_resources_8BHjr4"
   ]
 }
