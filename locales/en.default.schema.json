@@ -465,6 +465,11 @@
         "padding_top": "Top",
         "padding_bottom": "Bottom"
       },
+      "separators": {
+        "label": "Section line separators",
+        "show_top_line": "Include top",
+        "show_bottom_line": "Include bottom"
+      },
       "spacing": "Spacing",
       "colors": {
         "label": "Color scheme",
