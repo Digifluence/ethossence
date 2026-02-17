@@ -50,6 +50,17 @@
       "type": "ethossence-breadcrumbs",
       "name": "Breadcrumbs",
       "settings": {
+        "menu": "main-menu",
+        "label_collections": "Collections",
+        "label_products": "Products",
+        "label_cart": "Cart",
+        "label_search": "Search",
+        "label_contact": "Contact us",
+        "label_portal": "Portal",
+        "label_login": "Login",
+        "label_order_list": "Order list",
+        "label_order": "Order",
+        "label_password": "Password",
         "color_scheme": "scheme-3",
         "full_width": false,
         "padding_top": 12,
@@ -58,10 +69,12 @@
     },
     "ethossence_content_headings_Q6rCxU": {
       "type": "ethossence-content-headings",
+      "disabled": true,
       "name": "Content headings",
       "settings": {
         "heading_size": "h0",
         "subheading_size": "h1",
+        "heading_alignment": "left",
         "color_scheme": "",
         "padding_top": 24,
         "padding_bottom": 0
@@ -78,7 +91,9 @@
         },
         "content": {
           "type": "content",
-          "settings": {}
+          "settings": {
+            "first_para_size": 25
+          }
         }
       },
       "block_order": [
@@ -93,6 +108,7 @@
       "settings": {
         "heading": "Tagged",
         "heading_size": "h1",
+        "heading_alignment": "left",
         "color_scheme": "scheme-2",
         "padding_top": 16,
         "padding_bottom": 16
@@ -105,6 +121,7 @@
         "heading": "Subscribe to our emails",
         "description": "<p>Subscribe to receive alerts when new articles and videos are published.</p>",
         "heading_size": "h1",
+        "heading_alignment": "left",
         "color_scheme": "scheme-2",
         "padding_top": 16,
         "padding_bottom": 84
