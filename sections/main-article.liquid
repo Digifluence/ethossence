@@ -66,12 +66,34 @@
 
       {%- when 'content' -%}
         <div
+          id="ArticleContent-{{ block.id }}"
           class="article-template__content page-width rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
           {{ block.shopify_attributes }}
         >
-          {%- render 'ethossence-content-display', 
+          {%- render 'ethossence-content-display',
             content: article.content -%}
         </div>
+        {%- if block.settings.first_para_size > 1 -%}
+          <style>
+            #ArticleContent-{{ block.id }} .article-first-para {
+              font-size: {{ block.settings.first_para_size }}px;
+            }
+          </style>
+          <script>
+            (function() {
+              var c = document.getElementById('ArticleContent-{{ block.id }}');
+              if (!c) return;
+              var ps = c.querySelectorAll('p');
+              for (var i = 0; i < ps.length; i++) {
+                var t = ps[i].textContent.trim().replace(/\u00a0/g, '');
+                if (t === '') continue;
+                if (/^\[\[\s*COL\s+\d+\/6\s*\]\]$/.test(t)) continue;
+                ps[i].classList.add('article-first-para');
+                break;
+              }
+            })();
+          </script>
+        {%- endif -%}
 
       {%- when 'share' -%}
         <div
@@ -356,7 +378,19 @@
     {
       "type": "content",
       "name": "t:sections.main-article.blocks.content.name",
-      "limit": 1
+      "limit": 1,
+      "settings": [
+        {
+          "type": "range",
+          "id": "first_para_size",
+          "min": 1,
+          "max": 50,
+          "step": 1,
+          "unit": "px",
+          "label": "First paragraph font size increase",
+          "default": 1
+        }
+      ]
     },
     {
       "type": "share",

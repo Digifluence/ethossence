@@ -134,140 +134,141 @@
 
   {% assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src' %}
   <div class="page-width">
-    <div class="product product--{{ section.settings.media_size }} product--{{ section.settings.media_position }} product--{{ section.settings.gallery_layout }} product--mobile-{{ section.settings.mobile_thumbnails }} grid grid--1-col {% if product.media.size > 0 %}grid--2-col-tablet{% else %}product--no-media{% endif %}">
 
-      {%- for block in section.blocks -%}
-        {%- case block.type -%}
-          {%- when 'product_alternatives' -%}
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when 'product_alternatives' -%}
 
-            {%- liquid
-              assign alt_meta = product.metafields.ethossence.product_alternatives.value
-              assign alt_display = alt_meta.product_alternatives_display_when
-              assign show_alternatives = false
+          {%- liquid
+            assign alt_meta = product.metafields.ethossence.product_alternatives.value
+            assign alt_display = alt_meta.product_alternatives_display_when
+            assign show_alternatives = false
 
-              if alt_meta != blank and alt_display != blank and alt_display != 'Never'
-                if alt_display == 'Always'
-                  assign show_alternatives = true
-                elsif alt_display == 'When out of stock / sold out' and product.available == false
-                  assign show_alternatives = true
-                endif
+            if alt_meta != blank and alt_display != blank and alt_display != 'Never'
+              if alt_display == 'Always'
+                assign show_alternatives = true
+              elsif alt_display == 'When out of stock / sold out' and product.available == false
+                assign show_alternatives = true
               endif
+            endif
+          -%}
+
+          {%- if show_alternatives -%}
+            {%- liquid
+              assign alt_heading = alt_meta.product_alternatives_heading
+              assign alt_body = alt_meta.product_alternatives_body
+              assign alt_products = alt_meta.product_alternatives_products.value
+              assign alt_columns_desktop = block.settings.columns_desktop
+              assign alt_columns_mobile = block.settings.columns_mobile
             -%}
 
-            {%- if show_alternatives -%}
-              {%- liquid
-                assign alt_heading = alt_meta.product_alternatives_heading
-                assign alt_body = alt_meta.product_alternatives_body
-                assign alt_products = alt_meta.product_alternatives_products.value
-                assign alt_columns_desktop = block.settings.columns_desktop
-                assign alt_columns_mobile = block.settings.columns_mobile
-              -%}
+            {{ 'component-card.css' | asset_url | stylesheet_tag }}
+            {{ 'component-price.css' | asset_url | stylesheet_tag }}
+            {{ 'template-collection.css' | asset_url | stylesheet_tag }}
 
-              {{ 'component-card.css' | asset_url | stylesheet_tag }}
-              {{ 'component-price.css' | asset_url | stylesheet_tag }}
-              {{ 'template-collection.css' | asset_url | stylesheet_tag }}
-
-              {%- if block.settings.image_shape == 'blob' -%}
-                {{ 'mask-blobs.css' | asset_url | stylesheet_tag }}
-              {%- endif -%}
-
-              {%- unless block.settings.quick_add == 'none' -%}
-                {{ 'quick-add.css' | asset_url | stylesheet_tag }}
-                <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
-              {%- endunless -%}
-
-              {%- if block.settings.quick_add == 'standard' -%}
-                <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
-              {%- endif -%}
-
-              {%- if block.settings.quick_add == 'bulk' -%}
-                <script src="{{ 'quick-add-bulk.js' | asset_url }}" defer="defer"></script>
-                <script src="{{ 'quantity-popover.js' | asset_url }}" defer="defer"></script>
-                <script src="{{ 'price-per-item.js' | asset_url }}" defer="defer"></script>
-                <script src="{{ 'quick-order-list.js' | asset_url }}" defer="defer"></script>
-              {%- endif -%}
-
-              {%- style -%}
-                #shopify-section-{{ section.id }} .product-alternatives {
-                  grid-column: 1 / -1;
-                }
-
-                #shopify-section-{{ section.id }} .product-alternatives .card__information,
-                #shopify-section-{{ section.id }} .product-alternatives .card__content,
-                #shopify-section-{{ section.id }} .product-alternatives .price,
-                #shopify-section-{{ section.id }} .product-alternatives .card-information {
-                  text-align: {{ block.settings.product_card_alignment }};
-                }
-
-                #shopify-section-{{ section.id }} .product-alternatives .collection__description p,
-                #shopify-section-{{ section.id }} .product-alternatives .collection__description li,
-                #shopify-section-{{ section.id }} .product-alternatives .collection__description span,
-                #shopify-section-{{ section.id }} .product-alternatives .collection__description h1,
-                #shopify-section-{{ section.id }} .product-alternatives .collection__description h2,
-                #shopify-section-{{ section.id }} .product-alternatives .collection__description h3 {
-                  text-align: inherit;
-                }
-              {%- endstyle -%}
-
-              <div class="product-alternatives{% if block.settings.quick_add == 'bulk' %} collection-quick-add-bulk{% endif %}" {{ block.shopify_attributes }}>
-
-                <div class="collection__title title-wrapper title-wrapper--no-top-margin">
-                  {%- if alt_heading != blank -%}
-                    <h2 class="title inline-richtext {{ block.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" style="text-align: {{ block.settings.heading_alignment }};{% if block.settings.heading_color != 'rgba(0,0,0,0)' %} color: {{ block.settings.heading_color }};{% endif %}">
-                      {{ alt_heading }}
-                    </h2>
-                  {%- endif -%}
-                  {%- if alt_body != blank -%}
-                    <div class="collection__description rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" style="text-align: {{ block.settings.body_alignment }};{% if block.settings.body_color != 'rgba(0,0,0,0)' %} color: {{ block.settings.body_color }};{% endif %}">
-                      {{ alt_body | metafield_tag }}
-                    </div>
-                  {%- endif -%}
-                </div>
-
-                {%- if alt_products != blank and alt_products.size > 0 -%}
-                  <ul
-                    id="ProductAlternatives-{{ block.id }}"
-                    data-id="{{ block.id }}"
-                    class="grid product-grid contains-card contains-card--product{% if settings.card_style == 'standard' %} contains-card--standard{% endif %} grid--{{ alt_columns_desktop }}-col-desktop grid--{{ alt_columns_mobile }}-col-tablet-down"
-                    role="list"
-                    aria-label="{{ 'general.slider.name' | t }}"
-                  >
-                    {%- assign skip_alt_card_styles = false -%}
-                    {%- for alt_product in alt_products -%}
-                      <li
-                        id="ProductAlternative-{{ block.id }}-{{ forloop.index }}"
-                        class="grid__item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-                        {% if settings.animations_reveal_on_scroll %}
-                          data-cascade
-                          style="--animation-order: {{ forloop.index }};"
-                        {% endif %}
-                      >
-                        {% render 'card-product',
-                          card_product: alt_product,
-                          media_aspect_ratio: block.settings.image_ratio,
-                          image_shape: block.settings.image_shape,
-                          lazy_load: true,
-                          show_secondary_image: block.settings.show_secondary_image,
-                          show_vendor: block.settings.show_vendor,
-                          show_rating: block.settings.show_rating,
-                          skip_styles: skip_alt_card_styles,
-                          section_id: section.id,
-                          quick_add: block.settings.quick_add
-                        %}
-                      </li>
-                      {%- assign skip_alt_card_styles = true -%}
-                    {%- endfor -%}
-                  </ul>
-                {%- endif -%}
-
-                {%- if block.settings.image_shape == 'arch' -%}
-                  {{ 'mask-arch.svg' | inline_asset_content }}
-                {%- endif -%}
-              </div>
+            {%- if block.settings.image_shape == 'blob' -%}
+              {{ 'mask-blobs.css' | asset_url | stylesheet_tag }}
             {%- endif -%}
 
-          {% endcase %}
-      {%- endfor -%}
+            {%- unless block.settings.quick_add == 'none' -%}
+              {{ 'quick-add.css' | asset_url | stylesheet_tag }}
+              <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+            {%- endunless -%}
+
+            {%- if block.settings.quick_add == 'standard' -%}
+              <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+            {%- endif -%}
+
+            {%- if block.settings.quick_add == 'bulk' -%}
+              <script src="{{ 'quick-add-bulk.js' | asset_url }}" defer="defer"></script>
+              <script src="{{ 'quantity-popover.js' | asset_url }}" defer="defer"></script>
+              <script src="{{ 'price-per-item.js' | asset_url }}" defer="defer"></script>
+              <script src="{{ 'quick-order-list.js' | asset_url }}" defer="defer"></script>
+            {%- endif -%}
+
+            {%- style -%}
+              #shopify-section-{{ section.id }} .product-alternatives {
+                grid-column: 1 / -1;
+              }
+
+              #shopify-section-{{ section.id }} .product-alternatives .card__information,
+              #shopify-section-{{ section.id }} .product-alternatives .card__content,
+              #shopify-section-{{ section.id }} .product-alternatives .price,
+              #shopify-section-{{ section.id }} .product-alternatives .card-information {
+                text-align: {{ block.settings.product_card_alignment }};
+              }
+
+              #shopify-section-{{ section.id }} .product-alternatives .collection__description p,
+              #shopify-section-{{ section.id }} .product-alternatives .collection__description li,
+              #shopify-section-{{ section.id }} .product-alternatives .collection__description span,
+              #shopify-section-{{ section.id }} .product-alternatives .collection__description h1,
+              #shopify-section-{{ section.id }} .product-alternatives .collection__description h2,
+              #shopify-section-{{ section.id }} .product-alternatives .collection__description h3 {
+                text-align: inherit;
+              }
+            {%- endstyle -%}
+
+            <div class="product-alternatives{% if block.settings.quick_add == 'bulk' %} collection-quick-add-bulk{% endif %}" {{ block.shopify_attributes }}>
+
+              <div class="collection__title title-wrapper title-wrapper--no-top-margin">
+                {%- if alt_heading != blank -%}
+                  <h2 class="title inline-richtext {{ block.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" style="text-align: {{ block.settings.heading_alignment }};{% if block.settings.heading_color != 'rgba(0,0,0,0)' %} color: {{ block.settings.heading_color }};{% endif %}">
+                    {{ alt_heading }}
+                  </h2>
+                {%- endif -%}
+                {%- if alt_body != blank -%}
+                  <div class="collection__description rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" style="text-align: {{ block.settings.body_alignment }};{% if block.settings.body_color != 'rgba(0,0,0,0)' %} color: {{ block.settings.body_color }};{% endif %}">
+                    {{ alt_body | metafield_tag }}
+                  </div>
+                {%- endif -%}
+              </div>
+
+              {%- if alt_products != blank and alt_products.size > 0 -%}
+                <ul
+                  id="ProductAlternatives-{{ block.id }}"
+                  data-id="{{ block.id }}"
+                  class="grid product-grid contains-card contains-card--product{% if settings.card_style == 'standard' %} contains-card--standard{% endif %} grid--{{ alt_columns_desktop }}-col-desktop grid--{{ alt_columns_mobile }}-col-tablet-down"
+                  role="list"
+                  aria-label="{{ 'general.slider.name' | t }}"
+                >
+                  {%- assign skip_alt_card_styles = false -%}
+                  {%- for alt_product in alt_products -%}
+                    <li
+                      id="ProductAlternative-{{ block.id }}-{{ forloop.index }}"
+                      class="grid__item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+                      {% if settings.animations_reveal_on_scroll %}
+                        data-cascade
+                        style="--animation-order: {{ forloop.index }};"
+                      {% endif %}
+                    >
+                      {% render 'card-product',
+                        card_product: alt_product,
+                        media_aspect_ratio: block.settings.image_ratio,
+                        image_shape: block.settings.image_shape,
+                        lazy_load: true,
+                        show_secondary_image: block.settings.show_secondary_image,
+                        show_vendor: block.settings.show_vendor,
+                        show_rating: block.settings.show_rating,
+                        skip_styles: skip_alt_card_styles,
+                        section_id: section.id,
+                        quick_add: block.settings.quick_add
+                      %}
+                    </li>
+                    {%- assign skip_alt_card_styles = true -%}
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+
+              {%- if block.settings.image_shape == 'arch' -%}
+                {{ 'mask-arch.svg' | inline_asset_content }}
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+
+        {% endcase %}
+    {%- endfor -%}    
+
+    <div class="product product--{{ section.settings.media_size }} product--{{ section.settings.media_position }} product--{{ section.settings.gallery_layout }} product--mobile-{{ section.settings.mobile_thumbnails }} grid grid--1-col {% if product.media.size > 0 %}grid--2-col-tablet{% else %}product--no-media{% endif %}">
 
       <div class="grid__item product__media-wrapper">
         {% render 'product-media-gallery', variant_images: variant_images %}
