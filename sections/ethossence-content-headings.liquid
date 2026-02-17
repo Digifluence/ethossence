@@ -8,22 +8,22 @@
   assign heading = blank
   assign subheading = blank
 
-  if template contains 'page'
+  if template.name == 'page'
     assign heading = page.metafields.ethossence.content_heading.value
     assign subheading = page.metafields.ethossence.content_subheading.value
-  elsif template contains 'blog'
-    assign heading = blog.metafields.ethossence.content_heading.value
-    assign subheading = blog.metafields.ethossence.content_subheading.value
-    if current_tags != blank
-      assign subheading = current_tags.first
-    endif    
-  elsif template contains 'article'
+  elsif template.name == 'article'
     assign heading = article.metafields.ethossence.content_heading.value
     assign subheading = article.metafields.ethossence.content_subheading.value
-  elsif template contains 'collection'
+  elsif template.name == 'blog'
+    assign heading = blog.metafields.ethossence.content_heading.value
+    assign subheading = blog.metafields.ethossence.content_subheading.value
+    if current_tags.size > 0
+      assign subheading = current_tags.first
+    endif
+  elsif template.name == 'collection'
     assign heading = collection.metafields.ethossence.content_heading.value
     assign subheading = collection.metafields.ethossence.content_subheading.value
-  elsif template contains 'product'
+  elsif template.name == 'product'
     assign heading = product.metafields.ethossence.content_heading.value
     assign subheading = product.metafields.ethossence.content_subheading.value
   endif
