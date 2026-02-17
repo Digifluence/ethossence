@@ -299,7 +299,7 @@
         "color_scheme": "",
         "enable_accordion": false,
         "padding_top": 24,
-        "padding_bottom": 24
+        "padding_bottom": 48
       }
     },
     "ethossence_image_resources_8BHjr4": {
@@ -315,9 +315,11 @@
         "include_image_description": true,
         "columns_desktop": 4,
         "columns_mobile": "2",
+        "show_top_line": true,
+        "show_bottom_line": true,
         "enable_accordion": true,
         "padding_top": 24,
-        "padding_bottom": 24
+        "padding_bottom": 0
       }
     },
     "ethossence_video_resources_YWAtwj": {
@@ -334,8 +336,10 @@
         "columns_desktop": 2,
         "columns_mobile": "1",
         "lazy_load": true,
+        "show_top_line": true,
+        "show_bottom_line": true,
         "enable_accordion": true,
-        "padding_top": 24,
+        "padding_top": 0,
         "padding_bottom": 0
       }
     },
@@ -354,7 +358,7 @@
         "show_top_line": true,
         "show_bottom_line": true,
         "enable_accordion": true,
-        "padding_top": 24,
+        "padding_top": 0,
         "padding_bottom": 24
       }
     },
