@@ -1,5 +1,6 @@
 /* IMAGE RESOURCES GRID */
 .image-resource-gallery {
+  display: block;
   width: 100%;
 }
 
