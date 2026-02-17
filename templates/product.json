@@ -315,11 +315,11 @@
         "include_image_description": true,
         "columns_desktop": 4,
         "columns_mobile": "2",
-        "show_top_line": true,
+        "show_top_line": false,
         "show_bottom_line": false,
         "enable_accordion": true,
-        "padding_top": 24,
-        "padding_bottom": 100
+        "padding_top": 0,
+        "padding_bottom": 4
       }
     },
     "ethossence_video_resources_YWAtwj": {
@@ -336,11 +336,11 @@
         "columns_desktop": 2,
         "columns_mobile": "1",
         "lazy_load": true,
-        "show_top_line": true,
+        "show_top_line": false,
         "show_bottom_line": false,
         "enable_accordion": true,
-        "padding_top": 24,
-        "padding_bottom": 24
+        "padding_top": 0,
+        "padding_bottom": 0
       }
     },
     "ethossence_product_solutions_nUyaUz": {
@@ -355,11 +355,11 @@
         "solution_name_bold": false,
         "group_heading_font_size": 18,
         "group_heading_bold": false,
-        "show_top_line": true,
+        "show_top_line": false,
         "show_bottom_line": false,
         "enable_accordion": true,
         "padding_top": 0,
-        "padding_bottom": 24
+        "padding_bottom": 0
       }
     },
     "ethossence_product_parts_mYK3V3": {
