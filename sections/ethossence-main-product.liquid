@@ -188,6 +188,10 @@
               {%- endif -%}
 
               {%- style -%}
+                #shopify-section-{{ section.id }} .product-alternatives {
+                  grid-column: 1 / -1;
+                }
+
                 #shopify-section-{{ section.id }} .product-alternatives .card__information,
                 #shopify-section-{{ section.id }} .product-alternatives .card__content,
                 #shopify-section-{{ section.id }} .product-alternatives .price,
