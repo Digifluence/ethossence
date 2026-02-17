@@ -288,12 +288,26 @@
         "padding_bottom": 24
       }
     },
+    "ethossence_product_specifications_93VpPJ": {
+      "type": "ethossence-product-specifications",
+      "name": "Specifications",
+      "settings": {
+        "heading": "Specifications",
+        "heading_size": "h1",
+        "heading_alignment": "left",
+        "paragraph": "",
+        "color_scheme": "",
+        "enable_accordion": false,
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
+    },
     "ethossence_image_resources_8BHjr4": {
       "type": "ethossence-image-resources",
       "name": "Image resources",
       "settings": {
         "heading": "Image Resources",
-        "heading_size": "h2",
+        "heading_size": "h1",
         "heading_alignment": "left",
         "color_scheme": "",
         "include_image_title": true,
@@ -301,9 +315,118 @@
         "include_image_description": true,
         "columns_desktop": 4,
         "columns_mobile": "2",
+        "enable_accordion": true,
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
+    },
+    "ethossence_video_resources_YWAtwj": {
+      "type": "ethossence-video-resources",
+      "name": "Video resources",
+      "settings": {
+        "heading": "Video Resources",
+        "heading_size": "h1",
+        "heading_alignment": "left",
+        "color_scheme": "",
+        "include_video_title": true,
+        "title_size": "h3",
+        "include_video_description": false,
+        "columns_desktop": 2,
+        "columns_mobile": "1",
+        "lazy_load": true,
+        "enable_accordion": true,
+        "padding_top": 24,
+        "padding_bottom": 0
+      }
+    },
+    "ethossence_product_solutions_nUyaUz": {
+      "type": "ethossence-product-solutions",
+      "name": "Solutions",
+      "settings": {
+        "heading": "Recommended Solutions",
+        "heading_size": "h1",
+        "heading_alignment": "left",
+        "color_scheme": "",
+        "solution_name_font_size": 22,
+        "solution_name_bold": false,
+        "group_heading_font_size": 18,
+        "group_heading_bold": false,
+        "show_top_line": true,
+        "show_bottom_line": true,
+        "enable_accordion": true,
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
+    },
+    "ethossence_product_parts_mYK3V3": {
+      "type": "ethossence-product-parts",
+      "name": "Parts",
+      "settings": {
+        "collection": "",
+        "heading": "Product Parts",
+        "heading_size": "h1",
+        "heading_alignment": "left",
+        "color_scheme": "",
+        "show_collection_description": true,
+        "group_heading_font_size": 18,
+        "group_heading_bold": false,
+        "alternate_row_colors": false,
+        "alternate_row_color": "#f5f5f5",
+        "show_top_line": false,
+        "show_bottom_line": false,
         "enable_accordion": false,
         "padding_top": 24,
         "padding_bottom": 24
+      }
+    },
+    "17713492916acaba61": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_review_widget_YVn3YF": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "sample_data",
+            "max_width": 1200,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_YVn3YF"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "featured_collection_8qpFee": {
+      "type": "featured-collection",
+      "name": "t:sections.featured-collection.presets.name",
+      "settings": {
+        "collection": "meltview-weld-monitoring-cameras-cro",
+        "products_to_show": 4,
+        "title": "Other Welding Cameras",
+        "heading_size": "h1",
+        "description": "",
+        "show_description": false,
+        "description_style": "body",
+        "columns_desktop": 4,
+        "enable_desktop_slider": false,
+        "full_width": false,
+        "show_view_all": false,
+        "view_all_style": "solid",
+        "color_scheme": "",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "product_card_alignment": "left",
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 84
       }
     }
   },
@@ -316,6 +439,12 @@
     "17564162700878961e",
     "ethossence_product_characteristics_4qjACh",
     "ethossence_product_description_NePtCU",
-    "ethossence_image_resources_8BHjr4"
+    "ethossence_product_specifications_93VpPJ",
+    "ethossence_image_resources_8BHjr4",
+    "ethossence_video_resources_YWAtwj",
+    "ethossence_product_solutions_nUyaUz",
+    "ethossence_product_parts_mYK3V3",
+    "17713492916acaba61",
+    "featured_collection_8qpFee"
   ]
 }
