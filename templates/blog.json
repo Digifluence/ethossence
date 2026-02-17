@@ -50,6 +50,17 @@
       "type": "ethossence-breadcrumbs",
       "name": "Breadcrumbs",
       "settings": {
+        "menu": "main-menu",
+        "label_collections": "Collections",
+        "label_products": "Products",
+        "label_cart": "Cart",
+        "label_search": "Search",
+        "label_contact": "Contact us",
+        "label_portal": "Portal",
+        "label_login": "Login",
+        "label_order_list": "Order list",
+        "label_order": "Order",
+        "label_password": "Password",
         "color_scheme": "scheme-3",
         "full_width": false,
         "padding_top": 12,
@@ -62,6 +73,7 @@
       "settings": {
         "heading_size": "h1",
         "subheading_size": "h2",
+        "heading_alignment": "left",
         "color_scheme": "",
         "padding_top": 16,
         "padding_bottom": 4
@@ -93,7 +105,7 @@
     "main": {
       "type": "main-blog",
       "settings": {
-        "show_title": true,
+        "show_title": false,
         "layout": "grid",
         "show_image": true,
         "image_height": "small",
@@ -110,6 +122,7 @@
         "heading": "Join our newsletter.",
         "description": "<p>Subscribe to receive updates, access to exclusive deals, and more.</p>",
         "heading_size": "h1",
+        "heading_alignment": "left",
         "color_scheme": "",
         "padding_top": 16,
         "padding_bottom": 84
