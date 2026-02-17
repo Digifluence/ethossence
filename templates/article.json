@@ -71,8 +71,8 @@
       "type": "ethossence-content-headings",
       "name": "Content headings",
       "settings": {
-        "heading_size": "h0",
-        "subheading_size": "h1",
+        "heading_size": "h1",
+        "subheading_size": "h2",
         "heading_alignment": "left",
         "color_scheme": "",
         "padding_top": 24,
