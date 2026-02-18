@@ -785,10 +785,10 @@
       }
     },
     "featured-blog": {
-      "name": "Blog posts",
+      "name": "Blog posts/articles",
       "settings": {
         "heading": {
-          "default": "Blog posts",
+          "default": "Blog articles",
           "label": "Heading"
         },
         "layout_header": {
@@ -801,14 +801,14 @@
           "label": "Blog"
         },
         "post_limit": {
-          "label": "Post count"
+          "label": "Article count"
         }, 
         "columns_desktop": {
           "label": "Columns"
         },
         "show_view_all": {
           "label": "\"View all\" button",
-          "info": "Visible if blog has more posts than shown"
+          "info": "Visible if blog has more articles than shown"
         },
         "show_image": {
           "label": "Featured image"
@@ -821,9 +821,42 @@
         }
       },
       "presets": {
-        "name": "Blog posts"
+        "name": "Blog posts/articles"
       }
     },
+    "blog-articles-related": {
+      "name": "Related posts/articles",
+      "settings": {
+        "heading": {
+          "default": "Related articles",
+          "label": "Heading"
+        },
+        "layout_header": {
+        "content": "Layout"
+        },
+        "text_header": {
+        "content": "Text"
+        },        
+        "post_limit": {
+          "label": "Article count"
+        },
+        "columns_desktop": {
+          "label": "Columns"
+        },
+        "show_image": {
+          "label": "Featured image"
+        },
+        "show_date": {
+          "label": "Date"
+        },
+        "show_author": {
+          "label": "Author"
+        }
+      },
+      "presets": {
+        "name": "Related posts/articles"
+      }
+    },   
     "featured-collection": {
       "name": "Featured collection",
       "settings": {
