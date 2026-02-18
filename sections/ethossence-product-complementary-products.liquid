@@ -7,16 +7,16 @@
   Metafield:
   - Namespace: ethossence
   - Key: complementary_products
-  - Type: List products
+  - Type: Collection (single collection reference)
 
   Settings:
   - alternate_row_colors: Enable alternating background colors for rows
   - alternate_row_color: Color for even rows when alternating is enabled
 {%- endcomment -%}
 
-{%- assign complementary_products = product.metafields.ethossence.complementary_products.value -%}
+{%- assign complementary_collection = product.metafields.ethossence.complementary_products.value -%}
 
-{%- if complementary_products != blank and complementary_products.size > 0 -%}
+{%- if complementary_collection != blank and complementary_collection.products.size > 0 -%}
   {{ 'ethossence-product-complementary-products.css' | asset_url | stylesheet_tag }}
   <script src="{{ 'ethossence-product-complementary-products.js' | asset_url }}" defer="defer"></script>
   {%- if section.settings.enable_accordion -%}
@@ -92,8 +92,8 @@
 
           <div class="product-complementary-products__items-list">
 
-            {%- comment -%} Loop through complementary products (one row per product, with variant selector if needed) {%- endcomment -%}
-            {%- for comp_product in complementary_products -%}
+            {%- comment -%} Loop through collection products (one row per product, with variant selector if needed) {%- endcomment -%}
+            {%- for comp_product in complementary_collection.products -%}
               {%- assign first_available_variant = comp_product.selected_or_first_available_variant -%}
               {%- assign has_multiple_variants = false -%}
               {%- if comp_product.variants.size > 1 -%}
