@@ -101,6 +101,19 @@
       ],
       "settings": {}
     },
+    "ethossence_faqs_fkVM6d": {
+      "type": "ethossence-faqs",
+      "name": "FAQS",
+      "settings": {
+        "heading": "Frequently Asked Questions",
+        "heading_size": "h2",
+        "heading_alignment": "left",
+        "color_scheme": "",
+        "enable_accordion": false,
+        "padding_top": 24,
+        "padding_bottom": 48
+      }
+    },
     "ethossence_article_tags_w9BgDA": {
       "type": "ethossence-article-tags",
       "name": "Blog article tags",
@@ -132,6 +145,7 @@
     "ethossence_breadcrumbs_zc6CX6",
     "ethossence_content_headings_Q6rCxU",
     "main",
+    "ethossence_faqs_fkVM6d",
     "ethossence_article_tags_w9BgDA",
     "ethossence_subscribe_f6rMqK"
   ]
