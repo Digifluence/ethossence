@@ -50,6 +50,17 @@
       "type": "ethossence-breadcrumbs",
       "name": "Breadcrumbs",
       "settings": {
+        "menu": "main-menu",
+        "label_collections": "Collections",
+        "label_products": "Products",
+        "label_cart": "Cart",
+        "label_search": "Search",
+        "label_contact": "Contact us",
+        "label_portal": "Portal",
+        "label_login": "Login",
+        "label_order_list": "Order list",
+        "label_order": "Order",
+        "label_password": "Password",
         "color_scheme": "scheme-3",
         "full_width": false,
         "padding_top": 12,
@@ -62,6 +73,7 @@
       "settings": {
         "heading_size": "h0",
         "subheading_size": "h1",
+        "heading_alignment": "left",
         "color_scheme": "",
         "padding_top": 0,
         "padding_bottom": 0
@@ -73,6 +85,7 @@
       "settings": {
         "heading": "",
         "heading_size": "h2",
+        "heading_alignment": "left",
         "color_scheme": "",
         "include_video_title": false,
         "title_size": "h3",
@@ -80,6 +93,9 @@
         "columns_desktop": 1,
         "columns_mobile": "1",
         "lazy_load": true,
+        "show_top_line": false,
+        "show_bottom_line": false,
+        "enable_accordion": false,
         "padding_top": 0,
         "padding_bottom": 0
       }
@@ -95,7 +111,9 @@
         },
         "content": {
           "type": "content",
-          "settings": {}
+          "settings": {
+            "first_para_size": 1
+          }
         }
       },
       "block_order": [
@@ -110,6 +128,7 @@
       "settings": {
         "heading": "Tagged",
         "heading_size": "h1",
+        "heading_alignment": "left",
         "color_scheme": "scheme-2",
         "padding_top": 16,
         "padding_bottom": 16
@@ -122,9 +141,27 @@
         "heading": "Subscribe to our emails",
         "description": "<p>Subscribe to receive alerts when new articles and videos are published.</p>",
         "heading_size": "h1",
+        "heading_alignment": "left",
         "color_scheme": "scheme-2",
         "padding_top": 12,
         "padding_bottom": 84
+      }
+    },
+    "ethossence_article_related_trEQqc": {
+      "type": "ethossence-article-related",
+      "name": "t:sections.blog-articles-related.presets.name",
+      "settings": {
+        "heading": "Related articles",
+        "heading_size": "h2",
+        "heading_alignment": "left",
+        "post_limit": 3,
+        "columns_desktop": 3,
+        "show_image": true,
+        "show_date": true,
+        "show_author": false,
+        "color_scheme": "",
+        "padding_top": 24,
+        "padding_bottom": 24
       }
     }
   },
@@ -134,6 +171,7 @@
     "ethossence_content_headings_bHHEhG",
     "ethossence_video_resources_bGtJBJ",
     "main",
+    "ethossence_article_related_trEQqc",
     "ethossence_article_tags_aUpzGH",
     "ethossence_subscribe_ftwXhC"
   ]
