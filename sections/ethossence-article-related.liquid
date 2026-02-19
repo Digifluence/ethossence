@@ -21,7 +21,18 @@ metafield raw: {{ article.metafields.ethossence.related_articles | default: "NO 
 related_articles size: {{ related_articles.size | default: "NO SIZE" }}
 </pre>
 
-{%- if related_articles != blank and related_articles.size > 0 -%}
+{%- if related_articles != blank -%}
+  {%- liquid
+    assign total_articles = 0
+    for ra in related_articles
+      assign total_articles = total_articles | plus: 1
+    endfor
+    assign posts_displayed = section.settings.post_limit
+    if total_articles < posts_displayed
+      assign posts_displayed = total_articles
+    endif
+  -%}
+
   {{ 'component-slider.css' | asset_url | stylesheet_tag }}
   {{ 'component-card.css' | asset_url | stylesheet_tag }}
   {{ 'component-article-card.css' | asset_url | stylesheet_tag }}
@@ -40,14 +51,6 @@ related_articles size: {{ related_articles.size | default: "NO SIZE" }}
       }
     }
   {%- endstyle -%}
-
-  {%- liquid
-    assign total_articles = related_articles.size
-    assign posts_displayed = section.settings.post_limit
-    if total_articles < posts_displayed
-      assign posts_displayed = total_articles
-    endif
-  -%}
 
   <div class="blog color-{{ section.settings.color_scheme }} gradient{% if section.settings.heading == blank %} no-heading{% endif %}">
     <div class="page-width-desktop isolate{% if posts_displayed < 3 %} page-width-tablet{% endif %} section-{{ section.id }}-padding">
