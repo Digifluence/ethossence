@@ -12,15 +12,6 @@
 
 {%- assign related_articles = article.metafields.ethossence.related_articles.value -%}
 
-<pre>
-test 0218-004
-article object: {{ article.title | default: "NOT AVAILABLE" }}
-metafield type: {{ article.metafields.ethossence.related_articles.type | default: "NO TYPE" }}
-metafield value: {{ article.metafields.ethossence.related_articles.value | default: "NO VALUE" }}
-metafield raw: {{ article.metafields.ethossence.related_articles | default: "NO METAFIELD" }}
-related_articles size: {{ related_articles.size | default: "NO SIZE" }}
-</pre>
-
 {%- if related_articles != blank -%}
   {%- liquid
     assign total_articles = 0
