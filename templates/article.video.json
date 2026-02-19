@@ -127,11 +127,11 @@
       "name": "Blog article tags",
       "settings": {
         "heading": "Tagged",
-        "heading_size": "h1",
+        "heading_size": "h2",
         "heading_alignment": "left",
         "color_scheme": "scheme-2",
-        "padding_top": 16,
-        "padding_bottom": 16
+        "padding_top": 24,
+        "padding_bottom": 0
       }
     },
     "ethossence_subscribe_ftwXhC": {
@@ -140,11 +140,11 @@
       "settings": {
         "heading": "Subscribe to our emails",
         "description": "<p>Subscribe to receive alerts when new articles and videos are published.</p>",
-        "heading_size": "h1",
+        "heading_size": "h2",
         "heading_alignment": "left",
         "color_scheme": "scheme-2",
-        "padding_top": 12,
-        "padding_bottom": 84
+        "padding_top": 24,
+        "padding_bottom": 24
       }
     },
     "ethossence_article_related_trEQqc": {
@@ -157,11 +157,11 @@
         "post_limit": 3,
         "columns_desktop": 3,
         "show_image": true,
-        "show_date": true,
+        "show_date": false,
         "show_author": false,
-        "color_scheme": "",
+        "color_scheme": "scheme-2",
         "padding_top": 24,
-        "padding_bottom": 24
+        "padding_bottom": 84
       }
     }
   },
@@ -171,8 +171,8 @@
     "ethossence_content_headings_bHHEhG",
     "ethossence_video_resources_bGtJBJ",
     "main",
-    "ethossence_article_related_trEQqc",
     "ethossence_article_tags_aUpzGH",
-    "ethossence_subscribe_ftwXhC"
+    "ethossence_subscribe_ftwXhC",
+    "ethossence_article_related_trEQqc"
   ]
 }
