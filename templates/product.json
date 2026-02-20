@@ -362,6 +362,44 @@
         "padding_bottom": 24
       }
     },
+    "ethossence_product_complementary_products_RMyaVx": {
+      "type": "ethossence-product-complementary-products",
+      "name": "Complementary products",
+      "settings": {
+        "heading": "Parts (CP)",
+        "heading_size": "h1",
+        "heading_alignment": "left",
+        "color_scheme": "",
+        "alternate_row_colors": false,
+        "alternate_row_color": "#f5f5f5",
+        "show_top_line": false,
+        "show_bottom_line": false,
+        "enable_accordion": false,
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
+    },
+    "ethossence_product_parts_ezcx7D": {
+      "type": "ethossence-product-parts",
+      "name": "Parts",
+      "settings": {
+        "collection": "",
+        "heading": "Product Parts",
+        "heading_size": "h1",
+        "heading_alignment": "left",
+        "color_scheme": "",
+        "show_collection_description": true,
+        "group_heading_font_size": 18,
+        "group_heading_bold": false,
+        "alternate_row_colors": false,
+        "alternate_row_color": "#f5f5f5",
+        "show_top_line": false,
+        "show_bottom_line": false,
+        "enable_accordion": false,
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
+    },
     "ethossence_product_parts_mYK3V3": {
       "type": "ethossence-product-parts",
       "name": "Parts",
@@ -447,6 +485,8 @@
     "ethossence_image_resources_8BHjr4",
     "ethossence_video_resources_YWAtwj",
     "ethossence_product_solutions_nUyaUz",
+    "ethossence_product_complementary_products_RMyaVx",
+    "ethossence_product_parts_ezcx7D",
     "ethossence_product_parts_mYK3V3",
     "17713492916acaba61",
     "featured_collection_8qpFee"
