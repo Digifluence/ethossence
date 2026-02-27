@@ -3,7 +3,6 @@
 .product-characteristics__blocks {
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
 .product-characteristics__heading {
@@ -36,6 +35,7 @@
   margin-bottom: 1.5rem;
   text-align: center;
   max-width: 800px;
+  align-self: center;
 }
 
 /* Characteristics Icons Container */
