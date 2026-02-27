@@ -43,18 +43,16 @@
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  gap: 20px;
   flex-wrap: wrap;
   margin: 2rem 0;
   padding: 1rem 0;
-  width: 100%;
+  align-self: stretch;
 }
 
 .product-characteristics__icon-item {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex: 0 0 auto;
 }
 
 .product-characteristics__icon-item img {
@@ -66,10 +64,6 @@
 
 /* Responsive adjustments for smaller screens */
 @media screen and (max-width: 749px) {
-  .product-characteristics__icons {
-    gap: 15px;
-  }
-
   .product-characteristics__icon-item img {
     width: 70px;
     height: 70px;
@@ -78,10 +72,6 @@
 
 /* Extra small screens */
 @media screen and (max-width: 480px) {
-  .product-characteristics__icons {
-    gap: 10px;
-  }
-
   .product-characteristics__icon-item img {
     width: 60px;
     height: 60px;
