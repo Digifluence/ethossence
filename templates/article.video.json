@@ -122,6 +122,23 @@
       ],
       "settings": {}
     },
+    "ethossence_article_related_MznPqY": {
+      "type": "ethossence-article-related",
+      "name": "t:sections.blog-articles-related.presets.name",
+      "settings": {
+        "heading": "Related articles",
+        "heading_size": "h2",
+        "heading_alignment": "left",
+        "post_limit": 3,
+        "columns_desktop": 3,
+        "show_image": true,
+        "show_date": false,
+        "show_author": false,
+        "color_scheme": "",
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
+    },
     "ethossence_article_tags_aUpzGH": {
       "type": "ethossence-article-tags",
       "name": "Blog article tags",
@@ -143,23 +160,6 @@
         "heading_size": "h2",
         "heading_alignment": "left",
         "color_scheme": "scheme-2",
-        "padding_top": 24,
-        "padding_bottom": 24
-      }
-    },
-    "ethossence_article_related_MznPqY": {
-      "type": "ethossence-article-related",
-      "name": "t:sections.blog-articles-related.presets.name",
-      "settings": {
-        "heading": "Related articles",
-        "heading_size": "h2",
-        "heading_alignment": "left",
-        "post_limit": 3,
-        "columns_desktop": 3,
-        "show_image": true,
-        "show_date": true,
-        "show_author": false,
-        "color_scheme": "",
         "padding_top": 24,
         "padding_bottom": 24
       }
