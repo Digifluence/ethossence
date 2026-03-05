@@ -278,7 +278,7 @@
         "content_xiMcXi": {
           "type": "content",
           "settings": {
-            "page": "request-solution-review",
+            "page": "request-welding-camera-monitor-solution-review",
             "heading_hide": false,
             "heading_size": "h1",
             "content_audience": "visitors",
@@ -292,11 +292,7 @@
           "settings": {
             "animation_type": "slide_down",
             "content_alignment": "center",
-            "create_account_head_text": "Create Your Account",
-            "submit_cart_head_text": "Review Request",
             "heading_size": "h1",
-            "btn_trigger_account_form": "Create Account to Request Review »",
-            "btn_trigger_request_form": "Start Review Request",
             "padding_top": 24,
             "padding_bottom": 24
           }
