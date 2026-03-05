@@ -292,13 +292,13 @@
           "settings": {
             "animation_type": "slide_down",
             "content_alignment": "left",
-            "display_forms": "automatically",
+            "display_forms": "button",
             "cta_button_text": "Get started >",
             "lead_in_text": "<strong>What to expect:</strong> A MeltTools welding camera engineer will review your submission and follow up to discuss your requirements, recommend products, and answer technical questions. ",
             "form_mode": "basic_and_detailed",
             "customer_form_heading": "About You",
             "heading_size": "h1",
-            "padding_top": 24,
+            "padding_top": 12,
             "padding_bottom": 24
           }
         }
