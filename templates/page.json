@@ -30,6 +30,17 @@
       "type": "ethossence-breadcrumbs",
       "name": "Breadcrumbs",
       "settings": {
+        "menu": "main-menu",
+        "label_collections": "Collections",
+        "label_products": "Products",
+        "label_cart": "Cart",
+        "label_search": "Search",
+        "label_contact": "Contact us",
+        "label_portal": "Portal",
+        "label_login": "Login",
+        "label_order_list": "Order list",
+        "label_order": "Order",
+        "label_password": "Password",
         "color_scheme": "scheme-3",
         "full_width": false,
         "padding_top": 16,
@@ -42,6 +53,7 @@
       "settings": {
         "heading_size": "h1",
         "subheading_size": "h2",
+        "heading_alignment": "left",
         "color_scheme": "",
         "padding_top": 36,
         "padding_bottom": 0
@@ -63,6 +75,7 @@
       "settings": {
         "heading": "Videoes",
         "heading_size": "h2",
+        "heading_alignment": "left",
         "color_scheme": "",
         "include_video_title": true,
         "title_size": "h3",
@@ -70,6 +83,9 @@
         "columns_desktop": 3,
         "columns_mobile": "1",
         "lazy_load": true,
+        "show_top_line": false,
+        "show_bottom_line": false,
+        "enable_accordion": false,
         "padding_top": 8,
         "padding_bottom": 8
       }
@@ -80,12 +96,16 @@
       "settings": {
         "heading": "",
         "heading_size": "h2",
+        "heading_alignment": "left",
         "color_scheme": "",
         "include_image_title": false,
         "title_size": "h3",
         "include_image_description": true,
         "columns_desktop": 3,
         "columns_mobile": "2",
+        "show_top_line": false,
+        "show_bottom_line": false,
+        "enable_accordion": false,
         "padding_top": 12,
         "padding_bottom": 28
       }
@@ -98,6 +118,7 @@
         "heading_size": "h1",
         "heading_alignment": "left",
         "color_scheme": "",
+        "enable_accordion": false,
         "padding_top": 12,
         "padding_bottom": 12
       }
@@ -250,6 +271,16 @@
         "padding_top": 36,
         "padding_bottom": 36
       }
+    },
+    "ethossence_request_review_JnpeFy": {
+      "type": "ethossence-request-review",
+      "name": "Review request",
+      "settings": {
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
     }
   },
   "order": [
@@ -263,6 +294,7 @@
     "ethossence_embed_script_EDwrMP",
     "multicolumn_3f88yA",
     "174017485838edd9b6",
-    "multicolumn_Uw9GNN"
+    "multicolumn_Uw9GNN",
+    "ethossence_request_review_JnpeFy"
   ]
 }
