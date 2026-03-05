@@ -169,7 +169,7 @@
                     {%- if customer -%}
                       <span class="request-review__signed-in-status">Signed in as {{ customer.email }}</span>
                     {%- else -%}
-                      <a class="request-review__sign-in-link" href="{{ routes.account_login_url }}?return_url={{ request.path | url_encode }}"><strong>Sign In &raquo;</strong></a>
+                      <a class="request-review__sign-in-link" href="{{ routes.storefront_login_url }}?return_url={{ request.path | url_encode }}"><strong>Sign In &raquo;</strong></a>
                     {%- endif -%}
                   </div>
                 </div>
