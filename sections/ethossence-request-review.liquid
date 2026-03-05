@@ -213,11 +213,63 @@
                       <label class="field__label" for="phone">Phone</label>
                     </div>
                     <div class="field request-review__field--full">
-                      <input class="field__input" type="text" id="country" name="country"
-                             placeholder="Country" autocomplete="country-name"
-                             aria-label="Country"
-                             {% if customer and customer.default_address %}value="{{ customer.default_address.country | escape }}"{% endif %}>
+                      <select class="field__input" id="country" name="country" aria-label="Country">
+                        <option value="" selected>Select country</option>
+                        <option value="US"{% if customer and customer.default_address.country_code == 'US' %} selected{% endif %}>United States</option>
+                        <option value="AR"{% if customer and customer.default_address.country_code == 'AR' %} selected{% endif %}>Argentina</option>
+                        <option value="AT"{% if customer and customer.default_address.country_code == 'AT' %} selected{% endif %}>Austria</option>
+                        <option value="AU"{% if customer and customer.default_address.country_code == 'AU' %} selected{% endif %}>Australia</option>
+                        <option value="BE"{% if customer and customer.default_address.country_code == 'BE' %} selected{% endif %}>Belgium</option>
+                        <option value="BR"{% if customer and customer.default_address.country_code == 'BR' %} selected{% endif %}>Brazil</option>
+                        <option value="CA"{% if customer and customer.default_address.country_code == 'CA' %} selected{% endif %}>Canada</option>
+                        <option value="CL"{% if customer and customer.default_address.country_code == 'CL' %} selected{% endif %}>Chile</option>
+                        <option value="CN"{% if customer and customer.default_address.country_code == 'CN' %} selected{% endif %}>China</option>
+                        <option value="CO"{% if customer and customer.default_address.country_code == 'CO' %} selected{% endif %}>Colombia</option>
+                        <option value="CZ"{% if customer and customer.default_address.country_code == 'CZ' %} selected{% endif %}>Czech Republic</option>
+                        <option value="DE"{% if customer and customer.default_address.country_code == 'DE' %} selected{% endif %}>Germany</option>
+                        <option value="DK"{% if customer and customer.default_address.country_code == 'DK' %} selected{% endif %}>Denmark</option>
+                        <option value="EG"{% if customer and customer.default_address.country_code == 'EG' %} selected{% endif %}>Egypt</option>
+                        <option value="ES"{% if customer and customer.default_address.country_code == 'ES' %} selected{% endif %}>Spain</option>
+                        <option value="FI"{% if customer and customer.default_address.country_code == 'FI' %} selected{% endif %}>Finland</option>
+                        <option value="FR"{% if customer and customer.default_address.country_code == 'FR' %} selected{% endif %}>France</option>
+                        <option value="GR"{% if customer and customer.default_address.country_code == 'GR' %} selected{% endif %}>Greece</option>
+                        <option value="HU"{% if customer and customer.default_address.country_code == 'HU' %} selected{% endif %}>Hungary</option>
+                        <option value="ID"{% if customer and customer.default_address.country_code == 'ID' %} selected{% endif %}>Indonesia</option>
+                        <option value="IE"{% if customer and customer.default_address.country_code == 'IE' %} selected{% endif %}>Ireland</option>
+                        <option value="IL"{% if customer and customer.default_address.country_code == 'IL' %} selected{% endif %}>Israel</option>
+                        <option value="IN"{% if customer and customer.default_address.country_code == 'IN' %} selected{% endif %}>India</option>
+                        <option value="IT"{% if customer and customer.default_address.country_code == 'IT' %} selected{% endif %}>Italy</option>
+                        <option value="JP"{% if customer and customer.default_address.country_code == 'JP' %} selected{% endif %}>Japan</option>
+                        <option value="KE"{% if customer and customer.default_address.country_code == 'KE' %} selected{% endif %}>Kenya</option>
+                        <option value="KR"{% if customer and customer.default_address.country_code == 'KR' %} selected{% endif %}>South Korea</option>
+                        <option value="MX"{% if customer and customer.default_address.country_code == 'MX' %} selected{% endif %}>Mexico</option>
+                        <option value="MY"{% if customer and customer.default_address.country_code == 'MY' %} selected{% endif %}>Malaysia</option>
+                        <option value="NG"{% if customer and customer.default_address.country_code == 'NG' %} selected{% endif %}>Nigeria</option>
+                        <option value="NL"{% if customer and customer.default_address.country_code == 'NL' %} selected{% endif %}>Netherlands</option>
+                        <option value="NO"{% if customer and customer.default_address.country_code == 'NO' %} selected{% endif %}>Norway</option>
+                        <option value="NZ"{% if customer and customer.default_address.country_code == 'NZ' %} selected{% endif %}>New Zealand</option>
+                        <option value="PA"{% if customer and customer.default_address.country_code == 'PA' %} selected{% endif %}>Panama</option>
+                        <option value="PH"{% if customer and customer.default_address.country_code == 'PH' %} selected{% endif %}>Philippines</option>
+                        <option value="PL"{% if customer and customer.default_address.country_code == 'PL' %} selected{% endif %}>Poland</option>
+                        <option value="PT"{% if customer and customer.default_address.country_code == 'PT' %} selected{% endif %}>Portugal</option>
+                        <option value="SA"{% if customer and customer.default_address.country_code == 'SA' %} selected{% endif %}>Saudi Arabia</option>
+                        <option value="SE"{% if customer and customer.default_address.country_code == 'SE' %} selected{% endif %}>Sweden</option>
+                        <option value="SG"{% if customer and customer.default_address.country_code == 'SG' %} selected{% endif %}>Singapore</option>
+                        <option value="CH"{% if customer and customer.default_address.country_code == 'CH' %} selected{% endif %}>Switzerland</option>
+                        <option value="TH"{% if customer and customer.default_address.country_code == 'TH' %} selected{% endif %}>Thailand</option>
+                        <option value="TR"{% if customer and customer.default_address.country_code == 'TR' %} selected{% endif %}>Turkey</option>
+                        <option value="UA"{% if customer and customer.default_address.country_code == 'UA' %} selected{% endif %}>Ukraine</option>
+                        <option value="GB"{% if customer and customer.default_address.country_code == 'GB' %} selected{% endif %}>United Kingdom</option>
+                        <option value="VN"{% if customer and customer.default_address.country_code == 'VN' %} selected{% endif %}>Vietnam</option>
+                        <option value="ZA"{% if customer and customer.default_address.country_code == 'ZA' %} selected{% endif %}>South Africa</option>
+                        <option value="Other">Other</option>
+                      </select>
                       <label class="field__label" for="country">Country</label>
+                    </div>
+                    <div class="field request-review__field--full" id="country-other-field" style="display: none;">
+                      <input class="field__input" type="text" id="countryOther" name="countryOther"
+                             placeholder="Enter your country" aria-label="Other country">
+                      <label class="field__label" for="countryOther">Other country</label>
                     </div>
                   </div>
                 </div>

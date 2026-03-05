@@ -95,6 +95,9 @@
       // Tooltip
       this.initTooltip();
 
+      // Country "Other" field toggle
+      this.setupCountryOtherLogic();
+
       // Submit button (always available in Liquid DOM)
       this.setupSubmitButton();
 
@@ -226,6 +229,29 @@
           hide();
         }
       });
+    }
+
+    // ========================================================================
+    // COUNTRY "OTHER" FIELD TOGGLE
+    // ========================================================================
+    setupCountryOtherLogic() {
+      const countrySelect = document.getElementById('country');
+      const countryOtherField = document.getElementById('country-other-field');
+
+      if (!countrySelect || !countryOtherField) return;
+
+      const toggle = () => {
+        if (countrySelect.value === 'Other') {
+          countryOtherField.style.display = 'block';
+        } else {
+          countryOtherField.style.display = 'none';
+          const otherInput = document.getElementById('countryOther');
+          if (otherInput) otherInput.value = '';
+        }
+      };
+
+      countrySelect.addEventListener('change', toggle);
+      toggle(); // set initial state
     }
 
     // ========================================================================
@@ -1050,7 +1076,7 @@
     // FORM FIELD UTILITIES
     // ========================================================================
     clearAccountForm() {
-      const fieldIds = ['firstName', 'lastName', 'email', 'phone', 'company', 'country'];
+      const fieldIds = ['firstName', 'lastName', 'email', 'phone', 'company', 'country', 'countryOther'];
 
       fieldIds.forEach(fieldId => {
         const field = document.getElementById(fieldId);
@@ -1058,6 +1084,10 @@
           field.value = '';
         }
       });
+
+      // Hide country other field
+      const countryOtherField = document.getElementById('country-other-field');
+      if (countryOtherField) countryOtherField.style.display = 'none';
 
       // Clear any additional dynamic fields
       const dynamicFields = document.querySelectorAll('#dynamic-content-container .cart-attribute');
@@ -1074,7 +1104,7 @@
       // Collect required fields for account creation (non-cart-attribute fields)
       const accountFields = {};
 
-      const fieldIds = ['firstName', 'lastName', 'email', 'phone', 'company', 'country'];
+      const fieldIds = ['firstName', 'lastName', 'email', 'phone', 'company', 'country', 'countryOther'];
 
       fieldIds.forEach(fieldId => {
         const field = document.getElementById(fieldId);
