@@ -127,6 +127,9 @@
 
               {%- comment -%} === FORM CONTENT (shared across all display modes) === {%- endcomment -%}
               <div class="request-review__form-wrapper" id="review-form-content"
+                   data-is-customer="{% if customer %}true{% else %}false{% endif %}"
+                   data-customer-id="{% if customer %}{{ customer.id }}{% endif %}"
+                   data-customer-email="{% if customer %}{{ customer.email }}{% endif %}"
                    {% if s_display_forms == 'button' %}style="display: none;"{% endif %}>
 
                 {%- comment -%} FORM HEADER: heading + toggle (left) | sign-in/status (right) {%- endcomment -%}
@@ -169,126 +172,171 @@
                     {%- if customer -%}
                       <span class="request-review__signed-in-status">Signed in as {{ customer.email }}</span>
                     {%- else -%}
-                      <a class="request-review__sign-in-link" href="{{ routes.storefront_login_url }}?return_url={{ request.path | url_encode }}"><strong>Sign In &raquo;</strong></a>
+                      <a class="request-review__sign-in-link" href="{{ routes.storefront_login_url }}"><strong>Sign In &raquo;</strong></a>
                     {%- endif -%}
                   </div>
                 </div>
 
-                {%- comment -%} BASIC CONTACT FIELDS (always rendered in Liquid) {%- endcomment -%}
-                <div id="basic-fields-container" class="request-review__basic-fields">
-                  <div class="request-review__fields-grid">
-                    <div class="field">
-                      <input class="field__input" type="text" id="firstName" name="firstName"
-                             placeholder="First name" required autocomplete="given-name"
-                             aria-label="First name" aria-required="true"
-                             {% if customer %}value="{{ customer.first_name | escape }}"{% endif %}>
-                      <label class="field__label" for="firstName">First name <span class="required-marker">*</span></label>
+                {%- comment -%} STEP INDICATOR {%- endcomment -%}
+                <div class="request-review__step-indicator" id="step-indicator" aria-live="polite">
+                  <span id="step-indicator-text">Step 1 of 2: About You</span>
+                </div>
+
+                {%- comment -%} ============================================================ {%- endcomment -%}
+                {%- comment -%} STEP 1: ABOUT YOU (editable form) {%- endcomment -%}
+                {%- comment -%} ============================================================ {%- endcomment -%}
+                <div id="step-1-form" class="request-review__step request-review__step--active">
+
+                  {%- comment -%} BASIC CONTACT FIELDS (always rendered in Liquid) {%- endcomment -%}
+                  <div id="basic-fields-container" class="request-review__basic-fields">
+                    <div class="request-review__fields-grid">
+                      <div class="field">
+                        <input class="field__input" type="text" id="firstName" name="firstName"
+                               placeholder="First name" required autocomplete="given-name"
+                               aria-label="First name" aria-required="true"
+                               {% if customer %}value="{{ customer.first_name | escape }}"{% endif %}>
+                        <label class="field__label" for="firstName">First name <span class="required-marker">*</span></label>
+                      </div>
+                      <div class="field">
+                        <input class="field__input" type="text" id="lastName" name="lastName"
+                               placeholder="Last name" required autocomplete="family-name"
+                               aria-label="Last name" aria-required="true"
+                               {% if customer %}value="{{ customer.last_name | escape }}"{% endif %}>
+                        <label class="field__label" for="lastName">Last name <span class="required-marker">*</span></label>
+                      </div>
+                      <div class="field request-review__field--full">
+                        <input class="field__input" type="text" id="company" name="company"
+                               placeholder="Company" required autocomplete="organization"
+                               aria-label="Company" aria-required="true"
+                               {% if customer and customer.default_address %}value="{{ customer.default_address.company | escape }}"{% endif %}>
+                        <label class="field__label" for="company">Company <span class="required-marker">*</span></label>
+                      </div>
+                      <div class="field">
+                        <input class="field__input" type="email" id="email" name="email"
+                               placeholder="Email" required autocomplete="email"
+                               aria-label="Email" aria-required="true"
+                               {% if customer %}value="{{ customer.email | escape }}"{% endif %}>
+                        <label class="field__label" for="email">Email <span class="required-marker">*</span></label>
+                      </div>
+                      <div class="field">
+                        <input class="field__input" type="tel" id="phone" name="phone"
+                               placeholder="Phone (with country code)" autocomplete="tel"
+                               aria-label="Phone"
+                               {% if customer and customer.default_address %}value="{{ customer.phone | default: customer.default_address.phone | escape }}"{% endif %}>
+                        <label class="field__label" for="phone">Phone</label>
+                        <small class="field-help">Include country code</small>
+                      </div>
+                      <div class="field request-review__field--full">
+                        <select class="field__input ethossence-select" id="country" name="country" aria-label="Country">
+                          <option value="" selected>Select country</option>
+                          <option value="US"{% if customer and customer.default_address.country_code == 'US' %} selected{% endif %}>United States</option>
+                          <option value="AR"{% if customer and customer.default_address.country_code == 'AR' %} selected{% endif %}>Argentina</option>
+                          <option value="AT"{% if customer and customer.default_address.country_code == 'AT' %} selected{% endif %}>Austria</option>
+                          <option value="AU"{% if customer and customer.default_address.country_code == 'AU' %} selected{% endif %}>Australia</option>
+                          <option value="BE"{% if customer and customer.default_address.country_code == 'BE' %} selected{% endif %}>Belgium</option>
+                          <option value="BR"{% if customer and customer.default_address.country_code == 'BR' %} selected{% endif %}>Brazil</option>
+                          <option value="CA"{% if customer and customer.default_address.country_code == 'CA' %} selected{% endif %}>Canada</option>
+                          <option value="CL"{% if customer and customer.default_address.country_code == 'CL' %} selected{% endif %}>Chile</option>
+                          <option value="CN"{% if customer and customer.default_address.country_code == 'CN' %} selected{% endif %}>China</option>
+                          <option value="CO"{% if customer and customer.default_address.country_code == 'CO' %} selected{% endif %}>Colombia</option>
+                          <option value="CZ"{% if customer and customer.default_address.country_code == 'CZ' %} selected{% endif %}>Czech Republic</option>
+                          <option value="DE"{% if customer and customer.default_address.country_code == 'DE' %} selected{% endif %}>Germany</option>
+                          <option value="DK"{% if customer and customer.default_address.country_code == 'DK' %} selected{% endif %}>Denmark</option>
+                          <option value="EG"{% if customer and customer.default_address.country_code == 'EG' %} selected{% endif %}>Egypt</option>
+                          <option value="ES"{% if customer and customer.default_address.country_code == 'ES' %} selected{% endif %}>Spain</option>
+                          <option value="FI"{% if customer and customer.default_address.country_code == 'FI' %} selected{% endif %}>Finland</option>
+                          <option value="FR"{% if customer and customer.default_address.country_code == 'FR' %} selected{% endif %}>France</option>
+                          <option value="GR"{% if customer and customer.default_address.country_code == 'GR' %} selected{% endif %}>Greece</option>
+                          <option value="HU"{% if customer and customer.default_address.country_code == 'HU' %} selected{% endif %}>Hungary</option>
+                          <option value="ID"{% if customer and customer.default_address.country_code == 'ID' %} selected{% endif %}>Indonesia</option>
+                          <option value="IE"{% if customer and customer.default_address.country_code == 'IE' %} selected{% endif %}>Ireland</option>
+                          <option value="IL"{% if customer and customer.default_address.country_code == 'IL' %} selected{% endif %}>Israel</option>
+                          <option value="IN"{% if customer and customer.default_address.country_code == 'IN' %} selected{% endif %}>India</option>
+                          <option value="IT"{% if customer and customer.default_address.country_code == 'IT' %} selected{% endif %}>Italy</option>
+                          <option value="JP"{% if customer and customer.default_address.country_code == 'JP' %} selected{% endif %}>Japan</option>
+                          <option value="KE"{% if customer and customer.default_address.country_code == 'KE' %} selected{% endif %}>Kenya</option>
+                          <option value="KR"{% if customer and customer.default_address.country_code == 'KR' %} selected{% endif %}>South Korea</option>
+                          <option value="MX"{% if customer and customer.default_address.country_code == 'MX' %} selected{% endif %}>Mexico</option>
+                          <option value="MY"{% if customer and customer.default_address.country_code == 'MY' %} selected{% endif %}>Malaysia</option>
+                          <option value="NG"{% if customer and customer.default_address.country_code == 'NG' %} selected{% endif %}>Nigeria</option>
+                          <option value="NL"{% if customer and customer.default_address.country_code == 'NL' %} selected{% endif %}>Netherlands</option>
+                          <option value="NO"{% if customer and customer.default_address.country_code == 'NO' %} selected{% endif %}>Norway</option>
+                          <option value="NZ"{% if customer and customer.default_address.country_code == 'NZ' %} selected{% endif %}>New Zealand</option>
+                          <option value="PA"{% if customer and customer.default_address.country_code == 'PA' %} selected{% endif %}>Panama</option>
+                          <option value="PH"{% if customer and customer.default_address.country_code == 'PH' %} selected{% endif %}>Philippines</option>
+                          <option value="PL"{% if customer and customer.default_address.country_code == 'PL' %} selected{% endif %}>Poland</option>
+                          <option value="PT"{% if customer and customer.default_address.country_code == 'PT' %} selected{% endif %}>Portugal</option>
+                          <option value="SA"{% if customer and customer.default_address.country_code == 'SA' %} selected{% endif %}>Saudi Arabia</option>
+                          <option value="SE"{% if customer and customer.default_address.country_code == 'SE' %} selected{% endif %}>Sweden</option>
+                          <option value="SG"{% if customer and customer.default_address.country_code == 'SG' %} selected{% endif %}>Singapore</option>
+                          <option value="CH"{% if customer and customer.default_address.country_code == 'CH' %} selected{% endif %}>Switzerland</option>
+                          <option value="TH"{% if customer and customer.default_address.country_code == 'TH' %} selected{% endif %}>Thailand</option>
+                          <option value="TR"{% if customer and customer.default_address.country_code == 'TR' %} selected{% endif %}>Turkey</option>
+                          <option value="UA"{% if customer and customer.default_address.country_code == 'UA' %} selected{% endif %}>Ukraine</option>
+                          <option value="GB"{% if customer and customer.default_address.country_code == 'GB' %} selected{% endif %}>United Kingdom</option>
+                          <option value="VN"{% if customer and customer.default_address.country_code == 'VN' %} selected{% endif %}>Vietnam</option>
+                          <option value="ZA"{% if customer and customer.default_address.country_code == 'ZA' %} selected{% endif %}>South Africa</option>
+                          <option value="Other">Other</option>
+                        </select>
+                      </div>
+                      <div class="field request-review__field--full" id="country-other-field" style="display: none;">
+                        <input class="field__input" type="text" id="countryOther" name="countryOther"
+                               placeholder="Enter your country" aria-label="Other country">
+                        <label class="field__label" for="countryOther">Other country</label>
+                      </div>
                     </div>
-                    <div class="field">
-                      <input class="field__input" type="text" id="lastName" name="lastName"
-                             placeholder="Last name" required autocomplete="family-name"
-                             aria-label="Last name" aria-required="true"
-                             {% if customer %}value="{{ customer.last_name | escape }}"{% endif %}>
-                      <label class="field__label" for="lastName">Last name <span class="required-marker">*</span></label>
+                  </div>
+
+                  {%- comment -%} DETAILED CONTACT FIELDS (loaded from webhook #webhook-contact-fields) {%- endcomment -%}
+                  <div id="detailed-contact-container" class="request-review__detailed-fields">
+                    <div class="loading-spinner" style="display: none;">Loading detailed fields...</div>
+                  </div>
+
+                  {%- comment -%} STEP 1 ACTION BUTTONS {%- endcomment -%}
+                  <div class="request-review__step-actions" id="step-1-actions">
+                    <button type="button" id="btn-next-step" class="button button--primary">Next</button>
+                    <div class="request-review__skip-link">
+                      <a href="#" id="btn-skip-submit" role="button">Skip project details and submit with request to contact</a>
                     </div>
-                    <div class="field request-review__field--full">
-                      <input class="field__input" type="text" id="company" name="company"
-                             placeholder="Company" required autocomplete="organization"
-                             aria-label="Company" aria-required="true"
-                             {% if customer and customer.default_address %}value="{{ customer.default_address.company | escape }}"{% endif %}>
-                      <label class="field__label" for="company">Company <span class="required-marker">*</span></label>
-                    </div>
-                    <div class="field">
-                      <input class="field__input" type="email" id="email" name="email"
-                             placeholder="Email" required autocomplete="email"
-                             aria-label="Email" aria-required="true"
-                             {% if customer %}value="{{ customer.email | escape }}"{% endif %}>
-                      <label class="field__label" for="email">Email <span class="required-marker">*</span></label>
-                    </div>
-                    <div class="field">
-                      <input class="field__input" type="tel" id="phone" name="phone"
-                             placeholder="Phone (with country code)" autocomplete="tel"
-                             aria-label="Phone"
-                             {% if customer and customer.default_address %}value="{{ customer.phone | default: customer.default_address.phone | escape }}"{% endif %}>
-                      <label class="field__label" for="phone">Phone</label>
-                      <small class="field-help">Include country code</small>
-                    </div>
-                    <div class="field request-review__field--full">
-                      <select class="field__input ethossence-select" id="country" name="country" aria-label="Country">
-                        <option value="" selected>Select country</option>
-                        <option value="US"{% if customer and customer.default_address.country_code == 'US' %} selected{% endif %}>United States</option>
-                        <option value="AR"{% if customer and customer.default_address.country_code == 'AR' %} selected{% endif %}>Argentina</option>
-                        <option value="AT"{% if customer and customer.default_address.country_code == 'AT' %} selected{% endif %}>Austria</option>
-                        <option value="AU"{% if customer and customer.default_address.country_code == 'AU' %} selected{% endif %}>Australia</option>
-                        <option value="BE"{% if customer and customer.default_address.country_code == 'BE' %} selected{% endif %}>Belgium</option>
-                        <option value="BR"{% if customer and customer.default_address.country_code == 'BR' %} selected{% endif %}>Brazil</option>
-                        <option value="CA"{% if customer and customer.default_address.country_code == 'CA' %} selected{% endif %}>Canada</option>
-                        <option value="CL"{% if customer and customer.default_address.country_code == 'CL' %} selected{% endif %}>Chile</option>
-                        <option value="CN"{% if customer and customer.default_address.country_code == 'CN' %} selected{% endif %}>China</option>
-                        <option value="CO"{% if customer and customer.default_address.country_code == 'CO' %} selected{% endif %}>Colombia</option>
-                        <option value="CZ"{% if customer and customer.default_address.country_code == 'CZ' %} selected{% endif %}>Czech Republic</option>
-                        <option value="DE"{% if customer and customer.default_address.country_code == 'DE' %} selected{% endif %}>Germany</option>
-                        <option value="DK"{% if customer and customer.default_address.country_code == 'DK' %} selected{% endif %}>Denmark</option>
-                        <option value="EG"{% if customer and customer.default_address.country_code == 'EG' %} selected{% endif %}>Egypt</option>
-                        <option value="ES"{% if customer and customer.default_address.country_code == 'ES' %} selected{% endif %}>Spain</option>
-                        <option value="FI"{% if customer and customer.default_address.country_code == 'FI' %} selected{% endif %}>Finland</option>
-                        <option value="FR"{% if customer and customer.default_address.country_code == 'FR' %} selected{% endif %}>France</option>
-                        <option value="GR"{% if customer and customer.default_address.country_code == 'GR' %} selected{% endif %}>Greece</option>
-                        <option value="HU"{% if customer and customer.default_address.country_code == 'HU' %} selected{% endif %}>Hungary</option>
-                        <option value="ID"{% if customer and customer.default_address.country_code == 'ID' %} selected{% endif %}>Indonesia</option>
-                        <option value="IE"{% if customer and customer.default_address.country_code == 'IE' %} selected{% endif %}>Ireland</option>
-                        <option value="IL"{% if customer and customer.default_address.country_code == 'IL' %} selected{% endif %}>Israel</option>
-                        <option value="IN"{% if customer and customer.default_address.country_code == 'IN' %} selected{% endif %}>India</option>
-                        <option value="IT"{% if customer and customer.default_address.country_code == 'IT' %} selected{% endif %}>Italy</option>
-                        <option value="JP"{% if customer and customer.default_address.country_code == 'JP' %} selected{% endif %}>Japan</option>
-                        <option value="KE"{% if customer and customer.default_address.country_code == 'KE' %} selected{% endif %}>Kenya</option>
-                        <option value="KR"{% if customer and customer.default_address.country_code == 'KR' %} selected{% endif %}>South Korea</option>
-                        <option value="MX"{% if customer and customer.default_address.country_code == 'MX' %} selected{% endif %}>Mexico</option>
-                        <option value="MY"{% if customer and customer.default_address.country_code == 'MY' %} selected{% endif %}>Malaysia</option>
-                        <option value="NG"{% if customer and customer.default_address.country_code == 'NG' %} selected{% endif %}>Nigeria</option>
-                        <option value="NL"{% if customer and customer.default_address.country_code == 'NL' %} selected{% endif %}>Netherlands</option>
-                        <option value="NO"{% if customer and customer.default_address.country_code == 'NO' %} selected{% endif %}>Norway</option>
-                        <option value="NZ"{% if customer and customer.default_address.country_code == 'NZ' %} selected{% endif %}>New Zealand</option>
-                        <option value="PA"{% if customer and customer.default_address.country_code == 'PA' %} selected{% endif %}>Panama</option>
-                        <option value="PH"{% if customer and customer.default_address.country_code == 'PH' %} selected{% endif %}>Philippines</option>
-                        <option value="PL"{% if customer and customer.default_address.country_code == 'PL' %} selected{% endif %}>Poland</option>
-                        <option value="PT"{% if customer and customer.default_address.country_code == 'PT' %} selected{% endif %}>Portugal</option>
-                        <option value="SA"{% if customer and customer.default_address.country_code == 'SA' %} selected{% endif %}>Saudi Arabia</option>
-                        <option value="SE"{% if customer and customer.default_address.country_code == 'SE' %} selected{% endif %}>Sweden</option>
-                        <option value="SG"{% if customer and customer.default_address.country_code == 'SG' %} selected{% endif %}>Singapore</option>
-                        <option value="CH"{% if customer and customer.default_address.country_code == 'CH' %} selected{% endif %}>Switzerland</option>
-                        <option value="TH"{% if customer and customer.default_address.country_code == 'TH' %} selected{% endif %}>Thailand</option>
-                        <option value="TR"{% if customer and customer.default_address.country_code == 'TR' %} selected{% endif %}>Turkey</option>
-                        <option value="UA"{% if customer and customer.default_address.country_code == 'UA' %} selected{% endif %}>Ukraine</option>
-                        <option value="GB"{% if customer and customer.default_address.country_code == 'GB' %} selected{% endif %}>United Kingdom</option>
-                        <option value="VN"{% if customer and customer.default_address.country_code == 'VN' %} selected{% endif %}>Vietnam</option>
-                        <option value="ZA"{% if customer and customer.default_address.country_code == 'ZA' %} selected{% endif %}>South Africa</option>
-                        <option value="Other">Other</option>
-                      </select>
-                      <!-- <label class="field__label" for="country">Country</label> -->
-                    </div>
-                    <div class="field request-review__field--full" id="country-other-field" style="display: none;">
-                      <input class="field__input" type="text" id="countryOther" name="countryOther"
-                             placeholder="Enter your country" aria-label="Other country">
-                      <label class="field__label" for="countryOther">Other country</label>
-                    </div>
+                    <div id="step-1-message" style="display: none;"></div>
+                  </div>
+
+                </div>
+
+                {%- comment -%} ============================================================ {%- endcomment -%}
+                {%- comment -%} STEP 1: SUMMARY CARD (collapsed view when on Step 2) {%- endcomment -%}
+                {%- comment -%} ============================================================ {%- endcomment -%}
+                <div id="step-1-summary" class="request-review__summary-card" role="region" aria-label="Contact information summary" style="display: none;">
+                  <div class="request-review__summary-header">
+                    <span class="request-review__summary-label">Step 1 of 2: About You</span>
+                    <a href="#" id="btn-edit-step1" class="request-review__summary-edit" role="button">Edit</a>
+                  </div>
+                  <div class="request-review__summary-details" id="summary-details">
+                    <!-- Populated by JS: name | email | company -->
                   </div>
                 </div>
 
-                {%- comment -%} DETAILED FIELDS CONTAINER (loaded from webhook) {%- endcomment -%}
-                <div id="dynamic-content-container" class="request-review__detailed-fields"
-                     data-is-customer="{% if customer %}true{% else %}false{% endif %}"
-                     data-customer-id="{% if customer %}{{ customer.id }}{% endif %}"
-                     data-customer-email="{% if customer %}{{ customer.email }}{% endif %}">
-                  <div class="loading-spinner" style="display: none;">Loading detailed fields...</div>
-                </div>
+                {%- comment -%} ============================================================ {%- endcomment -%}
+                {%- comment -%} STEP 2: PROJECT DETAILS {%- endcomment -%}
+                {%- comment -%} ============================================================ {%- endcomment -%}
+                <div id="step-2-form" class="request-review__step" style="display: none;">
 
-                {%- comment -%} SUBMIT BUTTON (always available in Liquid) {%- endcomment -%}
-                <div class="request-review__submit-area">
-                  <button type="button" id="save-cart-draft" class="button button--primary">
-                    {%- if customer -%}Submit Review Request{%- else -%}Create Account & Submit{%- endif -%}
-                  </button>
-                  <div id="save-cart-message" style="display: none;"></div>
+                  {%- comment -%} PROJECT FIELDS (loaded from webhook #webhook-project-fields) {%- endcomment -%}
+                  <div id="project-fields-container" class="request-review__project-fields">
+                    <div class="loading-spinner" style="display: none;">Loading project fields...</div>
+                  </div>
+
+                  {%- comment -%} STEP 2 ACTION BUTTONS {%- endcomment -%}
+                  <div class="request-review__step-actions">
+                    <button type="button" id="save-cart-draft" class="button button--primary">
+                      {%- if customer -%}Submit Review Request{%- else -%}Create Account & Submit{%- endif -%}
+                    </button>
+                    <div class="request-review__back-link">
+                      <a href="#" id="btn-back-step1" role="button">&laquo; Back to contact details</a>
+                    </div>
+                    <div id="save-cart-message" style="display: none;"></div>
+                  </div>
+
                 </div>
 
               </div>

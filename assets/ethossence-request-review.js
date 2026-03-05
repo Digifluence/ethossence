@@ -1,6 +1,6 @@
 // ============================================================================
 // ETHOSSENCE Request Review Feature
-// Version: 28.0 - Unified form with Basic/Detailed toggle
+// Version: 29.0 - Two-step progressive flow with Basic/Detailed toggle
 // ============================================================================
 
 (function() {
@@ -18,7 +18,7 @@
   const SHOPIFY_GRAPHQL_VERSION = '2025-07';
 
   // ============================================================================
-  // MAIN CONTROLLER - UNIFIED FORM WITH BASIC/DETAILED TOGGLE
+  // MAIN CONTROLLER - TWO-STEP PROGRESSIVE FORM
   // ============================================================================
   class EthossenceReviewController {
     constructor(config) {
@@ -26,6 +26,10 @@
       this.displayForms = config.displayForms || 'automatically';
       this.formMode = config.formMode || 'basic_and_detailed';
       this.isCustomer = config.isCustomer || false;
+
+      // Step state
+      this.currentStep = 1;
+      this.hasProjectFields = false; // set after webhook response parsed
 
       // Detailed fields state
       this.detailedLoaded = false;
@@ -37,12 +41,33 @@
       this.originalProjectData = null;
 
       // Get elements
-      this.container = document.getElementById('dynamic-content-container');
       this.formContent = document.getElementById('review-form-content');
-      this.submitBtn = document.getElementById('save-cart-draft');
-      this.messageDiv = document.getElementById('save-cart-message');
-      this.modeRadios = document.querySelectorAll('input[name="form_detail_level"]');
       this.ctaButton = document.getElementById('review-form-cta');
+
+      // Step containers
+      this.step1Form = document.getElementById('step-1-form');
+      this.step1Summary = document.getElementById('step-1-summary');
+      this.step2Form = document.getElementById('step-2-form');
+      this.stepIndicator = document.getElementById('step-indicator-text');
+
+      // Detailed containers (split from webhook)
+      this.detailedContactContainer = document.getElementById('detailed-contact-container');
+      this.projectFieldsContainer = document.getElementById('project-fields-container');
+
+      // Buttons
+      this.nextBtn = document.getElementById('btn-next-step');
+      this.skipBtn = document.getElementById('btn-skip-submit');
+      this.backBtn = document.getElementById('btn-back-step1');
+      this.editBtn = document.getElementById('btn-edit-step1');
+      this.submitBtn = document.getElementById('save-cart-draft');
+      this.step1MessageDiv = document.getElementById('step-1-message');
+      this.messageDiv = document.getElementById('save-cart-message');
+
+      // Summary
+      this.summaryDetails = document.getElementById('summary-details');
+
+      // Mode radios
+      this.modeRadios = document.querySelectorAll('input[name="form_detail_level"]');
 
       // Animation-specific elements (only for button display mode)
       if (this.displayForms === 'button') {
@@ -56,7 +81,7 @@
         }
       }
 
-      console.log('EthossenceReviewController v28.0 initialized', {
+      console.log('EthossenceReviewController v29.0 initialized', {
         animationType: this.animationType,
         displayForms: this.displayForms,
         formMode: this.formMode,
@@ -98,7 +123,30 @@
       // Country "Other" field toggle
       this.setupCountryOtherLogic();
 
-      // Submit button (always available in Liquid DOM)
+      // Step navigation buttons
+      if (this.nextBtn) {
+        this.nextBtn.addEventListener('click', () => this.handleNextStep());
+      }
+      if (this.skipBtn) {
+        this.skipBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          this.handleSkipSubmit();
+        });
+      }
+      if (this.backBtn) {
+        this.backBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          this.goToStep1();
+        });
+      }
+      if (this.editBtn) {
+        this.editBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          this.goToStep1();
+        });
+      }
+
+      // Submit button (Step 2)
       this.setupSubmitButton();
 
       // Auto-initialize based on mode and customer status
@@ -148,40 +196,184 @@
     }
 
     expandDetailedFields() {
-      if (!this.container) return;
+      if (!this.detailedContactContainer) return;
 
       // Measure the full height
-      this.container.style.height = 'auto';
-      this.container.style.overflow = 'visible';
-      const fullHeight = this.container.scrollHeight + 'px';
+      this.detailedContactContainer.style.height = 'auto';
+      this.detailedContactContainer.style.overflow = 'visible';
+      const fullHeight = this.detailedContactContainer.scrollHeight + 'px';
 
       // Set to 0 and force reflow
-      this.container.style.height = '0px';
-      this.container.style.overflow = 'hidden';
-      this.container.offsetHeight; // force reflow
+      this.detailedContactContainer.style.height = '0px';
+      this.detailedContactContainer.style.overflow = 'hidden';
+      this.detailedContactContainer.offsetHeight; // force reflow
 
       // Animate to full height
-      this.container.style.height = fullHeight;
+      this.detailedContactContainer.style.height = fullHeight;
 
       const onTransitionEnd = () => {
-        this.container.style.height = 'auto';
-        this.container.style.overflow = 'visible';
-        this.container.removeEventListener('transitionend', onTransitionEnd);
+        this.detailedContactContainer.style.height = 'auto';
+        this.detailedContactContainer.style.overflow = 'visible';
+        this.detailedContactContainer.removeEventListener('transitionend', onTransitionEnd);
       };
-      this.container.addEventListener('transitionend', onTransitionEnd);
+      this.detailedContactContainer.addEventListener('transitionend', onTransitionEnd);
     }
 
     collapseDetailedFields() {
-      if (!this.container) return;
+      if (!this.detailedContactContainer) return;
 
       // Set explicit height for transition start
-      const currentHeight = this.container.scrollHeight + 'px';
-      this.container.style.height = currentHeight;
-      this.container.style.overflow = 'hidden';
-      this.container.offsetHeight; // force reflow
+      const currentHeight = this.detailedContactContainer.scrollHeight + 'px';
+      this.detailedContactContainer.style.height = currentHeight;
+      this.detailedContactContainer.style.overflow = 'hidden';
+      this.detailedContactContainer.offsetHeight; // force reflow
 
       // Animate to 0
-      this.container.style.height = '0px';
+      this.detailedContactContainer.style.height = '0px';
+    }
+
+    // ========================================================================
+    // STEP NAVIGATION
+    // ========================================================================
+    handleNextStep() {
+      // Validate Step 1 fields
+      const validationResult = this.validateAccountCreationForm(this.step1MessageDiv);
+      if (!validationResult.isValid) {
+        return;
+      }
+
+      // Clear any previous validation messages
+      if (this.step1MessageDiv) {
+        this.step1MessageDiv.style.display = 'none';
+        this.step1MessageDiv.innerHTML = '';
+      }
+
+      // If webhook not loaded yet (Basic mode, no detailed fields), load now for project fields
+      if (!this.detailedLoaded) {
+        this.loadDynamicContent(() => {
+          // Callback after load completes
+          if (this.hasProjectFields) {
+            this.goToStep2();
+          } else {
+            // No project fields returned — submit directly (single-step form)
+            this.handleSingleStepSubmit();
+          }
+        });
+        return;
+      }
+
+      // Webhook already loaded
+      if (this.hasProjectFields) {
+        this.goToStep2();
+      } else {
+        this.handleSingleStepSubmit();
+      }
+    }
+
+    handleSkipSubmit() {
+      // Validate Step 1 fields
+      const validationResult = this.validateAccountCreationForm(this.step1MessageDiv);
+      if (!validationResult.isValid) {
+        return;
+      }
+
+      // Clear any previous messages
+      if (this.step1MessageDiv) {
+        this.step1MessageDiv.style.display = 'none';
+        this.step1MessageDiv.innerHTML = '';
+      }
+
+      // Submit with contact data only (skip project details)
+      this.submitForm({ skipProjectDetails: true });
+    }
+
+    handleSingleStepSubmit() {
+      // No project fields available — submit with contact data only
+      this.submitForm({ skipProjectDetails: true });
+    }
+
+    goToStep2() {
+      // Update step indicator
+      if (this.stepIndicator) {
+        this.stepIndicator.textContent = 'Step 2 of 2: Project Details';
+      }
+
+      // Build and show summary card
+      this.buildSummaryCard();
+
+      // Collapse Step 1 form, show summary
+      if (this.step1Form) {
+        this.step1Form.style.display = 'none';
+        this.step1Form.classList.remove('request-review__step--active');
+      }
+      if (this.step1Summary) {
+        this.step1Summary.style.display = '';
+      }
+
+      // Show Step 2
+      if (this.step2Form) {
+        this.step2Form.style.display = '';
+        this.step2Form.classList.add('request-review__step--active');
+      }
+
+      // Initialize project field handlers if not already done
+      this.initializeProjectFieldHandlers();
+
+      this.currentStep = 2;
+
+      // Focus management: move focus to Step 2 heading or first field
+      if (this.projectFieldsContainer) {
+        const firstField = this.projectFieldsContainer.querySelector('input, select, textarea');
+        if (firstField) {
+          firstField.focus();
+        }
+      }
+    }
+
+    goToStep1() {
+      // Update step indicator
+      if (this.stepIndicator) {
+        this.stepIndicator.textContent = 'Step 1 of 2: About You';
+      }
+
+      // Hide summary, show Step 1 form
+      if (this.step1Summary) {
+        this.step1Summary.style.display = 'none';
+      }
+      if (this.step1Form) {
+        this.step1Form.style.display = '';
+        this.step1Form.classList.add('request-review__step--active');
+      }
+
+      // Hide Step 2
+      if (this.step2Form) {
+        this.step2Form.style.display = 'none';
+        this.step2Form.classList.remove('request-review__step--active');
+      }
+
+      this.currentStep = 1;
+
+      // Focus management: move focus to first field in Step 1
+      const firstField = document.getElementById('firstName');
+      if (firstField) {
+        firstField.focus();
+      }
+    }
+
+    buildSummaryCard() {
+      if (!this.summaryDetails) return;
+
+      const firstName = (document.getElementById('firstName')?.value || '').trim();
+      const lastName = (document.getElementById('lastName')?.value || '').trim();
+      const email = (document.getElementById('email')?.value || '').trim();
+      const company = (document.getElementById('company')?.value || '').trim();
+
+      const parts = [];
+      if (firstName || lastName) parts.push(`${firstName} ${lastName}`.trim());
+      if (email) parts.push(email);
+      if (company) parts.push(company);
+
+      this.summaryDetails.textContent = parts.join('  |  ');
     }
 
     // ========================================================================
@@ -318,14 +510,14 @@
     // CUSTOMER DATA
     // ========================================================================
     getCustomerData() {
-      if (!this.container) return {};
+      if (!this.formContent) return {};
 
-      const isCustomer = this.container.dataset.isCustomer === 'true';
+      const isCustomer = this.formContent.dataset.isCustomer === 'true';
 
       return {
         isCustomer: isCustomer,
-        customerId: isCustomer ? this.container.dataset.customerId : null,
-        customerEmail: isCustomer ? this.container.dataset.customerEmail : null,
+        customerId: isCustomer ? this.formContent.dataset.customerId : null,
+        customerEmail: isCustomer ? this.formContent.dataset.customerEmail : null,
         metaobjectType: isCustomer ? 'customer_projects' : 'company_profile'
       };
     }
@@ -333,26 +525,27 @@
     // ========================================================================
     // DYNAMIC CONTENT LOADING (Detailed fields from webhook)
     // ========================================================================
-    async loadDynamicContent() {
-      // If already loaded, just expand and return
+    async loadDynamicContent(callback) {
+      // If already loaded, just expand contact fields and invoke callback
       if (this.detailedLoaded) {
         this.expandDetailedFields();
         this.detailedVisible = true;
+        if (callback) callback();
         return;
       }
 
-      if (!this.container) {
-        console.error('Dynamic content container not found');
+      if (!this.detailedContactContainer) {
+        console.error('Detailed contact container not found');
         return;
       }
 
-      // Show spinner
-      const spinner = this.container.querySelector('.loading-spinner');
-      if (spinner) spinner.style.display = 'block';
+      // Show spinner in contact container
+      const contactSpinner = this.detailedContactContainer.querySelector('.loading-spinner');
+      if (contactSpinner) contactSpinner.style.display = 'block';
 
       // Temporarily show container for spinner visibility
-      this.container.style.height = 'auto';
-      this.container.style.overflow = 'visible';
+      this.detailedContactContainer.style.height = 'auto';
+      this.detailedContactContainer.style.overflow = 'visible';
 
       const customerData = this.getCustomerData();
 
@@ -411,81 +604,155 @@
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        // Get HTML content and insert into container
+        // Get HTML content and split into contact + project sections
         const htmlContent = await response.text();
-        this.container.innerHTML = htmlContent;
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = htmlContent;
 
-        // Execute any script tags that were inserted (innerHTML doesn't auto-execute them)
-        const scripts = this.container.querySelectorAll('script');
-        console.log(`Found ${scripts.length} script tags in webhook response`);
+        // Extract contact fields and project fields by ID
+        const webhookContactFields = tempDiv.querySelector('#webhook-contact-fields');
+        const webhookProjectFields = tempDiv.querySelector('#webhook-project-fields');
 
-        scripts.forEach((oldScript, index) => {
-          const newScript = document.createElement('script');
+        // Inject contact fields into Step 1 detailed container
+        if (webhookContactFields) {
+          this.detailedContactContainer.innerHTML = webhookContactFields.innerHTML;
+          this.reExecuteScripts(this.detailedContactContainer);
+        } else {
+          // Fallback: if webhook doesn't use the new format, inject everything into contact container
+          this.detailedContactContainer.innerHTML = htmlContent;
+          this.reExecuteScripts(this.detailedContactContainer);
+        }
 
-          // Copy the script content
-          if (oldScript.src) {
-            newScript.src = oldScript.src;
-            console.log(`Script ${index + 1}: External script with src=${oldScript.src}`);
-          } else {
-            newScript.textContent = oldScript.textContent;
-            console.log(`Script ${index + 1}: Inline script with ${oldScript.textContent.length} characters`);
-          }
-
-          // Copy any attributes
-          Array.from(oldScript.attributes).forEach(attr => {
-            newScript.setAttribute(attr.name, attr.value);
-          });
-
-          // Replace the old script with the new one to execute it
-          oldScript.parentNode.replaceChild(newScript, oldScript);
-
-          console.log(`Executed script ${index + 1}`);
-        });
+        // Inject project fields into Step 2 container
+        if (webhookProjectFields) {
+          this.projectFieldsContainer.innerHTML = webhookProjectFields.innerHTML;
+          this.reExecuteScripts(this.projectFieldsContainer);
+          this.hasProjectFields = true;
+        } else {
+          this.hasProjectFields = false;
+          // Hide Next button and step indicator if no project fields
+          this.updateUIForSingleStep();
+        }
 
         // Verify window.customerProjects was created
         if (window.customerProjects) {
-          console.log('✓ window.customerProjects successfully created with', Object.keys(window.customerProjects).length, 'projects');
-        } else {
-          console.warn('✗ window.customerProjects was NOT created - check script content');
+          console.log('window.customerProjects created with', Object.keys(window.customerProjects).length, 'projects');
         }
 
         this.detailedLoaded = true;
         this.detailedVisible = true;
 
         // Animate expand: reset to 0 then expand
-        this.container.style.height = '0px';
-        this.container.style.overflow = 'hidden';
-        this.container.offsetHeight; // force reflow
+        this.detailedContactContainer.style.height = '0px';
+        this.detailedContactContainer.style.overflow = 'hidden';
+        this.detailedContactContainer.offsetHeight; // force reflow
         this.expandDetailedFields();
 
-        // After loading dynamic content, initialize form handlers
-        this.initializeFormHandlers();
+        // Initialize contact field form handlers
+        this.initializeContactFieldHandlers();
+
+        if (callback) callback();
 
       } catch (error) {
         console.error('Error loading dynamic content:', error);
-        this.container.innerHTML = '<div class="error-message">Failed to load content. Please try again later.</div>';
+        this.detailedContactContainer.innerHTML = '<div class="error-message">Failed to load content. Please try again later.</div>';
         // Reset container to visible so error is shown
-        this.container.style.height = 'auto';
-        this.container.style.overflow = 'visible';
+        this.detailedContactContainer.style.height = 'auto';
+        this.detailedContactContainer.style.overflow = 'visible';
+      }
+    }
+
+    reExecuteScripts(container) {
+      const scripts = container.querySelectorAll('script');
+      console.log(`Found ${scripts.length} script tags to re-execute`);
+
+      scripts.forEach((oldScript, index) => {
+        const newScript = document.createElement('script');
+
+        if (oldScript.src) {
+          newScript.src = oldScript.src;
+        } else {
+          newScript.textContent = oldScript.textContent;
+        }
+
+        // Copy any attributes
+        Array.from(oldScript.attributes).forEach(attr => {
+          newScript.setAttribute(attr.name, attr.value);
+        });
+
+        oldScript.parentNode.replaceChild(newScript, oldScript);
+        console.log(`Executed script ${index + 1}`);
+      });
+    }
+
+    updateUIForSingleStep() {
+      // No project fields — hide step indicator, convert Next to Submit, hide skip link
+      if (this.stepIndicator) {
+        this.stepIndicator.parentElement.style.display = 'none';
+      }
+
+      // Change Next button to Submit
+      if (this.nextBtn) {
+        this.nextBtn.textContent = this.isCustomer ? 'Submit Review Request' : 'Create Account & Submit';
+        this.nextBtn.removeEventListener('click', this._nextHandler);
+        this.nextBtn.addEventListener('click', () => {
+          const validationResult = this.validateAccountCreationForm(this.step1MessageDiv);
+          if (validationResult.isValid) {
+            this.submitForm({ skipProjectDetails: true });
+          }
+        });
+      }
+
+      // Hide skip link
+      if (this.skipBtn) {
+        this.skipBtn.closest('.request-review__skip-link').style.display = 'none';
       }
     }
 
     // ========================================================================
-    // FORM HANDLERS (for webhook-loaded fields)
+    // FORM HANDLERS (for webhook-loaded contact fields in Step 1)
     // ========================================================================
-    initializeFormHandlers() {
-      const attributeFields = document.querySelectorAll('.cart-attribute');
+    initializeContactFieldHandlers() {
+      const attributeFields = this.detailedContactContainer.querySelectorAll('.cart-attribute');
 
-      console.log('Found', attributeFields.length, 'cart attribute fields');
+      console.log('Found', attributeFields.length, 'cart attribute fields in contact section');
 
       // Setup conditional field display
       this.setupConditionalFields();
 
-      // Setup "Other" field conditional logic
+      // Setup "Other" field conditional logic (for webhook fields)
       this.setupOtherFieldLogic();
 
       // Setup "Reseller" field conditional logic
       this.setupResellerFieldLogic();
+
+      // Auto-save cart attributes when they change
+      attributeFields.forEach(field => {
+        if (!field || !field.name) return;
+
+        field.addEventListener('change', () => {
+          this.updateCartAttributes();
+        });
+
+        // For text inputs and textareas, save on blur
+        if (field.type === 'text' || field.tagName.toLowerCase() === 'textarea') {
+          field.addEventListener('blur', () => {
+            this.updateCartAttributes();
+          });
+        }
+      });
+    }
+
+    // ========================================================================
+    // FORM HANDLERS (for webhook-loaded project fields in Step 2)
+    // ========================================================================
+    initializeProjectFieldHandlers() {
+      if (this._projectHandlersInitialized) return;
+      this._projectHandlersInitialized = true;
+
+      const attributeFields = this.projectFieldsContainer.querySelectorAll('.cart-attribute');
+
+      console.log('Found', attributeFields.length, 'cart attribute fields in project section');
 
       // Setup "Customer Projects" selection logic (for customers only)
       this.setupCustomerProjectsLogic();
@@ -498,7 +765,6 @@
           this.updateCartAttributes();
         });
 
-        // For text inputs and textareas, save on blur
         if (field.type === 'text' || field.tagName.toLowerCase() === 'textarea') {
           field.addEventListener('blur', () => {
             this.updateCartAttributes();
@@ -587,17 +853,14 @@
         if (otherField) {
           const otherFieldContainer = otherField.closest('.field');
 
-          // Function to show/hide other field based on selection
           const toggleOtherField = () => {
             const selectedValue = selectField.value;
 
             if (selectedValue && selectedValue.toLowerCase() === 'other') {
-              // Show the other field
               if (otherFieldContainer) {
                 otherFieldContainer.style.display = 'block';
               }
             } else {
-              // Hide the other field and clear its value
               if (otherFieldContainer) {
                 otherFieldContainer.style.display = 'none';
               }
@@ -608,35 +871,19 @@
             }
           };
 
-          // Set up event listener
           selectField.addEventListener('change', toggleOtherField);
-
-          // Set initial state on page load
           toggleOtherField();
-
-          console.log(`Set up "Other" field logic for ${metafieldKey} -> ${otherFieldKey}`);
         }
       });
     }
 
     setupResellerFieldLogic() {
-      // Find the business_type field
       const businessTypeField = document.querySelector('[data-metafield-key="business_type"]');
+      if (!businessTypeField) return;
 
-      if (!businessTypeField) {
-        console.log('Business type field not found');
-        return;
-      }
-
-      // Find all reseller-related fields (keys starting with business_type_reseller_)
       const resellerFields = document.querySelectorAll('[data-metafield-key^="business_type_reseller_"]');
+      if (resellerFields.length === 0) return;
 
-      if (resellerFields.length === 0) {
-        console.log('No reseller fields found');
-        return;
-      }
-
-      // Function to show/hide reseller fields based on selection
       const toggleResellerFields = () => {
         const selectedValue = businessTypeField.value;
         const isResellerSelected = selectedValue && selectedValue.toLowerCase().includes('reseller');
@@ -645,12 +892,10 @@
           const fieldContainer = field.closest('.field');
 
           if (isResellerSelected) {
-            // Show reseller field
             if (fieldContainer) {
               fieldContainer.style.display = 'block';
             }
           } else {
-            // Hide reseller field and clear its value
             if (fieldContainer) {
               fieldContainer.style.display = 'none';
             }
@@ -664,61 +909,33 @@
             }
           }
         });
-
-        console.log(`Reseller fields ${isResellerSelected ? 'shown' : 'hidden'} based on selection: ${selectedValue}`);
       };
 
-      // Set up event listener
       businessTypeField.addEventListener('change', toggleResellerFields);
-
-      // Set initial state on page load
       toggleResellerFields();
-
-      console.log(`Set up reseller field logic for business_type (found ${resellerFields.length} reseller fields)`);
     }
 
     setupCustomerProjectsLogic() {
-      // Find the customer_projects select field
       const projectsSelect = document.getElementById('customer_projects');
+      if (!projectsSelect) return;
 
-      if (!projectsSelect) {
-        console.log('Customer projects field not found');
-        return;
-      }
-
-      console.log('Found customer_projects select field');
-
-      // Find the project-new container
       const projectNewContainer = document.getElementById('project-new');
+      if (!projectNewContainer) return;
 
-      if (!projectNewContainer) {
-        console.log('Project new container not found');
-        return;
-      }
-
-      console.log('Found project-new container');
-
-      // Check if project data is available
-      if (!window.customerProjects) {
-        console.log('No customer projects data found - will still allow new project creation');
-      } else {
+      if (window.customerProjects) {
         console.log('Found customer projects data:', Object.keys(window.customerProjects).length, 'projects');
       }
 
-      // Function to populate form fields with project data
       const populateProjectFields = (projectData) => {
         if (!projectData) return;
 
-        // Iterate through all project data fields
         for (const [fieldKey, fieldValue] of Object.entries(projectData)) {
-          // Find the corresponding input field
           const field = document.querySelector(`[data-metafield-key="${fieldKey}"]`);
 
           if (field) {
             if (field.type === 'checkbox') {
               field.checked = fieldValue === 'true' || fieldValue === true;
             } else if (field.type === 'radio') {
-              // Find the radio button with matching value
               const radioGroup = document.querySelectorAll(`[data-metafield-key="${fieldKey}"]`);
               radioGroup.forEach(radio => {
                 if (radio.value === fieldValue) {
@@ -728,11 +945,8 @@
             } else if (field.tagName.toLowerCase() === 'select') {
               field.value = fieldValue;
             } else {
-              // Text input or textarea
               field.value = fieldValue;
             }
-
-            console.log(`Populated field ${fieldKey} with value:`, fieldValue);
           }
         }
 
@@ -743,7 +957,6 @@
         this.updateCartAttributes();
       };
 
-      // Function to clear all form fields
       const clearProjectFields = () => {
         const projectFields = document.querySelectorAll('#project-new .cart-attribute');
         projectFields.forEach(field => {
@@ -753,19 +966,12 @@
             field.value = '';
           }
         });
-
-        console.log('Cleared all project fields');
       };
 
-      // Function to handle project selection
       const handleProjectSelection = () => {
         const selectedValue = projectsSelect.value;
 
-        console.log('Project selection changed to:', selectedValue);
-
         if (!selectedValue) {
-          // No selection - hide project-new container
-          console.log('No project selected - hiding form');
           projectNewContainer.style.display = 'none';
           clearProjectFields();
           this.isNewProject = true;
@@ -775,30 +981,23 @@
         }
 
         if (selectedValue === '*new*') {
-          // "Enter new project" selected - show empty form
-          console.log('New project selected - showing empty form');
           projectNewContainer.style.display = 'block';
           clearProjectFields();
           this.isNewProject = true;
           this.selectedProjectHandle = null;
           this.originalProjectData = null;
         } else {
-          // Existing project selected - populate form with data from memory
-          console.log('Existing project selected:', selectedValue);
           projectNewContainer.style.display = 'block';
 
           if (window.customerProjects && window.customerProjects[selectedValue]) {
             const projectData = window.customerProjects[selectedValue];
-            console.log('Found project data, populating fields...');
 
-            // Store project context for later comparison
             this.isNewProject = false;
             this.selectedProjectHandle = selectedValue;
-            this.originalProjectData = JSON.parse(JSON.stringify(projectData)); // Deep copy
+            this.originalProjectData = JSON.parse(JSON.stringify(projectData));
 
             populateProjectFields(projectData);
           } else {
-            console.warn('Project data not found for handle:', selectedValue);
             clearProjectFields();
             this.isNewProject = true;
             this.selectedProjectHandle = null;
@@ -807,218 +1006,202 @@
         }
       };
 
-      // Set up event listener
-      console.log('Setting up change event listener on customer_projects select');
       projectsSelect.addEventListener('change', handleProjectSelection);
-
-      // Set initial state on page load
-      console.log('Running initial handleProjectSelection');
       handleProjectSelection();
-
-      console.log('Customer projects selection logic setup complete');
     }
 
     // ========================================================================
-    // SUBMIT BUTTON
+    // SUBMIT BUTTON (Step 2)
     // ========================================================================
     setupSubmitButton() {
-      if (!this.submitBtn) {
-        console.log('Submit button not found');
-        return;
-      }
+      if (!this.submitBtn) return;
 
       this.submitBtn.addEventListener('click', async () => {
-        const button = this.submitBtn;
-        const originalText = button.innerHTML;
-        const customerData = this.getCustomerData();
+        this.submitForm({ skipProjectDetails: false });
+      });
+    }
 
-        // Clear any existing error messages
-        if (this.messageDiv) {
-          this.messageDiv.style.display = 'none';
-          this.messageDiv.innerHTML = '';
-        }
+    // ========================================================================
+    // UNIFIED SUBMIT LOGIC
+    // ========================================================================
+    async submitForm({ skipProjectDetails }) {
+      // Determine which button and message div to use based on current step
+      const button = skipProjectDetails ? (this.nextBtn || this.submitBtn) : this.submitBtn;
+      const messageDiv = skipProjectDetails ? this.step1MessageDiv : this.messageDiv;
+      const originalText = button ? button.innerHTML : '';
+      const customerData = this.getCustomerData();
 
-        // Validate form before submission
-        if (!customerData.isCustomer) {
-          // For guests, validate required account creation fields
-          const validationResult = this.validateAccountCreationForm(this.messageDiv);
-          if (!validationResult.isValid) {
-            return; // Stop submission if validation fails
-          }
-        }
+      // Clear any existing messages
+      if (messageDiv) {
+        messageDiv.style.display = 'none';
+        messageDiv.innerHTML = '';
+      }
 
-        // Disable button and show loading
+      // For skip submissions, validate was already done before calling this method
+      // For Step 2 submissions, no additional basic field validation needed (already validated on Next)
+
+      // Disable button and show loading
+      if (button) {
         button.disabled = true;
         button.innerHTML = 'Saving...';
+      }
 
-        try {
-          // Update cart attributes first (if customer)
-          if (customerData.isCustomer) {
-            await this.updateCartAttributes();
+      try {
+        // Update cart attributes first (if customer)
+        if (customerData.isCustomer) {
+          await this.updateCartAttributes();
+        }
+
+        // Get current cart data
+        const cartResponse = await fetch('/cart.js');
+        const cartData = await cartResponse.json();
+
+        const { attributes, ...cartWithoutAttributes } = cartData;
+
+        // Prepare base webhook data
+        const webhookData = {
+          shopDomain: Shopify.shop,
+          timestamp: new Date().toISOString(),
+          shopifyGraphQLVersion: SHOPIFY_GRAPHQL_VERSION,
+          currency: cartData.currency,
+
+          isCustomer: customerData.isCustomer,
+          customerId: customerData.customerId,
+          customerEmail: customerData.customerEmail,
+          metaobjectType: customerData.metaobjectType,
+
+          cart: cartWithoutAttributes,
+          skipProjectDetails: skipProjectDetails
+        };
+
+        let submitWebhook;
+
+        if (customerData.isCustomer) {
+          // Signed-in customer: cart review webhook
+          webhookData.ethossence_review_inputs = this.collectFieldData();
+          webhookData.projectContext = this.buildProjectContext();
+          submitWebhook = WEBHOOKS.submitCartReview;
+        } else {
+          // Anonymous visitor: account creation webhook
+          webhookData.account_fields = this.collectAccountCreationFields();
+
+          // Include metaobject contact fields if detailed mode is active
+          if (this.detailedVisible && this.detailedLoaded) {
+            webhookData.metaobject_fields = this.collectFieldData(this.detailedContactContainer);
           }
 
-          // Get current cart data
-          const cartResponse = await fetch('/cart.js');
-          const cartData = await cartResponse.json();
-
-          // Remove attributes from cart data to avoid duplication
-          const { attributes, ...cartWithoutAttributes } = cartData;
-
-          // Prepare base webhook data
-          const webhookData = {
-            shopDomain: Shopify.shop,
-            timestamp: new Date().toISOString(),
-            shopifyGraphQLVersion: SHOPIFY_GRAPHQL_VERSION,
-            currency: cartData.currency,
-
-            // Customer information
-            isCustomer: customerData.isCustomer,
-            customerId: customerData.customerId,
-            customerEmail: customerData.customerEmail,
-            metaobjectType: customerData.metaobjectType,
-
-            // Cart data
-            cart: cartWithoutAttributes
-          };
-
-          // Add appropriate form data based on customer status
-          let submitWebhook;
-
-          if (customerData.isCustomer) {
-            // Signed-in customer: cart review webhook
-            webhookData.ethossence_review_inputs = this.collectFieldData();
-            webhookData.projectContext = this.buildProjectContext();
-            submitWebhook = WEBHOOKS.submitCartReview;
-          } else {
-            // Anonymous visitor: account creation webhook
-            webhookData.account_fields = this.collectAccountCreationFields();
-            // Include metaobject fields ONLY if detailed mode is active
-            if (this.detailedVisible && this.detailedLoaded) {
-              webhookData.metaobject_fields = this.collectFieldData();
-            }
-            submitWebhook = WEBHOOKS.submitAccountCreation;
+          // Include project fields only if not skipping
+          if (!skipProjectDetails && this.hasProjectFields) {
+            webhookData.project_fields = this.collectFieldData(this.projectFieldsContainer);
           }
 
-          console.log('Submitting review request for:', customerData.metaobjectType);
-          console.log('Using webhook:', customerData.isCustomer ? 'submitCartReview' : 'submitAccountCreation');
-          console.log('Detailed mode active:', this.detailedVisible);
+          submitWebhook = WEBHOOKS.submitAccountCreation;
+        }
 
-          // Send to appropriate Make webhook
-          const webhookResponse = await fetch(submitWebhook, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(webhookData)
-          });
+        console.log('Submitting review request:', {
+          webhook: customerData.isCustomer ? 'submitCartReview' : 'submitAccountCreation',
+          skipProjectDetails: skipProjectDetails,
+          detailedVisible: this.detailedVisible
+        });
 
-          if (webhookResponse.ok) {
-            // Parse response to check for errors from Make scenario
-            let responseData;
+        // Send to appropriate Make webhook
+        const webhookResponse = await fetch(submitWebhook, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(webhookData)
+        });
 
-            try {
-              // Try to parse as JSON first
-              const responseText = await webhookResponse.text();
+        if (webhookResponse.ok) {
+          let responseData;
 
-              if (responseText.trim().startsWith('{') || responseText.trim().startsWith('[')) {
-                // Looks like JSON, parse it
-                responseData = JSON.parse(responseText);
-              } else {
-                // Plain text response
-                responseData = responseText;
-              }
-            } catch (parseError) {
-              // If JSON parsing fails, treat as plain text
-              console.warn('Failed to parse response as JSON:', parseError);
-              responseData = await webhookResponse.text();
-            }
+          try {
+            const responseText = await webhookResponse.text();
 
-            console.log('Webhook response:', responseData);
-
-            // Check if response indicates an error
-            let hasError = false;
-            let errorMessage = '';
-
-            if (typeof responseData === 'object') {
-              // Check for various error indicators in JSON response
-              if (responseData.success === false ||
-                  responseData.error ||
-                  responseData.errors ||
-                  responseData.userErrors ||
-                  (responseData.data && responseData.data.userErrors && responseData.data.userErrors.length > 0)) {
-                hasError = true;
-
-                // Extract error message
-                if (responseData.message) {
-                  errorMessage = responseData.message;
-                } else if (responseData.error) {
-                  errorMessage = typeof responseData.error === 'string' ? responseData.error : JSON.stringify(responseData.error);
-                } else if (responseData.errors) {
-                  errorMessage = Array.isArray(responseData.errors) ? responseData.errors.join(', ') : JSON.stringify(responseData.errors);
-                } else if (responseData.userErrors) {
-                  errorMessage = Array.isArray(responseData.userErrors)
-                    ? responseData.userErrors.map(e => e.message || JSON.stringify(e)).join(', ')
-                    : JSON.stringify(responseData.userErrors);
-                } else if (responseData.data && responseData.data.userErrors) {
-                  errorMessage = responseData.data.userErrors.map(e => e.message || JSON.stringify(e)).join(', ');
-                } else {
-                  errorMessage = 'An error occurred while processing your request.';
-                }
-              }
-            } else if (typeof responseData === 'string') {
-              // Check if text response contains error indicators
-              const lowerResponse = responseData.toLowerCase();
-              if (lowerResponse.includes('error') ||
-                  lowerResponse.includes('failed') ||
-                  lowerResponse.includes('invalid')) {
-                hasError = true;
-                errorMessage = responseData;
-              }
-            }
-
-            if (hasError) {
-              // Show error message
-              this.showMessage(this.messageDiv, errorMessage, 'error', true);
+            if (responseText.trim().startsWith('{') || responseText.trim().startsWith('[')) {
+              responseData = JSON.parse(responseText);
             } else {
-              // Success - show appropriate message
-              let successMessage = '';
-
-              // Priority 1: Use custom message from webhook if provided
-              if (typeof responseData === 'object' && responseData.message) {
-                successMessage = responseData.message;
-                console.log('Using custom success message from webhook');
-              }
-              // Priority 2: Use default messages based on customer status
-              else if (customerData.isCustomer) {
-                successMessage = 'Review request submitted successfully!';
-              } else {
-                successMessage = 'Account created successfully! Check your email for login instructions.';
-              }
-
-              console.log('Showing success message:', successMessage);
-              this.showMessage(this.messageDiv, successMessage, 'success');
-
-              // Optionally clear form on success
-              if (!customerData.isCustomer) {
-                // Clear account creation form fields
-                this.clearAccountForm();
-              }
+              responseData = responseText;
             }
-          } else {
-            // HTTP error (non-200 status)
-            const errorData = await webhookResponse.text();
-            this.handleSubmissionError(this.messageDiv, errorData, customerData.isCustomer);
+          } catch (parseError) {
+            console.warn('Failed to parse response as JSON:', parseError);
+            responseData = await webhookResponse.text();
           }
 
-        } catch (error) {
-          console.error('Error submitting form:', error);
-          this.showMessage(this.messageDiv, 'An unexpected error occurred. Please try again.', 'error');
-        } finally {
-          // Re-enable button
+          console.log('Webhook response:', responseData);
+
+          // Check for error in response
+          let hasError = false;
+          let errorMessage = '';
+
+          if (typeof responseData === 'object') {
+            if (responseData.success === false ||
+                responseData.error ||
+                responseData.errors ||
+                responseData.userErrors ||
+                (responseData.data && responseData.data.userErrors && responseData.data.userErrors.length > 0)) {
+              hasError = true;
+
+              if (responseData.message) {
+                errorMessage = responseData.message;
+              } else if (responseData.error) {
+                errorMessage = typeof responseData.error === 'string' ? responseData.error : JSON.stringify(responseData.error);
+              } else if (responseData.errors) {
+                errorMessage = Array.isArray(responseData.errors) ? responseData.errors.join(', ') : JSON.stringify(responseData.errors);
+              } else if (responseData.userErrors) {
+                errorMessage = Array.isArray(responseData.userErrors)
+                  ? responseData.userErrors.map(e => e.message || JSON.stringify(e)).join(', ')
+                  : JSON.stringify(responseData.userErrors);
+              } else if (responseData.data && responseData.data.userErrors) {
+                errorMessage = responseData.data.userErrors.map(e => e.message || JSON.stringify(e)).join(', ');
+              } else {
+                errorMessage = 'An error occurred while processing your request.';
+              }
+            }
+          } else if (typeof responseData === 'string') {
+            const lowerResponse = responseData.toLowerCase();
+            if (lowerResponse.includes('error') ||
+                lowerResponse.includes('failed') ||
+                lowerResponse.includes('invalid')) {
+              hasError = true;
+              errorMessage = responseData;
+            }
+          }
+
+          if (hasError) {
+            this.showMessage(messageDiv, errorMessage, 'error', true);
+          } else {
+            let successMessage = '';
+
+            if (typeof responseData === 'object' && responseData.message) {
+              successMessage = responseData.message;
+            } else if (customerData.isCustomer) {
+              successMessage = 'Review request submitted successfully!';
+            } else {
+              successMessage = 'Account created successfully! Check your email for login instructions.';
+            }
+
+            this.showMessage(messageDiv, successMessage, 'success');
+
+            if (!customerData.isCustomer) {
+              this.clearAccountForm();
+            }
+          }
+        } else {
+          const errorData = await webhookResponse.text();
+          this.handleSubmissionError(messageDiv, errorData, customerData.isCustomer);
+        }
+
+      } catch (error) {
+        console.error('Error submitting form:', error);
+        this.showMessage(messageDiv, 'An unexpected error occurred. Please try again.', 'error');
+      } finally {
+        if (button) {
           button.disabled = false;
           button.innerHTML = originalText;
         }
-      });
+      }
     }
 
     // ========================================================================
@@ -1027,42 +1210,32 @@
     handleSubmissionError(messageDiv, errorText, isCustomer) {
       let errorMessage = '';
 
-      // Try to parse error text to identify specific issues
       const lowerError = errorText.toLowerCase();
 
-      // Check for required field errors
       if (lowerError.includes('name, phone number, or email') ||
           lowerError.includes('must be present') ||
           (lowerError.includes('name') && lowerError.includes('email') && lowerError.includes('phone'))) {
         errorMessage = 'Please fill in all required fields (name, email, phone number) and try again.';
       }
-      // Check for email already exists
       else if (lowerError.includes('email') && (lowerError.includes('taken') || lowerError.includes('exists') || lowerError.includes('already'))) {
         errorMessage = 'This email address is already registered. <a href="' + window.Shopify.routes.root + 'account/login" class="error-link">Please log in</a> or use a different email address.';
       }
-      // Check for phone already exists
       else if (lowerError.includes('phone') && (lowerError.includes('taken') || lowerError.includes('exists') || lowerError.includes('already'))) {
         errorMessage = 'This phone number is already registered. <a href="' + window.Shopify.routes.root + 'account/login" class="error-link">Please log in</a> or use a different phone number.';
       }
-      // Check for both email and phone exist
       else if (lowerError.includes('email') && lowerError.includes('phone') && (lowerError.includes('taken') || lowerError.includes('exists') || lowerError.includes('already'))) {
         errorMessage = 'This email address and/or phone number is already registered. <a href="' + window.Shopify.routes.root + 'account/login" class="error-link">Please log in</a> or use different contact information.';
       }
-      // Check for invalid email format
       else if (lowerError.includes('invalid email') || lowerError.includes('email format')) {
         errorMessage = 'Please enter a valid email address.';
       }
-      // Check for invalid phone format
       else if (lowerError.includes('invalid phone') || lowerError.includes('phone format')) {
         errorMessage = 'Please enter a valid phone number with country code (11 digits).';
       }
-      // Generic errors based on context
       else if (isCustomer) {
         errorMessage = 'Failed to submit review request. Please try again or contact support if the issue persists.';
       } else {
-        // Extract any error details from the response
         if (errorText.includes('Error(s):')) {
-          // Parse and clean up the error message
           errorMessage = 'Failed to create account. ' + errorText.replace(/\n/g, '<br>') + '<br><br>If you already have an account, <a href="' + window.Shopify.routes.root + 'account/login" class="error-link">please log in</a>.';
         } else {
           errorMessage = 'Failed to create account. Please check your information and try again. If you already have an account, <a href="' + window.Shopify.routes.root + 'account/login" class="error-link">please log in</a>.';
@@ -1090,7 +1263,7 @@
       if (countryOtherField) countryOtherField.style.display = 'none';
 
       // Clear any additional dynamic fields
-      const dynamicFields = document.querySelectorAll('#dynamic-content-container .cart-attribute');
+      const dynamicFields = document.querySelectorAll('#detailed-contact-container .cart-attribute, #project-fields-container .cart-attribute');
       dynamicFields.forEach(field => {
         if (field.type === 'checkbox' || field.type === 'radio') {
           field.checked = false;
@@ -1101,7 +1274,6 @@
     }
 
     collectAccountCreationFields() {
-      // Collect required fields for account creation (non-cart-attribute fields)
       const accountFields = {};
 
       const fieldIds = ['firstName', 'lastName', 'email', 'phone', 'company', 'country', 'countryOther'];
@@ -1122,14 +1294,12 @@
         errors: []
       };
 
-      // Get all required fields
       const firstName = document.getElementById('firstName');
       const lastName = document.getElementById('lastName');
       const email = document.getElementById('email');
       const phone = document.getElementById('phone');
       const company = document.getElementById('company');
 
-      // Validate firstName
       if (!firstName || !firstName.value.trim()) {
         result.isValid = false;
         result.errors.push('First name is required');
@@ -1138,7 +1308,6 @@
         if (firstName) this.highlightField(firstName, false);
       }
 
-      // Validate lastName
       if (!lastName || !lastName.value.trim()) {
         result.isValid = false;
         result.errors.push('Last name is required');
@@ -1147,7 +1316,6 @@
         if (lastName) this.highlightField(lastName, false);
       }
 
-      // Validate email
       if (!email || !email.value.trim()) {
         result.isValid = false;
         result.errors.push('Email is required');
@@ -1160,7 +1328,6 @@
         if (email) this.highlightField(email, false);
       }
 
-      // Validate phone (optional but if provided must be valid)
       if (phone && phone.value.trim()) {
         const phoneDigits = phone.value.replace(/\D/g, '');
         if (phoneDigits.length !== 11) {
@@ -1172,7 +1339,6 @@
         }
       }
 
-      // Validate company
       if (!company || !company.value.trim()) {
         result.isValid = false;
         result.errors.push('Company name is required');
@@ -1181,12 +1347,9 @@
         if (company) this.highlightField(company, false);
       }
 
-      // Country is optional - no validation needed
-
-      // Display errors if validation failed
       if (!result.isValid) {
         const errorMessage = '<strong>Please correct the following:</strong><br>' +
-                           result.errors.map(err => '• ' + err).join('<br>');
+                           result.errors.map(err => '&bull; ' + err).join('<br>');
         this.showMessage(messageDiv, errorMessage, 'error', true);
       }
 
@@ -1194,7 +1357,6 @@
     }
 
     isValidEmail(email) {
-      // Basic email validation regex
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return emailRegex.test(email);
     }
@@ -1209,17 +1371,23 @@
       }
     }
 
-    collectFieldData() {
+    collectFieldData(scopeContainer) {
       const fieldData = [];
-      const reviewRequestFields = document.querySelectorAll('#review-request-fields .cart-attribute, #dynamic-content-container .cart-attribute');
+      let selector;
 
-      // Account creation field IDs that should be excluded from metaobject fields
+      if (scopeContainer) {
+        // Scoped collection — only fields within the given container
+        selector = scopeContainer.querySelectorAll('.cart-attribute');
+      } else {
+        // Full collection — all cart-attribute fields
+        selector = document.querySelectorAll('#detailed-contact-container .cart-attribute, #project-fields-container .cart-attribute');
+      }
+
       const accountFieldIds = ['firstName', 'lastName', 'email', 'phone', 'company', 'country'];
 
-      reviewRequestFields.forEach(field => {
+      selector.forEach(field => {
         if (!field || !field.name) return;
 
-        // Skip account creation fields - they go in account_fields instead
         if (accountFieldIds.includes(field.id)) {
           return;
         }
@@ -1248,14 +1416,11 @@
             type: field.type || field.tagName.toLowerCase()
           };
 
-          // Add metafield key if present
           if (field.dataset.metafieldKey) {
             fieldInfo.metaobject_key = field.dataset.metafieldKey;
 
-            // Check if this is a list-type metafield that needs JSON formatting
             const metafieldType = field.dataset.metafieldType;
             if (metafieldType && metafieldType.startsWith('list.')) {
-              // Wrap value in JSON array format for Shopify
               fieldInfo.value = JSON.stringify([value]);
               fieldInfo.metafield_type = metafieldType;
             }
@@ -1278,58 +1443,37 @@
         modifiedFields: []
       };
 
-      // If this is an existing project, detect changes
       if (!this.isNewProject && this.originalProjectData) {
-        console.log('Detecting field changes for existing project:', this.selectedProjectHandle);
-
-        // Get current form values
         const currentFormData = this.getCurrentFormValues();
 
-        // Compare each field against original data
         for (const [key, originalValue] of Object.entries(this.originalProjectData)) {
           const currentValue = currentFormData[key];
 
-          // Normalize values for comparison (handle empty strings, null, undefined)
           const normalizedOriginal = this.normalizeValue(originalValue);
           const normalizedCurrent = this.normalizeValue(currentValue);
 
-          // Check if values are different
           if (normalizedOriginal !== normalizedCurrent) {
             projectContext.modifiedFields.push({
               metaobject_key: key,
               originalValue: originalValue,
               newValue: currentValue || ''
             });
-
-            console.log(`Field modified: ${key}`, {
-              original: originalValue,
-              new: currentValue
-            });
           }
         }
 
-        // Also check for new fields that weren't in original data
         for (const [key, currentValue] of Object.entries(currentFormData)) {
           if (!(key in this.originalProjectData)) {
             const normalizedCurrent = this.normalizeValue(currentValue);
 
-            // Only include if current value is not empty
             if (normalizedCurrent !== '') {
               projectContext.modifiedFields.push({
                 metaobject_key: key,
                 originalValue: '',
                 newValue: currentValue
               });
-
-              console.log(`New field added: ${key}`, {
-                original: '(empty)',
-                new: currentValue
-              });
             }
           }
         }
-
-        console.log(`Total modified fields: ${projectContext.modifiedFields.length}`);
       }
 
       return projectContext;
@@ -1337,15 +1481,13 @@
 
     getCurrentFormValues() {
       const formValues = {};
-      const reviewRequestFields = document.querySelectorAll('#review-request-fields .cart-attribute, #dynamic-content-container .cart-attribute');
+      const reviewRequestFields = document.querySelectorAll('#detailed-contact-container .cart-attribute, #project-fields-container .cart-attribute');
 
-      // Account creation field IDs that should be excluded
       const accountFieldIds = ['firstName', 'lastName', 'email', 'phone', 'company', 'country'];
 
       reviewRequestFields.forEach(field => {
         if (!field || !field.dataset.metafieldKey) return;
 
-        // Skip account creation fields
         if (accountFieldIds.includes(field.id)) {
           return;
         }
@@ -1359,7 +1501,7 @@
           if (field.checked) {
             value = field.value;
           } else {
-            return; // Skip unchecked radios
+            return;
           }
         } else {
           value = field.value || '';
@@ -1372,12 +1514,10 @@
     }
 
     normalizeValue(value) {
-      // Convert null, undefined, empty string to empty string for comparison
       if (value === null || value === undefined || value === '') {
         return '';
       }
 
-      // Convert to string and trim
       return String(value).trim();
     }
 
@@ -1394,23 +1534,20 @@
         messageDiv.className = type === 'success' ? 'color-success' : 'color-error';
         messageDiv.style.display = 'block';
 
-        // Add dismiss button for errors
         if (type === 'error') {
           const dismissBtn = document.createElement('button');
-          dismissBtn.textContent = '✕ Dismiss';
+          dismissBtn.textContent = '\u2715 Dismiss';
           dismissBtn.className = 'button button--small button--secondary error-dismiss-btn';
           dismissBtn.style.cssText = 'margin-top: 1rem; cursor: pointer;';
           dismissBtn.onclick = () => {
             messageDiv.style.display = 'none';
-            messageDiv.innerHTML = ''; // Clear content including dismiss button
+            messageDiv.innerHTML = '';
           };
 
-          // Only add dismiss button if not already present
           if (!messageDiv.querySelector('.error-dismiss-btn')) {
             messageDiv.appendChild(dismissBtn);
           }
         } else {
-          // Success messages auto-hide after 5 seconds
           setTimeout(() => {
             messageDiv.style.display = 'none';
             messageDiv.innerHTML = '';

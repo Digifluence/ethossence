@@ -16,12 +16,15 @@
   margin: 2rem auto;
 }
 
-#dynamic-content-container {
+#detailed-contact-container,
+#project-fields-container {
   text-align: center;
 }
 
-#dynamic-content-container .field,
-#dynamic-content-container .contact__fields {
+#detailed-contact-container .field,
+#detailed-contact-container .contact__fields,
+#project-fields-container .field,
+#project-fields-container .contact__fields {
   text-align: left;
 }
 
@@ -743,6 +746,29 @@ button .loading-spinner {
 }
 
 /* ============================================================================
+   STEP INDICATOR
+   ============================================================================ */
+.request-review__step-indicator {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: rgba(var(--color-foreground), 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1.5rem;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ============================================================================
+   STEP CONTAINERS
+   ============================================================================ */
+.request-review__step {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* ============================================================================
    DETAILED FIELDS CONTAINER (expand/collapse animation)
    ============================================================================ */
 .request-review__detailed-fields {
@@ -759,14 +785,103 @@ button .loading-spinner {
 }
 
 /* ============================================================================
-   SUBMIT AREA
+   PROJECT FIELDS CONTAINER
    ============================================================================ */
-.request-review__submit-area {
+.request-review__project-fields {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.request-review__project-fields .loading-spinner {
+  padding: 2rem;
+  text-align: center;
+}
+
+/* ============================================================================
+   STEP ACTION BUTTONS (Next, Skip, Back, Submit)
+   ============================================================================ */
+.request-review__step-actions {
   text-align: center;
   margin-top: 2rem;
   max-width: 900px;
   margin-left: auto;
   margin-right: auto;
+}
+
+.request-review__skip-link {
+  margin-top: 1rem;
+}
+
+.request-review__skip-link a {
+  font-size: 1.3rem;
+  color: rgba(var(--color-foreground), 0.6);
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+.request-review__skip-link a:hover {
+  color: rgb(var(--color-foreground));
+}
+
+.request-review__back-link {
+  margin-top: 1rem;
+}
+
+.request-review__back-link a {
+  font-size: 1.4rem;
+  color: rgba(var(--color-foreground), 0.7);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.request-review__back-link a:hover {
+  color: rgb(var(--color-foreground));
+  text-decoration: underline;
+}
+
+/* ============================================================================
+   STEP 1 SUMMARY CARD (collapsed view on Step 2)
+   ============================================================================ */
+.request-review__summary-card {
+  max-width: 900px;
+  margin: 0 auto 2rem;
+  padding: 1.25rem 1.5rem;
+  border: 0.1rem solid rgba(var(--color-foreground), 0.15);
+  border-radius: 0.5rem;
+  background: rgba(var(--color-foreground), 0.02);
+}
+
+.request-review__summary-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.request-review__summary-label {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: rgba(var(--color-foreground), 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.request-review__summary-edit {
+  font-size: 1.3rem;
+  color: rgb(var(--color-foreground));
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.request-review__summary-edit:hover {
+  opacity: 0.7;
+}
+
+.request-review__summary-details {
+  font-size: 1.4rem;
+  color: rgba(var(--color-foreground), 0.8);
+  line-height: 1.5;
 }
 
 /* ============================================================================
@@ -811,6 +926,12 @@ button .loading-spinner {
   .request-review__tooltip::before {
     left: 1.5rem;
     transform: none;
+  }
+
+  .request-review__summary-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
   }
 }
 
