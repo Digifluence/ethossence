@@ -774,7 +774,7 @@ button .loading-spinner {
    ============================================================================ */
 .request-review__lead-in {
   margin-bottom: 1.5rem;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   line-height: 1.6;
   color: rgba(var(--color-foreground), 0.8);
 }
