@@ -138,7 +138,6 @@
                       </{{ block.settings.heading_size }}>
                     {%- endif -%}
 
-                    <br />
                     {%- if s_form_mode == 'basic_and_detailed' -%}
                       <fieldset class="request-review__mode-toggle" role="radiogroup">
                         <legend class="visually-hidden">Choose form detail level</legend>
@@ -153,9 +152,9 @@
                                  aria-describedby="mode-detailed-desc">
                           <span>Detailed</span>
                           <button type="button" class="request-review__tooltip-trigger" aria-label="What is detailed mode?">
-                            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                              <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/>
-                              <text x="8" y="11.5" text-anchor="middle" font-size="10" fill="currentColor" font-weight="600">?</text>
+                            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16">
+                              <circle cx="8" cy="8" r="7.5" fill="currentColor"/>
+                              <text x="8" y="11.5" text-anchor="middle" font-size="10" fill="rgb(var(--color-background))" font-weight="700">?</text>
                             </svg>
                           </button>
                           <div class="request-review__tooltip" id="mode-detailed-desc" role="tooltip" aria-hidden="true">
@@ -170,7 +169,7 @@
                     {%- if customer -%}
                       <span class="request-review__signed-in-status">Signed in as {{ customer.email }}</span>
                     {%- else -%}
-                      <a class="request-review__sign-in-link" href="{{ routes.account_login_url }}?return_url={{ request.path | url_encode }}">Sign In</a>
+                      <a class="request-review__sign-in-link" href="{{ routes.account_login_url }}?return_url={{ request.path | url_encode }}"><strong>Sign In &raquo;</strong></a>
                     {%- endif -%}
                   </div>
                 </div>
