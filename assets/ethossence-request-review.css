@@ -596,7 +596,7 @@ button .loading-spinner {
   display: flex;
   align-items: center;
   font-size: 1.3rem;
-  padding-top: 0.5rem;
+  padding-top: 3rem;
 }
 
 .request-review__signed-in-status {
