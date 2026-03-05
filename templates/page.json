@@ -272,8 +272,40 @@
         "padding_bottom": 36
       }
     },
-    "ethossence_request_review_JnpeFy": {
+    "ethossence_request_review_VKfHxx": {
       "type": "ethossence-request-review",
+      "blocks": {
+        "content_xiMcXi": {
+          "type": "content",
+          "settings": {
+            "page": "request-solution-review",
+            "heading_hide": false,
+            "heading_size": "h1",
+            "content_audience": "visitors",
+            "authoriz_enabled": false,
+            "padding_top": 24,
+            "padding_bottom": 24
+          }
+        },
+        "form_J3BLEn": {
+          "type": "form",
+          "settings": {
+            "animation_type": "slide_down",
+            "content_alignment": "center",
+            "create_account_head_text": "Create Your Account",
+            "submit_cart_head_text": "Review Request",
+            "heading_size": "h1",
+            "btn_trigger_account_form": "Create Account to Request Review »",
+            "btn_trigger_request_form": "Start Review Request",
+            "padding_top": 24,
+            "padding_bottom": 24
+          }
+        }
+      },
+      "block_order": [
+        "content_xiMcXi",
+        "form_J3BLEn"
+      ],
       "name": "Review request",
       "settings": {
         "color_scheme": "",
@@ -295,6 +327,6 @@
     "multicolumn_3f88yA",
     "174017485838edd9b6",
     "multicolumn_Uw9GNN",
-    "ethossence_request_review_JnpeFy"
+    "ethossence_request_review_VKfHxx"
   ]
 }
