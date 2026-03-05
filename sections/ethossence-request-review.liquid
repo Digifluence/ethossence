@@ -213,7 +213,7 @@
                       <label class="field__label" for="phone">Phone</label>
                     </div>
                     <div class="field request-review__field--full">
-                      <select class="field__input" id="country" name="country" aria-label="Country">
+                      <select class="field__input ethossence-select" id="country" name="country" aria-label="Country">
                         <option value="" selected>Select country</option>
                         <option value="US"{% if customer and customer.default_address.country_code == 'US' %} selected{% endif %}>United States</option>
                         <option value="AR"{% if customer and customer.default_address.country_code == 'AR' %} selected{% endif %}>Argentina</option>
