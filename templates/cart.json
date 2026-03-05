@@ -50,13 +50,13 @@
           "type": "form",
           "settings": {
             "animation_type": "slide_down",
-            "content_alignment": "center",
-            "heading_text": "Create Your Account",
+            "content_alignment": "left",
+            "display_forms": "automatically",
+            "cta_button_text": "Get started >",
+            "lead_in_text": "",
+            "form_mode": "basic_and_detailed",
+            "customer_form_heading": "About You",
             "heading_size": "h1",
-            "btn_trigger_account_form": "Create Account to Request Review »",
-            "bth_submit_account": "Create Account »",
-            "bth_submit_request": "Request Review »",
-            "success_message": "Account created successfully! You'll receive a confirmation email shortly.",
             "padding_top": 40,
             "padding_bottom": 52
           }
