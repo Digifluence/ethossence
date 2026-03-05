@@ -401,22 +401,8 @@ select.field__input:focus,
 }
 
 /* ============================================================================
-   BUTTON VISIBILITY CONTROLS
-   ============================================================================ */
-#register-trigger.hidden,
-#request-trigger.hidden,
-#sign-in-link.hidden {
-  display: none !important;
-}
-
-/* ============================================================================
    SUBMIT BUTTON & MESSAGES
    ============================================================================ */
-.cart-save-draft {
-  text-align: center;
-  margin: 2rem 0;
-}
-
 #save-cart-message {
   margin-top: 1rem;
   padding: 1rem;
@@ -583,7 +569,251 @@ button .loading-spinner {
 }
 
 
+/* ============================================================================
+   FORM HEADER (heading + toggle left, sign-in right)
+   ============================================================================ */
+.request-review__form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
 
+.request-review__form-header-left {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.request-review__form-header-left .form-title {
+  margin-bottom: 0;
+}
+
+.request-review__form-header-right {
+  display: flex;
+  align-items: center;
+  font-size: 1.3rem;
+  padding-top: 0.5rem;
+}
+
+.request-review__signed-in-status {
+  color: rgba(var(--color-foreground), 0.6);
+}
+
+.request-review__sign-in-link {
+  color: rgb(var(--color-foreground));
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.request-review__sign-in-link:hover {
+  opacity: 0.7;
+}
+
+/* ============================================================================
+   BASIC/DETAILED RADIO TOGGLE
+   ============================================================================ */
+.request-review__mode-toggle {
+  display: flex;
+  gap: 0;
+  border: 0.1rem solid rgba(var(--color-foreground), 0.2);
+  border-radius: 0.5rem;
+  overflow: visible;
+  padding: 0;
+  margin: 0;
+}
+
+.request-review__mode-option {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 1.3rem;
+  transition: background-color 0.2s;
+  position: relative;
+}
+
+.request-review__mode-option:first-child {
+  border-right: 0.1rem solid rgba(var(--color-foreground), 0.2);
+}
+
+.request-review__mode-option input[type="radio"] {
+  appearance: auto !important;
+  -webkit-appearance: radio !important;
+  -moz-appearance: radio !important;
+  width: 1.4rem;
+  height: 1.4rem;
+  margin: 0;
+  accent-color: rgb(var(--color-foreground));
+}
+
+.request-review__mode-option:has(input:checked) {
+  background-color: rgba(var(--color-foreground), 0.08);
+  font-weight: 600;
+}
+
+/* ============================================================================
+   TOOLTIP (info icon next to Detailed radio)
+   ============================================================================ */
+.request-review__tooltip-trigger {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  color: rgba(var(--color-foreground), 0.5);
+  transition: color 0.2s;
+}
+
+.request-review__tooltip-trigger:hover,
+.request-review__tooltip-trigger:focus {
+  color: rgb(var(--color-foreground));
+  outline: none;
+}
+
+.request-review__tooltip-trigger:focus-visible {
+  outline: 0.2rem solid rgba(var(--color-foreground), 0.5);
+  outline-offset: 0.2rem;
+  border-radius: 50%;
+}
+
+.request-review__tooltip {
+  position: absolute;
+  top: calc(100% + 0.8rem);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgb(var(--color-foreground));
+  color: rgb(var(--color-background));
+  padding: 0.75rem 1rem;
+  border-radius: 0.4rem;
+  font-size: 1.2rem;
+  font-weight: 400;
+  line-height: 1.4;
+  width: max-content;
+  max-width: 280px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+  z-index: 10;
+  pointer-events: none;
+  text-align: left;
+}
+
+.request-review__tooltip--visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.request-review__tooltip::before {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 0.5rem solid transparent;
+  border-bottom-color: rgb(var(--color-foreground));
+}
+
+/* ============================================================================
+   BASIC CONTACT FIELDS
+   ============================================================================ */
+.request-review__basic-fields {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.request-review__fields-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+
+.request-review__basic-fields .required-marker {
+  color: #ef4444;
+}
+
+/* ============================================================================
+   DETAILED FIELDS CONTAINER (expand/collapse animation)
+   ============================================================================ */
+.request-review__detailed-fields {
+  height: 0;
+  overflow: hidden;
+  transition: height 0.35s ease;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.request-review__detailed-fields .loading-spinner {
+  padding: 2rem;
+  text-align: center;
+}
+
+/* ============================================================================
+   SUBMIT AREA
+   ============================================================================ */
+.request-review__submit-area {
+  text-align: center;
+  margin-top: 2rem;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ============================================================================
+   LEAD-IN TEXT
+   ============================================================================ */
+.request-review__lead-in {
+  margin-bottom: 1.5rem;
+  font-size: 1.4rem;
+  line-height: 1.6;
+  color: rgba(var(--color-foreground), 0.8);
+}
+
+/* ============================================================================
+   FORM WRAPPER
+   ============================================================================ */
+.request-review__form-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* ============================================================================
+   RESPONSIVE: NEW COMPONENTS
+   ============================================================================ */
+@media screen and (min-width: 750px) {
+  .request-review__fields-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-column-gap: 2rem;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .request-review__form-header {
+    flex-direction: column;
+  }
+
+  .request-review__form-header-left {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .request-review__tooltip {
+    left: 0;
+    transform: none;
+  }
+
+  .request-review__tooltip::before {
+    left: 1.5rem;
+    transform: none;
+  }
+}
 
 .ethossence-select {
   color: rgba(var(--color-foreground), 0.8) !important;

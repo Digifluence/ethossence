@@ -1,7 +1,8 @@
 {%- comment -%}
   ETHOSSENCE Request Review Feature
-  Allow customers to submit their cart for review/quote with ability to create an account if not a customer.
-  BOTH forms are dynamically generated via Make webhook based on metaobject definitions.
+  Unified form with Basic/Detailed toggle. Basic mode renders 6 contact fields in Liquid.
+  Detailed mode loads metaobject-based fields via Make webhook. Supports inline (automatic)
+  or CTA button display modes. Anonymous visitors default to Basic; signed-in customers default to Detailed.
 {%- endcomment -%}
 
 {{ 'ethossence-request-review.css' | asset_url | stylesheet_tag }}
@@ -75,7 +76,9 @@
 
           {%- when 'form' -%}
 
-            {%- assign s_animation_type = block.settings.animation_type | default: 'slide_down' -%}             
+            {%- assign s_animation_type = block.settings.animation_type | default: 'slide_down' -%}
+            {%- assign s_display_forms = block.settings.display_forms | default: 'automatically' -%}
+            {%- assign s_form_mode = block.settings.form_mode | default: 'basic_and_detailed' -%}
 
             {%- style -%}
               .block-{{ block.id }}-padding {
@@ -91,85 +94,165 @@
               }
             {%- endstyle -%}
 
-            <div class="block-{{ block.id }}-padding text-{{ block.settings.content_alignment }}">     
+            <div class="block-{{ block.id }}-padding text-{{ block.settings.content_alignment }}">
 
-              {%- if customer == null -%}
-                
-                {%- comment -%} GUEST USER - TRIGGER FOR ACCOUNT CREATION FORM {%- endcomment -%}
-                <button type="button" id="review-form-trigger" class="button button--primary" 
-                        data-is-customer="false"
-                        data-customer-id=""
-                        data-customer-email="">
-                  {{ block.settings.btn_trigger_account_form | default: 'Create Account to Request Review' }}
-                </button>
-                
-                <!-- LINK TO SIGN IN IF ALREADY HAVE AN ACCOUNT -->
-                <div id="sign-in-link" class="margin-element-sm">
-                  Already have an account? <a href="{{ routes.account_login_url }}?return_url={{ routes.cart_url | url_encode }}" title="Sign in to your existing account">sign in &raquo;</a>
+              {%- comment -%} LEAD-IN TEXT (optional, for Button mode or general use) {%- endcomment -%}
+              {%- if block.settings.lead_in_text != blank -%}
+                <div class="request-review__lead-in">
+                  {{ block.settings.lead_in_text }}
                 </div>
-
-              {%- else -%}
-
-                {%- comment -%} LOGGED IN CUSTOMER - TRIGGER FOR CART REVIEW FORM {%- endcomment -%}
-                <button type="button" id="review-form-trigger" class="button button--primary"
-                        data-is-customer="true"
-                        data-customer-id="{{ customer.id }}"
-                        data-customer-email="{{ customer.email }}">
-                  {{ block.settings.btn_trigger_request_form | default: 'Start Review Request' }}
-                </button>
-
               {%- endif -%}
 
-              {%- comment -%} DYNAMIC FORM CONTAINER - WORKS FOR BOTH GUESTS AND CUSTOMERS {%- endcomment -%}
-              {% if block.settings.animation_type == 'slide_down' %}
-                <!-- SLIDE DOWN DROPDOWN -->
+              {%- comment -%} CTA BUTTON (only when display_forms == "button") {%- endcomment -%}
+              {%- if s_display_forms == 'button' -%}
+                <button type="button" id="review-form-cta" class="button button--primary">
+                  {{ block.settings.cta_button_text | default: 'Get started >' }}
+                </button>
+              {%- endif -%}
+
+              {%- comment -%} === FORM WRAPPER: inline, slide-down, or drawer === {%- endcomment -%}
+              {%- if s_display_forms == 'button' and s_animation_type == 'slide_down' -%}
                 <div id="review-form-dropdown" class="form-dropdown">
-                  <div class="form-dropdown__content">              
-                    <{{ block.settings.heading_size }} class="form-title {{ block.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" id="form-heading">
-                      {%- if customer == null -%}
-                        {{ block.settings.create_account_head_text }}
-                      {%- else -%}
-                        {{ block.settings.submit_cart_head_text }}
-                      {%- endif -%}
-                    </{{ block.settings.heading_size }}>
-                    
-                    <!-- DYNAMIC CONTENT CONTAINER -->
-                    <div id="dynamic-content-container"
-                         data-is-customer="{% if customer %}true{% else %}false{% endif %}"
-                         data-customer-id="{% if customer %}{{ customer.id }}{% endif %}"
-                         data-customer-email="{% if customer %}{{ customer.email }}{% endif %}">
-                      <div class="loading-spinner">Loading form...</div>
-                    </div>
-                  </div>
-                  <div> 
-                    <button type="button" class="button button--small button--secondary dropdown__close float-right" id="close-form-dropdown" aria-label="Close form">Cancel</button>
-                  </div>               
-                </div>
-              {% else %}
-                <!-- SLIDE OUT DRAWER -->
+                  <div class="form-dropdown__content">
+              {%- elsif s_display_forms == 'button' and s_animation_type == 'slide_out' -%}
                 <div id="review-form-drawer" class="drawer drawer--right">
                   <div class="drawer__header">
-                    <{{ block.settings.heading_size }} class="form-title {{ block.settings.heading_size }}" id="form-heading">
-                      {%- if customer == null -%}
-                        {{ block.settings.create_account_head_text }}
-                      {%- else -%}
-                        {{ block.settings.submit_cart_head_text }}
-                      {%- endif -%}
-                    </{{ block.settings.heading_size }}>                      
+                    <{{ block.settings.heading_size }} class="form-title {{ block.settings.heading_size }}" id="form-heading-drawer">
+                      {{ block.settings.customer_form_heading | default: 'About You' }}
+                    </{{ block.settings.heading_size }}>
                     <button type="button" class="drawer__close" id="close-form-drawer" aria-label="Close form"><span class="text-xlarge">X</span></button>
                   </div>
                   <div class="drawer__inner">
-                    <!-- DYNAMIC CONTENT CONTAINER -->
-                    <div id="dynamic-content-container"
-                         data-is-customer="{% if customer %}true{% else %}false{% endif %}"
-                         data-customer-id="{% if customer %}{{ customer.id }}{% endif %}"
-                         data-customer-email="{% if customer %}{{ customer.email }}{% endif %}">
-                      <div class="loading-spinner">Loading form...</div>
+              {%- endif -%}
+
+              {%- comment -%} === FORM CONTENT (shared across all display modes) === {%- endcomment -%}
+              <div class="request-review__form-wrapper" id="review-form-content"
+                   {% if s_display_forms == 'button' %}style="display: none;"{% endif %}>
+
+                {%- comment -%} FORM HEADER: heading + toggle (left) | sign-in/status (right) {%- endcomment -%}
+                <div class="request-review__form-header">
+                  <div class="request-review__form-header-left">
+                    {%- if s_display_forms != 'button' or s_animation_type != 'slide_out' -%}
+                      <{{ block.settings.heading_size }} class="form-title {{ block.settings.heading_size }}" id="form-heading">
+                        {{ block.settings.customer_form_heading | default: 'About You' }}
+                      </{{ block.settings.heading_size }}>
+                    {%- endif -%}
+
+                    {%- if s_form_mode == 'basic_and_detailed' -%}
+                      <fieldset class="request-review__mode-toggle" role="radiogroup">
+                        <legend class="visually-hidden">Choose form detail level</legend>
+                        <label class="request-review__mode-option">
+                          <input type="radio" name="form_detail_level" value="basic"
+                                 {% unless customer %}checked{% endunless %}>
+                          <span>Basic</span>
+                        </label>
+                        <label class="request-review__mode-option">
+                          <input type="radio" name="form_detail_level" value="detailed"
+                                 {% if customer %}checked{% endif %}
+                                 aria-describedby="mode-detailed-desc">
+                          <span>Detailed</span>
+                          <button type="button" class="request-review__tooltip-trigger" aria-label="What is detailed mode?">
+                            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                              <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/>
+                              <text x="8" y="11.5" text-anchor="middle" font-size="10" fill="currentColor" font-weight="600">?</text>
+                            </svg>
+                          </button>
+                          <div class="request-review__tooltip" id="mode-detailed-desc" role="tooltip" aria-hidden="true">
+                            Completing a detailed profile allows us to provide better initial responses, saving you time.
+                          </div>
+                        </label>
+                      </fieldset>
+                    {%- endif -%}
+                  </div>
+
+                  <div class="request-review__form-header-right">
+                    {%- if customer -%}
+                      <span class="request-review__signed-in-status">Signed in as {{ customer.email }}</span>
+                    {%- else -%}
+                      <a class="request-review__sign-in-link" href="{{ routes.account_login_url }}?return_url={{ request.path | url_encode }}">Sign In</a>
+                    {%- endif -%}
+                  </div>
+                </div>
+
+                {%- comment -%} BASIC CONTACT FIELDS (always rendered in Liquid) {%- endcomment -%}
+                <div id="basic-fields-container" class="request-review__basic-fields">
+                  <div class="request-review__fields-grid">
+                    <div class="field">
+                      <input class="field__input" type="text" id="firstName" name="firstName"
+                             placeholder="First name" required autocomplete="given-name"
+                             aria-label="First name" aria-required="true"
+                             {% if customer %}value="{{ customer.first_name | escape }}"{% endif %}>
+                      <label class="field__label" for="firstName">First name <span class="required-marker">*</span></label>
+                    </div>
+                    <div class="field">
+                      <input class="field__input" type="text" id="lastName" name="lastName"
+                             placeholder="Last name" required autocomplete="family-name"
+                             aria-label="Last name" aria-required="true"
+                             {% if customer %}value="{{ customer.last_name | escape }}"{% endif %}>
+                      <label class="field__label" for="lastName">Last name <span class="required-marker">*</span></label>
+                    </div>
+                    <div class="field">
+                      <input class="field__input" type="text" id="company" name="company"
+                             placeholder="Company" required autocomplete="organization"
+                             aria-label="Company" aria-required="true"
+                             {% if customer and customer.default_address %}value="{{ customer.default_address.company | escape }}"{% endif %}>
+                      <label class="field__label" for="company">Company <span class="required-marker">*</span></label>
+                    </div>
+                    <div class="field">
+                      <input class="field__input" type="email" id="email" name="email"
+                             placeholder="Email" required autocomplete="email"
+                             aria-label="Email" aria-required="true"
+                             {% if customer %}value="{{ customer.email | escape }}"{% endif %}>
+                      <label class="field__label" for="email">Email <span class="required-marker">*</span></label>
+                    </div>
+                    <div class="field">
+                      <input class="field__input" type="tel" id="phone" name="phone"
+                             placeholder="Phone (with country code)" autocomplete="tel"
+                             aria-label="Phone"
+                             {% if customer and customer.default_address %}value="{{ customer.default_address.phone | escape }}"{% endif %}>
+                      <label class="field__label" for="phone">Phone</label>
+                    </div>
+                    <div class="field">
+                      <input class="field__input" type="text" id="country" name="country"
+                             placeholder="Country" autocomplete="country-name"
+                             aria-label="Country"
+                             {% if customer and customer.default_address %}value="{{ customer.default_address.country | escape }}"{% endif %}>
+                      <label class="field__label" for="country">Country</label>
                     </div>
                   </div>
                 </div>
+
+                {%- comment -%} DETAILED FIELDS CONTAINER (loaded from webhook) {%- endcomment -%}
+                <div id="dynamic-content-container" class="request-review__detailed-fields"
+                     data-is-customer="{% if customer %}true{% else %}false{% endif %}"
+                     data-customer-id="{% if customer %}{{ customer.id }}{% endif %}"
+                     data-customer-email="{% if customer %}{{ customer.email }}{% endif %}">
+                  <div class="loading-spinner" style="display: none;">Loading detailed fields...</div>
+                </div>
+
+                {%- comment -%} SUBMIT BUTTON (always available in Liquid) {%- endcomment -%}
+                <div class="request-review__submit-area">
+                  <button type="button" id="save-cart-draft" class="button button--primary">
+                    {%- if customer -%}Submit Review Request{%- else -%}Create Account & Submit{%- endif -%}
+                  </button>
+                  <div id="save-cart-message" style="display: none;"></div>
+                </div>
+
+              </div>
+              {%- comment -%} END FORM CONTENT {%- endcomment -%}
+
+              {%- comment -%} Close form wrappers for animated modes {%- endcomment -%}
+              {%- if s_display_forms == 'button' and s_animation_type == 'slide_down' -%}
+                    <div>
+                      <button type="button" class="button button--small button--secondary dropdown__close float-right" id="close-form-dropdown" aria-label="Close form">Cancel</button>
+                    </div>
+                  </div>
+                </div>
+              {%- elsif s_display_forms == 'button' and s_animation_type == 'slide_out' -%}
+                  </div>
+                </div>
                 <div class="drawer__overlay" id="review-form-overlay"></div>
-              {% endif %}
+              {%- endif -%}
 
             </div>
 
@@ -187,6 +270,8 @@
       if (typeof initEthossenceReviewForms === 'function') {
         initEthossenceReviewForms({
           animationType: '{{ s_animation_type }}',
+          displayForms: '{{ s_display_forms }}',
+          formMode: '{{ s_form_mode }}',
           isCustomer: {% if customer %}true{% else %}false{% endif %}
         });
       }
@@ -385,20 +470,57 @@
             },                
             {
                "type": "header",
-               "content": "Form headers"
-            },                     
-            {
-               "type": "inline_richtext",
-               "id": "create_account_head_text",
-               "default": "Create Your Account",
-               "label": "Account creation header"
+               "content": "Form display"
             },
             {
-               "type": "inline_richtext",
-               "id": "submit_cart_head_text",
-               "default": "Review Request",
-               "label": "Cart review header"
-            },            
+              "type": "select",
+              "id": "display_forms",
+              "label": "Display forms",
+              "options": [
+                { "value": "automatically", "label": "Automatically" },
+                { "value": "button", "label": "Button" }
+              ],
+              "default": "automatically",
+              "info": "Controls whether the form is visible on page load or hidden behind a call-to-action button."
+            },
+            {
+              "type": "text",
+              "id": "cta_button_text",
+              "label": "Button text",
+              "default": "Get started >",
+              "info": "Text displayed on the call-to-action button when 'Display forms' is set to 'Button'."
+            },
+            {
+              "type": "inline_richtext",
+              "id": "lead_in_text",
+              "label": "Lead-in text",
+              "info": "Optional text displayed above the CTA button. Can be used in combination with or instead of the 'Content from page' block."
+            },
+            {
+               "type": "header",
+               "content": "Form mode"
+            },
+            {
+              "type": "select",
+              "id": "form_mode",
+              "label": "Form mode",
+              "options": [
+                { "value": "basic_and_detailed", "label": "Basic and Detailed" },
+                { "value": "detailed_only", "label": "Detailed only" }
+              ],
+              "default": "basic_and_detailed",
+              "info": "Controls whether visitors can choose between a basic contact form or a detailed profile form."
+            },
+            {
+               "type": "header",
+               "content": "Form heading"
+            },
+            {
+              "type": "inline_richtext",
+              "id": "customer_form_heading",
+              "label": "Form heading",
+              "default": "About You"
+            },
             {
                "type": "select",
                "id": "heading_size",
@@ -426,22 +548,6 @@
                ],
                "default": "h1",
                "label": "t:sections.all.heading_size.label"
-            },
-            {
-               "type": "header",
-               "content": "Buttons"
-            },             
-            {
-              "type": "text",
-              "id": "btn_trigger_account_form",
-              "label": "Guest trigger button",
-              "default": "Create Account to Request Review &raquo;"
-            },            
-            {
-              "type": "text",
-              "id": "btn_trigger_request_form",
-              "label": "Customer trigger button",
-              "default": "Start Review Request"
             },
             {
                "type": "header",
