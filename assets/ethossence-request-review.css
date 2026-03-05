@@ -738,6 +738,10 @@ button .loading-spinner {
   color: #ef4444;
 }
 
+.request-review__field--full {
+  grid-column: 1 / -1;
+}
+
 /* ============================================================================
    DETAILED FIELDS CONTAINER (expand/collapse animation)
    ============================================================================ */

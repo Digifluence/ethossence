@@ -191,7 +191,7 @@
                              {% if customer %}value="{{ customer.last_name | escape }}"{% endif %}>
                       <label class="field__label" for="lastName">Last name <span class="required-marker">*</span></label>
                     </div>
-                    <div class="field">
+                    <div class="field request-review__field--full">
                       <input class="field__input" type="text" id="company" name="company"
                              placeholder="Company" required autocomplete="organization"
                              aria-label="Company" aria-required="true"
@@ -212,7 +212,7 @@
                              {% if customer and customer.default_address %}value="{{ customer.default_address.phone | escape }}"{% endif %}>
                       <label class="field__label" for="phone">Phone</label>
                     </div>
-                    <div class="field">
+                    <div class="field request-review__field--full">
                       <input class="field__input" type="text" id="country" name="country"
                              placeholder="Country" autocomplete="country-name"
                              aria-label="Country"
