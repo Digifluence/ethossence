@@ -1068,7 +1068,7 @@
           isCustomer: customerData.isCustomer,
           customerId: customerData.customerId,
           customerEmail: customerData.customerEmail,
-          metaobjectType: customerData.metaobjectType,
+          metaobjectType: 'createDraftOrder',
 
           cart: cartWithoutAttributes,
           skipProjectDetails: skipProjectDetails
@@ -1076,25 +1076,23 @@
 
         let submitWebhook;
 
+        // Shared field arrays (both customer and anonymous paths)
+        webhookData.fieldsCustomerProfile = this.collectFieldData(this.detailedContactContainer);
+
+        if (!skipProjectDetails && this.hasProjectFields) {
+          webhookData.fieldsProject = this.collectFieldData(this.projectFieldsContainer);
+        }
+
         if (customerData.isCustomer) {
           // Signed-in customer: cart review webhook
-          webhookData.ethossence_review_inputs = this.collectFieldData();
-          webhookData.projectContext = this.buildProjectContext();
+          const projectContext = this.buildProjectContext();
+          webhookData.isNewProject = projectContext.isNewProject;
+          webhookData.selectedProjectHandle = projectContext.selectedProjectHandle;
+          webhookData.modifiedFields = projectContext.modifiedFields;
           submitWebhook = WEBHOOKS.submitCartReview;
         } else {
           // Anonymous visitor: account creation webhook
           webhookData.account_fields = this.collectAccountCreationFields();
-
-          // Include metaobject contact fields if detailed mode is active
-          if (this.detailedVisible && this.detailedLoaded) {
-            webhookData.metaobject_fields = this.collectFieldData(this.detailedContactContainer);
-          }
-
-          // Include project fields only if not skipping
-          if (!skipProjectDetails && this.hasProjectFields) {
-            webhookData.project_fields = this.collectFieldData(this.projectFieldsContainer);
-          }
-
           submitWebhook = WEBHOOKS.submitAccountCreation;
         }
 
