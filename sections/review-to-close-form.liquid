@@ -5,7 +5,7 @@
   or CTA button display modes. Anonymous visitors default to Basic; signed-in customers default to Detailed.
 {%- endcomment -%}
 
-{{ 'ethossence-request-review.css' | asset_url | stylesheet_tag }}
+{{ 'review-to-close-form.css' | asset_url | stylesheet_tag }}
 
 {%- style -%}
   /* Section Padding - Requires Liquid variables */
@@ -367,7 +367,7 @@
   </div>
 
   <!-- UNIFIED JAVASCRIPT FOR DYNAMIC FORM LOADING -->
-  <script src="{{ 'ethossence-request-review.js' | asset_url }}" defer></script>
+  <script src="{{ 'review-to-close-form.js' | asset_url }}" defer></script>
   <script>
     // PASS LIQUID CONFIGURATION TO JAVASCRIPT
     document.addEventListener('DOMContentLoaded', function() {
