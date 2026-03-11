@@ -602,8 +602,26 @@ button .loading-spinner {
   padding-top: 3rem;
 }
 
+.request-review__account-status {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.25rem;
+}
+
 .request-review__signed-in-status {
   color: rgba(var(--color-foreground), 0.6);
+}
+
+.request-review__switch-account-link {
+  font-size: 1.1rem;
+  color: rgba(var(--color-foreground), 0.5);
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+.request-review__switch-account-link:hover {
+  color: rgb(var(--color-foreground));
 }
 
 .request-review__sign-in-link {
