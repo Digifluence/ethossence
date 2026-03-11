@@ -381,6 +381,7 @@
     },
     "ethossence_product_parts_ezcx7D": {
       "type": "ethossence-product-parts",
+      "disabled": true,
       "name": "Parts",
       "settings": {
         "collection": "compatible-with-isolation-block",
