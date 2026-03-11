@@ -383,8 +383,8 @@
       "type": "ethossence-product-parts",
       "name": "Parts",
       "settings": {
-        "collection": "",
-        "heading": "Product Parts",
+        "collection": "compatible-with-isolation-block",
+        "heading": "Compatible with",
         "heading_size": "h1",
         "heading_alignment": "left",
         "color_scheme": "",
