@@ -290,7 +290,7 @@
         "form_J3BLEn": {
           "type": "form",
           "settings": {
-            "animation_type": "slide_down",
+            "animation_type": "slide_out",
             "content_alignment": "left",
             "display_forms": "button",
             "cta_button_text": "Get started >",
