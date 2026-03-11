@@ -13,7 +13,7 @@
       "type": "image-banner",
       "name": "t:sections.image-banner.presets.name",
       "settings": {
-        "image": "shopify://shop_images/TD25-17.png",
+        "image": "shopify://shop_images/MeltView-TD25-pulsed-illumination-camera.png",
         "image_overlay_opacity": 0,
         "image_height": "small",
         "image_behavior": "none",
