@@ -965,24 +965,33 @@
       const populateProjectFields = (projectData) => {
         if (!projectData) return;
 
-        for (const [fieldKey, fieldValue] of Object.entries(projectData)) {
-          const field = document.querySelector(`[data-metafield-key="${fieldKey}"]`);
+        console.log('Populating project fields with keys:', Object.keys(projectData));
 
-          if (field) {
-            if (field.type === 'checkbox') {
-              field.checked = fieldValue === 'true' || fieldValue === true;
-            } else if (field.type === 'radio') {
-              const radioGroup = document.querySelectorAll(`[data-metafield-key="${fieldKey}"]`);
-              radioGroup.forEach(radio => {
-                if (radio.value === fieldValue) {
-                  radio.checked = true;
-                }
-              });
-            } else if (field.tagName.toLowerCase() === 'select') {
-              field.value = fieldValue;
-            } else {
-              field.value = fieldValue;
-            }
+        for (const [fieldKey, fieldValue] of Object.entries(projectData)) {
+          // Try data-metafield-key first, then Shopify cart attribute name format, then plain name/id
+          const field = projectNewContainer.querySelector(`[data-metafield-key="${fieldKey}"]`)
+                     || projectNewContainer.querySelector(`[name="properties[${fieldKey}]"]`)
+                     || projectNewContainer.querySelector(`[name="${fieldKey}"]`)
+                     || projectNewContainer.querySelector(`#${fieldKey}`);
+
+          if (!field) {
+            console.warn(`populateProjectFields: no field found for key "${fieldKey}"`);
+            continue;
+          }
+
+          if (field.type === 'checkbox') {
+            field.checked = fieldValue === 'true' || fieldValue === true;
+          } else if (field.type === 'radio') {
+            const radioGroup = projectNewContainer.querySelectorAll(
+              `[data-metafield-key="${fieldKey}"], [name="properties[${fieldKey}]"], [name="${fieldKey}"]`
+            );
+            radioGroup.forEach(radio => {
+              if (radio.value === fieldValue) radio.checked = true;
+            });
+          } else if (field.tagName.toLowerCase() === 'select') {
+            field.value = fieldValue;
+          } else {
+            field.value = fieldValue;
           }
         }
 
@@ -1024,6 +1033,8 @@
           this.originalProjectData = null;
         } else {
           projectNewContainer.style.display = 'block';
+
+          console.log('Project selected:', selectedValue, '| window.customerProjects keys:', window.customerProjects ? Object.keys(window.customerProjects) : 'undefined');
 
           if (window.customerProjects && window.customerProjects[selectedValue]) {
             const projectData = window.customerProjects[selectedValue];
