@@ -292,7 +292,7 @@
           "settings": {
             "animation_type": "slide_down",
             "content_alignment": "left",
-            "display_forms": "button",
+            "display_forms": "automatically",
             "cta_button_text": "Get started >",
             "lead_in_text": "",
             "form_mode": "basic_and_detailed",
