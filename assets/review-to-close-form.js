@@ -693,6 +693,9 @@
         // Initialize contact field form handlers
         this.initializeContactFieldHandlers();
 
+        // Pre-populate detailed contact fields from window.customerDetailed
+        this.populateDetailedContactFields();
+
         if (callback) callback();
 
       } catch (error) {
@@ -785,6 +788,60 @@
           });
         }
       });
+    }
+
+    // ========================================================================
+    // PRE-POPULATE DETAILED CONTACT FIELDS from window.customerDetailed
+    // ========================================================================
+    populateDetailedContactFields() {
+      if (!window.customerDetailed) {
+        console.log('window.customerDetailed not present — skipping pre-population');
+        return;
+      }
+
+      // Only one entry exists; get its data regardless of the key
+      const customerData = Object.values(window.customerDetailed)[0];
+      if (!customerData) return;
+
+      console.log('Pre-populating detailed contact fields from window.customerDetailed');
+
+      const container = this.detailedContactContainer;
+
+      for (const [fieldKey, fieldValue] of Object.entries(customerData)) {
+        // Skip empty values — don't overwrite placeholder/blank state
+        if (fieldValue === '' || fieldValue === null || fieldValue === undefined) continue;
+
+        const field = container.querySelector(`[data-metafield-key="${fieldKey}"]`)
+                   || container.querySelector(`[name="properties[${fieldKey}]"]`)
+                   || container.querySelector(`[name="${fieldKey}"]`)
+                   || container.querySelector(`#${fieldKey}`);
+
+        if (!field) {
+          console.warn(`populateDetailedContactFields: no field found for key "${fieldKey}"`);
+          continue;
+        }
+
+        if (field.type === 'checkbox') {
+          field.checked = fieldValue === 'true' || fieldValue === true;
+        } else if (field.type === 'radio') {
+          container.querySelectorAll(
+            `[data-metafield-key="${fieldKey}"], [name="properties[${fieldKey}]"], [name="${fieldKey}"]`
+          ).forEach(radio => {
+            if (radio.value === fieldValue) radio.checked = true;
+          });
+        } else if (field.tagName.toLowerCase() === 'select') {
+          field.value = fieldValue;
+          // Trigger change so dependent "Other" fields respond
+          field.dispatchEvent(new Event('change'));
+        } else {
+          field.value = fieldValue;
+        }
+      }
+
+      // Re-run conditional logic now that values are set
+      this.setupConditionalFields();
+      this.setupOtherFieldLogic();
+      this.setupResellerFieldLogic();
     }
 
     // ========================================================================
