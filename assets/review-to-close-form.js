@@ -1303,20 +1303,20 @@
               successMessage = 'Account created successfully! Check your email for login instructions.';
             }
 
-            this.showMessage(messageDiv, successMessage, 'success');
-
             if (!skipProjectDetails) {
-              // Step 2 success: hide action buttons to prevent re-submit
+              // Step 2 success: persist message, hide action buttons, scroll to form top
+              this.showMessage(messageDiv, successMessage, 'success', false, true);
               if (this.submitBtn) this.submitBtn.style.display = 'none';
               const step2Actions = document.getElementById('step-2-actions');
               if (step2Actions) {
                 const backLinkDiv = step2Actions.querySelector('.request-review__back-link');
                 if (backLinkDiv) backLinkDiv.style.display = 'none';
               }
-              // Scroll to top of Step 2 so message is visible
-              if (this.step2Form) {
-                this.step2Form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              if (this.formContent) {
+                this.formContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
               }
+            } else {
+              this.showMessage(messageDiv, successMessage, 'success');
             }
           }
         } else {
@@ -1687,7 +1687,7 @@
     // ========================================================================
     // MESSAGE DISPLAY
     // ========================================================================
-    showMessage(messageDiv, text, type, allowHTML = false) {
+    showMessage(messageDiv, text, type, allowHTML = false, persist = false) {
       if (messageDiv) {
         if (allowHTML) {
           messageDiv.innerHTML = text;
@@ -1710,7 +1710,7 @@
           if (!messageDiv.querySelector('.error-dismiss-btn')) {
             messageDiv.appendChild(dismissBtn);
           }
-        } else {
+        } else if (!persist) {
           setTimeout(() => {
             messageDiv.style.display = 'none';
             messageDiv.innerHTML = '';
