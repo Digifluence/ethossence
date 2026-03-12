@@ -656,9 +656,25 @@
           this.updateUIForSingleStep();
         }
 
+        // Execute any root-level scripts in the webhook response that sit outside
+        // #webhook-contact-fields and #webhook-project-fields (e.g. window.customerProjects)
+        Array.from(tempDiv.children).forEach(child => {
+          if (child.tagName && child.tagName.toLowerCase() === 'script') {
+            const newScript = document.createElement('script');
+            newScript.textContent = child.textContent;
+            Array.from(child.attributes).forEach(attr => {
+              newScript.setAttribute(attr.name, attr.value);
+            });
+            document.head.appendChild(newScript);
+            console.log('Executed root-level webhook script');
+          }
+        });
+
         // Verify window.customerProjects was created
         if (window.customerProjects) {
           console.log('window.customerProjects created with', Object.keys(window.customerProjects).length, 'projects');
+        } else {
+          console.warn('window.customerProjects still undefined after script execution');
         }
 
         this.detailedLoaded = true;
@@ -697,6 +713,7 @@
 
         if (oldScript.src) {
           newScript.src = oldScript.src;
+          newScript.async = false;
         } else {
           newScript.textContent = oldScript.textContent;
         }
@@ -706,7 +723,8 @@
           newScript.setAttribute(attr.name, attr.value);
         });
 
-        oldScript.parentNode.replaceChild(newScript, oldScript);
+        // Append to document.head — more reliable than replaceChild inside a div
+        document.head.appendChild(newScript);
         console.log(`Executed script ${index + 1}`);
       });
     }
