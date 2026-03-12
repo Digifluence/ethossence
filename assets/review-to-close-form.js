@@ -60,7 +60,6 @@
       // Buttons
       this.nextBtn = document.getElementById('btn-next-step');
       this.skipBtn = document.getElementById('btn-skip-submit');
-      this.backBtn = document.getElementById('btn-back-step1');
       this.editBtn = document.getElementById('btn-edit-step1');
       this.submitBtn = document.getElementById('save-cart-draft');
       this.step1MessageDiv = document.getElementById('step-1-message');
@@ -134,12 +133,6 @@
         this.skipBtn.addEventListener('click', (e) => {
           e.preventDefault();
           this.handleSkipSubmit();
-        });
-      }
-      if (this.backBtn) {
-        this.backBtn.addEventListener('click', (e) => {
-          e.preventDefault();
-          this.goToStep1();
         });
       }
       if (this.editBtn) {
@@ -640,6 +633,10 @@
           this.reExecuteScripts(this.projectFieldsContainer);
           this.hasProjectFields = true;
 
+          // Rename the Enter New Project legend to Project Details
+          const projectNewLegend = this.projectFieldsContainer.querySelector('#project-new legend');
+          if (projectNewLegend) projectNewLegend.textContent = 'Project Details';
+
           // For non-customers the webhook HTML hides containers via inline display:none
           // (the customer dropdown logic normally reveals them — that logic doesn't run here).
           // Unhide all direct-child containers so fields are visible in Step 2.
@@ -750,10 +747,6 @@
         });
       }
 
-      // Hide skip link
-      if (this.skipBtn) {
-        this.skipBtn.closest('.request-review__skip-link').style.display = 'none';
-      }
     }
 
     // ========================================================================
@@ -1093,6 +1086,7 @@
 
         if (!selectedValue) {
           projectNewContainer.style.display = 'none';
+          if (this.submitBtn) this.submitBtn.style.display = 'none';
           clearProjectFields();
           this.isNewProject = true;
           this.selectedProjectHandle = null;
@@ -1102,12 +1096,14 @@
 
         if (selectedValue === '*new*') {
           projectNewContainer.style.display = 'block';
+          if (this.submitBtn) this.submitBtn.style.display = '';
           clearProjectFields();
           this.isNewProject = true;
           this.selectedProjectHandle = null;
           this.originalProjectData = null;
         } else {
           projectNewContainer.style.display = 'block';
+          if (this.submitBtn) this.submitBtn.style.display = '';
 
           console.log('Project selected:', selectedValue, '| window.customerProjects keys:', window.customerProjects ? Object.keys(window.customerProjects) : 'undefined');
 
@@ -1304,16 +1300,20 @@
             }
 
             if (!skipProjectDetails) {
-              // Step 2 success: persist message, hide action buttons, scroll to form top
+              // Step 2 success: persist message, hide submit button, scroll to form top
               this.showMessage(messageDiv, successMessage, 'success', false, true);
               if (this.submitBtn) this.submitBtn.style.display = 'none';
-              const step2Actions = document.getElementById('step-2-actions');
-              if (step2Actions) {
-                const backLinkDiv = step2Actions.querySelector('.request-review__back-link');
-                if (backLinkDiv) backLinkDiv.style.display = 'none';
-              }
               if (this.formContent) {
                 this.formContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
+              // Re-show submit button if user changes project selection after success
+              const projectsSelect = document.getElementById('customer_projects');
+              if (projectsSelect) {
+                projectsSelect.addEventListener('change', () => {
+                  if (projectsSelect.value && this.submitBtn) {
+                    this.submitBtn.style.display = '';
+                  }
+                }, { once: true });
               }
             } else {
               this.showMessage(messageDiv, successMessage, 'success');

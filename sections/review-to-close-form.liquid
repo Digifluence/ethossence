@@ -298,9 +298,6 @@
                   {%- comment -%} STEP 1 ACTION BUTTONS {%- endcomment -%}
                   <div class="request-review__step-actions" id="step-1-actions">
                     <button type="button" id="btn-next-step" class="button button--primary">Next</button>
-                    <div class="request-review__skip-link">
-                      <a href="#" id="btn-skip-submit" role="button">Skip project details and submit with request to contact</a>
-                    </div>
                     <div id="step-1-message" style="display: none;"></div>
                   </div>
 
@@ -334,9 +331,9 @@
 
                   {%- comment -%} STEP 2 ACTION BUTTONS {%- endcomment -%}
                   <div class="request-review__step-actions" id="step-2-actions">
-                    <button type="button" id="save-cart-draft" class="button button--primary">Submit for Review</button>
-                    <div class="request-review__back-link">
-                      <a href="#" id="btn-back-step1" role="button">&laquo; Back to contact details</a>
+                    <button type="button" id="save-cart-draft" class="button button--primary" style="display: none;">Submit for Review</button>
+                    <div class="request-review__skip-link">
+                      <a href="#" id="btn-skip-submit" role="button">Skip project details and submit with request to contact</a>
                     </div>
                   </div>
 
