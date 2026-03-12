@@ -12,7 +12,7 @@
   const WEBHOOKS = {
     loadForm: 'https://hook.us2.make.com/qlomn3r4q8lhetra9irfer8o611xppav',
     submitRTCform: 'https://hook.us2.make.com/weeau8ogy96lpvkl4d8wlnfm5warbaer',
-    submitCartReview: 'https://hook.us2.make.com/al800p8lmsn9c1rmouswa6ogtsmdrgvc'
+    submitReviewRequest: 'https://hook.us2.make.com/al800p8lmsn9c1rmouswa6ogtsmdrgvc'
   };
 
   const SHOPIFY_GRAPHQL_VERSION = '2025-07';
@@ -39,6 +39,9 @@
       this.selectedProjectHandle = null;
       this.isNewProject = true;
       this.originalProjectData = null;
+
+      // Track original basic contact field values (for signed-in customers)
+      this.originalBasicData = null;
 
       // Get elements
       this.formContent = document.getElementById('review-form-content');
@@ -148,6 +151,11 @@
 
       // Submit button (Step 2)
       this.setupSubmitButton();
+
+      // Snapshot basic fields for signed-in customers (change detection at submit)
+      if (this.isCustomer) {
+        this.snapshotBasicFields();
+      }
 
       // Auto-initialize based on mode and customer status
       this.autoInitialize();
@@ -1088,8 +1096,9 @@
           const projectContext = this.buildProjectContext();
           webhookData.isNewProject = projectContext.isNewProject;
           webhookData.selectedProjectHandle = projectContext.selectedProjectHandle;
-          webhookData.modifiedFields = projectContext.modifiedFields;
-          submitWebhook = WEBHOOKS.submitCartReview;
+          webhookData.modifiedFieldsProject = projectContext.modifiedFields;
+          webhookData.modifiedFieldsCustomerBasic = this.buildModifiedBasicFields();
+          submitWebhook = WEBHOOKS.submitReviewRequest;
         } else {
           // Anonymous visitor: account creation webhook
           webhookData.fieldsCustomerBasic = this.collectAccountCreationFields();
@@ -1097,7 +1106,7 @@
         }
 
         console.log('Submitting review request:', {
-          webhook: customerData.isCustomer ? 'submitCartReview' : 'submitRTCform',
+          webhook: customerData.isCustomer ? 'submitReviewRequest' : 'submitRTCform',
           skipProjectDetails: skipProjectDetails,
           detailedVisible: this.detailedVisible
         });
@@ -1475,6 +1484,38 @@
       }
 
       return projectContext;
+    }
+
+    snapshotBasicFields() {
+      const fieldIds = ['firstName', 'lastName', 'email', 'phone', 'company', 'country', 'countryOther'];
+      this.originalBasicData = {};
+      fieldIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) this.originalBasicData[id] = el.value.trim();
+      });
+    }
+
+    buildModifiedBasicFields() {
+      if (!this.originalBasicData) return [];
+
+      const fieldIds = ['firstName', 'lastName', 'email', 'phone', 'company', 'country', 'countryOther'];
+      const modified = [];
+
+      fieldIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const current = el.value.trim();
+        const original = this.originalBasicData[id] || '';
+        if (current !== original) {
+          modified.push({
+            field: id,
+            originalValue: original,
+            newValue: current
+          });
+        }
+      });
+
+      return modified;
     }
 
     getCurrentFormValues() {
