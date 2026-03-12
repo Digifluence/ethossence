@@ -278,7 +278,7 @@
         "content_JdaQQX": {
           "type": "content",
           "settings": {
-            "page": "",
+            "page": "request-welding-camera-monitor-solution-review",
             "heading_hide": false,
             "heading_size": "h1",
             "content_audience": "visitors",
@@ -291,8 +291,8 @@
           "type": "form",
           "settings": {
             "animation_type": "slide_down",
-            "content_alignment": "center",
-            "display_forms": "automatically",
+            "content_alignment": "left",
+            "display_forms": "button",
             "cta_button_text": "Get started >",
             "lead_in_text": "",
             "form_mode": "basic_and_detailed",
