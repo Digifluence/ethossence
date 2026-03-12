@@ -95,20 +95,19 @@
 
         {%- comment -%} Group Heading = Collection Title {%- endcomment -%}
         <div class="product-parts__group-header">
-          <h3 class="product-parts__group-heading">
-            {{ collection.title }}
-          </h3>
+        <h3 class="product-parts__group-heading">
+          {{ collection.title }}
+        </h3>
         </div>
 
+        {%- comment -%} Group Note = Collection Description (optional) {%- endcomment -%}
+        {%- if section.settings.show_collection_description and collection.description != blank -%}
+          <div class="product-parts__group-note rte">
+            {{ collection.description }}
+          </div>
+        {%- endif -%}        
+
         <div class="product-parts__group">
-
-
-          {%- comment -%} Group Note = Collection Description (optional) {%- endcomment -%}
-          {%- if section.settings.show_collection_description and collection.description != blank -%}
-            <div class="product-parts__group-note rte">
-              {{ collection.description }}
-            </div>
-          {%- endif -%}
 
           <div class="product-parts__items-list">
 
