@@ -1113,7 +1113,7 @@
         let submitWebhook;
 
         // Shared field arrays (both customer and anonymous paths)
-        webhookData.fieldsCustomDetail = this.collectFieldData(this.detailedContactContainer);
+        webhookData.fieldsCustomerDetailed = this.collectFieldData(this.detailedContactContainer);
 
         if (!skipProjectDetails && this.hasProjectFields) {
           webhookData.fieldsProject = this.collectFieldData(this.projectFieldsContainer);
@@ -1219,8 +1219,18 @@
 
             this.showMessage(messageDiv, successMessage, 'success');
 
-            if (!customerData.isCustomer) {
-              this.clearAccountForm();
+            if (!skipProjectDetails) {
+              // Step 2 success: hide action buttons to prevent re-submit
+              if (this.submitBtn) this.submitBtn.style.display = 'none';
+              const step2Actions = document.getElementById('step-2-actions');
+              if (step2Actions) {
+                const backLinkDiv = step2Actions.querySelector('.request-review__back-link');
+                if (backLinkDiv) backLinkDiv.style.display = 'none';
+              }
+              // Scroll to top of Step 2 so message is visible
+              if (this.step2Form) {
+                this.step2Form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
             }
           }
         } else {
@@ -1232,7 +1242,7 @@
         console.error('Error submitting form:', error);
         this.showMessage(messageDiv, 'An unexpected error occurred. Please try again.', 'error');
       } finally {
-        if (button) {
+        if (button && button.style.display !== 'none') {
           button.disabled = false;
           button.innerHTML = originalText;
         }

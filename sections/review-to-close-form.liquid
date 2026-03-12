@@ -324,20 +324,20 @@
                 {%- comment -%} ============================================================ {%- endcomment -%}
                 <div id="step-2-form" class="request-review__step" style="display: none;">
 
+                  {%- comment -%} SUCCESS / ERROR MESSAGE — shown at top of Step 2 after submission {%- endcomment -%}
+                  <div id="save-cart-message" style="display: none;"></div>
+
                   {%- comment -%} PROJECT FIELDS (loaded from webhook #webhook-project-fields) {%- endcomment -%}
                   <div id="project-fields-container" class="request-review__project-fields">
                     <div class="loading-spinner" style="display: none;">Loading project fields...</div>
                   </div>
 
                   {%- comment -%} STEP 2 ACTION BUTTONS {%- endcomment -%}
-                  <div class="request-review__step-actions">
-                    <button type="button" id="save-cart-draft" class="button button--primary">
-                      {%- if customer -%}Submit Review Request{%- else -%}Create Account & Submit{%- endif -%}
-                    </button>
+                  <div class="request-review__step-actions" id="step-2-actions">
+                    <button type="button" id="save-cart-draft" class="button button--primary">Submit for Review</button>
                     <div class="request-review__back-link">
                       <a href="#" id="btn-back-step1" role="button">&laquo; Back to contact details</a>
                     </div>
-                    <div id="save-cart-message" style="display: none;"></div>
                   </div>
 
                 </div>
