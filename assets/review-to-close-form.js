@@ -1128,13 +1128,13 @@
           webhookData.modifiedFieldsCustomerBasic = this.buildModifiedBasicFields();
           submitWebhook = WEBHOOKS.submitReviewRequest;
         } else {
-          // Anonymous visitor: account creation webhook
+          // Anonymous visitor: same webhook, Make.com routes on isCustomer=false
           webhookData.fieldsCustomerBasic = this.collectAccountCreationFields();
-          submitWebhook = WEBHOOKS.submitRTCform;
+          submitWebhook = WEBHOOKS.submitReviewRequest;
         }
 
         console.log('Submitting review request:', {
-          webhook: customerData.isCustomer ? 'submitReviewRequest' : 'submitRTCform',
+          webhook: 'submitReviewRequest',
           skipProjectDetails: skipProjectDetails,
           detailedVisible: this.detailedVisible
         });
