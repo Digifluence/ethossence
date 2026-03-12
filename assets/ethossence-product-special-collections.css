@@ -5,7 +5,7 @@
 }
 
 .product-parts__section-heading {
-  margin: 0 0 20px;
+  margin: 0;
 }
 
 .product-parts__section-heading.left {
@@ -45,7 +45,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin: 0;
+  margin: 20px 0 0;
 }
 
 .product-parts__group-note {
