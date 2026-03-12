@@ -258,6 +258,7 @@
 
       // If webhook not loaded yet (Basic mode, no detailed fields), load now for project fields
       if (!this.detailedLoaded) {
+        // expandContactFields=false: don't animate contact fields open; user is in Basic mode
         this.loadDynamicContent(() => {
           // Callback after load completes
           if (this.hasProjectFields) {
@@ -266,7 +267,7 @@
             // No project fields returned — submit directly (single-step form)
             this.handleSingleStepSubmit();
           }
-        });
+        }, false);
         return;
       }
 
@@ -533,11 +534,13 @@
     // ========================================================================
     // DYNAMIC CONTENT LOADING (Detailed fields from webhook)
     // ========================================================================
-    async loadDynamicContent(callback) {
-      // If already loaded, just expand contact fields and invoke callback
+    async loadDynamicContent(callback, expandContactFields = true) {
+      // If already loaded, expand contact fields (if requested) and invoke callback
       if (this.detailedLoaded) {
-        this.expandDetailedFields();
-        this.detailedVisible = true;
+        if (expandContactFields) {
+          this.expandDetailedFields();
+          this.detailedVisible = true;
+        }
         if (callback) callback();
         return;
       }
@@ -582,7 +585,7 @@
           shopifyGraphQLVersion: SHOPIFY_GRAPHQL_VERSION,
 
           // Customer information
-          isCustomer: customerData.isCustomer,
+          isCustomer: customerData.isCustomer === true,
           customerId: customerData.customerId,
           customerEmail: customerData.customerEmail,
           metaobjectType: customerData.metaobjectType,
@@ -636,6 +639,17 @@
           this.projectFieldsContainer.innerHTML = webhookProjectFields.innerHTML;
           this.reExecuteScripts(this.projectFieldsContainer);
           this.hasProjectFields = true;
+
+          // For non-customers the webhook HTML hides containers via inline display:none
+          // (the customer dropdown logic normally reveals them — that logic doesn't run here).
+          // Unhide all direct-child containers so fields are visible in Step 2.
+          if (!this.isCustomer) {
+            Array.from(this.projectFieldsContainer.children).forEach(child => {
+              if (child.style.display === 'none') {
+                child.style.removeProperty('display');
+              }
+            });
+          }
         } else {
           this.hasProjectFields = false;
           // Hide Next button and step indicator if no project fields
@@ -648,13 +662,17 @@
         }
 
         this.detailedLoaded = true;
-        this.detailedVisible = true;
 
-        // Animate expand: reset to 0 then expand
-        this.detailedContactContainer.style.height = '0px';
-        this.detailedContactContainer.style.overflow = 'hidden';
-        this.detailedContactContainer.offsetHeight; // force reflow
-        this.expandDetailedFields();
+        if (expandContactFields) {
+          this.detailedVisible = true;
+
+          // Animate expand: reset to 0 then expand
+          this.detailedContactContainer.style.height = '0px';
+          this.detailedContactContainer.style.overflow = 'hidden';
+          this.detailedContactContainer.offsetHeight; // force reflow
+          this.expandDetailedFields();
+        }
+        // If not expanding (e.g. Next-step trigger in Basic mode), leave container collapsed
 
         // Initialize contact field form handlers
         this.initializeContactFieldHandlers();
@@ -762,8 +780,18 @@
 
       console.log('Found', attributeFields.length, 'cart attribute fields in project section');
 
-      // Setup "Customer Projects" selection logic (for customers only)
-      this.setupCustomerProjectsLogic();
+      if (this.isCustomer) {
+        // Customers: setup dropdown to select/create a project
+        this.setupCustomerProjectsLogic();
+      } else {
+        // Non-customers: ensure all project field containers are visible
+        // (inline display:none is set by the webhook for dropdown-driven customer flow)
+        Array.from(this.projectFieldsContainer.children).forEach(child => {
+          if (child.style.display === 'none') {
+            child.style.removeProperty('display');
+          }
+        });
+      }
 
       // Auto-save cart attributes when they change
       attributeFields.forEach(field => {
@@ -1073,7 +1101,7 @@
           shopifyGraphQLVersion: SHOPIFY_GRAPHQL_VERSION,
           currency: cartData.currency,
 
-          isCustomer: customerData.isCustomer,
+          isCustomer: customerData.isCustomer === true,
           customerId: customerData.customerId,
           customerEmail: customerData.customerEmail,
           metaobjectType: 'createDraftOrder',
