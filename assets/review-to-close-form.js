@@ -11,7 +11,7 @@
   // ============================================================================
   const WEBHOOKS = {
     loadForm: 'https://hook.us2.make.com/qlomn3r4q8lhetra9irfer8o611xppav',
-    submitAccountCreation: 'https://hook.us2.make.com/weeau8ogy96lpvkl4d8wlnfm5warbaer',
+    submitRTCform: 'https://hook.us2.make.com/weeau8ogy96lpvkl4d8wlnfm5warbaer',
     submitCartReview: 'https://hook.us2.make.com/al800p8lmsn9c1rmouswa6ogtsmdrgvc'
   };
 
@@ -1077,7 +1077,7 @@
         let submitWebhook;
 
         // Shared field arrays (both customer and anonymous paths)
-        webhookData.fieldsCustomerProfile = this.collectFieldData(this.detailedContactContainer);
+        webhookData.fieldsCustomDetail = this.collectFieldData(this.detailedContactContainer);
 
         if (!skipProjectDetails && this.hasProjectFields) {
           webhookData.fieldsProject = this.collectFieldData(this.projectFieldsContainer);
@@ -1092,12 +1092,12 @@
           submitWebhook = WEBHOOKS.submitCartReview;
         } else {
           // Anonymous visitor: account creation webhook
-          webhookData.account_fields = this.collectAccountCreationFields();
-          submitWebhook = WEBHOOKS.submitAccountCreation;
+          webhookData.fieldsCustomerBasic = this.collectAccountCreationFields();
+          submitWebhook = WEBHOOKS.submitRTCform;
         }
 
         console.log('Submitting review request:', {
-          webhook: customerData.isCustomer ? 'submitCartReview' : 'submitAccountCreation',
+          webhook: customerData.isCustomer ? 'submitCartReview' : 'submitRTCform',
           skipProjectDetails: skipProjectDetails,
           detailedVisible: this.detailedVisible
         });
