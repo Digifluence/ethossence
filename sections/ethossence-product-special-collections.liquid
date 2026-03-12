@@ -92,14 +92,16 @@
 
         {%- comment -%} Accordion content wrapper {%- endcomment -%}
         <div class="{% if section.settings.enable_accordion %}ethossence-accordion__content{% endif %}"{% if section.settings.enable_accordion %} data-accordion-content{% endif %}>
+
+        {%- comment -%} Group Heading = Collection Title {%- endcomment -%}
+        <div class="product-parts__group-header">
+          <h3 class="product-parts__group-heading">
+            {{ collection.title }}
+          </h3>
+        </div>
+
         <div class="product-parts__group">
 
-          {%- comment -%} Group Heading = Collection Title {%- endcomment -%}
-          <div class="product-parts__group-header">
-            <h3 class="product-parts__group-heading">
-              {{ collection.title }}
-            </h3>
-          </div>
 
           {%- comment -%} Group Note = Collection Description (optional) {%- endcomment -%}
           {%- if section.settings.show_collection_description and collection.description != blank -%}
