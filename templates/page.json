@@ -275,6 +275,18 @@
     "review_to_close_form_htB7BM": {
       "type": "review-to-close-form",
       "blocks": {
+        "content_JdaQQX": {
+          "type": "content",
+          "settings": {
+            "page": "",
+            "heading_hide": false,
+            "heading_size": "h1",
+            "content_audience": "visitors",
+            "authoriz_enabled": false,
+            "padding_top": 24,
+            "padding_bottom": 24
+          }
+        },
         "form_YeXam7": {
           "type": "form",
           "settings": {
@@ -292,6 +304,7 @@
         }
       },
       "block_order": [
+        "content_JdaQQX",
         "form_YeXam7"
       ],
       "name": "Request review",

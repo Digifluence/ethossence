@@ -14,12 +14,13 @@
       "blocks": {
         "buttons_TG4AYb": {
           "type": "buttons",
+          "disabled": true,
           "settings": {
             "button_label_1": "Ask a Question",
-            "button_link_1": "",
+            "button_link_1": "shopify://pages/contact",
             "button_style_secondary_1": false,
             "button_label_2": "Product Finder",
-            "button_link_2": "",
+            "button_link_2": "shopify://pages/meltview-camera-finder",
             "button_style_secondary_2": false
           }
         }
@@ -424,7 +425,7 @@
         "show_bottom_line": false,
         "enable_accordion": true,
         "padding_top": 24,
-        "padding_bottom": 96
+        "padding_bottom": 36
       }
     },
     "17713492916acaba61": {
@@ -496,6 +497,42 @@
         "padding_top": 56,
         "padding_bottom": 84
       }
+    },
+    "rich_text_fdWzG7": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_d7T3ML": {
+          "type": "heading",
+          "settings": {
+            "heading": "Have questions?",
+            "heading_size": "h1"
+          }
+        },
+        "button_fAhzmx": {
+          "type": "button",
+          "settings": {
+            "button_label": "Let's talk >",
+            "button_link": "shopify://pages/welding-camera-consultation-demonstration-appointments",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_d7T3ML",
+        "button_fAhzmx"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "scheme-2",
+        "full_width": true,
+        "padding_top": 24,
+        "padding_bottom": 52
+      }
     }
   },
   "order": [
@@ -516,6 +553,7 @@
     "ethossence_product_special_collections_CRKmFr",
     "17713492916acaba61",
     "featured_collection_8qpFee",
-    "related-products"
+    "related-products",
+    "rich_text_fdWzG7"
   ]
 }
