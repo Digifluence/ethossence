@@ -325,6 +325,19 @@
         "padding_bottom": 24
       }
     },
+    "ethossence_faqs_xaTnFk": {
+      "type": "ethossence-faqs",
+      "name": "FAQS",
+      "settings": {
+        "heading": "Frequently Asked Questions",
+        "heading_size": "h2",
+        "heading_alignment": "left",
+        "color_scheme": "",
+        "enable_accordion": true,
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
+    },
     "ethossence_product_solutions_nUyaUz": {
       "type": "ethossence-product-solutions",
       "name": "Solutions",
@@ -546,6 +559,7 @@
     "ethossence_product_specifications_93VpPJ",
     "ethossence_image_resources_8BHjr4",
     "ethossence_video_resources_YWAtwj",
+    "ethossence_faqs_xaTnFk",
     "ethossence_product_solutions_nUyaUz",
     "ethossence_product_special_collections_GQHWFX",
     "ethossence_product_special_collections_4Ffta8",
