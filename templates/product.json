@@ -330,7 +330,7 @@
       "name": "FAQS",
       "settings": {
         "heading": "Frequently Asked Questions",
-        "heading_size": "h2",
+        "heading_size": "h1",
         "heading_alignment": "left",
         "color_scheme": "",
         "enable_accordion": true,
