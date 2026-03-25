@@ -9,11 +9,31 @@
   Accepts:
   - paginate: {Object}
   - anchor: {String} (optional) This can be added so that on page reload it takes you to wherever you've placed your anchor tag.
+  - exclude_quantity: {Number} (optional) ETHOSSENCE: NUMBER OF ITEMS EXCLUDED VIA METAFIELD.
+    WHEN PROVIDED, PAGINATION RECALCULATES THE TOTAL PAGE COUNT AND HIDES
+    PAGE LINKS THAT EXCEED THE ADJUSTED TOTAL.
 {% endcomment %}
 
 {{ 'component-pagination.css' | asset_url | stylesheet_tag }}
 
-{%- if paginate.parts.size > 0 -%}
+{%- liquid
+  comment
+    ETHOSSENCE: ADJUST PAGE COUNT WHEN ITEMS ARE EXCLUDED VIA METAFIELD
+  endcomment
+  assign adjusted_pages = paginate.pages
+  if exclude_quantity != blank and exclude_quantity > 0
+    assign adjusted_items = paginate.items | minus: exclude_quantity
+    if adjusted_items < 1
+      assign adjusted_items = 1
+    endif
+    assign adjusted_pages = adjusted_items | times: 1.0 | divided_by: paginate.page_size | ceil
+    if adjusted_pages < 1
+      assign adjusted_pages = 1
+    endif
+  endif
+-%}
+
+{%- if paginate.parts.size > 0 and adjusted_pages > 1 -%}
   <div class="pagination-wrapper" data-page="{{ paginate.current_page }}">
     <nav class="pagination" role="navigation" aria-label="{{ 'general.pagination.label' | t }}">
       <ul class="pagination__list list-unstyled" role="list">
@@ -32,6 +52,28 @@
         {%- endif -%}
 
         {%- for part in paginate.parts -%}
+          {%- comment -%} ETHOSSENCE: SKIP PAGE LINKS BEYOND ADJUSTED PAGE COUNT {%- endcomment -%}
+          {%- assign part_number = part.title | plus: 0 -%}
+          {%- if part_number > 0 and part_number > adjusted_pages -%}
+            {%- continue -%}
+          {%- endif -%}
+          {%- comment -%} ETHOSSENCE: SKIP ELLIPSIS IF NEXT NUMERIC PART WOULD EXCEED ADJUSTED PAGES {%- endcomment -%}
+          {%- if part.title == '&hellip;' -%}
+            {%- assign next_index = forloop.index -%}
+            {%- assign skip_ellipsis = false -%}
+            {%- for next_part in paginate.parts offset: next_index -%}
+              {%- assign next_part_number = next_part.title | plus: 0 -%}
+              {%- if next_part_number > 0 -%}
+                {%- if next_part_number > adjusted_pages -%}
+                  {%- assign skip_ellipsis = true -%}
+                {%- endif -%}
+                {%- break -%}
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if skip_ellipsis -%}
+              {%- continue -%}
+            {%- endif -%}
+          {%- endif -%}
           <li>
             {%- if part.is_link -%}
               <a
@@ -59,7 +101,8 @@
           </li>
         {%- endfor -%}
 
-        {%- if paginate.next -%}
+        {%- comment -%} ETHOSSENCE: HIDE NEXT ARROW IF CURRENT PAGE >= ADJUSTED PAGE COUNT {%- endcomment -%}
+        {%- if paginate.next and paginate.current_page < adjusted_pages -%}
           <li>
             <a
               href="{{ paginate.next.url }}{{ anchor }}"

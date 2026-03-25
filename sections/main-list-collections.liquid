@@ -1,3 +1,20 @@
+{%- comment -%}
+  ETHOSSENCE MODIFICATIONS TO DAWN THEME SECTION: MAIN-LIST-COLLECTIONS
+
+  1. ADDED "EXCLUDE BASED ON METAFIELD" CHECKBOX SETTING (ID: EXCLUDE_MF_ENABLE).
+     WHEN ENABLED, COLLECTIONS WITH METAFIELD ETHOSSENCE.ALL_COLLECTIONS_EXCLUDE
+     SET TO TRUE ARE HIDDEN FROM THE LISTING. FILTERING OCCURS INSIDE THE
+     PAGINATED LOOP VIA CONTINUE, SO SOME PAGES MAY DISPLAY FEWER ITEMS THAN
+     THE PAGINATE COUNT. NO HARD COLLECTION LIMIT IS IMPOSED — EVERY COLLECTION
+     IN THE STORE IS EVALUATED.
+
+  2. EXCLUDED COLLECTION COUNT IS TALLIED ACROSS ALL COLLECTIONS (BEFORE
+     PAGINATION) AND PASSED AS EXCLUDE_QUANTITY TO THE PAGINATION SNIPPET.
+     THE PAGINATION SNIPPET RECALCULATES ADJUSTED PAGE COUNT AND HIDES
+     PAGE LINKS AND NAVIGATION ARROWS THAT EXCEED THE ADJUSTED TOTAL.
+{%- endcomment -%}
+
+
 {{ 'component-card.css' | asset_url | stylesheet_tag }}
 {{ 'section-collection-list.css' | asset_url | stylesheet_tag }}
 
@@ -38,12 +55,25 @@
       assign paginate_by = 28
     endif
   -%}
+  {%- liquid
+    assign exclude_count = 0
+    if section.settings.exclude_mf_enable
+      for collection in collections
+        if collection.metafields.ethossence.all_collections_exclude.value == true
+          assign exclude_count = exclude_count | plus: 1
+        endif
+      endfor
+    endif
+  -%}
   {%- paginate collections by paginate_by -%}
     <ul
       class="collection-list grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down"
       role="list"
     >
       {%- for collection in collections -%}
+        {%- if section.settings.exclude_mf_enable and collection.metafields.ethossence.all_collections_exclude.value == true -%}
+          {%- continue -%}
+        {%- endif -%}
         <li
           class="collection-list__item grid__item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
           {% if settings.animations_reveal_on_scroll %}
@@ -59,9 +89,15 @@
         </li>
       {%- endfor -%}
     </ul>
-    {% render 'pagination', paginate: paginate %}
+    
+    {% render 'pagination',
+      paginate: paginate,
+      exclude_quantity: exclude_count
+    %}
+    
   {%- endpaginate -%}
 </div>
+
 {% schema %}
 {
   "name": "t:sections.main-list-collections.name",
@@ -149,6 +185,17 @@
       ],
       "default": "2",
       "label": "t:sections.main-list-collections.settings.columns_mobile.label"
+    },
+    {
+      "type": "header",
+      "content": "Ethossence"
+    },
+    {
+      "type": "checkbox",
+      "id": "exclude_mf_enable",
+      "label": "Exclude based on metafield",
+      "info": "Apply Ethossence implementation of metafield to hide collections checked to exclude",
+      "default": false
     },
     {
       "type": "header",
