@@ -94,6 +94,7 @@
         "image_ratio": "square",
         "columns_desktop": 5,
         "columns_mobile": "2",
+        "exclude_mf_enable": true,
         "padding_top": 16,
         "padding_bottom": 52
       }
