@@ -14,12 +14,13 @@
       "blocks": {
         "buttons_TG4AYb": {
           "type": "buttons",
+          "disabled": true,
           "settings": {
             "button_label_1": "Ask a Question",
-            "button_link_1": "",
+            "button_link_1": "shopify://pages/contact",
             "button_style_secondary_1": false,
             "button_label_2": "Product Finder",
-            "button_link_2": "",
+            "button_link_2": "shopify://pages/meltview-camera-finder",
             "button_style_secondary_2": false
           }
         }
@@ -194,25 +195,6 @@
         "padding_bottom": 12
       }
     },
-    "related-products": {
-      "type": "related-products",
-      "disabled": true,
-      "settings": {
-        "heading": "Other Camera Systems",
-        "heading_size": "h1",
-        "products_to_show": 4,
-        "columns_desktop": 4,
-        "columns_mobile": "2",
-        "color_scheme": "scheme-1",
-        "image_ratio": "square",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "padding_top": 56,
-        "padding_bottom": 84
-      }
-    },
     "17564162700878961e": {
       "type": "apps",
       "blocks": {
@@ -299,7 +281,7 @@
         "color_scheme": "",
         "enable_accordion": false,
         "padding_top": 24,
-        "padding_bottom": 48
+        "padding_bottom": 36
       }
     },
     "ethossence_image_resources_8BHjr4": {
@@ -317,7 +299,7 @@
         "columns_mobile": "2",
         "show_top_line": true,
         "show_bottom_line": false,
-        "enable_accordion": true,
+        "enable_accordion": false,
         "padding_top": 24,
         "padding_bottom": 24
       }
@@ -343,6 +325,19 @@
         "padding_bottom": 24
       }
     },
+    "ethossence_faqs_xaTnFk": {
+      "type": "ethossence-faqs",
+      "name": "FAQS",
+      "settings": {
+        "heading": "Frequently Asked Questions",
+        "heading_size": "h1",
+        "heading_alignment": "left",
+        "color_scheme": "",
+        "enable_accordion": true,
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
+    },
     "ethossence_product_solutions_nUyaUz": {
       "type": "ethossence-product-solutions",
       "name": "Solutions",
@@ -357,7 +352,7 @@
         "group_heading_bold": false,
         "show_top_line": true,
         "show_bottom_line": false,
-        "enable_accordion": false,
+        "enable_accordion": true,
         "padding_top": 24,
         "padding_bottom": 24
       }
@@ -367,18 +362,18 @@
       "name": "Part products",
       "settings": {
         "collection": "{{ product.metafields.ethossence.parts_products.value }}",
-        "heading": "Parts",
+        "heading": "Spare Parts",
         "heading_size": "h1",
         "heading_alignment": "left",
         "color_scheme": "",
         "show_collection_description": false,
-        "group_heading_font_size": 18,
+        "group_heading_font_size": 22,
         "group_heading_bold": false,
         "alternate_row_colors": false,
         "alternate_row_color": "#f5f5f5",
         "show_top_line": true,
         "show_bottom_line": false,
-        "enable_accordion": false,
+        "enable_accordion": true,
         "padding_top": 24,
         "padding_bottom": 24
       }
@@ -393,7 +388,7 @@
         "heading_alignment": "left",
         "color_scheme": "",
         "show_collection_description": true,
-        "group_heading_font_size": 18,
+        "group_heading_font_size": 22,
         "group_heading_bold": false,
         "alternate_row_colors": false,
         "alternate_row_color": "#f5f5f5",
@@ -409,12 +404,12 @@
       "name": "Compatible products",
       "settings": {
         "collection": "{{ product.metafields.ethossence.compatibile_products.value }}",
-        "heading": "Compatible products",
+        "heading": "Compatible Products",
         "heading_size": "h1",
         "heading_alignment": "left",
         "color_scheme": "",
         "show_collection_description": true,
-        "group_heading_font_size": 18,
+        "group_heading_font_size": 22,
         "group_heading_bold": false,
         "alternate_row_colors": false,
         "alternate_row_color": "#f5f5f5",
@@ -430,12 +425,12 @@
       "name": "Similar products",
       "settings": {
         "collection": "{{ product.metafields.ethossence.similar_products.value }}",
-        "heading": "Alternative Considerations",
+        "heading": "Similar Products",
         "heading_size": "h1",
         "heading_alignment": "left",
         "color_scheme": "",
         "show_collection_description": true,
-        "group_heading_font_size": 18,
+        "group_heading_font_size": 22,
         "group_heading_bold": false,
         "alternate_row_colors": false,
         "alternate_row_color": "#f5f5f5",
@@ -443,7 +438,7 @@
         "show_bottom_line": false,
         "enable_accordion": true,
         "padding_top": 24,
-        "padding_bottom": 96
+        "padding_bottom": 48
       }
     },
     "17713492916acaba61": {
@@ -496,6 +491,61 @@
         "padding_top": 36,
         "padding_bottom": 84
       }
+    },
+    "related-products": {
+      "type": "related-products",
+      "disabled": true,
+      "settings": {
+        "heading": "Other Camera Systems",
+        "heading_size": "h1",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "color_scheme": "scheme-1",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "padding_top": 56,
+        "padding_bottom": 84
+      }
+    },
+    "rich_text_fdWzG7": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_d7T3ML": {
+          "type": "heading",
+          "settings": {
+            "heading": "Have questions?",
+            "heading_size": "h1"
+          }
+        },
+        "button_fAhzmx": {
+          "type": "button",
+          "settings": {
+            "button_label": "Let's talk >",
+            "button_link": "shopify://pages/welding-camera-consultation-demonstration-appointments",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_d7T3ML",
+        "button_fAhzmx"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "scheme-2",
+        "full_width": true,
+        "padding_top": 24,
+        "padding_bottom": 52
+      }
     }
   },
   "order": [
@@ -503,19 +553,21 @@
     "ethossence_breadcrumbs_X64tn3",
     "rich_text_d6Vjce",
     "main",
-    "related-products",
     "17564162700878961e",
     "ethossence_product_characteristics_4qjACh",
     "ethossence_product_description_NePtCU",
     "ethossence_product_specifications_93VpPJ",
     "ethossence_image_resources_8BHjr4",
     "ethossence_video_resources_YWAtwj",
+    "ethossence_faqs_xaTnFk",
     "ethossence_product_solutions_nUyaUz",
     "ethossence_product_special_collections_GQHWFX",
     "ethossence_product_special_collections_4Ffta8",
     "ethossence_product_special_collections_BpNihC",
     "ethossence_product_special_collections_CRKmFr",
     "17713492916acaba61",
-    "featured_collection_8qpFee"
+    "featured_collection_8qpFee",
+    "related-products",
+    "rich_text_fdWzG7"
   ]
 }

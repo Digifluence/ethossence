@@ -13,7 +13,7 @@
       "type": "image-banner",
       "name": "t:sections.image-banner.presets.name",
       "settings": {
-        "image": "shopify://shop_images/MeltView-TD25-GMAW.png",
+        "image": "shopify://shop_images/TD25-camera-monitoring-WAAM.png",
         "image_overlay_opacity": 0,
         "image_height": "small",
         "image_behavior": "none",
@@ -275,11 +275,23 @@
     "review_to_close_form_htB7BM": {
       "type": "review-to-close-form",
       "blocks": {
+        "content_JdaQQX": {
+          "type": "content",
+          "settings": {
+            "page": "request-welding-camera-monitor-solution-review",
+            "heading_hide": false,
+            "heading_size": "h1",
+            "content_audience": "visitors",
+            "authoriz_enabled": false,
+            "padding_top": 24,
+            "padding_bottom": 24
+          }
+        },
         "form_YeXam7": {
           "type": "form",
           "settings": {
             "animation_type": "slide_down",
-            "content_alignment": "center",
+            "content_alignment": "left",
             "display_forms": "automatically",
             "cta_button_text": "Get started >",
             "lead_in_text": "",
@@ -292,6 +304,7 @@
         }
       },
       "block_order": [
+        "content_JdaQQX",
         "form_YeXam7"
       ],
       "name": "Request review",

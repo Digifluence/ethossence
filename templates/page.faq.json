@@ -13,7 +13,7 @@
       "type": "image-banner",
       "name": "t:sections.image-banner.presets.name",
       "settings": {
-        "image": "shopify://shop_images/TERA-welding-monochrome.jpg",
+        "image": "shopify://shop_images/stick-welding-close.png",
         "image_overlay_opacity": 0,
         "image_height": "small",
         "image_behavior": "none",
