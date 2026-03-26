@@ -34,9 +34,11 @@
 
 
 <div class="page-width section-{{ section.id }}-padding">
+  
   <h1 class="title title--primary inline-richtext{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
     {{ section.settings.title }}
   </h1>
+
   {%- liquid
     case section.settings.sort
       when 'products_high', 'products_low'
@@ -50,13 +52,11 @@
     endif
 
     assign moduloResult = 28 | modulo: section.settings.columns_desktop
-    assign paginate_by = 30
+    assign paginate_by = 48
     if moduloResult == 0
-      assign paginate_by = 48
+      assign paginate_by = 28
     endif
-  -%}
-
-  {%- liquid
+  
     assign exclude_count = 0
     if section.settings.exclude_mf_enable
       for collection in collections
@@ -67,9 +67,10 @@
     endif
   -%}
 
-<pre>
-  {{ exclude_count | prepend: '01 exclude_quantity: ' }}
-</pre>
+  <pre>
+    {{ exclude_count | prepend: '01 exclude_quantity: ' }}
+    {{ paginate_by | prepend: '01 paginate_by: ' }}
+  </pre>
 
   {%- paginate collections by paginate_by -%}
     <ul
@@ -95,6 +96,7 @@
         </li>
       {%- endfor -%}
     </ul>
+
     
     {% render 'pagination',
       paginate: paginate,
@@ -102,6 +104,7 @@
     %}
     
   {%- endpaginate -%}
+  
 </div>
 
 {% schema %}
