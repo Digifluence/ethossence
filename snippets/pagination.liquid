@@ -33,13 +33,6 @@
   endif
 -%}
 
-<pre>
-  paginate.parts.size: {{ paginate.parts.size }}
-  paginate.current_page: {{ paginate.current_page }}
-  paginate.pages: {{ paginate.pages }}
-  adjusted_pages: {{ adjusted_pages }}
-</pre>
-
 {%- if paginate.parts.size > 0 and adjusted_pages > 1 -%}
   <div class="pagination-wrapper" data-page="{{ paginate.current_page }}">
     <nav class="pagination" role="navigation" aria-label="{{ 'general.pagination.label' | t }}">
