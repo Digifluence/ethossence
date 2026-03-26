@@ -2,16 +2,15 @@
   ETHOSSENCE MODIFICATIONS TO DAWN THEME SECTION: MAIN-LIST-COLLECTIONS
 
   1. ADDED "EXCLUDE BASED ON METAFIELD" CHECKBOX SETTING (ID: EXCLUDE_MF_ENABLE).
-     WHEN ENABLED, COLLECTIONS WITH METAFIELD ETHOSSENCE.ALL_COLLECTIONS_EXCLUDE
-     SET TO TRUE ARE HIDDEN FROM THE LISTING. FILTERING OCCURS INSIDE THE
-     PAGINATED LOOP VIA CONTINUE, SO SOME PAGES MAY DISPLAY FEWER ITEMS THAN
-     THE PAGINATE COUNT. NO HARD COLLECTION LIMIT IS IMPOSED — EVERY COLLECTION
-     IN THE STORE IS EVALUATED.
+     WHEN ENABLED, ALL COLLECTIONS ARE PRE-SCANNED AND NON-EXCLUDED HANDLES
+     ARE COLLECTED INTO A FILTERED ARRAY. THE DISPLAY LOOP ITERATES THIS
+     FILTERED ARRAY WITH MANUAL OFFSET/LIMIT (BASED ON PAGINATE.CURRENT_PAGE)
+     SO EACH PAGE SHOWS THE CORRECT NUMBER OF ITEMS. NO HARD COLLECTION
+     LIMIT IS IMPOSED — EVERY COLLECTION IN THE STORE IS EVALUATED.
 
-  2. EXCLUDED COLLECTION COUNT IS TALLIED ACROSS ALL COLLECTIONS (BEFORE
-     PAGINATION) AND PASSED AS EXCLUDE_QUANTITY TO THE PAGINATION SNIPPET.
-     THE PAGINATION SNIPPET RECALCULATES ADJUSTED PAGE COUNT AND HIDES
-     PAGE LINKS AND NAVIGATION ARROWS THAT EXCEED THE ADJUSTED TOTAL.
+  2. EXCLUDED COLLECTION COUNT IS PASSED AS EXCLUDE_QUANTITY TO THE PAGINATION
+     SNIPPET, WHICH RECALCULATES THE ADJUSTED PAGE COUNT AND HIDES PAGE LINKS
+     AND NAVIGATION ARROWS THAT EXCEED THE ADJUSTED TOTAL.
 {%- endcomment -%}
 
 
@@ -58,43 +57,63 @@
     endif
   
     assign exclude_count = 0
+    assign filtered_handles = ''
     if section.settings.exclude_mf_enable
       for collection in collections
         if collection.metafields.ethossence.all_collections_exclude.value == true
           assign exclude_count = exclude_count | plus: 1
+        else
+          if filtered_handles == blank
+            assign filtered_handles = collection.handle
+          else
+            assign filtered_handles = filtered_handles | append: '||' | append: collection.handle
+          endif
         endif
       endfor
     endif
+    assign filtered_handles_array = filtered_handles | split: '||'
   -%}
 
-  <pre>
-    {{ exclude_count | prepend: '01 exclude_quantity: ' }}
-    {{ paginate_by | prepend: '01 paginate_by: ' }}
-  </pre>
-
   {%- paginate collections by paginate_by -%}
+    {%- assign manual_offset = paginate.current_page | minus: 1 | times: paginate_by -%}
     <ul
       class="collection-list grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down"
       role="list"
     >
-      {%- for collection in collections -%}
-        {%- if section.settings.exclude_mf_enable and collection.metafields.ethossence.all_collections_exclude.value == true -%}
-          {%- continue -%}
-        {%- endif -%}
-        <li
-          class="collection-list__item grid__item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-          {% if settings.animations_reveal_on_scroll %}
-            data-cascade
-            style="--animation-order: {{ forloop.index }};"
-          {% endif %}
-        >
-          {% render 'card-collection',
-            card_collection: collection,
-            media_aspect_ratio: section.settings.image_ratio,
-            columns: 3
-          %}
-        </li>
-      {%- endfor -%}
+      {%- if section.settings.exclude_mf_enable -%}
+        {%- for handle in filtered_handles_array limit: paginate_by offset: manual_offset -%}
+          {%- assign current_collection = collections[handle] -%}
+          <li
+            class="collection-list__item grid__item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+            {% if settings.animations_reveal_on_scroll %}
+              data-cascade
+              style="--animation-order: {{ forloop.index }};"
+            {% endif %}
+          >
+            {% render 'card-collection',
+              card_collection: current_collection,
+              media_aspect_ratio: section.settings.image_ratio,
+              columns: 3
+            %}
+          </li>
+        {%- endfor -%}
+      {%- else -%}
+        {%- for collection in collections -%}
+          <li
+            class="collection-list__item grid__item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+            {% if settings.animations_reveal_on_scroll %}
+              data-cascade
+              style="--animation-order: {{ forloop.index }};"
+            {% endif %}
+          >
+            {% render 'card-collection',
+              card_collection: collection,
+              media_aspect_ratio: section.settings.image_ratio,
+              columns: 3
+            %}
+          </li>
+        {%- endfor -%}
+      {%- endif -%}
     </ul>
 
     
