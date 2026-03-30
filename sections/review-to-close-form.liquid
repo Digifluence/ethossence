@@ -34,12 +34,14 @@
               assign selected_page = pages[block.settings.page]
               assign img_hero_class = selected_page.metafields.ethossence.img_hero_placement | prepend: 'img-' | replace: ' ', '-' | replace: '-|-', ' img-' | downcase | strip
 
-              if block.settings.content_audience == 'visitors' and customer == null
+              if block.settings.content_audience == 'everyone'
+                assign show_block = true
+              elsif block.settings.content_audience == 'visitors' and customer == null
                 assign show_block = true
               elsif block.settings.content_audience == 'accounts' and customer != null
                 assign show_block = true
               else
-                assign show_block = false 
+                assign show_block = false
               endif
             -%}
             {%- if selected_page != null and show_block -%}
@@ -632,6 +634,10 @@
               "id": "content_audience",
               "options": [
                 {
+                  "value": "everyone",
+                  "label": "Everyone"
+                },
+                {
                   "value": "visitors",
                   "label": "Visitors without an account"
                 },
@@ -640,7 +646,7 @@
                   "label": "Those with accounts"
                 }
               ],
-              "default": "visitors",
+              "default": "everyone",
               "label": "Account status",
               "info": "If those with accounts is selected then authorization to view can be enforced."
             },
