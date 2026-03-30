@@ -139,6 +139,9 @@
     "show_cart_note": false,
     "cart_drawer_collection": "",
     "cart_color_scheme": "scheme-1",
+    "back_to_top_display": "product",
+    "back_to_top_bg_color": "{{ shop.brand.colors.primary[0].background }}",
+    "back_to_top_position": "middle",
     "book_appointment_label": "Book Now",
     "book_appointment_url": "/page/book-appointment",
     "sections": {
