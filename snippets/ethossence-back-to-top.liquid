@@ -1,0 +1,84 @@
+{%- comment -%}
+  ETHOSSENCE: BACK TO TOP FLOATING BUTTON
+  RENDERS A FLOATING UP-ARROW BUTTON THAT SCROLLS THE PAGE TO TOP.
+  CONTROLLED BY THEME SETTINGS: DISPLAY LOCATION, COLORS, OPACITY, POSITION.
+  FADES IN AFTER 300PX OF SCROLL.
+{%- endcomment -%}
+
+{%- style -%}
+  .ethossence-back-to-top {
+    position: fixed;
+    right: 24px;
+    {% if settings.back_to_top_position == 'middle' %}
+      top: 50%;
+      transform: translateY(-50%);
+    {% else %}
+      bottom: 32px;
+    {% endif %}
+    z-index: 999;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+
+  .ethossence-back-to-top--visible {
+    opacity: {{ settings.back_to_top_opacity | divided_by: 100.0 }};
+    visibility: visible;
+  }
+
+  .ethossence-back-to-top:hover {
+    opacity: 1;
+  }
+
+  .ethossence-back-to-top svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+{%- endstyle -%}
+
+<button
+  type="button"
+  class="ethossence-back-to-top"
+  aria-label="Back to top"
+  data-ethossence-back-to-top
+>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
+    <circle cx="400" cy="400" r="390" fill="{{ settings.back_to_top_bg_color }}"/>
+    <polyline
+      points="175,530 400,280 625,530"
+      fill="none"
+      stroke="{{ settings.back_to_top_arrow_color }}"
+      stroke-width="72"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>
+</button>
+
+<script>
+  (function() {
+    var btn = document.querySelector('[data-ethossence-back-to-top]');
+    if (!btn) return;
+
+    var scrollThreshold = 300;
+
+    window.addEventListener('scroll', function() {
+      if (window.scrollY > scrollThreshold) {
+        btn.classList.add('ethossence-back-to-top--visible');
+      } else {
+        btn.classList.remove('ethossence-back-to-top--visible');
+      }
+    }, { passive: true });
+
+    btn.addEventListener('click', function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  })();
+</script>

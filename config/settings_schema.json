@@ -1559,5 +1559,55 @@
         "default": "scheme-1"
       }
     ]
+  },
+  {
+    "name": "Back to top",
+    "settings": [
+      {
+        "type": "select",
+        "id": "back_to_top_display",
+        "label": "Display location",
+        "options": [
+          { "value": "none", "label": "None" },
+          { "value": "all", "label": "All pages" },
+          { "value": "product", "label": "Product pages only" }
+        ],
+        "default": "none"
+      },
+      {
+        "type": "color",
+        "id": "back_to_top_bg_color",
+        "label": "Background color",
+        "default": "#cccccc"
+      },
+      {
+        "type": "color",
+        "id": "back_to_top_arrow_color",
+        "label": "Arrow color",
+        "default": "#000000",
+        "info": "Use the color picker's opacity slider to make the arrow transparent"
+      },
+      {
+        "type": "range",
+        "id": "back_to_top_opacity",
+        "label": "Opacity",
+        "min": 10,
+        "max": 100,
+        "step": 5,
+        "unit": "%",
+        "default": 80
+      },
+      {
+        "type": "select",
+        "id": "back_to_top_position",
+        "label": "Vertical position",
+        "options": [
+          { "value": "middle", "label": "Middle" },
+          { "value": "bottom", "label": "Near bottom" }
+        ],
+        "default": "bottom",
+        "info": "Use middle if a chat widget occupies the bottom-right corner"
+      }
+    ]
   }
 ]

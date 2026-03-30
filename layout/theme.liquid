@@ -382,6 +382,14 @@
       <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
 
+    {%- liquid
+      if settings.back_to_top_display == 'all'
+        render 'ethossence-back-to-top'
+      elsif settings.back_to_top_display == 'product' and request.page_type == 'product'
+        render 'ethossence-back-to-top'
+      endif
+    -%}
+
     <!-- ETHOSSENCE BY Digifluence, https://www.digifluence.com -->
 
   </body>
