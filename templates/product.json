@@ -182,6 +182,7 @@
         "enable_sticky_info": true,
         "color_scheme": "scheme-1",
         "show_installment_options": false,
+        "enable_segment_pricing": true,
         "media_size": "medium",
         "constrain_to_viewport": false,
         "media_fit": "contain",
