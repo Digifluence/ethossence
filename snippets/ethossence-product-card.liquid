@@ -137,6 +137,7 @@
 
         {%- if show_price -%}
         <div class="bundle-product-price">
+          {%- render 'ethossence-segment-pricing-card', card_product: product -%}
           {% render 'price', product: product, use_variant: false, show_badges: false, show_compare_at_price: true %}
 
           {%- if product.quantity_price_breaks_configured? -%}

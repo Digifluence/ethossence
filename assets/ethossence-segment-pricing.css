@@ -107,6 +107,48 @@
   }
 }
 
+/* COLLECTION PAGE — CARD SEGMENT PRICING */
+.ethossence-segment-pricing-card[data-active="true"] + .price {
+  display: none;
+}
+
+.ethossence-segment-pricing-card {
+  font-size: 1.6rem;
+  letter-spacing: 0.1rem;
+  line-height: calc(1 + 0.5 / var(--font-body-scale));
+  color: rgb(var(--color-foreground));
+}
+
+.ethossence-segment-pricing-card > * {
+  display: inline-block;
+  vertical-align: baseline;
+}
+
+.ethossence-segment-pricing-card__discounted {
+  font-weight: 700;
+  margin-right: 0.6rem;
+}
+
+.ethossence-segment-pricing-card__regular {
+  font-size: 1.3rem;
+  color: rgba(var(--color-foreground), 0.75);
+  margin-right: 0.4rem;
+}
+
+.ethossence-segment-pricing-card__regular s {
+  text-decoration: line-through;
+}
+
+.ethossence-segment-pricing-card__badge {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: rgba(var(--color-foreground), 0.6);
+  background: rgba(var(--color-foreground), 0.06);
+  padding: 0.1rem 0.4rem;
+  border-radius: 0.3rem;
+  vertical-align: middle;
+}
+
 /* CART PAGE — LIST TOTAL AND DISCOUNT ROWS */
 .ethossence-segment-pricing-cart__list .totals__total-value {
   color: rgba(var(--color-foreground), 0.7);
