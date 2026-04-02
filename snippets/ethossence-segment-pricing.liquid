@@ -20,7 +20,7 @@
   comment
     GUARD: EXIT IF CUSTOMER HAS NO PRICING SEGMENT ASSIGNED
   endcomment
-  assign s_esp_segment = customer.metafields.custom.pricing_segment.value
+  assign s_esp_segment = customer.metafields.ethossence.pricing_segment.value
   if s_esp_segment == blank
     break
   endif
