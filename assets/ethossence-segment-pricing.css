@@ -106,3 +106,25 @@
     text-align: right;
   }
 }
+
+/* CART PAGE — LIST TOTAL AND DISCOUNT ROWS */
+.ethossence-segment-pricing-cart__list .totals__total-value {
+  color: rgba(var(--color-foreground), 0.7);
+  text-decoration: line-through;
+}
+
+.ethossence-segment-pricing-cart__discount .totals__total-value {
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+/* CART PAGE — DISCLOSURE TEXT ABOVE TABLE */
+.ethossence-segment-pricing-cart__disclosure {
+  text-align: center;
+  font-size: 1.3rem;
+  font-style: italic;
+  color: rgba(var(--color-foreground), 0.7);
+  margin-bottom: 1.5rem;
+  padding: 0.6rem 1rem;
+  background: rgba(var(--color-foreground), 0.04);
+  border-radius: 0.4rem;
+}

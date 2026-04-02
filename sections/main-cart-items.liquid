@@ -4,6 +4,7 @@
 {{ 'component-price.css' | asset_url | stylesheet_tag }}
 {{ 'component-discounts.css' | asset_url | stylesheet_tag }}
 {{ 'quantity-popover.css' | asset_url | stylesheet_tag }}
+{{ 'ethossence-segment-pricing.css' | asset_url | stylesheet_tag }}
 
 {%- style -%}
   .section-{{ section.id }}-padding {
@@ -55,6 +56,33 @@
       <div class="cart__items" id="main-cart-items" data-id="{{ section.id }}">
         <div class="js-contents">
           {%- if cart != empty -%}
+            {%- comment -%} SEGMENT PRICING: DISCLOSURE ABOVE CART ITEMS TABLE {%- endcomment -%}
+            {%- liquid
+              assign s_esp_cart_has_discount = false
+              if customer
+                assign s_esp_segment = customer.metafields.ethossence.pricing_segment.value
+                if s_esp_segment != blank
+                  assign s_esp_active_raw = s_esp_segment.active
+                  if s_esp_active_raw == true or s_esp_active_raw == 'true'
+                    assign s_esp_discount_pct = s_esp_segment.discount_percentage | plus: 0
+                    if s_esp_discount_pct > 0
+                      for item in cart.items
+                        if item.original_price != item.final_price
+                          assign s_esp_cart_has_discount = true
+                          break
+                        endif
+                      endfor
+                    endif
+                  endif
+                endif
+              endif
+            -%}
+            {%- if s_esp_cart_has_discount -%}
+              <div class="ethossence-segment-pricing-cart__disclosure">
+                Prices shown reflect {{ s_esp_segment.display_label | escape }} {{ s_esp_discount_pct }}% discount.
+              </div>
+            {%- endif -%}
+
             <table class="cart-items">
               <caption class="visually-hidden">
                 {{ 'sections.cart.title' | t }}

@@ -59,14 +59,31 @@
                   {%- endif -%}
                 </div>
 
+                {%- comment -%} SEGMENT PRICING: LIST TOTAL AND DISCOUNT SUMMARY {%- endcomment -%}
+                {%- if section.settings.enable_segment_pricing_summary -%}
+                  {%- liquid
+                    assign s_esp_has_discount = false
+                    assign s_esp_total_discount = cart.original_total_price | minus: cart.total_price
+                    if s_esp_total_discount > 0
+                      assign s_esp_has_discount = true
+                    endif
+                  -%}
+                  {%- if s_esp_has_discount -%}
+                    <div class="totals ethossence-segment-pricing-cart__list">
+                      <h2 class="totals__total">List</h2>
+                      <p class="totals__total-value">{{ cart.original_total_price | money_with_currency }}</p>
+                    </div>
+                    <div class="totals ethossence-segment-pricing-cart__discount">
+                      <h2 class="totals__total">Discount</h2>
+                      <p class="totals__total-value">-{{ s_esp_total_discount | money_with_currency }}</p>
+                    </div>
+                  {%- endif -%}
+                {%- endif -%}
+
                 <div class="totals">
                   <h2 class="totals__total">{{ 'sections.cart.estimated_total' | t }}</h2>
                   <p class="totals__total-value">{{ cart.total_price | money_with_currency }}</p>
                 </div>
-
-                {%- if section.settings.enable_segment_pricing_summary -%}
-                  {%- render 'ethossence-segment-pricing-cart-summary' -%}
-                {%- endif -%}
 
                 <small class="tax-note caption-large rte">
                   {%- if cart.duties_included and cart.taxes_included -%}
