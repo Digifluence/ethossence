@@ -1,0 +1,138 @@
+{%- comment -%}
+  ETHOSSENCE SEGMENT PRICING — PRODUCT PAGE
+  DISPLAYS SEGMENT-BASED PRICING FOR ELIGIBLE LOGGED-IN CUSTOMERS.
+  RENDERS BEFORE DAWN'S PRICE SNIPPET SO CSS ADJACENT SIBLING SELECTOR
+  CAN HIDE THE DEFAULT PRICE WHEN SEGMENT PRICING IS ACTIVE.
+
+  ACCEPTS:
+  - product: {Object} PRODUCT LIQUID OBJECT
+  - section_id: {String} SECTION ID FOR UNIQUE ELEMENT TARGETING
+{%- endcomment -%}
+
+{%- liquid
+  comment
+    GUARD: EXIT IF CUSTOMER IS NOT LOGGED IN
+  endcomment
+  unless customer
+    break
+  endunless
+
+  comment
+    GUARD: EXIT IF CUSTOMER HAS NO PRICING SEGMENT ASSIGNED
+  endcomment
+  assign s_esp_segment = customer.metafields.ethossence.pricing_segment.value
+  if s_esp_segment == blank
+    break
+  endif
+
+  comment
+    GUARD: EXIT IF SEGMENT IS NOT ACTIVE
+  endcomment
+  unless s_esp_segment.active == true
+    break
+  endunless
+
+  comment
+    EXTRACT SEGMENT DATA
+  endcomment
+  assign s_esp_discount_pct = s_esp_segment.discount_percentage
+  assign s_esp_eligible_collections = s_esp_segment.eligible_collections.value
+  assign s_esp_display_label = s_esp_segment.display_label
+
+  comment
+    GUARD: EXIT IF DISCOUNT PERCENTAGE IS 0 OR NOT SET
+  endcomment
+  if s_esp_discount_pct == 0 or s_esp_discount_pct == blank
+    break
+  endif
+
+  comment
+    CHECK COLLECTION ELIGIBILITY — DOES THE PRODUCT BELONG TO AN ELIGIBLE COLLECTION?
+  endcomment
+  assign s_esp_product_eligible = false
+  assign s_esp_eligible_ids = ''
+
+  for s_esp_collection in s_esp_eligible_collections
+    if s_esp_eligible_ids == ''
+      assign s_esp_eligible_ids = s_esp_collection.id
+    else
+      assign s_esp_eligible_ids = s_esp_eligible_ids | append: ',' | append: s_esp_collection.id
+    endif
+
+    for s_esp_product_collection in product.collections
+      if s_esp_product_collection.id == s_esp_collection.id
+        assign s_esp_product_eligible = true
+        break
+      endif
+    endfor
+
+    if s_esp_product_eligible
+      break
+    endif
+  endfor
+
+  unless s_esp_product_eligible
+    break
+  endunless
+
+  comment
+    GET CURRENT VARIANT
+  endcomment
+  assign s_esp_variant = product.selected_or_first_available_variant
+
+  comment
+    GUARD: EXIT IF VARIANT HAS AN ACTIVE COMPARE-AT PRICE (SALE PRICING TAKES PRECEDENCE)
+  endcomment
+  if s_esp_variant.compare_at_price != nil and s_esp_variant.compare_at_price > s_esp_variant.price
+    break
+  endif
+
+  comment
+    CALCULATE SEGMENT PRICE USING INTEGER MATH (PRICES ARE IN CENTS)
+  endcomment
+  assign s_esp_factor = 100 | minus: s_esp_discount_pct
+  assign s_esp_segment_price = s_esp_variant.price | times: s_esp_factor | divided_by: 100
+  assign s_esp_savings = s_esp_variant.price | minus: s_esp_segment_price
+
+  comment
+    FORMAT PRICES RESPECTING STORE CURRENCY SETTINGS
+  endcomment
+  if settings.currency_code_enabled
+    assign s_esp_regular_money = s_esp_variant.price | money_with_currency
+    assign s_esp_segment_money = s_esp_segment_price | money_with_currency
+    assign s_esp_savings_money = s_esp_savings | money_with_currency
+  else
+    assign s_esp_regular_money = s_esp_variant.price | money
+    assign s_esp_segment_money = s_esp_segment_price | money
+    assign s_esp_savings_money = s_esp_savings | money
+  endif
+-%}
+
+{%- comment -%} SEGMENT PRICING DISPLAY {%- endcomment -%}
+<div class="ethossence-segment-pricing"
+     data-active="true"
+     data-segment-discount="{{ s_esp_discount_pct }}"
+     data-segment-label="{{ s_esp_display_label | escape }}"
+     data-eligible-collection-ids="{{ s_esp_eligible_ids }}">
+
+  <div class="ethossence-segment-pricing__label">
+    {{ s_esp_display_label | escape }}
+  </div>
+
+  <div class="ethossence-segment-pricing__prices">
+    <span class="ethossence-segment-pricing__discounted">
+      {{ s_esp_segment_money }}
+    </span>
+    <span class="ethossence-segment-pricing__regular">
+      <s>{{ s_esp_regular_money }}</s>
+    </span>
+  </div>
+
+  <div class="ethossence-segment-pricing__savings">
+    You save {{ s_esp_savings_money }} ({{ s_esp_discount_pct }}%)
+  </div>
+
+  <div class="ethossence-segment-pricing__disclaimer">
+    Estimated favored pricing — final discount applied at checkout
+  </div>
+</div>

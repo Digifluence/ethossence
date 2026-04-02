@@ -2,6 +2,7 @@
 {{ 'component-totals.css' | asset_url | stylesheet_tag }}
 {{ 'component-price.css' | asset_url | stylesheet_tag }}
 {{ 'component-discounts.css' | asset_url | stylesheet_tag }}
+{{ 'ethossence-segment-pricing.css' | asset_url | stylesheet_tag }}
 
 {%- style -%}
   .section-{{ section.id }}-padding {
@@ -62,6 +63,10 @@
                   <h2 class="totals__total">{{ 'sections.cart.estimated_total' | t }}</h2>
                   <p class="totals__total-value">{{ cart.total_price | money_with_currency }}</p>
                 </div>
+
+                {%- if section.settings.enable_segment_pricing_summary -%}
+                  {%- render 'ethossence-segment-pricing-cart-summary' -%}
+                {%- endif -%}
 
                 <small class="tax-note caption-large rte">
                   {%- if cart.duties_included and cart.taxes_included -%}
@@ -143,6 +148,13 @@
       "id": "color_scheme",
       "label": "t:sections.all.colors.label",
       "default": "scheme-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_segment_pricing_summary",
+      "default": false,
+      "label": "Enable segment pricing cart summary",
+      "info": "Show estimated savings for customers assigned to a pricing segment."
     },
     {
       "type": "header",

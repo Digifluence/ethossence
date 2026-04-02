@@ -1,0 +1,110 @@
+{%- comment -%}
+  ETHOSSENCE SEGMENT PRICING — CART SAVINGS SUMMARY
+  DISPLAYS TOTAL ESTIMATED SAVINGS FOR SEGMENT-ELIGIBLE ITEMS IN THE CART.
+  RENDERED INSIDE THE SUBTOTAL BLOCK'S .JS-CONTENTS DIV SO IT AUTO-UPDATES
+  ON AJAX CART CHANGES.
+{%- endcomment -%}
+
+{%- liquid
+  comment
+    GUARD: EXIT IF CUSTOMER IS NOT LOGGED IN
+  endcomment
+  unless customer
+    break
+  endunless
+
+  comment
+    GUARD: EXIT IF CUSTOMER HAS NO PRICING SEGMENT ASSIGNED
+  endcomment
+  assign s_esp_segment = customer.metafields.ethossence.pricing_segment.value
+  if s_esp_segment == blank
+    break
+  endif
+
+  comment
+    GUARD: EXIT IF SEGMENT IS NOT ACTIVE
+  endcomment
+  unless s_esp_segment.active == true
+    break
+  endunless
+
+  comment
+    EXTRACT SEGMENT DATA
+  endcomment
+  assign s_esp_discount_pct = s_esp_segment.discount_percentage
+  assign s_esp_eligible_collections = s_esp_segment.eligible_collections.value
+  assign s_esp_display_label = s_esp_segment.display_label
+
+  comment
+    GUARD: EXIT IF DISCOUNT PERCENTAGE IS 0 OR NOT SET
+  endcomment
+  if s_esp_discount_pct == 0 or s_esp_discount_pct == blank
+    break
+  endif
+
+  comment
+    CALCULATE TOTAL SAVINGS ACROSS ALL ELIGIBLE CART ITEMS
+  endcomment
+  assign s_esp_total_savings = 0
+
+  for s_esp_item in cart.items
+    comment
+      CHECK IF ITEM'S PRODUCT BELONGS TO AN ELIGIBLE COLLECTION
+    endcomment
+    assign s_esp_item_eligible = false
+
+    for s_esp_collection in s_esp_eligible_collections
+      for s_esp_item_collection in s_esp_item.product.collections
+        if s_esp_item_collection.id == s_esp_collection.id
+          assign s_esp_item_eligible = true
+          break
+        endif
+      endfor
+
+      if s_esp_item_eligible
+        break
+      endif
+    endfor
+
+    comment
+      SKIP ITEMS THAT ARE NOT ELIGIBLE OR HAVE AN ACTIVE COMPARE-AT PRICE (ON SALE)
+    endcomment
+    if s_esp_item_eligible
+      unless s_esp_item.variant.compare_at_price != nil and s_esp_item.variant.compare_at_price > s_esp_item.variant.price
+        assign s_esp_line_savings = s_esp_item.original_line_price | times: s_esp_discount_pct | divided_by: 100
+        assign s_esp_total_savings = s_esp_total_savings | plus: s_esp_line_savings
+      endunless
+    endif
+  endfor
+
+  comment
+    GUARD: EXIT IF NO SAVINGS TO DISPLAY
+  endcomment
+  if s_esp_total_savings == 0
+    break
+  endif
+
+  comment
+    FORMAT SAVINGS AMOUNT
+  endcomment
+  if settings.currency_code_enabled
+    assign s_esp_savings_money = s_esp_total_savings | money_with_currency
+  else
+    assign s_esp_savings_money = s_esp_total_savings | money
+  endif
+-%}
+
+{%- comment -%} CART SEGMENT PRICING SAVINGS SUMMARY {%- endcomment -%}
+<div class="ethossence-segment-pricing-cart-summary">
+  <div class="ethossence-segment-pricing-cart-summary__header">
+    {{ s_esp_display_label | escape }}
+  </div>
+
+  <div class="ethossence-segment-pricing-cart-summary__savings">
+    Estimated savings: {{ s_esp_savings_money }}
+  </div>
+
+  <div class="ethossence-segment-pricing-cart-summary__disclaimer">
+    Estimated favored pricing — final discount applied at checkout
+  </div>
+</div>

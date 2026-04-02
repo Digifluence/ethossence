@@ -1,0 +1,108 @@
+/* ETHOSSENCE SEGMENT PRICING — PRODUCT PAGE AND CART STYLES */
+
+/* HIDE DAWN'S DEFAULT PRICE WHEN SEGMENT PRICING IS ACTIVE */
+.ethossence-segment-pricing[data-active="true"] + .price {
+  display: none;
+}
+
+/* PRODUCT PAGE — SEGMENT PRICING CONTAINER */
+.ethossence-segment-pricing {
+  margin-bottom: 0.4rem;
+}
+
+.ethossence-segment-pricing__label {
+  display: inline-block;
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.06rem;
+  text-transform: uppercase;
+  color: rgb(var(--color-foreground));
+  background: rgba(var(--color-foreground), 0.08);
+  padding: 0.3rem 0.8rem;
+  border-radius: 0.4rem;
+  margin-bottom: 0.6rem;
+}
+
+.ethossence-segment-pricing__prices {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.ethossence-segment-pricing__discounted {
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: 0.13rem;
+  line-height: calc(1 + 0.5 / var(--font-body-scale));
+  color: rgb(var(--color-foreground));
+}
+
+.ethossence-segment-pricing__regular {
+  font-size: 1.3rem;
+  letter-spacing: 0.1rem;
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+.ethossence-segment-pricing__regular s {
+  text-decoration: line-through;
+}
+
+.ethossence-segment-pricing__savings {
+  font-size: 1.2rem;
+  letter-spacing: 0.04rem;
+  color: rgba(var(--color-foreground), 0.7);
+  margin-top: 0.2rem;
+}
+
+.ethossence-segment-pricing__disclaimer {
+  font-size: 1.1rem;
+  letter-spacing: 0.04rem;
+  line-height: calc(1 + 0.2 / var(--font-body-scale));
+  color: rgba(var(--color-foreground), 0.5);
+  margin-top: 0.4rem;
+  font-style: italic;
+}
+
+@media screen and (min-width: 750px) {
+  .ethossence-segment-pricing__discounted {
+    font-size: 1.8rem;
+  }
+}
+
+/* CART PAGE — SAVINGS SUMMARY */
+.ethossence-segment-pricing-cart-summary {
+  border-top: 0.1rem solid rgba(var(--color-foreground), 0.08);
+  padding-top: 1.5rem;
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.ethossence-segment-pricing-cart-summary__header {
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: 0.06rem;
+  text-transform: uppercase;
+  color: rgb(var(--color-foreground));
+  margin-bottom: 0.4rem;
+}
+
+.ethossence-segment-pricing-cart-summary__savings {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: rgb(var(--color-foreground));
+}
+
+.ethossence-segment-pricing-cart-summary__disclaimer {
+  font-size: 1.1rem;
+  letter-spacing: 0.04rem;
+  color: rgba(var(--color-foreground), 0.5);
+  margin-top: 0.4rem;
+  font-style: italic;
+}
+
+@media screen and (min-width: 750px) {
+  .ethossence-segment-pricing-cart-summary {
+    text-align: right;
+  }
+}

@@ -16,6 +16,7 @@
   {{ 'section-main-product.css' | asset_url | stylesheet_tag }}
   {{ 'component-accordion.css' | asset_url | stylesheet_tag }}
   {{ 'component-price.css' | asset_url | stylesheet_tag }}
+  {{ 'ethossence-segment-pricing.css' | asset_url | stylesheet_tag }}
   {{ 'component-slider.css' | asset_url | stylesheet_tag }}
   {{ 'component-rating.css' | asset_url | stylesheet_tag }}
   {{ 'component-deferred-media.css' | asset_url | stylesheet_tag }}
@@ -318,6 +319,12 @@
               
               {%- when 'price' -%}
                 <div id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }}>
+                  {%- if section.settings.enable_segment_pricing -%}
+                    {%- render 'ethossence-segment-pricing',
+                      product: product,
+                      section_id: section.id
+                    -%}
+                  {%- endif -%}
                   {%- render 'price',
                     product: product,
                     use_variant: true,
@@ -325,6 +332,9 @@
                     price_class: 'price--large'
                   -%}
                 </div>
+                {%- if section.settings.enable_segment_pricing -%}
+                  <script src="{{ 'ethossence-segment-pricing.js' | asset_url }}" defer="defer"></script>
+                {%- endif -%}
 
                 {%- if product.quantity_price_breaks_configured? -%}
                   <div class="volume-pricing-note" id="Volume-Note-{{ section.id }}">
@@ -2272,7 +2282,14 @@
       "id": "show_installment_options",
       "default": true,
       "label": "Show installment options"
-    },  
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_segment_pricing",
+      "default": false,
+      "label": "Enable segment pricing display",
+      "info": "Show favored pricing for customers assigned to a pricing segment. Replaces standard price display for eligible customers."
+    },
     {
       "type": "header",
       "content": "t:sections.main-product.settings.header.content"
