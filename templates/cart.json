@@ -46,7 +46,7 @@
       "name": "Cart footer",
       "settings": {
         "color_scheme": "scheme-1",
-        "enable_segment_pricing_summary": false,
+        "enable_segment_pricing_summary": true,
         "padding_top": 20,
         "padding_bottom": 40
       }
