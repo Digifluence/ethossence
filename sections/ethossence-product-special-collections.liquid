@@ -38,7 +38,18 @@
 
 {%- comment -%} SEGMENT PRICING: DEBUG — REMOVE AFTER CONFIRMING FEATURE WORKS {%- endcomment -%}
 {%- if section.settings.pricing_display == 'segment' -%}
-  <!-- ESP DEBUG: customer={{ customer.id | default: 'nil' }} segment={{ s_esp_segment | default: 'nil' }} active_raw={{ s_esp_active_raw | default: 'nil' }} discount_pct={{ s_esp_discount_pct }} label={{ s_esp_display_label | default: 'nil' }} segment_active={{ s_esp_segment_active }} -->
+  {%- assign s_esp_dbg_mf = customer.metafields.ethossence.pricing_segment -%}
+  <!-- ESP DEBUG CHAIN:
+    customer.id={{ customer.id | default: 'NIL' }}
+    customer.metafields.ethossence.pricing_segment={{ s_esp_dbg_mf | default: 'NIL' }}
+    .type={{ s_esp_dbg_mf.type | default: 'NIL' }}
+    .value={{ s_esp_dbg_mf.value | default: 'NIL' }}
+    segment_obj={{ s_esp_segment | default: 'NIL' }}
+    active_raw={{ s_esp_active_raw | default: 'NIL' }}
+    discount_pct={{ s_esp_discount_pct }}
+    label={{ s_esp_display_label | default: 'NIL' }}
+    segment_active={{ s_esp_segment_active }}
+  -->
 {%- endif -%}
 
 {%- if collection != blank and collection.products.size > 0 -%}
