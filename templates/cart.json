@@ -19,62 +19,6 @@
         "heading_size": "h1"
       }
     },
-    "ethossence_review_PFGKWW": {
-      "type": "ethossence-request-review",
-      "blocks": {
-        "content_ak6e3V": {
-          "type": "content",
-          "settings": {
-            "page": "get-expert-guidance-before-you-buy",
-            "heading_hide": false,
-            "heading_size": "h1",
-            "content_audience": "visitors",
-            "authoriz_enabled": false,
-            "padding_top": 12,
-            "padding_bottom": 12
-          }
-        },
-        "content_zRahrX": {
-          "type": "content",
-          "settings": {
-            "page": "get-expert-guidance-before-you-buy-1",
-            "heading_hide": false,
-            "heading_size": "h1",
-            "content_audience": "accounts",
-            "authoriz_enabled": false,
-            "padding_top": 12,
-            "padding_bottom": 12
-          }
-        },
-        "form_PfTBcg": {
-          "type": "form",
-          "settings": {
-            "animation_type": "slide_down",
-            "content_alignment": "left",
-            "display_forms": "automatically",
-            "cta_button_text": "Get started >",
-            "lead_in_text": "",
-            "form_mode": "basic_and_detailed",
-            "customer_form_heading": "About You",
-            "heading_size": "h1",
-            "padding_top": 40,
-            "padding_bottom": 52
-          }
-        }
-      },
-      "block_order": [
-        "content_ak6e3V",
-        "content_zRahrX",
-        "form_PfTBcg"
-      ],
-      "name": "Review request",
-      "settings": {
-        "color_scheme": "",
-        "full_width": true,
-        "padding_top": 12,
-        "padding_bottom": 24
-      }
-    },
     "cart-items": {
       "type": "main-cart-items",
       "settings": {
@@ -99,8 +43,10 @@
         "subtotal",
         "buttons"
       ],
+      "name": "Cart footer",
       "settings": {
         "color_scheme": "scheme-1",
+        "enable_segment_pricing_summary": false,
         "padding_top": 20,
         "padding_bottom": 40
       }
@@ -108,7 +54,6 @@
   },
   "order": [
     "ethossence_cart_header_9Uqyhh",
-    "ethossence_review_PFGKWW",
     "cart-items",
     "cart-footer"
   ]
