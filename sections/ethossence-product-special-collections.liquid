@@ -13,6 +13,24 @@
 
 {%- assign collection = section.settings.collection -%}
 
+{%- comment -%} SEGMENT PRICING: DETERMINE IF CUSTOMER IS ELIGIBLE FOR SEGMENT PRICING {%- endcomment -%}
+{%- liquid
+  assign s_esp_segment_active = false
+  assign s_esp_discount_pct = 0
+  assign s_esp_display_label = ''
+
+  if section.settings.pricing_display == 'segment' and customer
+    assign s_esp_segment = customer.metafields.ethossence.pricing_segment.value
+    if s_esp_segment != blank and s_esp_segment.active == true
+      assign s_esp_discount_pct = s_esp_segment.discount_percentage
+      assign s_esp_display_label = s_esp_segment.display_label
+      if s_esp_discount_pct != blank and s_esp_discount_pct > 0
+        assign s_esp_segment_active = true
+      endif
+    endif
+  endif
+-%}
+
 {%- if collection != blank and collection.products.size > 0 -%}
   {{ 'ethossence-product-special-collections.css' | asset_url | stylesheet_tag }}
   <script src="{{ 'ethossence-product-special-collections.js' | asset_url }}" defer="defer"></script>
@@ -73,7 +91,7 @@
 
   <div class="color-{{ section.settings.color_scheme }} gradient">
     <div class="product-parts section-{{ section.id }}-padding">
-      <div class="product-parts__wrapper page-width isolate" data-section-id="{{ section.id }}"{% if section.settings.enable_accordion %} data-ethossence-accordion{% endif %}>
+      <div class="product-parts__wrapper page-width isolate" data-section-id="{{ section.id }}"{% if s_esp_segment_active %} data-pricing-mode="segment" data-segment-discount="{{ s_esp_discount_pct }}"{% endif %}{% if section.settings.enable_accordion %} data-ethossence-accordion{% endif %}>
 
         {%- comment -%} Section Heading with Accordion Toggle {%- endcomment -%}
         {%- if section.settings.heading != blank -%}
@@ -105,7 +123,14 @@
           <div class="product-parts__group-note rte">
             {{ collection.description }}
           </div>
-        {%- endif -%}        
+        {%- endif -%}
+
+        {%- comment -%} SEGMENT PRICING: DISCLOSURE TEXT {%- endcomment -%}
+        {%- if s_esp_segment_active -%}
+          <div class="product-parts__segment-disclosure">
+            Prices shown reflect {{ s_esp_display_label | escape }} {{ s_esp_discount_pct }}% discount.
+          </div>
+        {%- endif -%}
 
         <div class="product-parts__group">
 
@@ -121,12 +146,27 @@
 
               {%- comment -%} Prepare price display variables {%- endcomment -%}
               {%- liquid
-                assign money_price = first_available_variant.price | money
-                if settings.currency_code_enabled
-                  assign money_price = first_available_variant.price | money_with_currency
-                endif
-                if collection_product.price_varies
-                  assign money_price = 'products.product.price.from_price_html' | t: price: money_price
+                if s_esp_segment_active
+                  comment
+                    SEGMENT PRICING: CALCULATE DISCOUNTED PRICE
+                  endcomment
+                  assign s_esp_factor = 100 | minus: s_esp_discount_pct
+                  assign s_esp_variant_price = first_available_variant.price | times: s_esp_factor | divided_by: 100
+                  assign money_price = s_esp_variant_price | money
+                  if settings.currency_code_enabled
+                    assign money_price = s_esp_variant_price | money_with_currency
+                  endif
+                  if collection_product.price_varies
+                    assign money_price = 'products.product.price.from_price_html' | t: price: money_price
+                  endif
+                else
+                  assign money_price = first_available_variant.price | money
+                  if settings.currency_code_enabled
+                    assign money_price = first_available_variant.price | money_with_currency
+                  endif
+                  if collection_product.price_varies
+                    assign money_price = 'products.product.price.from_price_html' | t: price: money_price
+                  endif
                 endif
               -%}
 
@@ -165,15 +205,22 @@
                         onchange="productPartsUpdateVariant(this)"
                       >
                         {%- for variant in collection_product.variants -%}
+                          {%- liquid
+                            if s_esp_segment_active
+                              assign s_esp_opt_price = variant.price | times: s_esp_factor | divided_by: 100
+                              assign s_esp_opt_money = s_esp_opt_price | money
+                            endif
+                          -%}
                           <option
                             value="{{ variant.id }}"
                             data-price="{{ variant.price | money }}"
                             data-compare-price="{{ variant.compare_at_price | money }}"
                             data-available="{{ variant.available }}"
                             data-sku="{{ variant.sku }}"
+                            {% if s_esp_segment_active %}data-segment-price="{{ s_esp_opt_money }}"{% endif %}
                             {% if variant == first_available_variant %}selected{% endif %}
                           >
-                            {{ variant.title }}{% unless variant.available %} - {{ 'products.product.sold_out' | t }}{% endunless %} - {{ variant.price | money }}
+                            {{ variant.title }}{% unless variant.available %} - {{ 'products.product.sold_out' | t }}{% endunless %} - {% if s_esp_segment_active %}{{ s_esp_opt_money }}{% else %}{{ variant.price | money }}{% endif %}
                           </option>
                         {%- endfor -%}
                       </select>
@@ -202,7 +249,12 @@
 
                 {%- comment -%} Price {%- endcomment -%}
                 <div class="product-parts__item-price" data-price-display="{{ collection_product.id }}" data-price-varies="{{ collection_product.price_varies }}">
-                  {%- if first_available_variant.compare_at_price > first_available_variant.price -%}
+                  {%- if s_esp_segment_active -%}
+                    {%- comment -%} SEGMENT PRICING: SHOW DISCOUNTED PRICE ONLY {%- endcomment -%}
+                    <span class="product-parts__price">
+                      {{ money_price }}
+                    </span>
+                  {%- elsif first_available_variant.compare_at_price > first_available_variant.price -%}
                     <span class="product-parts__price--sale">
                       {{ money_price }}
                     </span>
@@ -325,6 +377,27 @@
       "id": "color_scheme",
       "label": "t:sections.all.colors.label",
       "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Pricing display"
+    },
+    {
+      "type": "select",
+      "id": "pricing_display",
+      "options": [
+        {
+          "value": "regular",
+          "label": "Regular & sale"
+        },
+        {
+          "value": "segment",
+          "label": "Customer segment"
+        }
+      ],
+      "default": "regular",
+      "label": "Pricing display",
+      "info": "Customer segment shows discounted prices for customers assigned to a pricing segment."
     },
     {
       "type": "header",

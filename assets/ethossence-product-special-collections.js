@@ -13,8 +13,13 @@ function productPartsUpdateVariant(selectElement) {
   const variantId = selectedOption.value;
   const price = selectedOption.dataset.price;
   const comparePrice = selectedOption.dataset.comparePrice;
+  const segmentPrice = selectedOption.dataset.segmentPrice;
   const available = selectedOption.dataset.available === 'true';
   const sku = selectedOption.dataset.sku;
+
+  // CHECK IF SEGMENT PRICING MODE IS ACTIVE
+  const wrapper = selectElement.closest('.product-parts__wrapper');
+  const isSegmentMode = wrapper && wrapper.dataset.pricingMode === 'segment';
 
   // Update the button's variant ID
   const addBtn = document.querySelector(`.product-parts [data-variant-input="${productId}"]`);
@@ -25,7 +30,10 @@ function productPartsUpdateVariant(selectElement) {
   // Update price display (remove "From" prefix when variant is selected)
   const priceDisplay = document.querySelector(`.product-parts [data-price-display="${productId}"]`);
   if (priceDisplay) {
-    if (comparePrice && comparePrice !== price) {
+    if (isSegmentMode && segmentPrice) {
+      // SEGMENT PRICING: SHOW DISCOUNTED PRICE ONLY
+      priceDisplay.innerHTML = `<span class="product-parts__price">${segmentPrice}</span>`;
+    } else if (comparePrice && comparePrice !== price) {
       priceDisplay.innerHTML = `
         <span class="product-parts__price--sale">${price}</span>
         <span class="product-parts__price--compare"><s>${comparePrice}</s></span>

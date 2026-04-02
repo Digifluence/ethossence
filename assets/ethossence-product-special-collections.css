@@ -50,6 +50,18 @@
   color: rgba(var(--color-foreground), 0.75);
 }
 
+/* SEGMENT PRICING DISCLOSURE */
+.product-parts__segment-disclosure {
+  text-align: center;
+  font-size: 1.3rem;
+  font-style: italic;
+  color: rgba(var(--color-foreground), 0.7);
+  margin-bottom: 1.5rem;
+  padding: 0.6rem 1rem;
+  background: rgba(var(--color-foreground), 0.04);
+  border-radius: 0.4rem;
+}
+
 /* Items List - Vertical Stack */
 .product-parts__items-list {
   display: flex;
