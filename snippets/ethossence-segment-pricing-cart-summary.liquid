@@ -24,21 +24,22 @@
   comment
     GUARD: EXIT IF SEGMENT IS NOT ACTIVE
   endcomment
-  unless s_esp_segment.active == true
+  assign s_esp_active_raw = s_esp_segment.active
+  unless s_esp_active_raw == true or s_esp_active_raw == 'true'
     break
   endunless
 
   comment
     EXTRACT SEGMENT DATA
   endcomment
-  assign s_esp_discount_pct = s_esp_segment.discount_percentage
+  assign s_esp_discount_pct = s_esp_segment.discount_percentage | plus: 0
   assign s_esp_eligible_collections = s_esp_segment.eligible_collections.value
   assign s_esp_display_label = s_esp_segment.display_label
 
   comment
     GUARD: EXIT IF DISCOUNT PERCENTAGE IS 0 OR NOT SET
   endcomment
-  if s_esp_discount_pct == 0 or s_esp_discount_pct == blank
+  if s_esp_discount_pct == 0
     break
   endif
 

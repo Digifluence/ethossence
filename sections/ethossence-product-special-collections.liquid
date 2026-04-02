@@ -18,18 +18,28 @@
   assign s_esp_segment_active = false
   assign s_esp_discount_pct = 0
   assign s_esp_display_label = ''
+  assign s_esp_factor = 100
 
   if section.settings.pricing_display == 'segment' and customer
     assign s_esp_segment = customer.metafields.ethossence.pricing_segment.value
-    if s_esp_segment != blank and s_esp_segment.active == true
-      assign s_esp_discount_pct = s_esp_segment.discount_percentage
-      assign s_esp_display_label = s_esp_segment.display_label
-      if s_esp_discount_pct != blank and s_esp_discount_pct > 0
-        assign s_esp_segment_active = true
+    if s_esp_segment != blank
+      assign s_esp_active_raw = s_esp_segment.active
+      if s_esp_active_raw == true or s_esp_active_raw == 'true'
+        assign s_esp_discount_pct = s_esp_segment.discount_percentage | plus: 0
+        assign s_esp_display_label = s_esp_segment.display_label
+        if s_esp_discount_pct > 0
+          assign s_esp_segment_active = true
+          assign s_esp_factor = 100 | minus: s_esp_discount_pct
+        endif
       endif
     endif
   endif
 -%}
+
+{%- comment -%} SEGMENT PRICING: DEBUG — REMOVE AFTER CONFIRMING FEATURE WORKS {%- endcomment -%}
+{%- if section.settings.pricing_display == 'segment' -%}
+  <!-- ESP DEBUG: customer={{ customer.id | default: 'nil' }} segment={{ s_esp_segment | default: 'nil' }} active_raw={{ s_esp_active_raw | default: 'nil' }} discount_pct={{ s_esp_discount_pct }} label={{ s_esp_display_label | default: 'nil' }} segment_active={{ s_esp_segment_active }} -->
+{%- endif -%}
 
 {%- if collection != blank and collection.products.size > 0 -%}
   {{ 'ethossence-product-special-collections.css' | asset_url | stylesheet_tag }}
@@ -150,7 +160,6 @@
                   comment
                     SEGMENT PRICING: CALCULATE DISCOUNTED PRICE
                   endcomment
-                  assign s_esp_factor = 100 | minus: s_esp_discount_pct
                   assign s_esp_variant_price = first_available_variant.price | times: s_esp_factor | divided_by: 100
                   assign money_price = s_esp_variant_price | money
                   if settings.currency_code_enabled
