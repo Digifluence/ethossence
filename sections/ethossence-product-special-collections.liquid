@@ -21,7 +21,7 @@
   assign s_esp_factor = 100
 
   if section.settings.pricing_display == 'segment' and customer
-    assign s_esp_segment = customer.metafields.ethossence.pricing_segment.value
+    assign s_esp_segment = customer.metafields.custom.pricing_segment.value
     if s_esp_segment != blank
       assign s_esp_active_raw = s_esp_segment.active
       if s_esp_active_raw == true or s_esp_active_raw == 'true'
