@@ -99,14 +99,12 @@
 -%}
 
 {%- comment -%} CARD SEGMENT PRICING DISPLAY {%- endcomment -%}
+{{ 'ethossence-segment-pricing.css' | asset_url | stylesheet_tag }}
 <div class="ethossence-segment-pricing-card" data-active="true">
   <span class="ethossence-segment-pricing-card__discounted">
-    {{ s_esp_segment_money }}
+    Price {{ s_esp_segment_money }}
   </span>
   <span class="ethossence-segment-pricing-card__regular">
     <s>{{ s_esp_regular_money }}</s>
-  </span>
-  <span class="ethossence-segment-pricing-card__badge">
-    -{{ s_esp_discount_pct }}%
   </span>
 </div>
