@@ -503,56 +503,6 @@
         "padding_bottom": 52
       }
     },
-    "review_to_close_form_qcEkDa": {
-      "type": "review-to-close",
-      "blocks": {
-        "content_qFJUpT": {
-          "type": "content",
-          "settings": {
-            "page": "request-welding-camera-monitor-solution-review",
-            "heading_hide": false,
-            "heading_size": "h1",
-            "content_audience": "everyone",
-            "authoriz_enabled": false,
-            "padding_top": 24,
-            "padding_bottom": 24
-          }
-        },
-        "form_CDFrnb": {
-          "type": "form",
-          "settings": {
-            "animation_type": "slide_down",
-            "content_alignment": "center",
-            "display_forms": "button",
-            "cta_button_text": "Get started >",
-            "lead_in_text": "",
-            "form_mode": "basic_and_detailed",
-            "customer_form_heading": "About You",
-            "heading_size": "h1",
-            "padding_top": 24,
-            "padding_bottom": 24,
-            "contact_default_mode": "basic",
-            "heading": "About You",
-            "heading_size": "h1"
-          }
-        }
-      },
-      "block_order": [
-        "form_CDFrnb"
-      ],
-      "name": "Review-to-Close",
-      "settings": {
-        "color_scheme": "",
-        "full_width": true,
-        "content_alignment": "center",
-        "display_type": "slide_down",
-        "expand_status": "on_button_click",
-        "expand_button_label": "Get started >",
-        "pre_button_text": "",
-        "padding_top": 24,
-        "padding_bottom": 24
-      }
-    },
     "featured_collection_8qpFee": {
       "type": "featured-collection",
       "disabled": true,
