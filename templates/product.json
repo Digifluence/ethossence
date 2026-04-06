@@ -596,7 +596,8 @@
         "display_type": "slide_down",
         "expand_status": "on_button_click",
         "expand_button_label": "Get started >",
-        "pre_button_text": "Tell us about your project, our experts will review it, and we'll reach out to discuss the best solution.",
+        "pre_expand_heading": "Request a Solution Review",
+        "pre_expand_text": "Tell us about your project, our experts will review it, and we'll reach out to discuss the best solution.",
         "padding_top": 24,
         "padding_bottom": 24
       }

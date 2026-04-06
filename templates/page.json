@@ -298,7 +298,7 @@
         "display_type": "slide_down",
         "expand_status": "by_default",
         "expand_button_label": "Get started >",
-        "pre_button_text": "",
+        "pre_expand_text": "",
         "padding_top": 24,
         "padding_bottom": 24
       }

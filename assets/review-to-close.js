@@ -160,10 +160,7 @@
     // ========================================================================
 
     openForm() {
-      // Hide CTA button and lead-in text
-      if (this.ctaButton) {
-        this.ctaButton.style.display = 'none';
-      }
+      // Hide the entire pre-expand area (heading, text, CTA button)
       if (this.leadInText) {
         this.leadInText.style.display = 'none';
       }
@@ -218,7 +215,7 @@
         document.body.classList.remove('drawer-open');
       }
 
-      // Restore CTA button and lead-in text
+      // Restore the pre-expand area
       if (this.ctaButton) {
         this.ctaButton.style.display = '';
       }
