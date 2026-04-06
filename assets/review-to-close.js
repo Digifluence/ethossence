@@ -1,6 +1,6 @@
 // ============================================================================
-// ETHOSSENCE Request Review Feature
-// Version: 29.0 - Two-step progressive flow with Basic/Detailed toggle
+// Review-to-Close Section
+// Version: 30.0 - Refactored two-step progressive flow with Basic/Detailed toggle
 // ============================================================================
 
 (function() {
@@ -18,18 +18,18 @@
   const SHOPIFY_GRAPHQL_VERSION = '2025-07';
 
   // ============================================================================
-  // MAIN CONTROLLER - TWO-STEP PROGRESSIVE FORM
+  // MAIN CONTROLLER
   // ============================================================================
-  class EthossenceReviewController {
+  class ReviewToCloseController {
     constructor(config) {
-      this.animationType = config.animationType || 'slide_down';
-      this.displayForms = config.displayForms || 'automatically';
-      this.formMode = config.formMode || 'basic_and_detailed';
+      this.displayType = config.displayType || 'slide_down';
+      this.expandStatus = config.expandStatus || 'by_default';
+      this.contactDefaultMode = config.contactDefaultMode || 'basic';
       this.isCustomer = config.isCustomer || false;
 
       // Step state
       this.currentStep = 1;
-      this.hasProjectFields = false; // set after webhook response parsed
+      this.hasProjectFields = false;
 
       // Detailed fields state
       this.detailedLoaded = false;
@@ -71,9 +71,9 @@
       // Mode radios
       this.modeRadios = document.querySelectorAll('input[name="form_detail_level"]');
 
-      // Animation-specific elements (only for button display mode)
-      if (this.displayForms === 'button') {
-        if (this.animationType === 'slide_down') {
+      // Animation-specific elements (only for on_button_click expand status)
+      if (this.expandStatus === 'on_button_click') {
+        if (this.displayType === 'slide_down') {
           this.formContainer = document.getElementById('review-form-dropdown');
           this.closeBtn = document.getElementById('close-form-dropdown');
         } else {
@@ -83,10 +83,10 @@
         }
       }
 
-      console.log('EthossenceReviewController v29.0 initialized', {
-        animationType: this.animationType,
-        displayForms: this.displayForms,
-        formMode: this.formMode,
+      console.log('ReviewToCloseController initialized', {
+        displayType: this.displayType,
+        expandStatus: this.expandStatus,
+        contactDefaultMode: this.contactDefaultMode,
         isCustomer: this.isCustomer
       });
 
@@ -94,20 +94,20 @@
     }
 
     init() {
-      // Radio toggle handler (basic_and_detailed mode only)
-      if (this.formMode === 'basic_and_detailed' && this.modeRadios.length > 0) {
+      // Radio toggle handler (basic mode only)
+      if (this.contactDefaultMode === 'basic' && this.modeRadios.length > 0) {
         this.modeRadios.forEach(radio => {
           radio.addEventListener('change', (e) => this.handleModeSwitch(e.target.value));
         });
       }
 
-      // CTA button handler (button display mode only)
-      if (this.displayForms === 'button' && this.ctaButton) {
+      // CTA button handler (on_button_click expand status only)
+      if (this.expandStatus === 'on_button_click' && this.ctaButton) {
         this.ctaButton.addEventListener('click', () => this.openForm());
       }
 
-      // Close button / overlay / Escape (button display mode only)
-      if (this.displayForms === 'button') {
+      // Close button / overlay / Escape (on_button_click expand status only)
+      if (this.expandStatus === 'on_button_click') {
         if (this.closeBtn) {
           this.closeBtn.addEventListener('click', () => this.close());
         }
@@ -155,32 +155,91 @@
     }
 
     // ========================================================================
-    // AUTO-INITIALIZATION
+    // SECTION DISPLAY
     // ========================================================================
-    autoInitialize() {
-      // In button mode, don't auto-load — wait for CTA click
-      if (this.displayForms === 'button') {
-        return;
+
+    openForm() {
+      // Hide CTA button
+      if (this.ctaButton) {
+        this.ctaButton.style.display = 'none';
       }
 
-      // detailed_only mode: always load detailed fields
-      if (this.formMode === 'detailed_only') {
+      // Show form content
+      if (this.formContent) {
+        this.formContent.style.display = '';
+      }
+
+      // Open animation
+      this.open();
+
+      // Load detailed fields if needed
+      if (this.contactDefaultMode === 'detailed' && !this.detailedLoaded) {
         this.loadDynamicContent();
-        return;
+      } else if (this.contactDefaultMode === 'basic') {
+        const checkedRadio = document.querySelector('input[name="form_detail_level"]:checked');
+        if (checkedRadio && checkedRadio.value === 'detailed' && !this.detailedLoaded) {
+          this.loadDynamicContent();
+        }
       }
+    }
 
-      // basic_and_detailed mode: signed-in customers default to Detailed
-      if (this.formMode === 'basic_and_detailed' && this.isCustomer) {
-        this.loadDynamicContent();
-        return;
+    open() {
+      if (this.displayType === 'slide_down') {
+        if (this.formContainer) {
+          this.formContainer.classList.add('form-dropdown--active');
+        }
+      } else {
+        if (this.formContainer) {
+          this.formContainer.classList.add('drawer--active');
+        }
+        if (this.overlay) {
+          this.overlay.classList.add('drawer__overlay--active');
+        }
+        document.body.classList.add('drawer-open');
       }
+    }
 
-      // Anonymous visitors in basic_and_detailed: Basic fields already visible, nothing to load
+    close() {
+      if (this.displayType === 'slide_down') {
+        if (this.formContainer) {
+          this.formContainer.classList.remove('form-dropdown--active');
+        }
+      } else {
+        if (this.formContainer) {
+          this.formContainer.classList.remove('drawer--active');
+        }
+        if (this.overlay) {
+          this.overlay.classList.remove('drawer__overlay--active');
+        }
+        document.body.classList.remove('drawer-open');
+      }
     }
 
     // ========================================================================
-    // MODE SWITCHING (Basic / Detailed toggle)
+    // FORM LOGIC
     // ========================================================================
+
+    autoInitialize() {
+      // In on_button_click mode, don't auto-load — wait for CTA click
+      if (this.expandStatus === 'on_button_click') {
+        return;
+      }
+
+      // detailed mode: always load detailed fields
+      if (this.contactDefaultMode === 'detailed') {
+        this.loadDynamicContent();
+        return;
+      }
+
+      // basic mode: signed-in customers default to Detailed
+      if (this.contactDefaultMode === 'basic' && this.isCustomer) {
+        this.loadDynamicContent();
+        return;
+      }
+
+      // Anonymous visitors in basic mode: Basic fields already visible, nothing to load
+    }
+
     handleModeSwitch(mode) {
       if (mode === 'detailed') {
         if (!this.detailedLoaded) {
@@ -233,9 +292,6 @@
       this.detailedContactContainer.style.height = '0px';
     }
 
-    // ========================================================================
-    // STEP NAVIGATION
-    // ========================================================================
     handleNextStep() {
       // Validate Step 1 fields
       const validationResult = this.validateAccountCreationForm(this.step1MessageDiv);
@@ -378,139 +434,6 @@
       this.summaryDetails.textContent = parts.join('  |  ');
     }
 
-    // ========================================================================
-    // TOOLTIP
-    // ========================================================================
-    initTooltip() {
-      const tooltipTrigger = document.querySelector('.request-review__tooltip-trigger');
-      if (!tooltipTrigger) return;
-
-      const tooltip = tooltipTrigger.closest('.request-review__mode-option')
-                        ?.querySelector('.request-review__tooltip');
-      if (!tooltip) return;
-
-      const show = () => {
-        tooltip.classList.add('request-review__tooltip--visible');
-        tooltip.setAttribute('aria-hidden', 'false');
-      };
-      const hide = () => {
-        tooltip.classList.remove('request-review__tooltip--visible');
-        tooltip.setAttribute('aria-hidden', 'true');
-      };
-
-      // Desktop: hover
-      tooltipTrigger.addEventListener('mouseenter', show);
-      tooltipTrigger.addEventListener('mouseleave', hide);
-
-      // Keyboard: focus/blur
-      tooltipTrigger.addEventListener('focus', show);
-      tooltipTrigger.addEventListener('blur', hide);
-
-      // Mobile: tap toggle
-      tooltipTrigger.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        if (tooltip.classList.contains('request-review__tooltip--visible')) {
-          hide();
-        } else {
-          show();
-        }
-      });
-
-      // Dismiss tooltip on tap outside (mobile)
-      document.addEventListener('click', (e) => {
-        if (!tooltipTrigger.contains(e.target) && !tooltip.contains(e.target)) {
-          hide();
-        }
-      });
-    }
-
-    // ========================================================================
-    // COUNTRY "OTHER" FIELD TOGGLE
-    // ========================================================================
-    setupCountryOtherLogic() {
-      const countrySelect = document.getElementById('country');
-      const countryOtherField = document.getElementById('country-other-field');
-
-      if (!countrySelect || !countryOtherField) return;
-
-      const toggle = () => {
-        if (countrySelect.value === 'Other') {
-          countryOtherField.style.display = 'block';
-        } else {
-          countryOtherField.style.display = 'none';
-          const otherInput = document.getElementById('countryOther');
-          if (otherInput) otherInput.value = '';
-        }
-      };
-
-      countrySelect.addEventListener('change', toggle);
-      toggle(); // set initial state
-    }
-
-    // ========================================================================
-    // FORM OPEN / CLOSE (Button display mode only)
-    // ========================================================================
-    openForm() {
-      // Hide CTA button
-      if (this.ctaButton) {
-        this.ctaButton.style.display = 'none';
-      }
-
-      // Show form content
-      if (this.formContent) {
-        this.formContent.style.display = '';
-      }
-
-      // Open animation
-      this.open();
-
-      // Load detailed fields if needed
-      if (this.formMode === 'detailed_only' && !this.detailedLoaded) {
-        this.loadDynamicContent();
-      } else if (this.formMode === 'basic_and_detailed') {
-        const checkedRadio = document.querySelector('input[name="form_detail_level"]:checked');
-        if (checkedRadio && checkedRadio.value === 'detailed' && !this.detailedLoaded) {
-          this.loadDynamicContent();
-        }
-      }
-    }
-
-    open() {
-      if (this.animationType === 'slide_down') {
-        if (this.formContainer) {
-          this.formContainer.classList.add('form-dropdown--active');
-        }
-      } else {
-        if (this.formContainer) {
-          this.formContainer.classList.add('drawer--active');
-        }
-        if (this.overlay) {
-          this.overlay.classList.add('drawer__overlay--active');
-        }
-        document.body.classList.add('drawer-open');
-      }
-    }
-
-    close() {
-      if (this.animationType === 'slide_down') {
-        if (this.formContainer) {
-          this.formContainer.classList.remove('form-dropdown--active');
-        }
-      } else {
-        if (this.formContainer) {
-          this.formContainer.classList.remove('drawer--active');
-        }
-        if (this.overlay) {
-          this.overlay.classList.remove('drawer__overlay--active');
-        }
-        document.body.classList.remove('drawer-open');
-      }
-    }
-
-    // ========================================================================
-    // CUSTOMER DATA
-    // ========================================================================
     getCustomerData() {
       if (!this.formContent) return {};
 
@@ -524,9 +447,6 @@
       };
     }
 
-    // ========================================================================
-    // DYNAMIC CONTENT LOADING (Detailed fields from webhook)
-    // ========================================================================
     async loadDynamicContent(callback, expandContactFields = true) {
       // If already loaded, expand contact fields (if requested) and invoke callback
       if (this.detailedLoaded) {
@@ -704,31 +624,6 @@
       }
     }
 
-    reExecuteScripts(container) {
-      const scripts = container.querySelectorAll('script');
-      console.log(`Found ${scripts.length} script tags to re-execute`);
-
-      scripts.forEach((oldScript, index) => {
-        const newScript = document.createElement('script');
-
-        if (oldScript.src) {
-          newScript.src = oldScript.src;
-          newScript.async = false;
-        } else {
-          newScript.textContent = oldScript.textContent;
-        }
-
-        // Copy any attributes
-        Array.from(oldScript.attributes).forEach(attr => {
-          newScript.setAttribute(attr.name, attr.value);
-        });
-
-        // Append to document.head — more reliable than replaceChild inside a div
-        document.head.appendChild(newScript);
-        console.log(`Executed script ${index + 1}`);
-      });
-    }
-
     updateUIForSingleStep() {
       // No project fields — hide step indicator, convert Next to Submit, hide skip link
       if (this.stepIndicator) {
@@ -746,12 +641,8 @@
           }
         });
       }
-
     }
 
-    // ========================================================================
-    // FORM HANDLERS (for webhook-loaded contact fields in Step 1)
-    // ========================================================================
     initializeContactFieldHandlers() {
       const attributeFields = this.detailedContactContainer.querySelectorAll('.cart-attribute');
 
@@ -783,9 +674,6 @@
       });
     }
 
-    // ========================================================================
-    // PRE-POPULATE DETAILED CONTACT FIELDS from window.customerDetailed
-    // ========================================================================
     populateDetailedContactFields() {
       if (!window.customerDetailed) {
         console.log('window.customerDetailed not present — skipping pre-population');
@@ -837,9 +725,6 @@
       this.setupResellerFieldLogic();
     }
 
-    // ========================================================================
-    // FORM HANDLERS (for webhook-loaded project fields in Step 2)
-    // ========================================================================
     initializeProjectFieldHandlers() {
       if (this._projectHandlersInitialized) return;
       this._projectHandlersInitialized = true;
@@ -875,40 +760,6 @@
           });
         }
       });
-    }
-
-    async updateCartAttributes() {
-      const formData = new FormData();
-
-      // Re-query attribute fields in case DOM has changed
-      const currentAttributeFields = document.querySelectorAll('.cart-attribute');
-
-      currentAttributeFields.forEach(field => {
-        if (!field || !field.name) return;
-
-        if (field.type === 'checkbox') {
-          formData.append(field.name, field.checked ? field.value : '');
-        } else if (field.type === 'radio') {
-          if (field.checked) {
-            formData.append(field.name, field.value);
-          }
-        } else if (field.value && field.value.trim() !== '') {
-          formData.append(field.name, field.value);
-        }
-      });
-
-      try {
-        const response = await fetch('/cart/update.js', {
-          method: 'POST',
-          body: formData
-        });
-
-        if (response.ok) {
-          console.log('Cart attributes updated successfully');
-        }
-      } catch (error) {
-        console.error('Error updating cart attributes:', error);
-      }
     }
 
     setupConditionalFields() {
@@ -1128,9 +979,6 @@
       handleProjectSelection();
     }
 
-    // ========================================================================
-    // SUBMIT BUTTON (Step 2)
-    // ========================================================================
     setupSubmitButton() {
       if (!this.submitBtn) return;
 
@@ -1139,9 +987,6 @@
       });
     }
 
-    // ========================================================================
-    // UNIFIED SUBMIT LOGIC
-    // ========================================================================
     async submitForm({ skipProjectDetails }) {
       // Determine which button and message div to use based on current step
       const button = skipProjectDetails ? (this.nextBtn || this.submitBtn) : this.submitBtn;
@@ -1154,9 +999,6 @@
         messageDiv.style.display = 'none';
         messageDiv.innerHTML = '';
       }
-
-      // For skip submissions, validate was already done before calling this method
-      // For Step 2 submissions, no additional basic field validation needed (already validated on Next)
 
       // Disable button and show loading
       if (button) {
@@ -1335,9 +1177,6 @@
       }
     }
 
-    // ========================================================================
-    // ERROR HANDLING
-    // ========================================================================
     handleSubmissionError(messageDiv, errorText, isCustomer) {
       let errorMessage = '';
 
@@ -1376,9 +1215,208 @@
       this.showMessage(messageDiv, errorMessage, 'error', true);
     }
 
+    buildProjectContext() {
+      const projectContext = {
+        isNewProject: this.isNewProject,
+        selectedProjectHandle: this.selectedProjectHandle,
+        modifiedFields: []
+      };
+
+      if (!this.isNewProject && this.originalProjectData) {
+        const currentFormData = this.getCurrentFormValues();
+
+        for (const [key, originalValue] of Object.entries(this.originalProjectData)) {
+          const currentValue = currentFormData[key];
+
+          const normalizedOriginal = this.normalizeValue(originalValue);
+          const normalizedCurrent = this.normalizeValue(currentValue);
+
+          if (normalizedOriginal !== normalizedCurrent) {
+            projectContext.modifiedFields.push({
+              metaobject_key: key,
+              originalValue: originalValue,
+              newValue: currentValue || ''
+            });
+          }
+        }
+
+        for (const [key, currentValue] of Object.entries(currentFormData)) {
+          if (!(key in this.originalProjectData)) {
+            const normalizedCurrent = this.normalizeValue(currentValue);
+
+            if (normalizedCurrent !== '') {
+              projectContext.modifiedFields.push({
+                metaobject_key: key,
+                originalValue: '',
+                newValue: currentValue
+              });
+            }
+          }
+        }
+      }
+
+      return projectContext;
+    }
+
+    snapshotBasicFields() {
+      const fieldIds = ['firstName', 'lastName', 'email', 'phone', 'company', 'country', 'countryOther'];
+      this.originalBasicData = {};
+      fieldIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) this.originalBasicData[id] = el.value.trim();
+      });
+    }
+
+    buildModifiedBasicFields() {
+      if (!this.originalBasicData) return [];
+
+      const fieldIds = ['firstName', 'lastName', 'email', 'phone', 'company', 'country', 'countryOther'];
+      const modified = [];
+
+      fieldIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const current = el.value.trim();
+        const original = this.originalBasicData[id] || '';
+        if (current !== original) {
+          modified.push({
+            field: id,
+            originalValue: original,
+            newValue: current
+          });
+        }
+      });
+
+      return modified;
+    }
+
     // ========================================================================
-    // FORM FIELD UTILITIES
+    // UTILITIES
     // ========================================================================
+
+    initTooltip() {
+      const tooltipTrigger = document.querySelector('.request-review__tooltip-trigger');
+      if (!tooltipTrigger) return;
+
+      const tooltip = tooltipTrigger.closest('.request-review__mode-option')
+                        ?.querySelector('.request-review__tooltip');
+      if (!tooltip) return;
+
+      const show = () => {
+        tooltip.classList.add('request-review__tooltip--visible');
+        tooltip.setAttribute('aria-hidden', 'false');
+      };
+      const hide = () => {
+        tooltip.classList.remove('request-review__tooltip--visible');
+        tooltip.setAttribute('aria-hidden', 'true');
+      };
+
+      // Desktop: hover
+      tooltipTrigger.addEventListener('mouseenter', show);
+      tooltipTrigger.addEventListener('mouseleave', hide);
+
+      // Keyboard: focus/blur
+      tooltipTrigger.addEventListener('focus', show);
+      tooltipTrigger.addEventListener('blur', hide);
+
+      // Mobile: tap toggle
+      tooltipTrigger.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (tooltip.classList.contains('request-review__tooltip--visible')) {
+          hide();
+        } else {
+          show();
+        }
+      });
+
+      // Dismiss tooltip on tap outside (mobile)
+      document.addEventListener('click', (e) => {
+        if (!tooltipTrigger.contains(e.target) && !tooltip.contains(e.target)) {
+          hide();
+        }
+      });
+    }
+
+    setupCountryOtherLogic() {
+      const countrySelect = document.getElementById('country');
+      const countryOtherField = document.getElementById('country-other-field');
+
+      if (!countrySelect || !countryOtherField) return;
+
+      const toggle = () => {
+        if (countrySelect.value === 'Other') {
+          countryOtherField.style.display = 'block';
+        } else {
+          countryOtherField.style.display = 'none';
+          const otherInput = document.getElementById('countryOther');
+          if (otherInput) otherInput.value = '';
+        }
+      };
+
+      countrySelect.addEventListener('change', toggle);
+      toggle(); // set initial state
+    }
+
+    reExecuteScripts(container) {
+      const scripts = container.querySelectorAll('script');
+      console.log(`Found ${scripts.length} script tags to re-execute`);
+
+      scripts.forEach((oldScript, index) => {
+        const newScript = document.createElement('script');
+
+        if (oldScript.src) {
+          newScript.src = oldScript.src;
+          newScript.async = false;
+        } else {
+          newScript.textContent = oldScript.textContent;
+        }
+
+        // Copy any attributes
+        Array.from(oldScript.attributes).forEach(attr => {
+          newScript.setAttribute(attr.name, attr.value);
+        });
+
+        // Append to document.head — more reliable than replaceChild inside a div
+        document.head.appendChild(newScript);
+        console.log(`Executed script ${index + 1}`);
+      });
+    }
+
+    async updateCartAttributes() {
+      const formData = new FormData();
+
+      // Re-query attribute fields in case DOM has changed
+      const currentAttributeFields = document.querySelectorAll('.cart-attribute');
+
+      currentAttributeFields.forEach(field => {
+        if (!field || !field.name) return;
+
+        if (field.type === 'checkbox') {
+          formData.append(field.name, field.checked ? field.value : '');
+        } else if (field.type === 'radio') {
+          if (field.checked) {
+            formData.append(field.name, field.value);
+          }
+        } else if (field.value && field.value.trim() !== '') {
+          formData.append(field.name, field.value);
+        }
+      });
+
+      try {
+        const response = await fetch('/cart/update.js', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (response.ok) {
+          console.log('Cart attributes updated successfully');
+        }
+      } catch (error) {
+        console.error('Error updating cart attributes:', error);
+      }
+    }
+
     clearAccountForm() {
       const fieldIds = ['firstName', 'lastName', 'email', 'phone', 'company', 'country', 'countryOther'];
 
@@ -1564,84 +1602,6 @@
       return fieldData;
     }
 
-    // ========================================================================
-    // PROJECT CONTEXT (change detection for existing projects)
-    // ========================================================================
-    buildProjectContext() {
-      const projectContext = {
-        isNewProject: this.isNewProject,
-        selectedProjectHandle: this.selectedProjectHandle,
-        modifiedFields: []
-      };
-
-      if (!this.isNewProject && this.originalProjectData) {
-        const currentFormData = this.getCurrentFormValues();
-
-        for (const [key, originalValue] of Object.entries(this.originalProjectData)) {
-          const currentValue = currentFormData[key];
-
-          const normalizedOriginal = this.normalizeValue(originalValue);
-          const normalizedCurrent = this.normalizeValue(currentValue);
-
-          if (normalizedOriginal !== normalizedCurrent) {
-            projectContext.modifiedFields.push({
-              metaobject_key: key,
-              originalValue: originalValue,
-              newValue: currentValue || ''
-            });
-          }
-        }
-
-        for (const [key, currentValue] of Object.entries(currentFormData)) {
-          if (!(key in this.originalProjectData)) {
-            const normalizedCurrent = this.normalizeValue(currentValue);
-
-            if (normalizedCurrent !== '') {
-              projectContext.modifiedFields.push({
-                metaobject_key: key,
-                originalValue: '',
-                newValue: currentValue
-              });
-            }
-          }
-        }
-      }
-
-      return projectContext;
-    }
-
-    snapshotBasicFields() {
-      const fieldIds = ['firstName', 'lastName', 'email', 'phone', 'company', 'country', 'countryOther'];
-      this.originalBasicData = {};
-      fieldIds.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) this.originalBasicData[id] = el.value.trim();
-      });
-    }
-
-    buildModifiedBasicFields() {
-      if (!this.originalBasicData) return [];
-
-      const fieldIds = ['firstName', 'lastName', 'email', 'phone', 'company', 'country', 'countryOther'];
-      const modified = [];
-
-      fieldIds.forEach(id => {
-        const el = document.getElementById(id);
-        if (!el) return;
-        const current = el.value.trim();
-        const original = this.originalBasicData[id] || '';
-        if (current !== original) {
-          modified.push({
-            field: id,
-            originalValue: original,
-            newValue: current
-          });
-        }
-      });
-
-      return modified;
-    }
-
     getCurrentFormValues() {
       const formValues = {};
       const reviewRequestFields = document.querySelectorAll('#detailed-contact-container .cart-attribute, #project-fields-container .cart-attribute');
@@ -1684,9 +1644,6 @@
       return String(value).trim();
     }
 
-    // ========================================================================
-    // MESSAGE DISPLAY
-    // ========================================================================
     showMessage(messageDiv, text, type, allowHTML = false, persist = false) {
       if (messageDiv) {
         if (allowHTML) {
@@ -1723,8 +1680,8 @@
   // ============================================================================
   // INITIALIZE FUNCTION - CALLED FROM SECTION WITH CONFIGURATION
   // ============================================================================
-  window.initEthossenceReviewForms = function(config) {
-    new EthossenceReviewController(config);
+  window.initReviewToClose = function(config) {
+    new ReviewToCloseController(config);
   };
 
 })();

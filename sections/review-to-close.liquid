@@ -1,14 +1,14 @@
 {%- comment -%}
-  ETHOSSENCE Request Review Feature
-  Unified form with Basic/Detailed toggle. Basic mode renders 6 contact fields in Liquid.
-  Detailed mode loads metaobject-based fields via Make webhook. Supports inline (automatic)
-  or CTA button display modes. Anonymous visitors default to Basic; signed-in customers default to Detailed.
+  Review-to-Close Section for the Ethossence Shopify Theme.
+  Provides a modular B2B review request experience with configurable display modes
+  (slide-down or drawer), content blocks (Heading, Caption, Text, Button), and a
+  Form block that loads contact and project fields dynamically via Make.com webhooks.
+  Supports Basic/Detailed form modes with auto-detection based on customer sign-in status.
 {%- endcomment -%}
 
-{{ 'review-to-close-form.css' | asset_url | stylesheet_tag }}
+{{ 'review-to-close.css' | asset_url | stylesheet_tag }}
 
 {%- style -%}
-  /* Section Padding - Requires Liquid variables */
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
@@ -22,65 +22,171 @@
   }
 {%- endstyle -%}
 
-  <div class="color-{{ section.settings.color_scheme }} gradient {%if section.settings.full_width %}page-width {% endif %}section-{{ section.id }}-padding">
-    <div class="frame {%if section.settings.full_width == false %} width-90{% endif %}">
+{%- comment -%} FIND FORM BLOCK FOR JS CONFIGURATION {%- endcomment -%}
+{%- liquid
+  assign form_block = nil
+  for block in section.blocks
+    if block.type == 'form'
+      assign form_block = block
+      break
+    endif
+  endfor
+-%}
 
-      {%- for block in section.blocks -%} 
-        {%- case block.type -%}                            
+<div class="color-{{ section.settings.color_scheme }} gradient {% if section.settings.full_width %}page-width {% endif %}section-{{ section.id }}-padding">
+  <div class="frame {% if section.settings.full_width == false %}width-90{% endif %}">
+    <div class="text-{{ section.settings.content_alignment }}">
 
-          {%- when 'content' -%}
-            {%- comment -%} CONTENT ADDED BY PAGE - UNCHANGED {%- endcomment -%}
-            {%- liquid 
-              assign selected_page = pages[block.settings.page]
-              assign img_hero_class = selected_page.metafields.ethossence.img_hero_placement | prepend: 'img-' | replace: ' ', '-' | replace: '-|-', ' img-' | downcase | strip
+      {%- comment -%} PRE-BUTTON TEXT AND EXPAND BUTTON (ON_BUTTON_CLICK MODE ONLY) {%- endcomment -%}
+      {%- if section.settings.expand_status == 'on_button_click' -%}
+        {%- if section.settings.pre_button_text != blank -%}
+          <div class="request-review__lead-in">
+            {{ section.settings.pre_button_text }}
+          </div>
+        {%- endif -%}
+        <button type="button" id="review-form-cta" class="button button--primary">
+          {{ section.settings.expand_button_label | default: 'Get started >' }}
+        </button>
+      {%- endif -%}
 
-              if block.settings.content_audience == 'everyone'
+      {%- comment -%} DISPLAY WRAPPER OPEN {%- endcomment -%}
+      {%- if section.settings.expand_status == 'on_button_click' and section.settings.display_type == 'slide_down' -%}
+        <div id="review-form-dropdown" class="form-dropdown">
+          <div class="form-dropdown__content">
+      {%- elsif section.settings.expand_status == 'on_button_click' and section.settings.display_type == 'drawer' -%}
+        <div id="review-form-drawer" class="drawer drawer--right">
+          <div class="drawer__header">
+            {%- if form_block -%}
+              <{{ form_block.settings.heading_size }} class="form-title {{ form_block.settings.heading_size }}" id="form-heading-drawer">
+                {{ form_block.settings.heading | default: 'About You' }}
+              </{{ form_block.settings.heading_size }}>
+            {%- endif -%}
+            <button type="button" class="drawer__close" id="close-form-drawer" aria-label="Close form"><span class="text-xlarge">X</span></button>
+          </div>
+          <div class="drawer__inner">
+      {%- endif -%}
+
+      {%- comment -%} BLOCK RENDERING LOOP {%- endcomment -%}
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+
+          {%- when 'heading' -%}
+            {%- comment -%} HEADING BLOCK {%- endcomment -%}
+            {%- liquid
+              assign show_block = false
+              if block.settings.viewable == 'both'
                 assign show_block = true
-              elsif block.settings.content_audience == 'visitors' and customer == null
+              elsif block.settings.viewable == 'guests' and customer == null
                 assign show_block = true
-              elsif block.settings.content_audience == 'accounts' and customer != null
+              elsif block.settings.viewable == 'customers' and customer != null
                 assign show_block = true
-              else
-                assign show_block = false
               endif
             -%}
-            {%- if selected_page != null and show_block -%}
-              {%- style -%}
-                .block-{{ block.id }}-padding {
-                    padding-top: {{ block.settings.padding_top | times: 0.75 | round: 0 }}px;
-                    padding-bottom: {{ block.settings.padding_bottom | times: 0.75 | round: 0 }}px;
-                }
+            {%- if show_block -%}
+              <{{ block.settings.heading_size }} class="rich-text__heading rte inline-richtext {{ block.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" {{ block.shopify_attributes }}
+                {% if settings.animations_reveal_on_scroll %}
+                  data-cascade
+                  style="--animation-order: {{ forloop.index }};"
+                {% endif %}
+              >
+                {{ block.settings.heading }}
+              </{{ block.settings.heading_size }}>
+            {%- endif -%}
 
-                @media screen and (min-width: 750px) {
-                    .block-{{ block.id }}-padding {
-                      padding-top: {{ block.settings.padding_top }}px;
-                      padding-bottom: {{ block.settings.padding_bottom }}px;
-                    }
-                }
-              {%- endstyle -%}
-              <div class="block-{{ block.id }}-padding">
-                {%- if block.settings.heading_hide != true -%}
-                  <{{ block.settings.heading_size }} class="page-title {{ block.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-                    {{ selected_page.title | escape }}
-                  </{{ block.settings.heading_size }}>
+          {%- when 'caption' -%}
+            {%- comment -%} CAPTION BLOCK {%- endcomment -%}
+            {%- liquid
+              assign show_block = false
+              if block.settings.viewable == 'both'
+                assign show_block = true
+              elsif block.settings.viewable == 'guests' and customer == null
+                assign show_block = true
+              elsif block.settings.viewable == 'customers' and customer != null
+                assign show_block = true
+              endif
+            -%}
+            {%- if show_block -%}
+              <p class="rich-text__caption {{ block.settings.text_style }} {{ block.settings.text_style }}--{{ block.settings.text_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" {{ block.shopify_attributes }}
+                {% if settings.animations_reveal_on_scroll %}
+                  data-cascade
+                  style="--animation-order: {{ forloop.index }};"
+                {% endif %}
+              >
+                {{ block.settings.caption | escape }}
+              </p>
+            {%- endif -%}
+
+          {%- when 'text' -%}
+            {%- comment -%} TEXT BLOCK {%- endcomment -%}
+            {%- liquid
+              assign show_block = false
+              if block.settings.viewable == 'both'
+                assign show_block = true
+              elsif block.settings.viewable == 'guests' and customer == null
+                assign show_block = true
+              elsif block.settings.viewable == 'customers' and customer != null
+                assign show_block = true
+              endif
+            -%}
+            {%- if show_block -%}
+              <div class="rich-text__text rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" {{ block.shopify_attributes }}
+                {% if settings.animations_reveal_on_scroll %}
+                  data-cascade
+                  style="--animation-order: {{ forloop.index }};"
+                {% endif %}
+              >
+                {{ block.settings.text }}
+              </div>
+            {%- endif -%}
+
+          {%- when 'button' -%}
+            {%- comment -%} BUTTON BLOCK {%- endcomment -%}
+            {%- liquid
+              assign show_block = false
+              if block.settings.viewable == 'both'
+                assign show_block = true
+              elsif block.settings.viewable == 'guests' and customer == null
+                assign show_block = true
+              elsif block.settings.viewable == 'customers' and customer != null
+                assign show_block = true
+              endif
+            -%}
+            {%- if show_block -%}
+              <div class="rich-text__buttons{% if block.settings.button_label != blank and block.settings.button_label_2 != blank %} rich-text__buttons--multiple{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" {{ block.shopify_attributes }}
+                {% if settings.animations_reveal_on_scroll %}
+                  data-cascade
+                  style="--animation-order: {{ forloop.index }};"
+                {% endif %}
+              >
+                {%- if block.settings.button_label != blank -%}
+                  <a
+                    {% if block.settings.button_link == blank %}
+                      role="link" aria-disabled="true"
+                    {% else %}
+                      href="{{ block.settings.button_link }}"
+                    {% endif %}
+                    class="button{% if block.settings.button_style_secondary %} button--secondary{% else %} button--primary{% endif %}"
+                  >
+                    {{- block.settings.button_label | escape -}}
+                  </a>
                 {%- endif -%}
-                {%- if selected_page.content != blank -%}
-                  <div>
-                    {%- if selected_page.metafields.ethossence.img_hero != blank -%}      
-                      {{ selected_page.metafields.ethossence.img_hero | image_url: width: 600 | image_tag: loading: 'lazy', class: img_hero_class }}
-                    {%- endif -%}          
-                    {{ selected_page.content }}
-                  </div>
+                {%- if block.settings.button_label_2 != blank -%}
+                  <a
+                    {% if block.settings.button_link_2 == blank %}
+                      role="link" aria-disabled="true"
+                    {% else %}
+                      href="{{ block.settings.button_link_2 }}"
+                    {% endif %}
+                    class="button{% if block.settings.button_style_secondary_2 %} button--secondary{% else %} button--primary{% endif %}"
+                  >
+                    {{- block.settings.button_label_2 | escape -}}
+                  </a>
                 {%- endif -%}
               </div>
             {%- endif -%}
 
-
           {%- when 'form' -%}
-
-            {%- assign s_animation_type = block.settings.animation_type | default: 'slide_down' -%}
-            {%- assign s_display_forms = block.settings.display_forms | default: 'automatically' -%}
-            {%- assign s_form_mode = block.settings.form_mode | default: 'basic_and_detailed' -%}
+            {%- comment -%} FORM BLOCK {%- endcomment -%}
 
             {%- style -%}
               .block-{{ block.id }}-padding {
@@ -96,294 +202,260 @@
               }
             {%- endstyle -%}
 
-            <div class="block-{{ block.id }}-padding text-{{ block.settings.content_alignment }}">
+            <div class="color-{{ block.settings.color_scheme }} gradient">
+              <div class="block-{{ block.id }}-padding">
 
-              {%- comment -%} LEAD-IN TEXT (optional, for Button mode or general use) {%- endcomment -%}
-              {%- if block.settings.lead_in_text != blank -%}
-                <div class="request-review__lead-in">
-                  {{ block.settings.lead_in_text }}
-                </div>
-              {%- endif -%}
+                {%- comment -%} FORM CONTENT {%- endcomment -%}
+                <div class="request-review__form-wrapper" id="review-form-content"
+                     data-is-customer="{% if customer %}true{% else %}false{% endif %}"
+                     data-customer-id="{% if customer %}{{ customer.id }}{% endif %}"
+                     data-customer-email="{% if customer %}{{ customer.email }}{% endif %}"
+                     {% if section.settings.expand_status == 'on_button_click' %}style="display: none;"{% endif %}>
 
-              {%- comment -%} CTA BUTTON (only when display_forms == "button") {%- endcomment -%}
-              {%- if s_display_forms == 'button' -%}
-                <button type="button" id="review-form-cta" class="button button--primary">
-                  {{ block.settings.cta_button_text | default: 'Get started >' }}
-                </button>
-              {%- endif -%}
+                  {%- comment -%} FORM HEADER: HEADING + TOGGLE (LEFT) | SIGN-IN/STATUS (RIGHT) {%- endcomment -%}
+                  <div class="request-review__form-header">
+                    <div class="request-review__form-header-left">
+                      {%- if section.settings.expand_status != 'on_button_click' or section.settings.display_type != 'drawer' -%}
+                        <{{ block.settings.heading_size }} class="form-title {{ block.settings.heading_size }}" id="form-heading">
+                          {{ block.settings.heading | default: 'About You' }}
+                        </{{ block.settings.heading_size }}>
+                      {%- endif -%}
 
-              {%- comment -%} === FORM WRAPPER: inline, slide-down, or drawer === {%- endcomment -%}
-              {%- if s_display_forms == 'button' and s_animation_type == 'slide_down' -%}
-                <div id="review-form-dropdown" class="form-dropdown">
-                  <div class="form-dropdown__content">
-              {%- elsif s_display_forms == 'button' and s_animation_type == 'slide_out' -%}
-                <div id="review-form-drawer" class="drawer drawer--right">
-                  <div class="drawer__header">
-                    <{{ block.settings.heading_size }} class="form-title {{ block.settings.heading_size }}" id="form-heading-drawer">
-                      {{ block.settings.customer_form_heading | default: 'About You' }}
-                    </{{ block.settings.heading_size }}>
-                    <button type="button" class="drawer__close" id="close-form-drawer" aria-label="Close form"><span class="text-xlarge">X</span></button>
-                  </div>
-                  <div class="drawer__inner">
-              {%- endif -%}
+                      {%- if block.settings.contact_default_mode == 'basic' -%}
+                        <fieldset class="request-review__mode-toggle" role="radiogroup">
+                          <legend class="visually-hidden">Choose form detail level</legend>
+                          <label class="request-review__mode-option">
+                            <input type="radio" name="form_detail_level" value="basic"
+                                   {% unless customer %}checked{% endunless %}>
+                            <span>Basic</span>
+                          </label>
+                          <label class="request-review__mode-option">
+                            <input type="radio" name="form_detail_level" value="detailed"
+                                   {% if customer %}checked{% endif %}
+                                   aria-describedby="mode-detailed-desc">
+                            <span>Detailed</span>
+                            <button type="button" class="request-review__tooltip-trigger" aria-label="What is detailed mode?">
+                              <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16">
+                                <circle cx="8" cy="8" r="7.5" fill="currentColor"/>
+                                <text x="8" y="11.5" text-anchor="middle" font-size="10" fill="rgb(var(--color-background))" font-weight="700">?</text>
+                              </svg>
+                            </button>
+                            <div class="request-review__tooltip" id="mode-detailed-desc" role="tooltip" aria-hidden="true">
+                              Completing a detailed profile allows us to provide better initial responses, saving you time.
+                            </div>
+                          </label>
+                        </fieldset>
+                      {%- endif -%}
+                    </div>
 
-              {%- comment -%} === FORM CONTENT (shared across all display modes) === {%- endcomment -%}
-              <div class="request-review__form-wrapper" id="review-form-content"
-                   data-is-customer="{% if customer %}true{% else %}false{% endif %}"
-                   data-customer-id="{% if customer %}{{ customer.id }}{% endif %}"
-                   data-customer-email="{% if customer %}{{ customer.email }}{% endif %}"
-                   {% if s_display_forms == 'button' %}style="display: none;"{% endif %}>
-
-                {%- comment -%} FORM HEADER: heading + toggle (left) | sign-in/status (right) {%- endcomment -%}
-                <div class="request-review__form-header">
-                  <div class="request-review__form-header-left">
-                    {%- if s_display_forms != 'button' or s_animation_type != 'slide_out' -%}
-                      <{{ block.settings.heading_size }} class="form-title {{ block.settings.heading_size }}" id="form-heading">
-                        {{ block.settings.customer_form_heading | default: 'About You' }}
-                      </{{ block.settings.heading_size }}>
-                    {%- endif -%}
-
-                    {%- if s_form_mode == 'basic_and_detailed' -%}
-                      <fieldset class="request-review__mode-toggle" role="radiogroup">
-                        <legend class="visually-hidden">Choose form detail level</legend>
-                        <label class="request-review__mode-option">
-                          <input type="radio" name="form_detail_level" value="basic"
-                                 {% unless customer %}checked{% endunless %}>
-                          <span>Basic</span>
-                        </label>
-                        <label class="request-review__mode-option">
-                          <input type="radio" name="form_detail_level" value="detailed"
-                                 {% if customer %}checked{% endif %}
-                                 aria-describedby="mode-detailed-desc">
-                          <span>Detailed</span>
-                          <button type="button" class="request-review__tooltip-trigger" aria-label="What is detailed mode?">
-                            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16">
-                              <circle cx="8" cy="8" r="7.5" fill="currentColor"/>
-                              <text x="8" y="11.5" text-anchor="middle" font-size="10" fill="rgb(var(--color-background))" font-weight="700">?</text>
-                            </svg>
-                          </button>
-                          <div class="request-review__tooltip" id="mode-detailed-desc" role="tooltip" aria-hidden="true">
-                            Completing a detailed profile allows us to provide better initial responses, saving you time.
-                          </div>
-                        </label>
-                      </fieldset>
-                    {%- endif -%}
-                  </div>
-
-                  <div class="request-review__form-header-right">
-                    {%- if customer -%}
-                      <div class="request-review__account-status">
-                        <span class="request-review__signed-in-status">Signed in as {{ customer.email }}</span>
-                        <a class="request-review__switch-account-link" href="{{ routes.storefront_logout_url }}">Switch account</a>
-                      </div>
-                    {%- else -%}
-                      <a class="request-review__sign-in-link" href="{{ routes.storefront_login_url }}"><strong>Sign In &raquo;</strong></a>
-                    {%- endif -%}
-                  </div>
-                </div>
-
-                {%- comment -%} STEP INDICATOR {%- endcomment -%}
-                <div class="request-review__step-indicator" id="step-indicator" aria-live="polite">
-                  <span id="step-indicator-text">Step 1 of 2: About You</span>
-                </div>
-
-                {%- comment -%} ============================================================ {%- endcomment -%}
-                {%- comment -%} STEP 1: ABOUT YOU (editable form) {%- endcomment -%}
-                {%- comment -%} ============================================================ {%- endcomment -%}
-                <div id="step-1-form" class="request-review__step request-review__step--active">
-
-                  {%- comment -%} BASIC CONTACT FIELDS (always rendered in Liquid) {%- endcomment -%}
-                  <div id="basic-fields-container" class="request-review__basic-fields">
-                    <div class="request-review__fields-grid">
-                      <div class="field">
-                        <input class="field__input" type="text" id="firstName" name="firstName"
-                               placeholder="First name" required autocomplete="given-name"
-                               aria-label="First name" aria-required="true"
-                               {% if customer %}value="{{ customer.first_name | escape }}"{% endif %}>
-                        <label class="field__label" for="firstName">First name <span class="required-marker">*</span></label>
-                      </div>
-                      <div class="field">
-                        <input class="field__input" type="text" id="lastName" name="lastName"
-                               placeholder="Last name" required autocomplete="family-name"
-                               aria-label="Last name" aria-required="true"
-                               {% if customer %}value="{{ customer.last_name | escape }}"{% endif %}>
-                        <label class="field__label" for="lastName">Last name <span class="required-marker">*</span></label>
-                      </div>
-                      <div class="field request-review__field--full">
-                        <input class="field__input" type="text" id="company" name="company"
-                               placeholder="Company" required autocomplete="organization"
-                               aria-label="Company" aria-required="true"
-                               {% if customer and customer.default_address %}value="{{ customer.default_address.company | escape }}"{% endif %}>
-                        <label class="field__label" for="company">Company <span class="required-marker">*</span></label>
-                      </div>
-                      <div class="field">
-                        <input class="field__input" type="email" id="email" name="email"
-                               placeholder="Email" required autocomplete="email"
-                               aria-label="Email" aria-required="true"
-                               {% if customer %}value="{{ customer.email | escape }}"{% endif %}>
-                        <label class="field__label" for="email">Email <span class="required-marker">*</span></label>
-                      </div>
-                      <div class="field">
-                        <input class="field__input" type="tel" id="phone" name="phone"
-                               placeholder="Phone (with country code)" autocomplete="tel"
-                               aria-label="Phone"
-                               {% if customer and customer.default_address %}value="{{ customer.phone | default: customer.default_address.phone | escape }}"{% endif %}>
-                        <label class="field__label" for="phone">Phone</label>
-                        <small class="field-help">Include country code</small>
-                      </div>
-                      <div class="field request-review__field--full">
-                        <select class="field__input ethossence-select" id="country" name="country" aria-label="Country">
-                          <option value="" selected>Select country</option>
-                          <option value="US"{% if customer and customer.default_address.country_code == 'US' %} selected{% endif %}>United States</option>
-                          <option value="AR"{% if customer and customer.default_address.country_code == 'AR' %} selected{% endif %}>Argentina</option>
-                          <option value="AT"{% if customer and customer.default_address.country_code == 'AT' %} selected{% endif %}>Austria</option>
-                          <option value="AU"{% if customer and customer.default_address.country_code == 'AU' %} selected{% endif %}>Australia</option>
-                          <option value="BE"{% if customer and customer.default_address.country_code == 'BE' %} selected{% endif %}>Belgium</option>
-                          <option value="BR"{% if customer and customer.default_address.country_code == 'BR' %} selected{% endif %}>Brazil</option>
-                          <option value="CA"{% if customer and customer.default_address.country_code == 'CA' %} selected{% endif %}>Canada</option>
-                          <option value="CL"{% if customer and customer.default_address.country_code == 'CL' %} selected{% endif %}>Chile</option>
-                          <option value="CN"{% if customer and customer.default_address.country_code == 'CN' %} selected{% endif %}>China</option>
-                          <option value="CO"{% if customer and customer.default_address.country_code == 'CO' %} selected{% endif %}>Colombia</option>
-                          <option value="CZ"{% if customer and customer.default_address.country_code == 'CZ' %} selected{% endif %}>Czech Republic</option>
-                          <option value="DE"{% if customer and customer.default_address.country_code == 'DE' %} selected{% endif %}>Germany</option>
-                          <option value="DK"{% if customer and customer.default_address.country_code == 'DK' %} selected{% endif %}>Denmark</option>
-                          <option value="EG"{% if customer and customer.default_address.country_code == 'EG' %} selected{% endif %}>Egypt</option>
-                          <option value="ES"{% if customer and customer.default_address.country_code == 'ES' %} selected{% endif %}>Spain</option>
-                          <option value="FI"{% if customer and customer.default_address.country_code == 'FI' %} selected{% endif %}>Finland</option>
-                          <option value="FR"{% if customer and customer.default_address.country_code == 'FR' %} selected{% endif %}>France</option>
-                          <option value="GR"{% if customer and customer.default_address.country_code == 'GR' %} selected{% endif %}>Greece</option>
-                          <option value="HU"{% if customer and customer.default_address.country_code == 'HU' %} selected{% endif %}>Hungary</option>
-                          <option value="ID"{% if customer and customer.default_address.country_code == 'ID' %} selected{% endif %}>Indonesia</option>
-                          <option value="IE"{% if customer and customer.default_address.country_code == 'IE' %} selected{% endif %}>Ireland</option>
-                          <option value="IL"{% if customer and customer.default_address.country_code == 'IL' %} selected{% endif %}>Israel</option>
-                          <option value="IN"{% if customer and customer.default_address.country_code == 'IN' %} selected{% endif %}>India</option>
-                          <option value="IT"{% if customer and customer.default_address.country_code == 'IT' %} selected{% endif %}>Italy</option>
-                          <option value="JP"{% if customer and customer.default_address.country_code == 'JP' %} selected{% endif %}>Japan</option>
-                          <option value="KE"{% if customer and customer.default_address.country_code == 'KE' %} selected{% endif %}>Kenya</option>
-                          <option value="KR"{% if customer and customer.default_address.country_code == 'KR' %} selected{% endif %}>South Korea</option>
-                          <option value="MX"{% if customer and customer.default_address.country_code == 'MX' %} selected{% endif %}>Mexico</option>
-                          <option value="MY"{% if customer and customer.default_address.country_code == 'MY' %} selected{% endif %}>Malaysia</option>
-                          <option value="NG"{% if customer and customer.default_address.country_code == 'NG' %} selected{% endif %}>Nigeria</option>
-                          <option value="NL"{% if customer and customer.default_address.country_code == 'NL' %} selected{% endif %}>Netherlands</option>
-                          <option value="NO"{% if customer and customer.default_address.country_code == 'NO' %} selected{% endif %}>Norway</option>
-                          <option value="NZ"{% if customer and customer.default_address.country_code == 'NZ' %} selected{% endif %}>New Zealand</option>
-                          <option value="PA"{% if customer and customer.default_address.country_code == 'PA' %} selected{% endif %}>Panama</option>
-                          <option value="PH"{% if customer and customer.default_address.country_code == 'PH' %} selected{% endif %}>Philippines</option>
-                          <option value="PL"{% if customer and customer.default_address.country_code == 'PL' %} selected{% endif %}>Poland</option>
-                          <option value="PT"{% if customer and customer.default_address.country_code == 'PT' %} selected{% endif %}>Portugal</option>
-                          <option value="SA"{% if customer and customer.default_address.country_code == 'SA' %} selected{% endif %}>Saudi Arabia</option>
-                          <option value="SE"{% if customer and customer.default_address.country_code == 'SE' %} selected{% endif %}>Sweden</option>
-                          <option value="SG"{% if customer and customer.default_address.country_code == 'SG' %} selected{% endif %}>Singapore</option>
-                          <option value="CH"{% if customer and customer.default_address.country_code == 'CH' %} selected{% endif %}>Switzerland</option>
-                          <option value="TH"{% if customer and customer.default_address.country_code == 'TH' %} selected{% endif %}>Thailand</option>
-                          <option value="TR"{% if customer and customer.default_address.country_code == 'TR' %} selected{% endif %}>Turkey</option>
-                          <option value="UA"{% if customer and customer.default_address.country_code == 'UA' %} selected{% endif %}>Ukraine</option>
-                          <option value="GB"{% if customer and customer.default_address.country_code == 'GB' %} selected{% endif %}>United Kingdom</option>
-                          <option value="VN"{% if customer and customer.default_address.country_code == 'VN' %} selected{% endif %}>Vietnam</option>
-                          <option value="ZA"{% if customer and customer.default_address.country_code == 'ZA' %} selected{% endif %}>South Africa</option>
-                          <option value="Other">Other</option>
-                        </select>
-                      </div>
-                      <div class="field request-review__field--full" id="country-other-field" style="display: none;">
-                        <input class="field__input" type="text" id="countryOther" name="countryOther"
-                               placeholder="Enter your country" aria-label="Other country">
-                        <label class="field__label" for="countryOther">Other country</label>
-                      </div>
+                    <div class="request-review__form-header-right">
+                      {%- if customer -%}
+                        <div class="request-review__account-status">
+                          <span class="request-review__signed-in-status">Signed in as {{ customer.email }}</span>
+                          <a class="request-review__switch-account-link" href="{{ routes.storefront_logout_url }}">Switch account</a>
+                        </div>
+                      {%- else -%}
+                        <a class="request-review__sign-in-link" href="{{ routes.storefront_login_url }}"><strong>Sign In &raquo;</strong></a>
+                      {%- endif -%}
                     </div>
                   </div>
 
-                  {%- comment -%} DETAILED CONTACT FIELDS (loaded from webhook #webhook-contact-fields) {%- endcomment -%}
-                  <div id="detailed-contact-container" class="request-review__detailed-fields">
-                    <div class="loading-spinner" style="display: none;">Loading detailed fields...</div>
+                  {%- comment -%} STEP INDICATOR {%- endcomment -%}
+                  <div class="request-review__step-indicator" id="step-indicator" aria-live="polite">
+                    <span id="step-indicator-text">Step 1 of 2: About You</span>
                   </div>
 
-                  {%- comment -%} STEP 1 ACTION BUTTONS {%- endcomment -%}
-                  <div class="request-review__step-actions" id="step-1-actions">
-                    <button type="button" id="btn-next-step" class="button button--primary">Next</button>
-                    <div id="step-1-message" style="display: none;"></div>
+                  {%- comment -%} STEP 1: ABOUT YOU (EDITABLE FORM) {%- endcomment -%}
+                  <div id="step-1-form" class="request-review__step request-review__step--active">
+
+                    {%- comment -%} BASIC CONTACT FIELDS (ALWAYS RENDERED IN LIQUID) {%- endcomment -%}
+                    <div id="basic-fields-container" class="request-review__basic-fields">
+                      <div class="request-review__fields-grid">
+                        <div class="field">
+                          <input class="field__input" type="text" id="firstName" name="firstName"
+                                 placeholder="First name" required autocomplete="given-name"
+                                 aria-label="First name" aria-required="true"
+                                 {% if customer %}value="{{ customer.first_name | escape }}"{% endif %}>
+                          <label class="field__label" for="firstName">First name <span class="required-marker">*</span></label>
+                        </div>
+                        <div class="field">
+                          <input class="field__input" type="text" id="lastName" name="lastName"
+                                 placeholder="Last name" required autocomplete="family-name"
+                                 aria-label="Last name" aria-required="true"
+                                 {% if customer %}value="{{ customer.last_name | escape }}"{% endif %}>
+                          <label class="field__label" for="lastName">Last name <span class="required-marker">*</span></label>
+                        </div>
+                        <div class="field request-review__field--full">
+                          <input class="field__input" type="text" id="company" name="company"
+                                 placeholder="Company" required autocomplete="organization"
+                                 aria-label="Company" aria-required="true"
+                                 {% if customer and customer.default_address %}value="{{ customer.default_address.company | escape }}"{% endif %}>
+                          <label class="field__label" for="company">Company <span class="required-marker">*</span></label>
+                        </div>
+                        <div class="field">
+                          <input class="field__input" type="email" id="email" name="email"
+                                 placeholder="Email" required autocomplete="email"
+                                 aria-label="Email" aria-required="true"
+                                 {% if customer %}value="{{ customer.email | escape }}"{% endif %}>
+                          <label class="field__label" for="email">Email <span class="required-marker">*</span></label>
+                        </div>
+                        <div class="field">
+                          <input class="field__input" type="tel" id="phone" name="phone"
+                                 placeholder="Phone (with country code)" autocomplete="tel"
+                                 aria-label="Phone"
+                                 {% if customer and customer.default_address %}value="{{ customer.phone | default: customer.default_address.phone | escape }}"{% endif %}>
+                          <label class="field__label" for="phone">Phone</label>
+                          <small class="field-help">Include country code</small>
+                        </div>
+                        <div class="field request-review__field--full">
+                          <select class="field__input ethossence-select" id="country" name="country" aria-label="Country">
+                            <option value="" selected>Select country</option>
+                            <option value="US"{% if customer and customer.default_address.country_code == 'US' %} selected{% endif %}>United States</option>
+                            <option value="AR"{% if customer and customer.default_address.country_code == 'AR' %} selected{% endif %}>Argentina</option>
+                            <option value="AT"{% if customer and customer.default_address.country_code == 'AT' %} selected{% endif %}>Austria</option>
+                            <option value="AU"{% if customer and customer.default_address.country_code == 'AU' %} selected{% endif %}>Australia</option>
+                            <option value="BE"{% if customer and customer.default_address.country_code == 'BE' %} selected{% endif %}>Belgium</option>
+                            <option value="BR"{% if customer and customer.default_address.country_code == 'BR' %} selected{% endif %}>Brazil</option>
+                            <option value="CA"{% if customer and customer.default_address.country_code == 'CA' %} selected{% endif %}>Canada</option>
+                            <option value="CL"{% if customer and customer.default_address.country_code == 'CL' %} selected{% endif %}>Chile</option>
+                            <option value="CN"{% if customer and customer.default_address.country_code == 'CN' %} selected{% endif %}>China</option>
+                            <option value="CO"{% if customer and customer.default_address.country_code == 'CO' %} selected{% endif %}>Colombia</option>
+                            <option value="CZ"{% if customer and customer.default_address.country_code == 'CZ' %} selected{% endif %}>Czech Republic</option>
+                            <option value="DE"{% if customer and customer.default_address.country_code == 'DE' %} selected{% endif %}>Germany</option>
+                            <option value="DK"{% if customer and customer.default_address.country_code == 'DK' %} selected{% endif %}>Denmark</option>
+                            <option value="EG"{% if customer and customer.default_address.country_code == 'EG' %} selected{% endif %}>Egypt</option>
+                            <option value="ES"{% if customer and customer.default_address.country_code == 'ES' %} selected{% endif %}>Spain</option>
+                            <option value="FI"{% if customer and customer.default_address.country_code == 'FI' %} selected{% endif %}>Finland</option>
+                            <option value="FR"{% if customer and customer.default_address.country_code == 'FR' %} selected{% endif %}>France</option>
+                            <option value="GR"{% if customer and customer.default_address.country_code == 'GR' %} selected{% endif %}>Greece</option>
+                            <option value="HU"{% if customer and customer.default_address.country_code == 'HU' %} selected{% endif %}>Hungary</option>
+                            <option value="ID"{% if customer and customer.default_address.country_code == 'ID' %} selected{% endif %}>Indonesia</option>
+                            <option value="IE"{% if customer and customer.default_address.country_code == 'IE' %} selected{% endif %}>Ireland</option>
+                            <option value="IL"{% if customer and customer.default_address.country_code == 'IL' %} selected{% endif %}>Israel</option>
+                            <option value="IN"{% if customer and customer.default_address.country_code == 'IN' %} selected{% endif %}>India</option>
+                            <option value="IT"{% if customer and customer.default_address.country_code == 'IT' %} selected{% endif %}>Italy</option>
+                            <option value="JP"{% if customer and customer.default_address.country_code == 'JP' %} selected{% endif %}>Japan</option>
+                            <option value="KE"{% if customer and customer.default_address.country_code == 'KE' %} selected{% endif %}>Kenya</option>
+                            <option value="KR"{% if customer and customer.default_address.country_code == 'KR' %} selected{% endif %}>South Korea</option>
+                            <option value="MX"{% if customer and customer.default_address.country_code == 'MX' %} selected{% endif %}>Mexico</option>
+                            <option value="MY"{% if customer and customer.default_address.country_code == 'MY' %} selected{% endif %}>Malaysia</option>
+                            <option value="NG"{% if customer and customer.default_address.country_code == 'NG' %} selected{% endif %}>Nigeria</option>
+                            <option value="NL"{% if customer and customer.default_address.country_code == 'NL' %} selected{% endif %}>Netherlands</option>
+                            <option value="NO"{% if customer and customer.default_address.country_code == 'NO' %} selected{% endif %}>Norway</option>
+                            <option value="NZ"{% if customer and customer.default_address.country_code == 'NZ' %} selected{% endif %}>New Zealand</option>
+                            <option value="PA"{% if customer and customer.default_address.country_code == 'PA' %} selected{% endif %}>Panama</option>
+                            <option value="PH"{% if customer and customer.default_address.country_code == 'PH' %} selected{% endif %}>Philippines</option>
+                            <option value="PL"{% if customer and customer.default_address.country_code == 'PL' %} selected{% endif %}>Poland</option>
+                            <option value="PT"{% if customer and customer.default_address.country_code == 'PT' %} selected{% endif %}>Portugal</option>
+                            <option value="SA"{% if customer and customer.default_address.country_code == 'SA' %} selected{% endif %}>Saudi Arabia</option>
+                            <option value="SE"{% if customer and customer.default_address.country_code == 'SE' %} selected{% endif %}>Sweden</option>
+                            <option value="SG"{% if customer and customer.default_address.country_code == 'SG' %} selected{% endif %}>Singapore</option>
+                            <option value="CH"{% if customer and customer.default_address.country_code == 'CH' %} selected{% endif %}>Switzerland</option>
+                            <option value="TH"{% if customer and customer.default_address.country_code == 'TH' %} selected{% endif %}>Thailand</option>
+                            <option value="TR"{% if customer and customer.default_address.country_code == 'TR' %} selected{% endif %}>Turkey</option>
+                            <option value="UA"{% if customer and customer.default_address.country_code == 'UA' %} selected{% endif %}>Ukraine</option>
+                            <option value="GB"{% if customer and customer.default_address.country_code == 'GB' %} selected{% endif %}>United Kingdom</option>
+                            <option value="VN"{% if customer and customer.default_address.country_code == 'VN' %} selected{% endif %}>Vietnam</option>
+                            <option value="ZA"{% if customer and customer.default_address.country_code == 'ZA' %} selected{% endif %}>South Africa</option>
+                            <option value="Other">Other</option>
+                          </select>
+                        </div>
+                        <div class="field request-review__field--full" id="country-other-field" style="display: none;">
+                          <input class="field__input" type="text" id="countryOther" name="countryOther"
+                                 placeholder="Enter your country" aria-label="Other country">
+                          <label class="field__label" for="countryOther">Other country</label>
+                        </div>
+                      </div>
+                    </div>
+
+                    {%- comment -%} DETAILED CONTACT FIELDS (LOADED FROM WEBHOOK) {%- endcomment -%}
+                    <div id="detailed-contact-container" class="request-review__detailed-fields">
+                      <div class="loading-spinner" style="display: none;">Loading detailed fields...</div>
+                    </div>
+
+                    {%- comment -%} STEP 1 ACTION BUTTONS {%- endcomment -%}
+                    <div class="request-review__step-actions" id="step-1-actions">
+                      <button type="button" id="btn-next-step" class="button button--primary">Next</button>
+                      <div id="step-1-message" style="display: none;"></div>
+                    </div>
+
                   </div>
 
-                </div>
-
-                {%- comment -%} ============================================================ {%- endcomment -%}
-                {%- comment -%} STEP 1: SUMMARY CARD (collapsed view when on Step 2) {%- endcomment -%}
-                {%- comment -%} ============================================================ {%- endcomment -%}
-                <div id="step-1-summary" class="request-review__summary-card" role="region" aria-label="Contact information summary" style="display: none;">
-                  <div class="request-review__summary-header">
-                    <span class="request-review__summary-label">Step 1 of 2: About You</span>
-                    <a href="#" id="btn-edit-step1" class="request-review__summary-edit" role="button">Edit</a>
-                  </div>
-                  <div class="request-review__summary-details" id="summary-details">
-                    <!-- Populated by JS: name | email | company -->
-                  </div>
-                </div>
-
-                {%- comment -%} ============================================================ {%- endcomment -%}
-                {%- comment -%} STEP 2: PROJECT DETAILS {%- endcomment -%}
-                {%- comment -%} ============================================================ {%- endcomment -%}
-                <div id="step-2-form" class="request-review__step" style="display: none;">
-
-                  {%- comment -%} SUCCESS / ERROR MESSAGE — shown at top of Step 2 after submission {%- endcomment -%}
-                  <div id="save-cart-message" style="display: none;"></div>
-
-                  {%- comment -%} PROJECT FIELDS (loaded from webhook #webhook-project-fields) {%- endcomment -%}
-                  <div id="project-fields-container" class="request-review__project-fields">
-                    <div class="loading-spinner" style="display: none;">Loading project fields...</div>
-                  </div>
-
-                  {%- comment -%} STEP 2 ACTION BUTTONS {%- endcomment -%}
-                  <div class="request-review__step-actions" id="step-2-actions">
-                    <button type="button" id="save-cart-draft" class="button button--primary" style="display: none;">Submit for Review</button>
-                    <div class="request-review__skip-link">
-                      <a href="#" id="btn-skip-submit" role="button">Skip project details and submit with request to contact</a>
+                  {%- comment -%} STEP 1: SUMMARY CARD (COLLAPSED VIEW WHEN ON STEP 2) {%- endcomment -%}
+                  <div id="step-1-summary" class="request-review__summary-card" role="region" aria-label="Contact information summary" style="display: none;">
+                    <div class="request-review__summary-header">
+                      <span class="request-review__summary-label">Step 1 of 2: About You</span>
+                      <a href="#" id="btn-edit-step1" class="request-review__summary-edit" role="button">Edit</a>
+                    </div>
+                    <div class="request-review__summary-details" id="summary-details">
                     </div>
                   </div>
 
+                  {%- comment -%} STEP 2: PROJECT DETAILS {%- endcomment -%}
+                  <div id="step-2-form" class="request-review__step" style="display: none;">
+
+                    {%- comment -%} SUCCESS / ERROR MESSAGE {%- endcomment -%}
+                    <div id="save-cart-message" style="display: none;"></div>
+
+                    {%- comment -%} PROJECT FIELDS (LOADED FROM WEBHOOK) {%- endcomment -%}
+                    <div id="project-fields-container" class="request-review__project-fields">
+                      <div class="loading-spinner" style="display: none;">Loading project fields...</div>
+                    </div>
+
+                    {%- comment -%} STEP 2 ACTION BUTTONS {%- endcomment -%}
+                    <div class="request-review__step-actions" id="step-2-actions">
+                      <button type="button" id="save-cart-draft" class="button button--primary" style="display: none;">Submit for Review</button>
+                      <div class="request-review__skip-link">
+                        <a href="#" id="btn-skip-submit" role="button">Skip project details and submit with request to contact</a>
+                      </div>
+                    </div>
+
+                  </div>
+
                 </div>
+                {%- comment -%} END FORM CONTENT {%- endcomment -%}
 
               </div>
-              {%- comment -%} END FORM CONTENT {%- endcomment -%}
-
-              {%- comment -%} Close form wrappers for animated modes {%- endcomment -%}
-              {%- if s_display_forms == 'button' and s_animation_type == 'slide_down' -%}
-                    <div>
-                      <button type="button" class="button button--small button--secondary dropdown__close float-right" id="close-form-dropdown" aria-label="Close form">Cancel</button>
-                    </div>
-                  </div>
-                </div>
-              {%- elsif s_display_forms == 'button' and s_animation_type == 'slide_out' -%}
-                  </div>
-                </div>
-                <div class="drawer__overlay" id="review-form-overlay"></div>
-              {%- endif -%}
-
             </div>
 
         {%- endcase -%}
-      {%- endfor -%}      
+      {%- endfor -%}
+
+      {%- comment -%} DISPLAY WRAPPER CLOSE {%- endcomment -%}
+      {%- if section.settings.expand_status == 'on_button_click' and section.settings.display_type == 'slide_down' -%}
+            <div>
+              <button type="button" class="button button--small button--secondary dropdown__close float-right" id="close-form-dropdown" aria-label="Close form">Cancel</button>
+            </div>
+          </div>
+        </div>
+      {%- elsif section.settings.expand_status == 'on_button_click' and section.settings.display_type == 'drawer' -%}
+          </div>
+        </div>
+        <div class="drawer__overlay" id="review-form-overlay"></div>
+      {%- endif -%}
 
     </div>
   </div>
+</div>
 
-  <!-- UNIFIED JAVASCRIPT FOR DYNAMIC FORM LOADING -->
-  <script src="{{ 'review-to-close-form.js' | asset_url }}" defer></script>
-  <script>
-    // PASS LIQUID CONFIGURATION TO JAVASCRIPT
-    document.addEventListener('DOMContentLoaded', function() {
-      if (typeof initEthossenceReviewForms === 'function') {
-        initEthossenceReviewForms({
-          animationType: '{{ s_animation_type }}',
-          displayForms: '{{ s_display_forms }}',
-          formMode: '{{ s_form_mode }}',
-          isCustomer: {% if customer %}true{% else %}false{% endif %}
-        });
-      }
-    });
-  </script>
+{%- comment -%} JAVASCRIPT {%- endcomment -%}
+<script src="{{ 'review-to-close.js' | asset_url }}" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof initReviewToClose === 'function') {
+      initReviewToClose({
+        displayType: '{{ section.settings.display_type }}',
+        expandStatus: '{{ section.settings.expand_status }}',
+        contactDefaultMode: '{{ form_block.settings.contact_default_mode }}',
+        isCustomer: {% if customer %}true{% else %}false{% endif %}
+      });
+    }
+  });
+</script>
 
 {% schema %}
 {
-  "name": "Request review",
+  "name": "Review-to-Close",
   "tag": "section",
   "class": "section",
   "disabled_on": {
@@ -401,6 +473,63 @@
       "id": "full_width",
       "default": true,
       "label": "t:sections.rich-text.settings.full_width.label"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.rich-text.settings.content_alignment.options__1.label"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.rich-text.settings.content_alignment.options__2.label"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.rich-text.settings.content_alignment.options__3.label"
+        }
+      ],
+      "default": "center",
+      "label": "t:sections.rich-text.settings.content_alignment.label"
+    },
+    {
+      "type": "header",
+      "content": "Display"
+    },
+    {
+      "type": "select",
+      "id": "display_type",
+      "label": "Type",
+      "options": [
+        { "value": "slide_down", "label": "Slide down" },
+        { "value": "drawer", "label": "Drawer" }
+      ],
+      "default": "slide_down"
+    },
+    {
+      "type": "select",
+      "id": "expand_status",
+      "label": "Expand status",
+      "options": [
+        { "value": "by_default", "label": "By default" },
+        { "value": "on_button_click", "label": "On button click" }
+      ],
+      "default": "by_default",
+      "info": "Controls whether the content is visible on page load or hidden behind a call-to-action button."
+    },
+    {
+      "type": "text",
+      "id": "expand_button_label",
+      "label": "Expand button label",
+      "default": "Get started >"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "pre_button_text",
+      "label": "Pre-button text",
+      "info": "Only displayed when Expand status is set to 'On button click'."
     },
     {
       "type": "header",
@@ -427,265 +556,306 @@
       "default": 24
     }
   ],
-  "blocks": [   
-      {
-         "type": "form",
-         "name": "Form",
-         "limit": 1,
-         "settings": [
+  "blocks": [
+    {
+      "type": "form",
+      "name": "Form",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Appearance"
+        },
+        {
+          "type": "color_scheme",
+          "id": "color_scheme",
+          "label": "t:sections.all.colors.label",
+          "default": "scheme-1"
+        },
+        {
+          "type": "header",
+          "content": "t:sections.all.padding.section_padding_heading"
+        },
+        {
+          "type": "range",
+          "id": "padding_top",
+          "min": 0,
+          "max": 100,
+          "step": 4,
+          "unit": "px",
+          "label": "t:sections.all.padding.padding_top",
+          "default": 24
+        },
+        {
+          "type": "range",
+          "id": "padding_bottom",
+          "min": 0,
+          "max": 100,
+          "step": 4,
+          "unit": "px",
+          "label": "t:sections.all.padding.padding_bottom",
+          "default": 24
+        },
+        {
+          "type": "header",
+          "content": "Display"
+        },
+        {
+          "type": "select",
+          "id": "contact_default_mode",
+          "label": "Contact default mode",
+          "options": [
+            { "value": "basic", "label": "Basic" },
+            { "value": "detailed", "label": "Detailed" }
+          ],
+          "default": "basic",
+          "info": "Basic shows a toggle between Basic and Detailed. Detailed loads the full form immediately with no toggle."
+        },
+        {
+          "type": "header",
+          "content": "Heading"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "label": "Heading",
+          "default": "About You"
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "options": [
             {
-               "type": "header",
-               "content": "Appearance"
-            },          
-            {
-              "type": "select",
-              "id": "animation_type",
-              "label": "Form animation",
-              "options": [
-                {"value": "slide_down", "label": "Slide down (dropdown)"},
-                {"value": "slide_out", "label": "Slide out (drawer)"}
-              ],
-              "default": "slide_down"
-            }, 
-            {
-              "type": "select",
-              "id": "content_alignment",
-              "options": [
-                {
-                  "value": "left",
-                  "label": "t:sections.rich-text.settings.content_alignment.options__1.label"
-                },
-                {
-                  "value": "center",
-                  "label": "t:sections.rich-text.settings.content_alignment.options__2.label"
-                },
-                {
-                  "value": "right",
-                  "label": "t:sections.rich-text.settings.content_alignment.options__3.label"
-                }
-              ],
-              "default": "center",
-              "label": "t:sections.rich-text.settings.content_alignment.label"
-            },                
-            {
-               "type": "header",
-               "content": "Form display"
+              "value": "h2",
+              "label": "t:sections.all.heading_size.options__1.label"
             },
             {
-              "type": "select",
-              "id": "display_forms",
-              "label": "Display forms",
-              "options": [
-                { "value": "automatically", "label": "Automatically" },
-                { "value": "button", "label": "Button" }
-              ],
-              "default": "automatically",
-              "info": "Controls whether the form is visible on page load or hidden behind a call-to-action button."
+              "value": "h1",
+              "label": "t:sections.all.heading_size.options__2.label"
             },
             {
-              "type": "text",
-              "id": "cta_button_text",
-              "label": "Button text",
-              "default": "Get started >",
-              "info": "Text displayed on the call-to-action button when 'Display forms' is set to 'Button'."
+              "value": "h0",
+              "label": "t:sections.all.heading_size.options__3.label"
             },
             {
-              "type": "inline_richtext",
-              "id": "lead_in_text",
-              "label": "Lead-in text",
-              "info": "Optional text displayed above the CTA button. Can be used in combination with or instead of the 'Content from page' block."
+              "value": "hxl",
+              "label": "t:sections.all.heading_size.options__4.label"
             },
             {
-               "type": "header",
-               "content": "Form mode"
+              "value": "hxxl",
+              "label": "t:sections.all.heading_size.options__5.label"
+            }
+          ],
+          "default": "h1",
+          "label": "t:sections.all.heading_size.label"
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "name": "t:sections.rich-text.blocks.heading.name",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "default": "t:sections.rich-text.blocks.heading.settings.heading.default",
+          "label": "t:sections.rich-text.blocks.heading.settings.heading.label"
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "options": [
+            {
+              "value": "h2",
+              "label": "t:sections.all.heading_size.options__1.label"
             },
             {
-              "type": "select",
-              "id": "form_mode",
-              "label": "Form mode",
-              "options": [
-                { "value": "basic_and_detailed", "label": "Basic and Detailed" },
-                { "value": "detailed_only", "label": "Detailed only" }
-              ],
-              "default": "basic_and_detailed",
-              "info": "Controls whether visitors can choose between a basic contact form or a detailed profile form."
+              "value": "h1",
+              "label": "t:sections.all.heading_size.options__2.label"
             },
             {
-               "type": "header",
-               "content": "Form heading"
+              "value": "h0",
+              "label": "t:sections.all.heading_size.options__3.label"
             },
             {
-              "type": "inline_richtext",
-              "id": "customer_form_heading",
-              "label": "Form heading",
-              "default": "About You"
+              "value": "hxl",
+              "label": "t:sections.all.heading_size.options__4.label"
             },
             {
-               "type": "select",
-               "id": "heading_size",
-               "options": [
-                  {
-                     "value": "h2",
-                     "label": "t:sections.all.heading_size.options__1.label"
-                  },
-                  {
-                     "value": "h1",
-                     "label": "t:sections.all.heading_size.options__2.label"
-                  },
-                  {
-                     "value": "h0",
-                     "label": "t:sections.all.heading_size.options__3.label"
-                  },
-                  {
-                     "value": "hxl",
-                     "label": "t:sections.all.heading_size.options__4.label"
-                  },
-                  {
-                     "value": "hxxl",
-                     "label": "t:sections.all.heading_size.options__5.label"
-                  }
-               ],
-               "default": "h1",
-               "label": "t:sections.all.heading_size.label"
+              "value": "hxxl",
+              "label": "t:sections.all.heading_size.options__5.label"
+            }
+          ],
+          "default": "h1",
+          "label": "t:sections.all.heading_size.label"
+        },
+        {
+          "type": "select",
+          "id": "viewable",
+          "options": [
+            { "value": "guests", "label": "Guests" },
+            { "value": "customers", "label": "Customers" },
+            { "value": "both", "label": "Both" }
+          ],
+          "default": "both",
+          "label": "Viewable",
+          "info": "Controls who can see this block. Guests are visitors without an account."
+        }
+      ]
+    },
+    {
+      "type": "caption",
+      "name": "t:sections.rich-text.blocks.caption.name",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "text",
+          "id": "caption",
+          "default": "t:sections.rich-text.blocks.caption.settings.text.default",
+          "label": "t:sections.rich-text.blocks.caption.settings.text.label"
+        },
+        {
+          "type": "select",
+          "id": "text_style",
+          "options": [
+            {
+              "value": "subtitle",
+              "label": "t:sections.rich-text.blocks.caption.settings.text_style.options__1.label"
             },
             {
-               "type": "header",
-               "content": "t:sections.all.padding.section_padding_heading"
+              "value": "caption-with-letter-spacing",
+              "label": "t:sections.rich-text.blocks.caption.settings.text_style.options__2.label"
+            }
+          ],
+          "default": "caption-with-letter-spacing",
+          "label": "t:sections.rich-text.blocks.caption.settings.text_style.label"
+        },
+        {
+          "type": "select",
+          "id": "text_size",
+          "options": [
+            {
+              "value": "small",
+              "label": "t:sections.rich-text.blocks.caption.settings.caption_size.options__1.label"
             },
             {
-              "type": "range",
-              "id": "padding_top",
-              "min": 0,
-              "max": 100,
-              "step": 4,
-              "unit": "px",
-              "label": "t:sections.all.padding.padding_top",
-              "default": 24
+              "value": "medium",
+              "label": "t:sections.rich-text.blocks.caption.settings.caption_size.options__2.label"
             },
             {
-              "type": "range",
-              "id": "padding_bottom",
-              "min": 0,
-              "max": 100,
-              "step": 4,
-              "unit": "px",
-              "label": "t:sections.all.padding.padding_bottom",
-              "default": 24
-            }                     
-         ]
-      },
-      {
-         "type": "content",
-         "name": "Content from pages",
-         "settings": [   
-            {
-               "type": "header",
-               "content": "Content"
-            },            
-            {
-               "type": "page",
-               "id": "page",
-               "label": "t:sections.page.settings.page.label"
-            },
-            {
-               "type": "header",
-               "content": "Appearance"
-            },             
-            {
-               "type": "checkbox",
-               "id": "heading_hide",
-               "default": false,
-               "label": "Hide page title"
-            },
-            {
-               "type": "select",
-               "id": "heading_size",
-               "options": [
-               {
-                  "value": "h2",
-                  "label": "t:sections.all.heading_size.options__1.label"
-               },
-               {
-                  "value": "h1",
-                  "label": "t:sections.all.heading_size.options__2.label"
-               },
-               {
-                  "value": "h0",
-                  "label": "t:sections.all.heading_size.options__3.label"
-               },
-               {
-                  "value": "hxl",
-                  "label": "t:sections.all.heading_size.options__4.label"
-               },
-               {
-                  "value": "hxxl",
-                  "label": "t:sections.all.heading_size.options__5.label"
-               }
-               ],
-               "default": "h1",
-               "label": "t:sections.all.heading_size.label"
-            },                      
-            {
-               "type": "header",
-               "content": "View permissions"
-            },              
-            {
-              "type": "select",
-              "id": "content_audience",
-              "options": [
-                {
-                  "value": "everyone",
-                  "label": "Everyone"
-                },
-                {
-                  "value": "visitors",
-                  "label": "Visitors without an account"
-                },
-                {
-                  "value": "accounts",
-                  "label": "Those with accounts"
-                }
-              ],
-              "default": "everyone",
-              "label": "Account status",
-              "info": "If those with accounts is selected then authorization to view can be enforced."
-            },
-            {
-              "type": "checkbox",
-              "id": "authoriz_enabled",
-              "default": false,
-              "label": "Enforce authorization to view."
-            },   
-            {
-               "type": "header",
-               "content": "t:sections.all.padding.section_padding_heading"
-            },
-            {
-               "type": "range",
-               "id": "padding_top",
-               "min": 0,
-               "max": 100,
-               "step": 4,
-               "unit": "px",
-               "label": "t:sections.all.padding.padding_top",
-               "default": 24
-            },
-            {
-               "type": "range",
-               "id": "padding_bottom",
-               "min": 0,
-               "max": 100,
-               "step": 4,
-               "unit": "px",
-               "label": "t:sections.all.padding.padding_bottom",
-               "default": 24
-            }        
-         ]
-      }      
-   ],
+              "value": "large",
+              "label": "t:sections.rich-text.blocks.caption.settings.caption_size.options__3.label"
+            }
+          ],
+          "default": "medium",
+          "label": "t:sections.rich-text.blocks.caption.settings.caption_size.label"
+        },
+        {
+          "type": "select",
+          "id": "viewable",
+          "options": [
+            { "value": "guests", "label": "Guests" },
+            { "value": "customers", "label": "Customers" },
+            { "value": "both", "label": "Both" }
+          ],
+          "default": "both",
+          "label": "Viewable",
+          "info": "Controls who can see this block. Guests are visitors without an account."
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "t:sections.rich-text.blocks.text.name",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "default": "t:sections.rich-text.blocks.text.settings.text.default",
+          "label": "t:sections.rich-text.blocks.text.settings.text.label"
+        },
+        {
+          "type": "select",
+          "id": "viewable",
+          "options": [
+            { "value": "guests", "label": "Guests" },
+            { "value": "customers", "label": "Customers" },
+            { "value": "both", "label": "Both" }
+          ],
+          "default": "both",
+          "label": "Viewable",
+          "info": "Controls who can see this block. Guests are visitors without an account."
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "t:sections.rich-text.blocks.buttons.name",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "header",
+          "content": "t:sections.rich-text.blocks.buttons.settings.header_button1.content"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "default": "t:sections.rich-text.blocks.buttons.settings.button_label_1.default",
+          "label": "t:sections.rich-text.blocks.buttons.settings.button_label_1.label",
+          "info": "t:sections.rich-text.blocks.buttons.settings.button_label_1.info"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "t:sections.rich-text.blocks.buttons.settings.button_link_1.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "button_style_secondary",
+          "default": false,
+          "label": "t:sections.rich-text.blocks.buttons.settings.button_style_secondary_1.label"
+        },
+        {
+          "type": "header",
+          "content": "t:sections.rich-text.blocks.buttons.settings.header_button2.content"
+        },
+        {
+          "type": "text",
+          "id": "button_label_2",
+          "label": "t:sections.rich-text.blocks.buttons.settings.button_label_2.label",
+          "info": "t:sections.rich-text.blocks.buttons.settings.button_label_2.info"
+        },
+        {
+          "type": "url",
+          "id": "button_link_2",
+          "label": "t:sections.rich-text.blocks.buttons.settings.button_link_2.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "button_style_secondary_2",
+          "default": false,
+          "label": "t:sections.rich-text.blocks.buttons.settings.button_style_secondary_2.label"
+        },
+        {
+          "type": "select",
+          "id": "viewable",
+          "options": [
+            { "value": "guests", "label": "Guests" },
+            { "value": "customers", "label": "Customers" },
+            { "value": "both", "label": "Both" }
+          ],
+          "default": "both",
+          "label": "Viewable",
+          "info": "Controls who can see this block. Guests are visitors without an account."
+        }
+      ]
+    }
+  ],
   "presets": [
     {
-      "name": "Request review",
+      "name": "Review-to-Close",
       "category": "Review-to-Close"
     }
   ]
