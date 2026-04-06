@@ -306,11 +306,11 @@
                         </div>
                         <div class="field">
                           <input class="field__input" type="tel" id="phone" name="phone"
-                                 placeholder="Phone (with country code)" autocomplete="tel"
+                                 placeholder="+1 (555) 123-4567" autocomplete="tel"
                                  aria-label="Phone"
                                  {% if customer and customer.default_address %}value="{{ customer.phone | default: customer.default_address.phone | escape }}"{% endif %}>
                           <label class="field__label" for="phone">Phone</label>
-                          <small class="field-help">Include country code</small>
+                          <small class="field-help">Include country code, e.g. +1 for US</small>
                         </div>
                         <div class="field request-review__field--full">
                           <select class="field__input ethossence-select" id="country" name="country" aria-label="Country">

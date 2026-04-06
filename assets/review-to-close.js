@@ -1208,8 +1208,8 @@
       else if (lowerError.includes('invalid email') || lowerError.includes('email format')) {
         errorMessage = 'Please enter a valid email address.';
       }
-      else if (lowerError.includes('invalid phone') || lowerError.includes('phone format')) {
-        errorMessage = 'Please enter a valid phone number with country code (11 digits).';
+      else if ((lowerError.includes('phone') && lowerError.includes('invalid')) || lowerError.includes('phone format')) {
+        errorMessage = 'Phone number format is incorrect. Please enter a valid phone number with country code (e.g. +15551234567) and try again.';
       }
       else if (isCustomer) {
         errorMessage = 'Failed to submit review request. Please try again or contact support if the issue persists.';
@@ -1367,6 +1367,18 @@
       toggle(); // set initial state
     }
 
+    formatPhoneE164(value) {
+      // Strip everything except digits and leading +
+      let digits = value.replace(/[^\d+]/g, '');
+
+      // If it starts with +, keep it; otherwise prepend +
+      if (!digits.startsWith('+')) {
+        digits = '+' + digits.replace(/\+/g, '');
+      }
+
+      return digits;
+    }
+
     reExecuteScripts(container) {
       const scripts = container.querySelectorAll('script');
       console.log(`Found ${scripts.length} script tags to re-execute`);
@@ -1507,10 +1519,14 @@
       }
 
       if (phone && phone.value.trim()) {
-        const phoneDigits = phone.value.replace(/\D/g, '');
-        if (phoneDigits.length !== 11) {
+        // Auto-format to E.164 before validating
+        const formatted = this.formatPhoneE164(phone.value.trim());
+        phone.value = formatted;
+
+        const digitsOnly = formatted.replace(/\D/g, '');
+        if (digitsOnly.length < 7 || digitsOnly.length > 15) {
           result.isValid = false;
-          result.errors.push('Phone number must include country code (11 digits total)');
+          result.errors.push('Phone number must include country code (e.g. +15551234567)');
           this.highlightField(phone, true);
         } else {
           this.highlightField(phone, false);
