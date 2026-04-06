@@ -253,9 +253,9 @@
 }
 
 .request-review__mode-option input[type="radio"] {
-  appearance: auto !important;
   -webkit-appearance: radio !important;
   -moz-appearance: radio !important;
+  appearance: auto !important;  
   width: 1.4rem;
   height: 1.4rem;
   margin: 0;
@@ -710,9 +710,9 @@ button .loading-spinner {
 
 /* Override Dawn theme's appearance: none for radio buttons */
 .field__radio input[type="radio"], input[type="radio"].field__input {
-  appearance: auto !important;
   -webkit-appearance: radio !important;
   -moz-appearance: radio !important;
+  appearance: auto !important;  
 }
 
 /* SELECT/DROPDOWN STYLING */
