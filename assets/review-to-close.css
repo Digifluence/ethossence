@@ -23,6 +23,10 @@
   color: rgba(var(--color-foreground), 0.8);
 }
 
+.request-review__lead-in-text {
+  margin-bottom: 2rem;
+}
+
 /* DROPDOWN ANIMATION (SLIDE DOWN) */
 .form-dropdown {
   max-height: 0;

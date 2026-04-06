@@ -499,13 +499,13 @@
     {
       "type": "select",
       "id": "expand_status",
-      "label": "Expand to show inputs",
+      "label": "Show form",
       "options": [
         { "value": "by_default", "label": "By default" },
-        { "value": "on_button_click", "label": "On button click" }
+        { "value": "on_button_click", "label": "On button click expand" }
       ],
       "default": "by_default",
-      "info": "Controls whether the content is visible on page load or hidden behind a call-to-action button. Pre-expand options below only apply if 'On button click' is selected. "
+      "info": "Controls whether the content is visible on page load or hidden behind a call-to-action button. Pre-expand options below only apply if 'On button click expand' is selected. "
     },
     {
       "type": "select",
@@ -516,7 +516,7 @@
         { "value": "right", "label": "t:sections.rich-text.settings.content_alignment.options__3.label" }
       ],
       "default": "center",
-      "label": "Pre-expand content alignment"
+      "label": "Pre-expand alignment"
     },        
     {
       "type": "text",
@@ -561,6 +561,7 @@
     {
       "type": "inline_richtext",
       "id": "pre_expand_text",
+      "default": "Get a free expert review to confirm you have the correct products for your project.",
       "label": "Pre-expand content"
     },
     {
