@@ -552,6 +552,54 @@
         "padding_top": 56,
         "padding_bottom": 84
       }
+    },
+    "review_to_close_yRnVY4": {
+      "type": "review-to-close",
+      "blocks": {
+        "heading_TKNBe6": {
+          "type": "heading",
+          "settings": {
+            "heading": "Request a Solution Review",
+            "heading_size": "h1",
+            "viewable": "both"
+          }
+        },
+        "text_pGaqi8": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Tell us about your project, our experts will review it, and we'll reach out to discuss the best solution. A few details is enough to start the review.</p>",
+            "viewable": "both"
+          }
+        },
+        "form_FiNYjD": {
+          "type": "form",
+          "settings": {
+            "color_scheme": "",
+            "padding_top": 24,
+            "padding_bottom": 24,
+            "contact_default_mode": "detailed",
+            "heading": "Your information",
+            "heading_size": "h1"
+          }
+        }
+      },
+      "block_order": [
+        "heading_TKNBe6",
+        "text_pGaqi8",
+        "form_FiNYjD"
+      ],
+      "name": "Review-to-Close",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "full_width": true,
+        "content_alignment": "left",
+        "display_type": "slide_down",
+        "expand_status": "on_button_click",
+        "expand_button_label": "Get started >",
+        "pre_button_text": "Tell us about your project, our experts will review it, and we'll reach out to discuss the best solution.",
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
     }
   },
   "order": [
@@ -574,6 +622,7 @@
     "17713492916acaba61",
     "rich_text_fdWzG7",
     "featured_collection_8qpFee",
-    "related-products"
+    "related-products",
+    "review_to_close_yRnVY4"
   ]
 }
