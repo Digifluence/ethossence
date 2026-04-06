@@ -279,6 +279,7 @@
           "type": "form",
           "settings": {
             "color_scheme": "scheme-1",
+            "content_alignment": "left",
             "padding_top": 24,
             "padding_bottom": 24,
             "contact_default_mode": "basic",
@@ -294,7 +295,6 @@
       "settings": {
         "color_scheme": "",
         "full_width": true,
-        "content_alignment": "left",
         "display_type": "slide_down",
         "expand_status": "by_default",
         "expand_button_label": "Get started >",

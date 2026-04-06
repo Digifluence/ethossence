@@ -46,6 +46,7 @@
       // Get elements
       this.formContent = document.getElementById('review-form-content');
       this.ctaButton = document.getElementById('review-form-cta');
+      this.leadInText = document.querySelector('.request-review__lead-in');
 
       // Step containers
       this.step1Form = document.getElementById('step-1-form');
@@ -159,9 +160,12 @@
     // ========================================================================
 
     openForm() {
-      // Hide CTA button
+      // Hide CTA button and lead-in text
       if (this.ctaButton) {
         this.ctaButton.style.display = 'none';
+      }
+      if (this.leadInText) {
+        this.leadInText.style.display = 'none';
       }
 
       // Show form content
@@ -212,6 +216,14 @@
           this.overlay.classList.remove('drawer__overlay--active');
         }
         document.body.classList.remove('drawer-open');
+      }
+
+      // Restore CTA button and lead-in text
+      if (this.ctaButton) {
+        this.ctaButton.style.display = '';
+      }
+      if (this.leadInText) {
+        this.leadInText.style.display = '';
       }
     }
 
@@ -353,7 +365,7 @@
     goToStep2() {
       // Update step indicator
       if (this.stepIndicator) {
-        this.stepIndicator.textContent = 'Step 2 of 2: Project Details';
+        this.stepIndicator.textContent = 'Step 2 of 2';
       }
 
       // Build and show summary card
@@ -391,7 +403,7 @@
     goToStep1() {
       // Update step indicator
       if (this.stepIndicator) {
-        this.stepIndicator.textContent = 'Step 1 of 2: About You';
+        this.stepIndicator.textContent = 'Step 1 of 2';
       }
 
       // Hide summary, show Step 1 form

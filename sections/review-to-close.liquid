@@ -35,8 +35,6 @@
 
 <div class="color-{{ section.settings.color_scheme }} gradient {% if section.settings.full_width %}page-width {% endif %}section-{{ section.id }}-padding">
   <div class="frame {% if section.settings.full_width == false %}width-90{% endif %}">
-    <div class="text-{{ section.settings.content_alignment }}">
-
       {%- comment -%} PRE-BUTTON TEXT AND EXPAND BUTTON (ON_BUTTON_CLICK MODE ONLY) {%- endcomment -%}
       {%- if section.settings.expand_status == 'on_button_click' -%}
         {%- if section.settings.pre_button_text != blank -%}
@@ -83,7 +81,7 @@
               endif
             -%}
             {%- if show_block -%}
-              <{{ block.settings.heading_size }} class="rich-text__heading rte inline-richtext {{ block.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" {{ block.shopify_attributes }}
+              <{{ block.settings.heading_size }} class="rich-text__heading rte inline-richtext {{ block.settings.heading_size }} text-{{ block.settings.content_alignment }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" {{ block.shopify_attributes }}
                 {% if settings.animations_reveal_on_scroll %}
                   data-cascade
                   style="--animation-order: {{ forloop.index }};"
@@ -106,7 +104,7 @@
               endif
             -%}
             {%- if show_block -%}
-              <p class="rich-text__caption {{ block.settings.text_style }} {{ block.settings.text_style }}--{{ block.settings.text_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" {{ block.shopify_attributes }}
+              <p class="rich-text__caption {{ block.settings.text_style }} {{ block.settings.text_style }}--{{ block.settings.text_size }} text-{{ block.settings.content_alignment }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" {{ block.shopify_attributes }}
                 {% if settings.animations_reveal_on_scroll %}
                   data-cascade
                   style="--animation-order: {{ forloop.index }};"
@@ -129,7 +127,7 @@
               endif
             -%}
             {%- if show_block -%}
-              <div class="rich-text__text rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" {{ block.shopify_attributes }}
+              <div class="rich-text__text rte text-{{ block.settings.content_alignment }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" {{ block.shopify_attributes }}
                 {% if settings.animations_reveal_on_scroll %}
                   data-cascade
                   style="--animation-order: {{ forloop.index }};"
@@ -152,7 +150,7 @@
               endif
             -%}
             {%- if show_block -%}
-              <div class="rich-text__buttons{% if block.settings.button_label != blank and block.settings.button_label_2 != blank %} rich-text__buttons--multiple{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" {{ block.shopify_attributes }}
+              <div class="rich-text__buttons{% if block.settings.button_label != blank and block.settings.button_label_2 != blank %} rich-text__buttons--multiple{% endif %} text-{{ block.settings.content_alignment }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" {{ block.shopify_attributes }}
                 {% if settings.animations_reveal_on_scroll %}
                   data-cascade
                   style="--animation-order: {{ forloop.index }};"
@@ -203,7 +201,7 @@
             {%- endstyle -%}
 
             <div class="color-{{ block.settings.color_scheme }} gradient">
-              <div class="block-{{ block.id }}-padding">
+              <div class="block-{{ block.id }}-padding text-{{ block.settings.content_alignment }}">
 
                 {%- comment -%} FORM CONTENT {%- endcomment -%}
                 <div class="request-review__form-wrapper" id="review-form-content"
@@ -262,7 +260,7 @@
 
                   {%- comment -%} STEP INDICATOR {%- endcomment -%}
                   <div class="request-review__step-indicator" id="step-indicator" aria-live="polite">
-                    <span id="step-indicator-text">Step 1 of 2: About You</span>
+                    <span id="step-indicator-text">Step 1 of 2</span>
                   </div>
 
                   {%- comment -%} STEP 1: ABOUT YOU (EDITABLE FORM) {%- endcomment -%}
@@ -384,7 +382,7 @@
                   {%- comment -%} STEP 1: SUMMARY CARD (COLLAPSED VIEW WHEN ON STEP 2) {%- endcomment -%}
                   <div id="step-1-summary" class="request-review__summary-card" role="region" aria-label="Contact information summary" style="display: none;">
                     <div class="request-review__summary-header">
-                      <span class="request-review__summary-label">Step 1 of 2: About You</span>
+                      <span class="request-review__summary-label">Step 1 of 2</span>
                       <a href="#" id="btn-edit-step1" class="request-review__summary-edit" role="button">Edit</a>
                     </div>
                     <div class="request-review__summary-details" id="summary-details">
@@ -404,7 +402,7 @@
 
                     {%- comment -%} STEP 2 ACTION BUTTONS {%- endcomment -%}
                     <div class="request-review__step-actions" id="step-2-actions">
-                      <button type="button" id="save-cart-draft" class="button button--primary" style="display: none;">Submit for Review</button>
+                      <button type="button" id="save-cart-draft" class="button button--primary">Submit for Review</button>
                       <div class="request-review__skip-link">
                         <a href="#" id="btn-skip-submit" role="button">Skip project details and submit with request to contact</a>
                       </div>
@@ -434,7 +432,6 @@
         <div class="drawer__overlay" id="review-form-overlay"></div>
       {%- endif -%}
 
-    </div>
   </div>
 </div>
 
@@ -475,26 +472,6 @@
       "label": "t:sections.rich-text.settings.full_width.label"
     },
     {
-      "type": "select",
-      "id": "content_alignment",
-      "options": [
-        {
-          "value": "left",
-          "label": "t:sections.rich-text.settings.content_alignment.options__1.label"
-        },
-        {
-          "value": "center",
-          "label": "t:sections.rich-text.settings.content_alignment.options__2.label"
-        },
-        {
-          "value": "right",
-          "label": "t:sections.rich-text.settings.content_alignment.options__3.label"
-        }
-      ],
-      "default": "center",
-      "label": "t:sections.rich-text.settings.content_alignment.label"
-    },
-    {
       "type": "header",
       "content": "Display"
     },
@@ -523,7 +500,8 @@
       "type": "text",
       "id": "expand_button_label",
       "label": "Expand button label",
-      "default": "Get started >"
+      "default": "Get started >",
+      "info": "Only displayed when Expand status is set to 'On button click'."
     },
     {
       "type": "inline_richtext",
@@ -571,6 +549,17 @@
           "id": "color_scheme",
           "label": "t:sections.all.colors.label",
           "default": "scheme-1"
+        },
+        {
+          "type": "select",
+          "id": "content_alignment",
+          "options": [
+            { "value": "left", "label": "t:sections.rich-text.settings.content_alignment.options__1.label" },
+            { "value": "center", "label": "t:sections.rich-text.settings.content_alignment.options__2.label" },
+            { "value": "right", "label": "t:sections.rich-text.settings.content_alignment.options__3.label" }
+          ],
+          "default": "center",
+          "label": "t:sections.rich-text.settings.content_alignment.label"
         },
         {
           "type": "header",
@@ -692,6 +681,17 @@
         },
         {
           "type": "select",
+          "id": "content_alignment",
+          "options": [
+            { "value": "left", "label": "t:sections.rich-text.settings.content_alignment.options__1.label" },
+            { "value": "center", "label": "t:sections.rich-text.settings.content_alignment.options__2.label" },
+            { "value": "right", "label": "t:sections.rich-text.settings.content_alignment.options__3.label" }
+          ],
+          "default": "center",
+          "label": "t:sections.rich-text.settings.content_alignment.label"
+        },
+        {
+          "type": "select",
           "id": "viewable",
           "options": [
             { "value": "guests", "label": "Guests" },
@@ -753,6 +753,17 @@
         },
         {
           "type": "select",
+          "id": "content_alignment",
+          "options": [
+            { "value": "left", "label": "t:sections.rich-text.settings.content_alignment.options__1.label" },
+            { "value": "center", "label": "t:sections.rich-text.settings.content_alignment.options__2.label" },
+            { "value": "right", "label": "t:sections.rich-text.settings.content_alignment.options__3.label" }
+          ],
+          "default": "center",
+          "label": "t:sections.rich-text.settings.content_alignment.label"
+        },
+        {
+          "type": "select",
           "id": "viewable",
           "options": [
             { "value": "guests", "label": "Guests" },
@@ -773,8 +784,19 @@
         {
           "type": "richtext",
           "id": "text",
-          "default": "<p>Tell us about your project, our experts will review it, and we'll reach out to discuss the best solution. A few brief details is enough to get the conversation started.</p>",
+          "default": "<p>Tell us about your project, our experts will review it, and we'll reach out to discuss the best solution. A few details is enough to start the review.</p>",
           "label": "t:sections.rich-text.blocks.text.settings.text.label"
+        },
+        {
+          "type": "select",
+          "id": "content_alignment",
+          "options": [
+            { "value": "left", "label": "t:sections.rich-text.settings.content_alignment.options__1.label" },
+            { "value": "center", "label": "t:sections.rich-text.settings.content_alignment.options__2.label" },
+            { "value": "right", "label": "t:sections.rich-text.settings.content_alignment.options__3.label" }
+          ],
+          "default": "center",
+          "label": "t:sections.rich-text.settings.content_alignment.label"
         },
         {
           "type": "select",
@@ -837,6 +859,17 @@
           "id": "button_style_secondary_2",
           "default": false,
           "label": "t:sections.rich-text.blocks.buttons.settings.button_style_secondary_2.label"
+        },
+        {
+          "type": "select",
+          "id": "content_alignment",
+          "options": [
+            { "value": "left", "label": "t:sections.rich-text.settings.content_alignment.options__1.label" },
+            { "value": "center", "label": "t:sections.rich-text.settings.content_alignment.options__2.label" },
+            { "value": "right", "label": "t:sections.rich-text.settings.content_alignment.options__3.label" }
+          ],
+          "default": "center",
+          "label": "t:sections.rich-text.settings.content_alignment.label"
         },
         {
           "type": "select",
