@@ -510,7 +510,7 @@
           "type": "content",
           "settings": {
             "page": "request-welding-camera-monitor-solution-review",
-            "heading_hide": false,
+            "heading_hide": true,
             "heading_size": "h1",
             "content_audience": "everyone",
             "authoriz_enabled": false,
@@ -528,7 +528,7 @@
             "lead_in_text": "",
             "form_mode": "basic_and_detailed",
             "customer_form_heading": "About You",
-            "heading_size": "h1",
+            "heading_size": "h2",
             "padding_top": 24,
             "padding_bottom": 24
           }
