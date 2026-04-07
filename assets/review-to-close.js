@@ -229,8 +229,12 @@
     // ========================================================================
 
     autoInitialize() {
-      // In on_button_click mode, don't auto-load — wait for CTA click
+      // In on_button_click mode, auto-expand if returning from sign-in
       if (this.expandStatus === 'on_button_click') {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('shop_sign_in') === 'true') {
+          this.openForm();
+        }
         return;
       }
 
