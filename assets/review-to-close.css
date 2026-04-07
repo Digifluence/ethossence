@@ -505,6 +505,32 @@
   display: block;
 }
 
+/* SUCCESSFUL SUBMISSION MESSAGE */
+.request-review__success-message {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: rgb(16, 185, 129);
+  border: 0.1rem solid rgba(16, 185, 129, 0.2);
+  border-radius: 0.5rem;
+  padding: 2rem;
+  margin-bottom: 3rem;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.request-review__success-message h2,
+.request-review__success-message h1,
+.request-review__success-message h0,
+.request-review__success-message .hxl,
+.request-review__success-message .hxxl {
+  color: rgb(16, 185, 129);
+  margin-bottom: 0.5rem;
+}
+
+.request-review__success-text {
+  color: rgb(16, 185, 129);
+}
+
 /* ERROR & SUCCESS MESSAGES */
 .error-message {
   color: #ef4444;
