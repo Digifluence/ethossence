@@ -561,6 +561,7 @@
           "settings": {
             "heading": "Request a Solution Review",
             "heading_size": "h1",
+            "content_alignment": "center",
             "viewable": "both"
           }
         },
@@ -568,6 +569,7 @@
           "type": "text",
           "settings": {
             "text": "<p>Tell us about your project, our experts will review it, and we'll reach out to discuss the best solution. A few details is enough to start the review.</p>",
+            "content_alignment": "center",
             "viewable": "both"
           }
         },
@@ -575,6 +577,7 @@
           "type": "form",
           "settings": {
             "color_scheme": "",
+            "content_alignment": "center",
             "padding_top": 24,
             "padding_bottom": 24,
             "contact_default_mode": "detailed",
@@ -592,14 +595,19 @@
       "settings": {
         "color_scheme": "scheme-1",
         "full_width": true,
-        "content_alignment": "left",
         "display_type": "slide_down",
         "expand_status": "on_button_click",
+        "pre_expand_content_alignment": "center",
         "expand_button_label": "Get started >",
         "pre_expand_heading": "Request a Solution Review",
-        "pre_expand_text": "Tell us about your project, our experts will review it, and we'll reach out to discuss the best solution.",
-        "padding_top": 24,
-        "padding_bottom": 24
+        "pre_expand_heading_size": "h1",
+        "pre_expand_text": "Get a free expert review to confirm you have the correct products for your project.",
+        "successful_content_alignment": "center",
+        "successful_heading": "Information submitted successfully!",
+        "successful_heading_size": "h1",
+        "successful_text": "Thank you for your submission. Our team will review your information and get back to you within 1-2 business days.",
+        "padding_top": 64,
+        "padding_bottom": 84
       }
     }
   },
