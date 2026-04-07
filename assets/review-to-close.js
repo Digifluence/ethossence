@@ -12,7 +12,7 @@
   const WEBHOOKS = {
     loadForm: 'https://hook.us2.make.com/qlomn3r4q8lhetra9irfer8o611xppav',
     submitRTCform: 'https://hook.us2.make.com/weeau8ogy96lpvkl4d8wlnfm5warbaer',
-    submitReviewRequest: 'https://hook.us2.make.com/5meu8nw1o1bdhuyhopoba6d4usruslej'
+    submitReviewRequest: 'https://hook.us2.make.com/1l73jmxscvfh2h3pqmp33p4fi9vx6ghf'
   };
 
   const SHOPIFY_GRAPHQL_VERSION = '2025-07';
