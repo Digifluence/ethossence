@@ -1146,15 +1146,22 @@
             if (this.editBtn) this.editBtn.style.display = 'none';
             if (this.submitBtn) this.submitBtn.style.display = 'none';
 
-            // Show the section-configured success message above the step indicator
+            // Show the section-configured success message
             const successContainer = document.getElementById('review-success-message');
             if (successContainer) {
               successContainer.style.display = '';
             }
 
-            // Hide the form header (heading + toggle + sign-in)
+            // Hide everything below the success message
             const formHeader = document.querySelector('.request-review__form-header');
             if (formHeader) formHeader.style.display = 'none';
+
+            const stepIndicator = document.getElementById('step-indicator');
+            if (stepIndicator) stepIndicator.style.display = 'none';
+
+            if (this.step1Form) this.step1Form.style.display = 'none';
+            if (this.step1Summary) this.step1Summary.style.display = 'none';
+            if (this.step2Form) this.step2Form.style.display = 'none';
 
             // Scroll to top of form content
             if (this.formContent) {
