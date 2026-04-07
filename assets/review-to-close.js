@@ -1140,39 +1140,25 @@
           if (hasError) {
             this.showMessage(messageDiv, errorMessage, 'error', true);
           } else {
-            let successMessage = '';
-
-            if (typeof responseData === 'object' && responseData.message) {
-              successMessage = responseData.message;
-            } else if (customerData.isCustomer) {
-              successMessage = 'Review request submitted successfully!';
-            } else {
-              successMessage = 'Account created successfully! Check your email for login instructions.';
-            }
-
             // Hide skip link, close button, and edit link on any successful submission
             if (this.skipBtn) this.skipBtn.closest('.request-review__skip-link').style.display = 'none';
             if (this.closeBtn) this.closeBtn.style.display = 'none';
             if (this.editBtn) this.editBtn.style.display = 'none';
+            if (this.submitBtn) this.submitBtn.style.display = 'none';
 
-            if (!skipProjectDetails) {
-              // Step 2 success: persist message, hide submit button, scroll to form top
-              this.showMessage(messageDiv, successMessage, 'success', false, true);
-              if (this.submitBtn) this.submitBtn.style.display = 'none';
-              if (this.formContent) {
-                this.formContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }
-              // Re-show submit button if user changes project selection after success
-              const projectsSelect = document.getElementById('customer_projects');
-              if (projectsSelect) {
-                projectsSelect.addEventListener('change', () => {
-                  if (projectsSelect.value && this.submitBtn) {
-                    this.submitBtn.style.display = '';
-                  }
-                }, { once: true });
-              }
-            } else {
-              this.showMessage(messageDiv, successMessage, 'success');
+            // Show the section-configured success message above the step indicator
+            const successContainer = document.getElementById('review-success-message');
+            if (successContainer) {
+              successContainer.style.display = '';
+            }
+
+            // Hide the form header (heading + toggle + sign-in)
+            const formHeader = document.querySelector('.request-review__form-header');
+            if (formHeader) formHeader.style.display = 'none';
+
+            // Scroll to top of form content
+            if (this.formContent) {
+              this.formContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
           }
         } else {

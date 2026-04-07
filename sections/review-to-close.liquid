@@ -265,6 +265,20 @@
                     </div>
                   </div>
 
+                  {%- comment -%} SUCCESSFUL SUBMISSION MESSAGE (HIDDEN UNTIL JS REVEALS) {%- endcomment -%}
+                  <div id="review-success-message" class="request-review__success-message text-{{ section.settings.successful_content_alignment }}" style="display: none;">
+                    {%- if section.settings.successful_heading != blank -%}
+                      <{{ section.settings.successful_heading_size }} class="{{ section.settings.successful_heading_size }}">
+                        {{ section.settings.successful_heading }}
+                      </{{ section.settings.successful_heading_size }}>
+                    {%- endif -%}
+                    {%- if section.settings.successful_text != blank -%}
+                      <div class="request-review__success-text rte">
+                        {{ section.settings.successful_text }}
+                      </div>
+                    {%- endif -%}
+                  </div>
+
                   {%- comment -%} STEP INDICATOR {%- endcomment -%}
                   <div class="request-review__step-indicator" id="step-indicator" aria-live="polite">
                     <span id="step-indicator-text">Step 1 of 2</span>
@@ -564,6 +578,61 @@
       "default": "Get a free expert review to confirm you have the correct products for your project.",
       "label": "Pre-expand content"
     },
+    {
+      "type": "header",
+      "content": "Successful submission"
+    },    
+    {
+      "type": "select",
+      "id": "successful_content_alignment",
+      "options": [
+        { "value": "left", "label": "t:sections.rich-text.settings.content_alignment.options__1.label" },
+        { "value": "center", "label": "t:sections.rich-text.settings.content_alignment.options__2.label" },
+        { "value": "right", "label": "t:sections.rich-text.settings.content_alignment.options__3.label" }
+      ],
+      "default": "center",
+      "label": "Successful submission alignment"
+    },        
+    {
+      "type": "inline_richtext",
+      "id": "successful_heading",
+      "default": "Request a Solution Review",
+      "label": "Successful submission heading"
+    },
+    {
+      "type": "select",
+      "id": "successful_heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_size.options__1.label"
+        },
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_size.options__2.label"
+        },
+        {
+          "value": "h0",
+          "label": "t:sections.all.heading_size.options__3.label"
+        },
+        {
+          "value": "hxl",
+          "label": "t:sections.all.heading_size.options__4.label"
+        },
+        {
+          "value": "hxxl",
+          "label": "t:sections.all.heading_size.options__5.label"
+        }
+      ],
+      "default": "h1",
+      "label": "Successful submission heading size"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "successful_text",
+      "default": "Get a free expert review to confirm you have the correct products for your project.",
+      "label": "Successful submission content"
+    },    
     {
       "type": "header",
       "content": "t:sections.all.padding.section_padding_heading"
