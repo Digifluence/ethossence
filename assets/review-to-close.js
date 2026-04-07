@@ -1150,6 +1150,11 @@
               successMessage = 'Account created successfully! Check your email for login instructions.';
             }
 
+            // Hide skip link, close button, and edit link on any successful submission
+            if (this.skipBtn) this.skipBtn.closest('.request-review__skip-link').style.display = 'none';
+            if (this.closeBtn) this.closeBtn.style.display = 'none';
+            if (this.editBtn) this.editBtn.style.display = 'none';
+
             if (!skipProjectDetails) {
               // Step 2 success: persist message, hide submit button, scroll to form top
               this.showMessage(messageDiv, successMessage, 'success', false, true);
