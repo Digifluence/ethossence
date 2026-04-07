@@ -257,7 +257,7 @@
                       {%- if customer -%}
                         <div class="request-review__account-status">
                           <span class="request-review__signed-in-status">Signed in as {{ customer.email }}</span>
-                          <a class="request-review__switch-account-link" href="/customer_authentication/logout?return_to={{ request.path | url_encode }}&locale={{ request.locale.iso_code }}">Switch account</a>
+                          <a class="request-review__switch-account-link" href="/account/logout" id="switch-account-link">Switch account</a>
                         </div>
                       {%- else -%}
                         <a class="request-review__sign-in-link" href="{{ routes.storefront_login_url }}"><strong>Sign In &raquo;</strong></a>

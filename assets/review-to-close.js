@@ -126,6 +126,18 @@
       // Country "Other" field toggle
       this.setupCountryOtherLogic();
 
+      // Switch account: logout then redirect back with sign-in trigger
+      const switchAccountLink = document.getElementById('switch-account-link');
+      if (switchAccountLink) {
+        switchAccountLink.addEventListener('click', (e) => {
+          e.preventDefault();
+          const returnUrl = window.location.pathname + '?shop_sign_in=true';
+          fetch('/account/logout', { method: 'GET', credentials: 'same-origin' }).finally(() => {
+            window.location.href = returnUrl;
+          });
+        });
+      }
+
       // Step navigation buttons
       if (this.nextBtn) {
         this.nextBtn.addEventListener('click', () => this.handleNextStep());
