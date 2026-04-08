@@ -11,11 +11,8 @@
   // ============================================================================
   const WEBHOOKS = {
     loadForm: 'https://hook.us2.make.com/qlomn3r4q8lhetra9irfer8o611xppav',
-    submitRTCform: 'https://hook.us2.make.com/weeau8ogy96lpvkl4d8wlnfm5warbaer',
-    submitReviewRequest: 'https://hook.us2.make.com/1l73jmxscvfh2h3pqmp33p4fi9vx6ghf'
+    submitReviewRequest: 'https://hook.us2.make.com/tdx5d1og9v9114hiovsbkpz72ahb7d4t'
   };
-
-  const SHOPIFY_GRAPHQL_VERSION = '2025-07';
 
   // ============================================================================
   // MAIN CONTROLLER
@@ -520,8 +517,6 @@
           pageUrl: window.location.href,
           shopDomain: Shopify.shop || '',
           timestamp: new Date().toISOString(),
-          shopifyGraphQLVersion: SHOPIFY_GRAPHQL_VERSION,
-
           // Customer information
           isCustomer: customerData.isCustomer === true,
           customerId: customerData.customerId,
@@ -748,6 +743,11 @@
       this.setupConditionalFields();
       this.setupOtherFieldLogic();
       this.setupResellerFieldLogic();
+
+      // Snapshot custom fields for change detection at submit
+      if (this.isCustomer) {
+        this.snapshotCustomFields();
+      }
     }
 
     initializeProjectFieldHandlers() {
@@ -1047,40 +1047,55 @@
         const webhookData = {
           shopDomain: Shopify.shop,
           timestamp: new Date().toISOString(),
-          shopifyGraphQLVersion: SHOPIFY_GRAPHQL_VERSION,
+          actionPerform: 'submitReviewRequest',
           currency: cartData.currency,
-
           isCustomer: customerData.isCustomer === true,
           customerId: customerData.customerId,
           customerEmail: customerData.customerEmail,
-          metaobjectType: 'createDraftOrder',
-
-          cart: cartWithoutAttributes,
-          skipProjectDetails: skipProjectDetails
+          cart: cartWithoutAttributes
         };
 
-        let submitWebhook;
+        // Customer basic fields — always included
+        webhookData.customerBasicFields = this.collectAccountCreationFields();
 
-        // Shared field arrays (both customer and anonymous paths)
-        webhookData.fieldsCustomerDetailed = this.collectFieldData(this.detailedContactContainer);
+        // Customer basic fields modified — populated for customers, empty for visitors
+        webhookData.customerBasicFieldsModified = customerData.isCustomer
+          ? this.buildModifiedBasicFields()
+          : [];
 
+        // Customer custom fields — always included
+        webhookData.customerCustomFields = this.collectFieldData(this.detailedContactContainer);
+
+        // Customer custom fields modified — populated for customers, empty for visitors
+        webhookData.customerCustomFieldsModified = customerData.isCustomer
+          ? this.buildModifiedCustomFields()
+          : [];
+
+        // Project context — populated for customers, defaults for visitors
+        const projectContext = customerData.isCustomer
+          ? this.buildProjectContext()
+          : { isNewProject: true, selectedProjectHandle: null, modifiedFields: [] };
+
+        webhookData.projectSkip = skipProjectDetails;
+        webhookData.projectIsNew = projectContext.isNewProject;
+        webhookData.projectSelectedHandle = projectContext.selectedProjectHandle;
+
+        // Project fields — null values when skipped, empty array if not loaded
         if (!skipProjectDetails && this.hasProjectFields) {
-          webhookData.fieldsProject = this.collectFieldData(this.projectFieldsContainer);
+          webhookData.projectFields = this.collectFieldData(this.projectFieldsContainer);
+        } else if (this.hasProjectFields) {
+          webhookData.projectFields = this.collectFieldData(this.projectFieldsContainer).map(field => ({
+            ...field,
+            value: null
+          }));
+        } else {
+          webhookData.projectFields = [];
         }
 
-        if (customerData.isCustomer) {
-          // Signed-in customer: cart review webhook
-          const projectContext = this.buildProjectContext();
-          webhookData.isNewProject = projectContext.isNewProject;
-          webhookData.selectedProjectHandle = projectContext.selectedProjectHandle;
-          webhookData.modifiedFieldsProject = projectContext.modifiedFields;
-          webhookData.modifiedFieldsCustomerBasic = this.buildModifiedBasicFields();
-          submitWebhook = WEBHOOKS.submitReviewRequest;
-        } else {
-          // Anonymous visitor: same webhook, Make.com routes on isCustomer=false
-          webhookData.fieldsCustomerBasic = this.collectAccountCreationFields();
-          submitWebhook = WEBHOOKS.submitReviewRequest;
-        }
+        // Project fields modified — populated for customers, empty for visitors
+        webhookData.projectFieldsModified = projectContext.modifiedFields;
+
+        const submitWebhook = WEBHOOKS.submitReviewRequest;
 
         console.log('Submitting review request:', {
           webhook: 'submitReviewRequest',
@@ -1309,6 +1324,61 @@
           });
         }
       });
+
+      return modified;
+    }
+
+    snapshotCustomFields() {
+      const basicFieldIds = ['firstName', 'lastName', 'email', 'phone', 'company', 'country'];
+      this.originalCustomData = {};
+      const fields = this.detailedContactContainer.querySelectorAll('.cart-attribute[data-metafield-key]');
+      fields.forEach(field => {
+        if (basicFieldIds.includes(field.id)) return;
+        const key = field.dataset.metafieldKey;
+        if (field.type === 'checkbox') {
+          this.originalCustomData[key] = field.checked ? field.value : '';
+        } else if (field.type === 'radio') {
+          if (field.checked) this.originalCustomData[key] = field.value;
+          else if (!(key in this.originalCustomData)) this.originalCustomData[key] = '';
+        } else {
+          this.originalCustomData[key] = field.value.trim();
+        }
+      });
+    }
+
+    buildModifiedCustomFields() {
+      if (!this.originalCustomData) return [];
+      const basicFieldIds = ['firstName', 'lastName', 'email', 'phone', 'company', 'country'];
+      const modified = [];
+      const seen = new Set();
+
+      const fields = this.detailedContactContainer.querySelectorAll('.cart-attribute[data-metafield-key]');
+      fields.forEach(field => {
+        if (basicFieldIds.includes(field.id)) return;
+        const key = field.dataset.metafieldKey;
+        if (seen.has(key)) return;
+        let current = '';
+        if (field.type === 'checkbox') {
+          current = field.checked ? field.value : '';
+        } else if (field.type === 'radio') {
+          if (field.checked) current = field.value;
+          else return; // skip unchecked radios
+        } else {
+          current = field.value.trim();
+        }
+        seen.add(key);
+        const original = this.originalCustomData[key] || '';
+        if (this.normalizeValue(current) !== this.normalizeValue(original)) {
+          modified.push({ metaobject_key: key, originalValue: original, newValue: current });
+        }
+      });
+
+      // Check for fields in snapshot that no longer exist in DOM
+      for (const [key, original] of Object.entries(this.originalCustomData)) {
+        if (!seen.has(key) && this.normalizeValue(original) !== '') {
+          modified.push({ metaobject_key: key, originalValue: original, newValue: '' });
+        }
+      }
 
       return modified;
     }
