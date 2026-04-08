@@ -1272,8 +1272,8 @@
           if (normalizedOriginal !== normalizedCurrent) {
             projectContext.modifiedFields.push({
               metaobject_key: key,
-              originalValue: originalValue,
-              newValue: currentValue || ''
+              originalValue: this.makePayloadSafe(originalValue),
+              newValue: this.makePayloadSafe(currentValue || '')
             });
           }
         }
@@ -1286,7 +1286,7 @@
               projectContext.modifiedFields.push({
                 metaobject_key: key,
                 originalValue: '',
-                newValue: currentValue
+                newValue: this.makePayloadSafe(currentValue)
               });
             }
           }
@@ -1319,8 +1319,8 @@
         if (current !== original) {
           modified.push({
             field: id,
-            originalValue: original,
-            newValue: current
+            originalValue: this.makePayloadSafe(original),
+            newValue: this.makePayloadSafe(current)
           });
         }
       });
@@ -1369,14 +1369,22 @@
         seen.add(key);
         const original = this.originalCustomData[key] || '';
         if (this.normalizeValue(current) !== this.normalizeValue(original)) {
-          modified.push({ metaobject_key: key, originalValue: original, newValue: current });
+          modified.push({
+            metaobject_key: key,
+            originalValue: this.makePayloadSafe(original),
+            newValue: this.makePayloadSafe(current)
+          });
         }
       });
 
       // Check for fields in snapshot that no longer exist in DOM
       for (const [key, original] of Object.entries(this.originalCustomData)) {
         if (!seen.has(key) && this.normalizeValue(original) !== '') {
-          modified.push({ metaobject_key: key, originalValue: original, newValue: '' });
+          modified.push({
+            metaobject_key: key,
+            originalValue: this.makePayloadSafe(original),
+            newValue: ''
+          });
         }
       }
 
@@ -1386,6 +1394,19 @@
     // ========================================================================
     // UTILITIES
     // ========================================================================
+
+    makePayloadSafe(value) {
+      if (value === null || value === undefined) return null;
+      if (typeof value !== 'string') return String(value);
+
+      // Escape characters that break JSON/GraphQL when interpolated between "..." delimiters
+      return value
+        .replace(/\\/g, '\\\\')     // backslash first (before other escapes add more backslashes)
+        .replace(/"/g, '\\"')       // double quotes
+        .replace(/\n/g, '\\n')      // newlines
+        .replace(/\r/g, '\\r')      // carriage returns
+        .replace(/\t/g, '\\t');     // tabs
+    }
 
     initTooltip() {
       const tooltipTrigger = document.querySelector('.request-review__tooltip-trigger');
@@ -1670,11 +1691,11 @@
           return;
         }
 
-        let value = '';
+        let value = null;
         let shouldInclude = false;
 
         if (field.type === 'checkbox') {
-          value = field.checked ? field.value : '';
+          value = field.checked ? field.value : null;
           shouldInclude = true;
         } else if (field.type === 'radio') {
           if (field.checked) {
@@ -1699,9 +1720,13 @@
 
             const metafieldType = field.dataset.metafieldType;
             if (metafieldType && metafieldType.startsWith('list.')) {
-              fieldInfo.value = JSON.stringify([value]);
+              fieldInfo.value = this.makePayloadSafe(JSON.stringify([value]));
               fieldInfo.metafield_type = metafieldType;
+            } else {
+              fieldInfo.value = this.makePayloadSafe(value);
             }
+          } else {
+            fieldInfo.value = this.makePayloadSafe(value);
           }
 
           fieldData.push(fieldInfo);
