@@ -1051,8 +1051,7 @@
           currency: cartData.currency,
           isCustomer: customerData.isCustomer === true,
           customerId: customerData.customerId,
-          customerEmail: customerData.customerEmail,
-          cart: cartWithoutAttributes
+          customerEmail: customerData.customerEmail
         };
 
         // Customer basic fields — always included
@@ -1094,6 +1093,26 @@
 
         // Project fields modified — populated for customers, empty for visitors
         webhookData.projectFieldsModified = projectContext.modifiedFields;
+
+        // Pre-rendered HTML tables for email templates
+        webhookData.companyProfileTableHtml = this.makePayloadSafe(
+          this.buildCompanyProfileTableHtml(
+            webhookData.customerBasicFields,
+            webhookData.customerCustomFields,
+            webhookData.customerBasicFieldsModified,
+            webhookData.customerCustomFieldsModified
+          )
+        );
+        webhookData.projectFieldsTableHtml = this.makePayloadSafe(
+          this.buildProjectFieldsTableHtml(
+            skipProjectDetails,
+            webhookData.projectFields,
+            webhookData.projectFieldsModified
+          )
+        );
+
+        // Cart — always last
+        webhookData.cart = cartWithoutAttributes;
 
         const submitWebhook = WEBHOOKS.submitReviewRequest;
 
@@ -1389,6 +1408,103 @@
       }
 
       return modified;
+    }
+
+    // ========================================================================
+    // HTML TABLE BUILDERS
+    // ========================================================================
+
+    getFieldLabel(fieldId, container) {
+      // 1. Try <label for="fieldId">
+      const label = container
+        ? container.querySelector(`label[for="${fieldId}"]`)
+        : document.querySelector(`label[for="${fieldId}"]`);
+      if (label) return label.textContent.replace(/\s*\*\s*$/, '').trim();
+
+      // 2. Try aria-label on the field itself
+      const field = document.getElementById(fieldId);
+      if (field) {
+        const ariaLabel = field.getAttribute('aria-label');
+        if (ariaLabel) return ariaLabel;
+      }
+
+      // 3. Fallback: humanize the id or metaobject_key
+      return fieldId
+        .replace(/_/g, ' ')
+        .replace(/([a-z])([A-Z])/g, '$1 $2')
+        .replace(/^./, c => c.toUpperCase());
+    }
+
+    displayValue(value) {
+      if (value === null || value === undefined) return '';
+      const str = String(value);
+      // Unwrap list-type metafield JSON (e.g. "[\"Aerospace\"]" → "Aerospace")
+      if (str.startsWith('[') && str.endsWith(']')) {
+        try {
+          const parsed = JSON.parse(str.replace(/\\"/g, '"'));
+          if (Array.isArray(parsed)) return parsed.join(', ');
+        } catch (e) {
+          // Not valid JSON, return as-is
+        }
+      }
+      return str;
+    }
+
+    buildCompanyProfileTableHtml(basicFields, customFields, basicModified, customModified) {
+      const rows = [];
+
+      // Basic contact fields
+      const basicFieldOrder = [
+        { key: 'firstName', label: 'First name' },
+        { key: 'lastName', label: 'Last name' },
+        { key: 'email', label: 'Email' },
+        { key: 'phone', label: 'Phone' },
+        { key: 'company', label: 'Company' },
+        { key: 'country', label: 'Country' },
+        { key: 'countryOther', label: 'Other country' }
+      ];
+
+      // Build set of modified basic field keys for quick lookup
+      const modifiedBasicKeys = new Set(basicModified.map(m => m.field));
+
+      basicFieldOrder.forEach(({ key, label }) => {
+        const value = basicFields[key];
+        if (value === undefined || value === null || value === '') return;
+        const asterisk = modifiedBasicKeys.has(key) ? ' *' : '';
+        rows.push(`<tr><td>${label}</td><td>${value}${asterisk}</td></tr>`);
+      });
+
+      // Custom contact fields
+      const modifiedCustomKeys = new Set(customModified.map(m => m.metaobject_key));
+
+      customFields.forEach(field => {
+        const label = this.getFieldLabel(field.id || field.metaobject_key, this.detailedContactContainer);
+        const value = this.displayValue(field.value);
+        if (value === '') return;
+        const asterisk = field.metaobject_key && modifiedCustomKeys.has(field.metaobject_key) ? ' *' : '';
+        rows.push(`<tr><td>${label}</td><td>${value}${asterisk}</td></tr>`);
+      });
+
+      if (rows.length === 0) return '';
+      return `<table><tbody>${rows.join('')}</tbody></table>`;
+    }
+
+    buildProjectFieldsTableHtml(skipProject, projectFields, projectModified) {
+      if (skipProject || !projectFields || projectFields.length === 0) return '';
+
+      const modifiedKeys = new Set(projectModified.map(m => m.metaobject_key));
+      const rows = [];
+
+      projectFields.forEach(field => {
+        const label = this.getFieldLabel(field.id || field.metaobject_key, this.projectFieldsContainer);
+        const value = this.displayValue(field.value);
+        if (value === '') return;
+        const asterisk = field.metaobject_key && modifiedKeys.has(field.metaobject_key) ? ' *' : '';
+        rows.push(`<tr><td>${label}</td><td>${value}${asterisk}</td></tr>`);
+      });
+
+      if (rows.length === 0) return '';
+      return `<table><tbody>${rows.join('')}</tbody></table>`;
     }
 
     // ========================================================================
