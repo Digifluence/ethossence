@@ -1450,19 +1450,25 @@
       return str;
     }
 
-    buildTableRow(label, data) {
-      return `<tr>`
-        + `<td class="data-label data-row-border" style="font-family:'Open Sans',Tahoma,Helvetica,Arial,sans-serif; font-size:13px; line-height:18px; color:#888888; padding:8px 0; width:110px; vertical-align:top; border-bottom:1px solid #e8dfd1;"> ${label} </td>`
-        + `<td class="data-value data-row-border" style="font-family:'Open Sans',Tahoma,Helvetica,Arial,sans-serif; font-size:13px; line-height:18px; color:#2d2d2d; padding:8px 0; vertical-align:top; border-bottom:1px solid #e8dfd1;"> ${data} </td>`
-        + `</tr>`;
+    renderTableRows(items) {
+      // items: array of { label, data }
+      return items.map((item, i) => {
+        const isLast = i === items.length - 1;
+        const labelClass = isLast ? 'data-label' : 'data-label data-row-border';
+        const valueClass = isLast ? 'data-value' : 'data-value data-row-border';
+        const borderStyle = isLast ? '' : ' border-bottom:1px solid #e8dfd1;';
+        const labelStyle = `font-family:'Open Sans',Tahoma,Helvetica,Arial,sans-serif; font-size:13px; line-height:18px; color:#888888; padding:8px 0; width:110px; vertical-align:top;${borderStyle}`;
+        const valueStyle = `font-family:'Open Sans',Tahoma,Helvetica,Arial,sans-serif; font-size:13px; line-height:18px; color:#2d2d2d; padding:8px 0; vertical-align:top;${borderStyle}`;
+        return `<tr><td class="${labelClass}" style="${labelStyle}">${item.label}</td><td class="${valueClass}" style="${valueStyle}">${item.data}</td></tr>`;
+      }).join('');
     }
 
-    wrapTableHtml(rows) {
-      return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:0;"><tbody>${rows.join('')}</tbody></table>`;
+    wrapTableHtml(rowsHtml) {
+      return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:0;">${rowsHtml}</table>`;
     }
 
     buildCompanyProfileTableHtml(basicFields, customFields, basicModified, customModified) {
-      const rows = [];
+      const items = [];
 
       // Basic contact fields
       const basicFieldOrder = [
@@ -1475,14 +1481,13 @@
         { key: 'countryOther', label: 'Other country' }
       ];
 
-      // Build set of modified basic field keys for quick lookup
       const modifiedBasicKeys = new Set(basicModified.map(m => m.field));
 
       basicFieldOrder.forEach(({ key, label }) => {
         const value = basicFields[key];
         if (value === undefined || value === null || value === '') return;
         const asterisk = modifiedBasicKeys.has(key) ? ' *' : '';
-        rows.push(this.buildTableRow(label, `${value}${asterisk}`));
+        items.push({ label, data: `${value}${asterisk}` });
       });
 
       // Custom contact fields
@@ -1493,29 +1498,29 @@
         const value = this.displayValue(field.value);
         if (value === '') return;
         const asterisk = field.metaobject_key && modifiedCustomKeys.has(field.metaobject_key) ? ' *' : '';
-        rows.push(this.buildTableRow(label, `${value}${asterisk}`));
+        items.push({ label, data: `${value}${asterisk}` });
       });
 
-      if (rows.length === 0) return '';
-      return this.wrapTableHtml(rows);
+      if (items.length === 0) return '';
+      return this.wrapTableHtml(this.renderTableRows(items));
     }
 
     buildProjectFieldsTableHtml(skipProject, projectFields, projectModified) {
       if (skipProject || !projectFields || projectFields.length === 0) return '';
 
       const modifiedKeys = new Set(projectModified.map(m => m.metaobject_key));
-      const rows = [];
+      const items = [];
 
       projectFields.forEach(field => {
         const label = this.getFieldLabel(field.id || field.metaobject_key, this.projectFieldsContainer);
         const value = this.displayValue(field.value);
         if (value === '') return;
         const asterisk = field.metaobject_key && modifiedKeys.has(field.metaobject_key) ? ' *' : '';
-        rows.push(this.buildTableRow(label, `${value}${asterisk}`));
+        items.push({ label, data: `${value}${asterisk}` });
       });
 
-      if (rows.length === 0) return '';
-      return this.wrapTableHtml(rows);
+      if (items.length === 0) return '';
+      return this.wrapTableHtml(this.renderTableRows(items));
     }
 
     // ========================================================================
