@@ -1450,6 +1450,17 @@
       return str;
     }
 
+    buildTableRow(label, data) {
+      return `<tr>`
+        + `<td class="data-label data-row-border" style="font-family:'Open Sans',Tahoma,Helvetica,Arial,sans-serif; font-size:13px; line-height:18px; color:#888888; padding:8px 0; width:110px; vertical-align:top; border-bottom:1px solid #e8dfd1;"> ${label} </td>`
+        + `<td class="data-value data-row-border" style="font-family:'Open Sans',Tahoma,Helvetica,Arial,sans-serif; font-size:13px; line-height:18px; color:#2d2d2d; padding:8px 0; vertical-align:top; border-bottom:1px solid #e8dfd1;"> ${data} </td>`
+        + `</tr>`;
+    }
+
+    wrapTableHtml(rows) {
+      return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:0;"><tbody>${rows.join('')}</tbody></table>`;
+    }
+
     buildCompanyProfileTableHtml(basicFields, customFields, basicModified, customModified) {
       const rows = [];
 
@@ -1471,7 +1482,7 @@
         const value = basicFields[key];
         if (value === undefined || value === null || value === '') return;
         const asterisk = modifiedBasicKeys.has(key) ? ' *' : '';
-        rows.push(`<tr><td>${label}</td><td>${value}${asterisk}</td></tr>`);
+        rows.push(this.buildTableRow(label, `${value}${asterisk}`));
       });
 
       // Custom contact fields
@@ -1482,11 +1493,11 @@
         const value = this.displayValue(field.value);
         if (value === '') return;
         const asterisk = field.metaobject_key && modifiedCustomKeys.has(field.metaobject_key) ? ' *' : '';
-        rows.push(`<tr><td>${label}</td><td>${value}${asterisk}</td></tr>`);
+        rows.push(this.buildTableRow(label, `${value}${asterisk}`));
       });
 
       if (rows.length === 0) return '';
-      return `<table><tbody>${rows.join('')}</tbody></table>`;
+      return this.wrapTableHtml(rows);
     }
 
     buildProjectFieldsTableHtml(skipProject, projectFields, projectModified) {
@@ -1500,11 +1511,11 @@
         const value = this.displayValue(field.value);
         if (value === '') return;
         const asterisk = field.metaobject_key && modifiedKeys.has(field.metaobject_key) ? ' *' : '';
-        rows.push(`<tr><td>${label}</td><td>${value}${asterisk}</td></tr>`);
+        rows.push(this.buildTableRow(label, `${value}${asterisk}`));
       });
 
       if (rows.length === 0) return '';
-      return `<table><tbody>${rows.join('')}</tbody></table>`;
+      return this.wrapTableHtml(rows);
     }
 
     // ========================================================================
