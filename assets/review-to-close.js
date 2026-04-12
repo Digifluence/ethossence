@@ -1094,21 +1094,20 @@
         // Project fields modified — populated for customers, empty for visitors
         webhookData.projectFieldsModified = projectContext.modifiedFields;
 
-        // Pre-rendered HTML tables for email templates
-        webhookData.companyProfileTableHtml = this.makePayloadSafe(
-          this.buildCompanyProfileTableHtml(
-            webhookData.customerBasicFields,
-            webhookData.customerCustomFields,
-            webhookData.customerBasicFieldsModified,
-            webhookData.customerCustomFieldsModified
-          )
+        // Pre-rendered HTML tables for email templates.
+        // NOT passed through makePayloadSafe() — JSON.stringify() on the fetch
+        // body already handles quote/backslash escaping. Pre-escaping here
+        // would produce double-escaped \" in the final email HTML.
+        webhookData.companyProfileTableHtml = this.buildCompanyProfileTableHtml(
+          webhookData.customerBasicFields,
+          webhookData.customerCustomFields,
+          webhookData.customerBasicFieldsModified,
+          webhookData.customerCustomFieldsModified
         );
-        webhookData.projectFieldsTableHtml = this.makePayloadSafe(
-          this.buildProjectFieldsTableHtml(
-            skipProjectDetails,
-            webhookData.projectFields,
-            webhookData.projectFieldsModified
-          )
+        webhookData.projectFieldsTableHtml = this.buildProjectFieldsTableHtml(
+          skipProjectDetails,
+          webhookData.projectFields,
+          webhookData.projectFieldsModified
         );
 
         // Cart — always last
