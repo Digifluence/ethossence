@@ -1456,7 +1456,7 @@
         const labelClass = isLast ? 'data-label' : 'data-label data-row-border';
         const valueClass = isLast ? 'data-value' : 'data-value data-row-border';
         const borderStyle = isLast ? '' : ' border-bottom:1px solid #e8dfd1;';
-        const labelStyle = `font-family:'Open Sans',Tahoma,Helvetica,Arial,sans-serif; font-size:13px; line-height:18px; color:#888888; padding:8px 0; width:110px; vertical-align:top;${borderStyle}`;
+        const labelStyle = `font-family:'Open Sans',Tahoma,Helvetica,Arial,sans-serif; font-size:13px; line-height:18px; color:#888888; padding:8px 16px 8px 0; width:110px; vertical-align:top;${borderStyle}`;
         const valueStyle = `font-family:'Open Sans',Tahoma,Helvetica,Arial,sans-serif; font-size:13px; line-height:18px; color:#2d2d2d; padding:8px 0; vertical-align:top;${borderStyle}`;
         return `<tr><td class="${labelClass}" style="${labelStyle}">${item.label}</td><td class="${valueClass}" style="${valueStyle}">${item.data}</td></tr>`;
       }).join('');
