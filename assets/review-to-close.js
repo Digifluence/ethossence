@@ -1025,6 +1025,18 @@
 
         const { attributes, ...cartWithoutAttributes } = cartData;
 
+        // Flatten discount fields onto each cart line item so Make.com aggregator
+        // templates can reference them directly (e.g. 200.discount_total_cents)
+        // without nested array access. discount_total_cents stays in cents to match
+        // Shopify's native cart format — Make handles the /100 division.
+        if (cartWithoutAttributes.items && Array.isArray(cartWithoutAttributes.items)) {
+          cartWithoutAttributes.items.forEach(item => {
+            item.discount_total_cents = item.total_discount || 0;
+            item.discount_title = (item.discounts && item.discounts.length > 0) ? item.discounts[0].title : '';
+            item.discount_value_type = 'FIXED_AMOUNT';
+          });
+        }
+
         // Prepare base webhook data
         const webhookData = {
           shopDomain: Shopify.shop,
