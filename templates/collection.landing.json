@@ -83,7 +83,7 @@
         "show_price": true,
         "show_vendor": false,
         "show_rating": false,
-        "quick_add": "standard",
+        "quick_add": "none",
         "enable_filtering": false,
         "filter_type": "horizontal",
         "enable_sorting": false,
