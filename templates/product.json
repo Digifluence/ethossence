@@ -581,7 +581,7 @@
             "content_alignment": "center",
             "padding_top": 24,
             "padding_bottom": 24,
-            "contact_default_mode": "detailed",
+            "contact_default_mode": "basic",
             "heading": "Your information",
             "heading_size": "h1"
           }
