@@ -550,32 +550,6 @@
 
         // Get HTML content and split into contact + project sections
         const htmlContent = await response.text();
-
-        // Extract and execute <script> blocks from the raw HTML before innerHTML parsing.
-        // innerHTML assignment marks scripts as "already started" so they never run — we
-        // must execute them manually from the raw text to get window.customerDetailed
-        // and window.customerProjects assigned.
-        const scriptRegex = /<script\b[^>]*>([\s\S]*?)<\/script>/gi;
-        let scriptMatch;
-        let scriptCount = 0;
-        while ((scriptMatch = scriptRegex.exec(htmlContent)) !== null) {
-          const scriptContent = scriptMatch[1];
-          if (!scriptContent.trim()) continue;
-          const newScript = document.createElement('script');
-          newScript.textContent = scriptContent;
-          document.head.appendChild(newScript);
-          scriptCount++;
-        }
-        if (scriptCount > 0) {
-          console.log(`Executed ${scriptCount} script block(s) from webhook response`);
-        }
-        if (window.customerDetailed) {
-          console.log('window.customerDetailed created with keys:', Object.keys(window.customerDetailed));
-        }
-        if (window.customerProjects) {
-          console.log('window.customerProjects created with', Object.keys(window.customerProjects).length, 'projects');
-        }
-
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = htmlContent;
 
@@ -617,6 +591,27 @@
           this.hasProjectFields = false;
           // Hide Next button and step indicator if no project fields
           this.updateUIForSingleStep();
+        }
+
+        // Execute any root-level scripts in the webhook response that sit outside
+        // #webhook-contact-fields and #webhook-project-fields (e.g. window.customerProjects)
+        Array.from(tempDiv.children).forEach(child => {
+          if (child.tagName && child.tagName.toLowerCase() === 'script') {
+            const newScript = document.createElement('script');
+            newScript.textContent = child.textContent;
+            Array.from(child.attributes).forEach(attr => {
+              newScript.setAttribute(attr.name, attr.value);
+            });
+            document.head.appendChild(newScript);
+            console.log('Executed root-level webhook script');
+          }
+        });
+
+        // Verify window.customerProjects was created
+        if (window.customerProjects) {
+          console.log('window.customerProjects created with', Object.keys(window.customerProjects).length, 'projects');
+        } else {
+          console.warn('window.customerProjects still undefined after script execution');
         }
 
         this.detailedLoaded = true;
@@ -727,24 +722,20 @@
           continue;
         }
 
-        // Unwrap list-type metafield values (e.g. '["Aerospace"]' → 'Aerospace')
-        // so they match <option value="..."> / radio values.
-        const applyValue = this.unwrapListValue(fieldValue);
-
         if (field.type === 'checkbox') {
-          field.checked = applyValue === 'true' || applyValue === true;
+          field.checked = fieldValue === 'true' || fieldValue === true;
         } else if (field.type === 'radio') {
           container.querySelectorAll(
             `[data-metafield-key="${fieldKey}"], [name="properties[${fieldKey}]"], [name="${fieldKey}"]`
           ).forEach(radio => {
-            if (radio.value === applyValue) radio.checked = true;
+            if (radio.value === fieldValue) radio.checked = true;
           });
         } else if (field.tagName.toLowerCase() === 'select') {
-          field.value = applyValue;
+          field.value = fieldValue;
           // Trigger change so dependent "Other" fields respond
           field.dispatchEvent(new Event('change'));
         } else {
-          field.value = applyValue;
+          field.value = fieldValue;
         }
       }
 
@@ -932,23 +923,19 @@
             continue;
           }
 
-          // Unwrap list-type metafield values (e.g. '["Steel"]' → 'Steel')
-          // so they match <option value="..."> / radio values.
-          const applyValue = this.unwrapListValue(fieldValue);
-
           if (field.type === 'checkbox') {
-            field.checked = applyValue === 'true' || applyValue === true;
+            field.checked = fieldValue === 'true' || fieldValue === true;
           } else if (field.type === 'radio') {
             const radioGroup = projectNewContainer.querySelectorAll(
               `[data-metafield-key="${fieldKey}"], [name="properties[${fieldKey}]"], [name="${fieldKey}"]`
             );
             radioGroup.forEach(radio => {
-              if (radio.value === applyValue) radio.checked = true;
+              if (radio.value === fieldValue) radio.checked = true;
             });
           } else if (field.tagName.toLowerCase() === 'select') {
-            field.value = applyValue;
+            field.value = fieldValue;
           } else {
-            field.value = applyValue;
+            field.value = fieldValue;
           }
         }
 
@@ -1460,23 +1447,6 @@
         }
       }
       return str;
-    }
-
-    // Unwrap stringified list-type metafield values for form field population.
-    // e.g. '["Aerospace"]' → 'Aerospace'. Returns the first element so the value
-    // matches a single <option> or radio value. Non-list values pass through unchanged.
-    unwrapListValue(value) {
-      if (typeof value !== 'string') return value;
-      if (!value.startsWith('[') || !value.endsWith(']')) return value;
-      try {
-        const parsed = JSON.parse(value);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          return parsed[0];
-        }
-      } catch (e) {
-        // Not valid JSON — return original
-      }
-      return value;
     }
 
     renderTableRows(items) {
