@@ -46,7 +46,7 @@
             "content_alignment": "center",
             "padding_top": 24,
             "padding_bottom": 24,
-            "contact_default_mode": "basic",
+            "contact_default_mode": "detailed",
             "heading": "About You",
             "heading_size": "h1"
           }
@@ -62,7 +62,7 @@
         "color_scheme": "",
         "full_width": true,
         "display_type": "slide_down",
-        "expand_status": "on_button_click",
+        "expand_status": "by_default",
         "pre_expand_content_alignment": "left",
         "expand_button_label": "Get started >",
         "pre_expand_heading": "Request a Solution Review",
