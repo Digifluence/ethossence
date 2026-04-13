@@ -81,13 +81,6 @@
         }
       }
 
-      console.log('ReviewToCloseController initialized', {
-        displayType: this.displayType,
-        expandStatus: this.expandStatus,
-        contactDefaultMode: this.contactDefaultMode,
-        isCustomer: this.isCustomer
-      });
-
       this.init();
     }
 
@@ -533,8 +526,6 @@
           }
         };
 
-        console.log('Loading dynamic form for:', customerData.metaobjectType);
-
         // Fetch HTML from Make webhook
         const response = await fetch(WEBHOOKS.loadForm, {
           method: 'POST',
@@ -551,62 +542,30 @@
         // Get HTML content and split into contact + project sections
         const htmlContent = await response.text();
 
-        console.log('[RTC] Raw webhook response length:', htmlContent.length);
-        console.log('[RTC] Raw webhook response (first 800 chars):', htmlContent.substring(0, 800));
-        console.log('[RTC] Contains literal <script:', htmlContent.includes('<script'));
-        console.log('[RTC] Contains encoded &lt;script:', htmlContent.includes('&lt;script'));
-        console.log('[RTC] Contains window.customerDetailed:', htmlContent.includes('window.customerDetailed'));
-
         // Extract and execute <script> blocks from the raw HTML before innerHTML
         // parsing. innerHTML assignment marks scripts as "already started" so they
-        // never run — we must execute them manually from the raw text to assign
-        // window.customerDetailed and window.customerProjects.
-        //
-        // Defensive repair: the Make.com loadForm scenario emits list-type metafield
-        // values with unescaped inner quotes, e.g. `"industry_sector": "["Aerospace"]"`
-        // which is invalid JavaScript and throws a SyntaxError, halting the whole
-        // script and leaving both window globals undefined. Repair the pattern to
-        // `"industry_sector": "[\"Aerospace\"]"` before executing. When the Make.com
-        // producer is fixed upstream, this repair becomes a no-op.
+        // never run — we must execute them manually to assign window.customerDetailed
+        // and window.customerProjects. Also repairs a malformed list-type value
+        // pattern `"["value"]"` → `"[\"value\"]"` defensively in case the producer
+        // emits unescaped inner quotes.
         const scriptRegex = /<script\b[^>]*>([\s\S]*?)<\/script>/gi;
         let scriptMatch;
-        let scriptCount = 0;
         while ((scriptMatch = scriptRegex.exec(htmlContent)) !== null) {
           let scriptContent = scriptMatch[1];
           if (!scriptContent.trim()) continue;
 
-          // Repair malformed list-type values: "["value"]" → "[\"value\"]"
           const repairRegex = /"\[("[^"\[\]]*"(?:\s*,\s*"[^"\[\]]*")*)\]"/g;
-          const repaired = scriptContent.replace(repairRegex, (_m, inner) => {
-            const escapedInner = inner.replace(/"/g, '\\"');
-            return `"[${escapedInner}]"`;
+          scriptContent = scriptContent.replace(repairRegex, (_m, inner) => {
+            return `"[${inner.replace(/"/g, '\\"')}]"`;
           });
-          if (repaired !== scriptContent) {
-            console.log('Repaired malformed list-type values in webhook script');
-            scriptContent = repaired;
-          }
 
           try {
             const newScript = document.createElement('script');
             newScript.textContent = scriptContent;
             document.head.appendChild(newScript);
-            scriptCount++;
           } catch (e) {
             console.error('Failed to execute webhook script block:', e);
           }
-        }
-        if (scriptCount > 0) {
-          console.log(`Executed ${scriptCount} script block(s) from webhook response`);
-        }
-        if (window.customerDetailed) {
-          console.log('window.customerDetailed created with keys:', Object.keys(window.customerDetailed));
-        } else {
-          console.warn('window.customerDetailed still undefined after script execution');
-        }
-        if (window.customerProjects) {
-          console.log('window.customerProjects created with', Object.keys(window.customerProjects).length, 'projects');
-        } else {
-          console.warn('window.customerProjects still undefined after script execution');
         }
 
         const tempDiv = document.createElement('div');
@@ -704,8 +663,6 @@
     initializeContactFieldHandlers() {
       const attributeFields = this.detailedContactContainer.querySelectorAll('.cart-attribute');
 
-      console.log('Found', attributeFields.length, 'cart attribute fields in contact section');
-
       // Setup conditional field display
       this.setupConditionalFields();
 
@@ -733,16 +690,11 @@
     }
 
     populateDetailedContactFields() {
-      if (!window.customerDetailed) {
-        console.log('window.customerDetailed not present — skipping pre-population');
-        return;
-      }
+      if (!window.customerDetailed) return;
 
       // Only one entry exists; get its data regardless of the key
       const customerData = Object.values(window.customerDetailed)[0];
       if (!customerData) return;
-
-      console.log('Pre-populating detailed contact fields from window.customerDetailed');
 
       const container = this.detailedContactContainer;
 
@@ -755,10 +707,7 @@
                    || container.querySelector(`[name="${fieldKey}"]`)
                    || container.querySelector(`#${fieldKey}`);
 
-        if (!field) {
-          console.warn(`populateDetailedContactFields: no field found for key "${fieldKey}"`);
-          continue;
-        }
+        if (!field) continue;
 
         // Unwrap list-type metafield values (e.g. '["Aerospace"]' → 'Aerospace')
         // so they match <option value="..."> / radio values.
@@ -797,8 +746,6 @@
       this._projectHandlersInitialized = true;
 
       const attributeFields = this.projectFieldsContainer.querySelectorAll('.cart-attribute');
-
-      console.log('Found', attributeFields.length, 'cart attribute fields in project section');
 
       if (this.isCustomer) {
         // Customers: setup dropdown to select/create a project
@@ -944,14 +891,8 @@
       const projectNewContainer = document.getElementById('project-new');
       if (!projectNewContainer) return;
 
-      if (window.customerProjects) {
-        console.log('Found customer projects data:', Object.keys(window.customerProjects).length, 'projects');
-      }
-
       const populateProjectFields = (projectData) => {
         if (!projectData) return;
-
-        console.log('Populating project fields with keys:', Object.keys(projectData));
 
         for (const [fieldKey, fieldValue] of Object.entries(projectData)) {
           // Try data-metafield-key first, then Shopify cart attribute name format, then plain name/id
@@ -960,10 +901,7 @@
                      || projectNewContainer.querySelector(`[name="${fieldKey}"]`)
                      || projectNewContainer.querySelector(`#${fieldKey}`);
 
-          if (!field) {
-            console.warn(`populateProjectFields: no field found for key "${fieldKey}"`);
-            continue;
-          }
+          if (!field) continue;
 
           // Unwrap list-type metafield values (e.g. '["Steel"]' → 'Steel')
           // so they match <option value="..."> / radio values.
@@ -1026,8 +964,6 @@
         } else {
           projectNewContainer.style.display = 'block';
           if (this.submitBtn) this.submitBtn.style.display = '';
-
-          console.log('Project selected:', selectedValue, '| window.customerProjects keys:', window.customerProjects ? Object.keys(window.customerProjects) : 'undefined');
 
           if (window.customerProjects && window.customerProjects[selectedValue]) {
             const projectData = window.customerProjects[selectedValue];
@@ -1161,12 +1097,6 @@
 
         const submitWebhook = WEBHOOKS.submitReviewRequest;
 
-        console.log('Submitting review request:', {
-          webhook: 'submitReviewRequest',
-          skipProjectDetails: skipProjectDetails,
-          detailedVisible: this.detailedVisible
-        });
-
         // Send to appropriate Make webhook
         const webhookResponse = await fetch(submitWebhook, {
           method: 'POST',
@@ -1188,11 +1118,8 @@
               responseData = responseText;
             }
           } catch (parseError) {
-            console.warn('Failed to parse response as JSON:', parseError);
             responseData = await webhookResponse.text();
           }
-
-          console.log('Webhook response:', responseData);
 
           // Check for error in response
           let hasError = false;
@@ -1680,9 +1607,8 @@
 
     reExecuteScripts(container) {
       const scripts = container.querySelectorAll('script');
-      console.log(`Found ${scripts.length} script tags to re-execute`);
 
-      scripts.forEach((oldScript, index) => {
+      scripts.forEach((oldScript) => {
         const newScript = document.createElement('script');
 
         if (oldScript.src) {
@@ -1699,7 +1625,6 @@
 
         // Append to document.head — more reliable than replaceChild inside a div
         document.head.appendChild(newScript);
-        console.log(`Executed script ${index + 1}`);
       });
     }
 
@@ -1724,14 +1649,10 @@
       });
 
       try {
-        const response = await fetch('/cart/update.js', {
+        await fetch('/cart/update.js', {
           method: 'POST',
           body: formData
         });
-
-        if (response.ok) {
-          console.log('Cart attributes updated successfully');
-        }
       } catch (error) {
         console.error('Error updating cart attributes:', error);
       }
