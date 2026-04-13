@@ -597,7 +597,7 @@
         "color_scheme": "scheme-1",
         "full_width": true,
         "display_type": "slide_down",
-        "expand_status": "by_default",
+        "expand_status": "on_button_click",
         "pre_expand_content_alignment": "center",
         "expand_button_label": "Get started >",
         "pre_expand_heading": "Request a Solution Review",
