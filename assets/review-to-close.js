@@ -1410,6 +1410,9 @@
     displayValue(value) {
       if (value === null || value === undefined) return '';
       const str = String(value);
+      // Boolean radio values → Yes/No
+      if (str === 'true') return 'Yes';
+      if (str === 'false') return 'No';
       // Unwrap list-type metafield JSON (e.g. "[\"Aerospace\"]" → "Aerospace")
       if (str.startsWith('[') && str.endsWith(']')) {
         try {
