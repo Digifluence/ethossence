@@ -71,7 +71,7 @@
         "successful_content_alignment": "center",
         "successful_heading": "Information submitted successfully!",
         "successful_heading_size": "h1",
-        "successful_text": "Thank you for your submission. Our team will review your information and get back to you within 1-2 business days.",
+        "successful_text": "Thank you for your submission. Our team will review your information and get back to you.",
         "padding_top": 24,
         "padding_bottom": 24
       }
