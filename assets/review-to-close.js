@@ -551,6 +551,12 @@
         // Get HTML content and split into contact + project sections
         const htmlContent = await response.text();
 
+        console.log('[RTC] Raw webhook response length:', htmlContent.length);
+        console.log('[RTC] Raw webhook response (first 800 chars):', htmlContent.substring(0, 800));
+        console.log('[RTC] Contains literal <script:', htmlContent.includes('<script'));
+        console.log('[RTC] Contains encoded &lt;script:', htmlContent.includes('&lt;script'));
+        console.log('[RTC] Contains window.customerDetailed:', htmlContent.includes('window.customerDetailed'));
+
         // Extract and execute <script> blocks from the raw HTML before innerHTML
         // parsing. innerHTML assignment marks scripts as "already started" so they
         // never run — we must execute them manually from the raw text to assign
