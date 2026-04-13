@@ -891,6 +891,24 @@
       const projectNewContainer = document.getElementById('project-new');
       if (!projectNewContainer) return;
 
+      // If the customer has no existing projects, skip the dropdown entirely and
+      // show the new-project form directly (matches the non-customer experience).
+      const hasExistingProjects = window.customerProjects
+        && Object.keys(window.customerProjects).length > 0;
+
+      if (!hasExistingProjects) {
+        const projectExistingContainer = document.getElementById('project-existing');
+        if (projectExistingContainer) projectExistingContainer.style.display = 'none';
+
+        projectNewContainer.style.display = 'block';
+        if (this.submitBtn) this.submitBtn.style.display = '';
+
+        this.isNewProject = true;
+        this.selectedProjectHandle = null;
+        this.originalProjectData = null;
+        return;
+      }
+
       const populateProjectFields = (projectData) => {
         if (!projectData) return;
 
