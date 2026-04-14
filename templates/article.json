@@ -101,6 +101,27 @@
       ],
       "settings": {}
     },
+    "ethossence_video_resources_RKM36y": {
+      "type": "ethossence-video-resources",
+      "name": "Video resources",
+      "settings": {
+        "heading": "Video resources",
+        "heading_size": "h2",
+        "heading_alignment": "left",
+        "color_scheme": "",
+        "include_video_title": false,
+        "title_size": "h3",
+        "include_video_description": false,
+        "columns_desktop": 2,
+        "columns_mobile": "1",
+        "lazy_load": true,
+        "show_top_line": false,
+        "show_bottom_line": false,
+        "enable_accordion": false,
+        "padding_top": 24,
+        "padding_bottom": 100
+      }
+    },
     "ethossence_faqs_fkVM6d": {
       "type": "ethossence-faqs",
       "name": "FAQS",
@@ -145,6 +166,7 @@
     "ethossence_breadcrumbs_zc6CX6",
     "ethossence_content_headings_Q6rCxU",
     "main",
+    "ethossence_video_resources_RKM36y",
     "ethossence_faqs_fkVM6d",
     "ethossence_article_tags_w9BgDA",
     "ethossence_subscribe_f6rMqK"
