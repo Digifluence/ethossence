@@ -9,7 +9,7 @@
  */
 {
   "current": {
-    "logo": "shopify://shop_images/melttools-welding-cameras-made-in-america-trimmed-logo.png",
+    "logo": "shopify://shop_images/melttools-welding-camera-monitoring-logo-orange.png",
     "logo_width": 250,
     "favicon": "shopify://shop_images/favicon.png",
     "type_header_font": "assistant_n4",
@@ -110,7 +110,7 @@
     "sold_out_badge_color_scheme": "scheme-3",
     "brand_headline": "",
     "brand_description": "<p>MeltTools, LLC<br/>7847 South Sprinkle Road<br/>Portage, Michigan 49002<br/>United States<br/>+1 (269) 978-0968</p>",
-    "brand_image": "shopify://shop_images/melttools-welding-cameras-made-in-america-trimmed-logo.png",
+    "brand_image": "shopify://shop_images/melttools-welding-camera-monitoring-logo-orange.png",
     "brand_image_width": 180,
     "btn_appointment_label": "Book Now",
     "btn_appointment_url": "/pages/welding-camera-consultation-demonstration-appointments",
@@ -120,7 +120,7 @@
     "btn_wholesale_url": "/pages/for-oem",
     "btn_quote_label": "Request a Quote",
     "btn_quote_url": "/pages/quote-request",
-    "social_facebook_link": "https://www.facebook.com/melttools",
+    "social_facebook_link": "",
     "social_instagram_link": "https://www.instagram.com/melttools/?hl=en",
     "social_youtube_link": "https://www.youtube.com/@MeltTools/featured",
     "social_linkedin_link": "https://www.linkedin.com/company/melttools",
@@ -134,7 +134,7 @@
     "predictive_search_show_vendor": false,
     "predictive_search_show_price": false,
     "currency_code_enabled": false,
-    "cart_type": "page",
+    "cart_type": "notification",
     "show_vendor": false,
     "show_cart_note": true,
     "cart_drawer_collection": "",
