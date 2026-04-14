@@ -105,7 +105,7 @@
       "type": "ethossence-video-resources",
       "name": "Video resources",
       "settings": {
-        "heading": "Video resources",
+        "heading": "",
         "heading_size": "h2",
         "heading_alignment": "left",
         "color_scheme": "",
