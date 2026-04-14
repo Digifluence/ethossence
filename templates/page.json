@@ -271,36 +271,6 @@
         "padding_top": 36,
         "padding_bottom": 36
       }
-    },
-    "review_to_close_form_htB7BM": {
-      "type": "review-to-close",
-      "blocks": {
-        "form_YeXam7": {
-          "type": "form",
-          "settings": {
-            "color_scheme": "scheme-1",
-            "content_alignment": "left",
-            "padding_top": 24,
-            "padding_bottom": 24,
-            "contact_default_mode": "basic",
-            "heading": "About You",
-            "heading_size": "h1"
-          }
-        }
-      },
-      "block_order": [
-        "form_YeXam7"
-      ],
-      "name": "Review-to-Close",
-      "settings": {
-        "color_scheme": "",
-        "full_width": true,
-        "display_type": "slide_down",
-        "expand_status": "by_default",
-        "expand_button_label": "Get started >",
-        "padding_top": 24,
-        "padding_bottom": 24
-      }
     }
   },
   "order": [
@@ -314,7 +284,6 @@
     "ethossence_embed_script_EDwrMP",
     "multicolumn_3f88yA",
     "174017485838edd9b6",
-    "multicolumn_Uw9GNN",
-    "review_to_close_form_htB7BM"
+    "multicolumn_Uw9GNN"
   ]
 }
