@@ -1,0 +1,47 @@
+{%- comment -%}
+  Ethossence Shipping Policy — renders the shipping notice inline with a modal
+  opener that shows shop.shipping_policy.body in a product popup modal.
+
+  Accepts:
+  - section_id (required) — the calling section's id, used to make modal ids unique.
+
+  Usage:
+    {%- if shop.shipping_policy.body != blank -%}
+      {% render 'ethossence-shipping-policy', section_id: section.id %}
+    {%- endif -%}
+{%- endcomment -%}
+
+{%- capture _shipping_notice -%}
+  {{ 'products.product.shipping_policy_html' | t: link: '#' }}
+{%- endcapture -%}
+{%- assign _shipping_notice = _shipping_notice
+  | replace: '<a href="#">', '<button type="button" class="link shipping-policy__trigger">'
+  | replace: '</a>', '</button>'
+-%}
+
+<modal-opener class="shipping-policy__opener" data-modal="#ShippingPolicyModal-{{ section_id }}">
+  {{ _shipping_notice }}
+</modal-opener>
+
+<modal-dialog id="ShippingPolicyModal-{{ section_id }}" class="product-popup-modal shipping-policy-modal">
+  <div
+    role="dialog"
+    aria-label="{{ shop.shipping_policy.title | escape }}"
+    aria-modal="true"
+    class="product-popup-modal__content"
+    tabindex="-1"
+  >
+    <button
+      id="ModalClose-ShippingPolicy-{{ section_id }}"
+      type="button"
+      class="product-popup-modal__toggle"
+      aria-label="{{ 'accessibility.close' | t }}"
+    >
+      {{- 'icon-close.svg' | inline_asset_content -}}
+    </button>
+    <div class="product-popup-modal__content-info">
+      <h1 class="h2">{{ shop.shipping_policy.title | escape }}</h1>
+      {{ shop.shipping_policy.body }}
+    </div>
+  </div>
+</modal-dialog>
