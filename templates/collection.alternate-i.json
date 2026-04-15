@@ -111,7 +111,7 @@
           "type": "heading",
           "settings": {
             "heading": "We're Ready to Help You",
-            "heading_size": "h0"
+            "heading_size": "h1"
           }
         },
         "button_ngdQGA": {
@@ -142,6 +142,7 @@
     },
     "featured_collection_EQ778h": {
       "type": "featured-collection",
+      "disabled": true,
       "name": "SDI Direct Display Cameras",
       "settings": {
         "collection": "featured-products-ii",
@@ -172,6 +173,7 @@
     },
     "featured_collection_X3Cypr": {
       "type": "featured-collection",
+      "disabled": true,
       "name": "AI Ready Computerized Cameras",
       "settings": {
         "collection": "home-page-browse-our-products",
