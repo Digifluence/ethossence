@@ -8,6 +8,11 @@
       margin-top: 2rem;
     }
   }
+
+  .button[class~="404-button"]:not([disabled]):hover {
+    background-color: rgba(var(--color-button), 0.85);
+    color: rgb(var(--color-button-text));
+  }
 </style>
 
 <div class="template-404 page-width page-margin center">
@@ -17,7 +22,7 @@
   <h1 class="title">
     {{ 'templates.404.title' | t }}
   </h1>
-  <a href="{{ routes.all_products_collection_url }}" class="button">
+  <a href="{{ routes.all_products_collection_url }}" class="button 404-button">
     {{ 'general.continue_shopping' | t }}
   </a>
 </div>

@@ -106,3 +106,8 @@
     grid-column: 1 / -1;
   }
 }
+
+.button.extend-content-button:not([disabled]):hover {
+  background-color: rgba(var(--color-button), 0.85);
+  color: rgb(var(--color-button-text));
+}
