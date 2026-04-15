@@ -75,7 +75,7 @@
         "heading_Gtyt4X": {
           "type": "heading",
           "settings": {
-            "heading": "Your Project",
+            "heading": "Your Application",
             "heading_size": "h1",
             "content_alignment": "left",
             "viewable": "both"
