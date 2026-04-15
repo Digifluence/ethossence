@@ -3194,7 +3194,8 @@ details-disclosure > details {
 }
 
 .rte blockquote {
-  display: inline-flex;
+  display: flex;
+  flex-direction: column;
 }
 
 .rte blockquote > * {
