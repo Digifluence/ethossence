@@ -234,7 +234,7 @@
             "image": "shopify://shop_images/melttools-tech-support-book-appointment-online.jpg",
             "title": "Technical Support",
             "heading_size": "h2",
-            "text": "<p>Join us for sessions to ensure you're getting the most out of your investment.</p>",
+            "text": "<p>Join us to ensure you're getting the most out of your investment.</p>",
             "link_label": "Book Now",
             "link": "shopify://pages/appointment-booking-technical-support-training",
             "column_alignment": "default"
