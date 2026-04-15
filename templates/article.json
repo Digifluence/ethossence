@@ -112,7 +112,7 @@
         "include_video_title": false,
         "title_size": "h3",
         "include_video_description": false,
-        "columns_desktop": 2,
+        "columns_desktop": 1,
         "columns_mobile": "1",
         "lazy_load": true,
         "show_top_line": false,
