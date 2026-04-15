@@ -206,9 +206,9 @@
           "name": "Sales Introduction Consultation",
           "settings": {
             "image": "shopify://shop_images/melttools-sales-consultation-book-appointment-online.jpg",
-            "title": "Sales Introduction Consultation",
+            "title": "Sales Consult",
             "heading_size": "h2",
-            "text": "<p>Schedule a consultation with the MeltTools team to learn how our innovative welding cameras can enhance your workflow.  </p>",
+            "text": "<p>Schedule a consultation to learn how our innovative welding cameras.  </p>",
             "link_label": "Book Now",
             "link": "shopify://pages/welding-camera-consultation-ai-welding-introduction",
             "column_alignment": "default"
@@ -219,9 +219,9 @@
           "name": " Live Remote Demonstration",
           "settings": {
             "image": "shopify://shop_images/melttools-live-remote-demo-welding-bay-book-appointment.jpg",
-            "title": "Live Remote Demonstration",
+            "title": "Live Demo",
             "heading_size": "h2",
-            "text": "<p>We'll showcase our cameras' advanced features, answer your questions, and discuss how they can be tailored to meet your organization's specific needs.</p>",
+            "text": "<p>We'll showcase our cameras' advanced features and answer your questions.</p>",
             "link_label": "Book Now",
             "link": "shopify://pages/appointment-booking-live-remote-demonstration",
             "column_alignment": "default"
@@ -232,9 +232,9 @@
           "name": " Technical Support / Troubleshooting",
           "settings": {
             "image": "shopify://shop_images/melttools-tech-support-book-appointment-online.jpg",
-            "title": "Technical Support / Troubleshooting",
+            "title": "Technical Support",
             "heading_size": "h2",
-            "text": "<p>Join us for support sessions to receive expert guidance and troubleshooting assistance and ensure you're getting the most out of your investment.</p>",
+            "text": "<p>Join us for sessions to ensure you're getting the most out of your investment.</p>",
             "link_label": "Book Now",
             "link": "shopify://pages/appointment-booking-technical-support-training",
             "column_alignment": "default"
@@ -245,9 +245,9 @@
           "name": " General Purpose Meeting",
           "settings": {
             "image": "shopify://shop_images/melttools-general-meeting-book-appointment-online.jpg",
-            "title": "General Purpose Meeting",
+            "title": "General",
             "heading_size": "h1",
-            "text": "<p>Whether you're interested in partnerships, media relations, or simply want to learn more about MeltTools, we're happy to chat.</p>",
+            "text": "<p>Learn more about us, we're happy to chat.</p>",
             "link_label": "Book Now!",
             "link": "shopify://pages/appointment-booking-general-purpose",
             "column_alignment": "default"
@@ -268,7 +268,7 @@
         "image_ratio": "square",
         "button_label": "",
         "button_link": "",
-        "columns_desktop": 2,
+        "columns_desktop": 4,
         "column_alignment": "center",
         "background_style": "primary",
         "color_scheme": "",
