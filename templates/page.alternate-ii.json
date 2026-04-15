@@ -30,6 +30,17 @@
       "type": "ethossence-breadcrumbs",
       "name": "Breadcrumbs",
       "settings": {
+        "menu": "main-menu",
+        "label_collections": "Collections",
+        "label_products": "Products",
+        "label_cart": "Cart",
+        "label_search": "Search",
+        "label_contact": "Contact us",
+        "label_portal": "Portal",
+        "label_login": "Login",
+        "label_order_list": "Order list",
+        "label_order": "Order",
+        "label_password": "Password",
         "color_scheme": "scheme-3",
         "full_width": false,
         "padding_top": 16,
@@ -42,6 +53,7 @@
       "settings": {
         "heading_size": "h1",
         "subheading_size": "h2",
+        "heading_alignment": "left",
         "color_scheme": "",
         "padding_top": 36,
         "padding_bottom": 0
@@ -57,12 +69,70 @@
         "authoriz_require_msg": ""
       }
     },
+    "review_to_close_83iQMK": {
+      "type": "review-to-close",
+      "blocks": {
+        "heading_Gtyt4X": {
+          "type": "heading",
+          "settings": {
+            "heading": "Request a Solution Review",
+            "heading_size": "h1",
+            "content_alignment": "center",
+            "viewable": "both"
+          }
+        },
+        "text_tYNPxt": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Tell us about your project, our experts will review it, and we'll reach out to discuss the best solution. A few details is enough to start the review.</p>",
+            "content_alignment": "center",
+            "viewable": "both"
+          }
+        },
+        "form_RpKVkn": {
+          "type": "form",
+          "settings": {
+            "color_scheme": "",
+            "content_alignment": "center",
+            "padding_top": 24,
+            "padding_bottom": 24,
+            "contact_default_mode": "detailed",
+            "heading": "About You & Your Company",
+            "heading_size": "h1"
+          }
+        }
+      },
+      "block_order": [
+        "heading_Gtyt4X",
+        "text_tYNPxt",
+        "form_RpKVkn"
+      ],
+      "name": "Review-to-Close",
+      "settings": {
+        "color_scheme": "",
+        "full_width": true,
+        "display_type": "slide_down",
+        "expand_status": "by_default",
+        "pre_expand_content_alignment": "center",
+        "expand_button_label": "Get started >",
+        "pre_expand_heading": "Request a Solution Review",
+        "pre_expand_heading_size": "h1",
+        "pre_expand_text": "Get a free expert review to confirm you have the correct products for your project.",
+        "successful_content_alignment": "center",
+        "successful_heading": "Information submitted successfully!",
+        "successful_heading_size": "h1",
+        "successful_text": "Thank you for your submission. Our team will review your information and get back to you within 1-2 business days.",
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
+    },
     "ethossence_video_resources_dPCTq3": {
       "type": "ethossence-video-resources",
       "name": "Video resources",
       "settings": {
         "heading": "Videoes",
         "heading_size": "h2",
+        "heading_alignment": "left",
         "color_scheme": "",
         "include_video_title": true,
         "title_size": "h3",
@@ -70,6 +140,9 @@
         "columns_desktop": 3,
         "columns_mobile": "1",
         "lazy_load": true,
+        "show_top_line": false,
+        "show_bottom_line": false,
+        "enable_accordion": false,
         "padding_top": 8,
         "padding_bottom": 8
       }
@@ -80,12 +153,16 @@
       "settings": {
         "heading": "",
         "heading_size": "h2",
+        "heading_alignment": "left",
         "color_scheme": "",
         "include_image_title": false,
         "title_size": "h3",
         "include_image_description": true,
         "columns_desktop": 3,
         "columns_mobile": "2",
+        "show_top_line": false,
+        "show_bottom_line": false,
+        "enable_accordion": false,
         "padding_top": 12,
         "padding_bottom": 28
       }
@@ -98,6 +175,7 @@
         "heading_size": "h1",
         "heading_alignment": "left",
         "color_scheme": "",
+        "enable_accordion": false,
         "padding_top": 12,
         "padding_bottom": 12
       }
@@ -112,55 +190,6 @@
         "color_scheme": "",
         "padding_top": 28,
         "padding_bottom": 28
-      }
-    },
-    "multicolumn_3f88yA": {
-      "type": "multicolumn",
-      "blocks": {
-        "column_ddLNFH": {
-          "type": "column",
-          "settings": {
-            "title": "Start a Conversation",
-            "heading_size": "h1",
-            "text": "",
-            "link_label": "Contact Us",
-            "link": "shopify://pages/contact",
-            "column_alignment": "default"
-          }
-        },
-        "column_gFeKaQ": {
-          "type": "column",
-          "settings": {
-            "title": "Let's Meet Online",
-            "heading_size": "h1",
-            "text": "",
-            "link_label": "Book an Appointment",
-            "link": "shopify://pages/welding-camera-consultation-demonstration-appointments",
-            "column_alignment": "default"
-          }
-        }
-      },
-      "block_order": [
-        "column_ddLNFH",
-        "column_gFeKaQ"
-      ],
-      "name": "Start Convo / Meet Online",
-      "settings": {
-        "title": "",
-        "heading_size": "h1",
-        "image_width": "full",
-        "image_ratio": "adapt",
-        "button_label": "",
-        "button_link": "",
-        "columns_desktop": 2,
-        "column_alignment": "center",
-        "background_style": "none",
-        "color_scheme": "",
-        "link_color": "link_primary",
-        "columns_mobile": "1",
-        "swipe_on_mobile": false,
-        "padding_top": 40,
-        "padding_bottom": 84
       }
     },
     "174017485838edd9b6": {
@@ -231,7 +260,6 @@
         "column_KKTUUT",
         "column_PHcbpA"
       ],
-      "disabled": true,
       "name": "t:sections.multicolumn.presets.name",
       "settings": {
         "title": "Book an Online Meeting",
@@ -257,11 +285,11 @@
     "ethossence_breadcrumbs_fiwKWd",
     "ethossence_content_headings_CCeiBk",
     "main",
+    "review_to_close_83iQMK",
     "ethossence_video_resources_dPCTq3",
     "ethossence_image_resources_NGcFLE",
     "ethossence_faqs_jqtdje",
     "ethossence_embed_script_EDwrMP",
-    "multicolumn_3f88yA",
     "174017485838edd9b6",
     "multicolumn_Uw9GNN"
   ]
