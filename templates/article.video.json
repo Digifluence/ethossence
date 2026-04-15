@@ -139,6 +139,16 @@
         "padding_bottom": 24
       }
     },
+    "ethossence_article_back_w8K6Xn": {
+      "type": "ethossence-article-back",
+      "name": "Article back link",
+      "settings": {
+        "back_to_blog_text": "Back to blog",
+        "color_scheme": "",
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
+    },
     "ethossence_article_tags_aUpzGH": {
       "type": "ethossence-article-tags",
       "name": "Blog article tags",
@@ -163,6 +173,15 @@
         "padding_top": 24,
         "padding_bottom": 24
       }
+    },
+    "ethossence_article_comments_eJcF6H": {
+      "type": "ethossence-article-comments",
+      "name": "Article comments",
+      "settings": {
+        "color_scheme": "",
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
     }
   },
   "order": [
@@ -171,7 +190,9 @@
     "ethossence_content_headings_bHHEhG",
     "ethossence_video_resources_bGtJBJ",
     "main",
+    "ethossence_article_comments_eJcF6H",
     "ethossence_article_related_MznPqY",
+    "ethossence_article_back_w8K6Xn",
     "ethossence_article_tags_aUpzGH",
     "ethossence_subscribe_ftwXhC"
   ]
