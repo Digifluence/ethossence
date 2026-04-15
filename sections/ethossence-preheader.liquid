@@ -1,3 +1,11 @@
+{%- comment -%}
+  ------------------------------------------------------------
+  Section: ethossence-preheader
+  Utility bar above the header. Renders optional social icons,
+  search, and a row of configurable buttons and/or a text link.
+  ------------------------------------------------------------
+{%- endcomment -%}
+
 {%- liquid
 
   assign social_icons = true
@@ -26,6 +34,9 @@
     if block.settings.show_btn_wholesale
       assign button_count = button_count | plus: 1
     endif
+    if block.settings.show_btn_quote
+      assign button_count = button_count | plus: 1
+    endif
     if block.settings.btn_custom_label != ""
       assign button_count = button_count | plus: 1
     endif
@@ -47,100 +58,52 @@
 
 {%- if preheader_bar -%}
 
+  {{ 'ethossence-preheader.css' | asset_url | stylesheet_tag }}
+
   {%- style -%}
-      
     .section-{{ section.id }}-padding {
       padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
       padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
     }
-  
-    @media (max-width: 749px) {
-      .button-column,
-      .text-column,
-      .grid__item {
-        flex-basis: 100% !important;
-        max-width: 100% !important;
-      }
-      .custom-columns {
-        flex-direction: column;
-        column-gap: 30px;
-      }
-    }
 
-    @media (min-width: 750px) {
-      .custom-columns {
-        display: flex;
-        gap: 0;
-      }
-      .button-column {
-        flex-basis: {{ button_column_width }}%;
-        max-width: {{ button_column_width }}%;
-        flex-grow: 0;
-        flex-shrink: 0;
-        width: auto;        
-      }
-      .text-column {
-        flex-basis: {{ text_column_width }}%;
-        max-width: {{ text_column_width }}%;
-        flex-grow: 0;
-        flex-shrink: 0;
-        width: auto;        
-      }
+    @media screen and (min-width: 750px) {
       .section-{{ section.id }}-padding {
         padding-top: {{ section.settings.padding_top }}px;
         padding-bottom: {{ section.settings.padding_bottom }}px;
-      }      
+      }
+
+      #shopify-section-{{ section.id }} .ethossence-preheader__button-column {
+        flex-basis: {{ button_column_width }}%;
+        max-width: {{ button_column_width }}%;
+      }
+
+      #shopify-section-{{ section.id }} .ethossence-preheader__text-column {
+        flex-basis: {{ text_column_width }}%;
+        max-width: {{ text_column_width }}%;
+      }
     }
-    
-    .text-row {
-      margin: 7px;
-      min-height: calc(2.5rem + var(--buttons-border-width) * 2);
-    }    
-
-    .button-row {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .preheader-button {
-      justify-self: end;
-      margin: 7px 0;
-      min-height: calc(2.5rem + var(--buttons-border-width) * 2);
-      white-space: nowrap;
-    }    
-
   {%- endstyle -%}
 
   {%- if section.settings.show_social and social_icons -%}
     {{ 'component-list-social.css' | asset_url | stylesheet_tag }}
   {%- endif -%}
 
-  <ethossence-preheader>
-    <div class="
-        section-{{ section.id }}-padding 
-        color-{{ section.settings.color_scheme }} 
-        gradient
-        {% if section.settings.show_line_separator and section.blocks.size > 0 %} utility-bar--bottom-border
-        {% elsif section.settings.show_line_separator and section.settings.show_social and social_icons%} utility-bar--bottom-border-social-only
-        {% endif %}
-      ">
-      <div class="page-width">
+  <div class="color-{{ section.settings.color_scheme }} gradient{% if section.settings.show_line_separator and section.blocks.size > 0 %} utility-bar--bottom-border{% elsif section.settings.show_line_separator and section.settings.show_social and social_icons %} utility-bar--bottom-border-social-only{% endif %}">
+    <div class="page-width section-{{ section.id }}-padding isolate">
 
         {%- if section.settings.show_social and social_icons -%}
-          <span style="float: left; padding-right: 10px;">
+          <span class="ethossence-preheader__social">
             {%- render 'social-icons' -%}
           </span>
-        {%- endif -%}        
+        {%- endif -%}
 
         {%- if section.settings.show_search -%}
-          <span style="float: left; padding-right: 10px;">
+          <span class="ethossence-preheader__search">
             {% render 'header-search', input_id: 'Search-In-Modal' %}
           </span>
-        {%- endif -%} 
+        {%- endif -%}
 
-        <div class="custom-columns grid grid--2-col-tablet-down" style="justify-content: {{ buttons_alignment }};">
+        <div class="ethossence-preheader__columns grid grid--2-col-tablet-down" style="justify-content: {{ buttons_alignment }};">
 
           {%- if has_text and has_buttons -%}
 
@@ -149,8 +112,8 @@
 
                 {% when 'text' %}
 
-                  <div class="text-column color-{{ section.settings.color_scheme }} gradient">
-                    <div class="text-row" style="text-align: {{ block.settings.text_alignment }};">
+                  <div class="ethossence-preheader__text-column color-{{ section.settings.color_scheme }} gradient">
+                    <div class="ethossence-preheader__text-row" style="text-align: {{ block.settings.text_alignment }};">
                       {%- render 'ethossence-text'
                         txt_link: block.settings.txt_text,
                         txt_url: block.settings.txt_url,
@@ -159,16 +122,16 @@
                     </div>
                   </div>
 
-                {% when 'buttons' %}          
+                {% when 'buttons' %}
 
-                  <div class="button-column">
-                    <div class="button-row">
+                  <div class="ethossence-preheader__button-column">
+                    <div class="ethossence-preheader__button-row">
                       
                       {%- if block.settings.show_btn_appointment -%}
                         {%- render 'ethossence-buttons'
                           btn_url: settings.btn_appointment_url,
                           btn_label: settings.btn_appointment_label,
-                          btn_class: 'preheader-button',
+                          btn_class: 'ethossence-preheader__button',
                           btn_color_scheme: section.settings.color_scheme,  
                           format: 'link',
                           include_arrow: true
@@ -179,7 +142,7 @@
                         {%- render 'ethossence-buttons'
                           btn_url: settings.btn_product_finder_url,
                           btn_label: settings.btn_product_finder_label,
-                          btn_class: 'preheader-button',
+                          btn_class: 'ethossence-preheader__button',
                           btn_color_scheme: section.settings.color_scheme,  
                           format: 'link',
                           include_arrow: true
@@ -190,7 +153,7 @@
                         {%- render 'ethossence-buttons'
                           btn_url: settings.btn_wholesale_url,
                           btn_label: settings.btn_wholesale_label,
-                          btn_class: 'preheader-button',
+                          btn_class: 'ethossence-preheader__button',
                           btn_color_scheme: section.settings.color_scheme,  
                           format: 'link',
                           include_arrow: true
@@ -201,7 +164,7 @@
                         {%- render 'ethossence-buttons'
                           btn_url: settings.btn_quote_url,
                           btn_label: settings.btn_quote_label,
-                          btn_class: 'preheader-button',
+                          btn_class: 'ethossence-preheader__button',
                           btn_color_scheme: section.settings.color_scheme,  
                           format: 'link',
                           include_arrow: true
@@ -210,9 +173,9 @@
 
                       {% if block.settings.btn_custom_label != "" %}
                         {%- render 'ethossence-buttons'
-                          btn_url: settings.btn_custom_url,
-                          btn_label: settings.btn_custom_label,
-                          btn_class: 'preheader-button',
+                          btn_url: block.settings.btn_custom_url,
+                          btn_label: block.settings.btn_custom_label,
+                          btn_class: 'ethossence-preheader__button',
                           btn_color_scheme: section.settings.color_scheme,  
                           format: 'link',
                           include_arrow: true
@@ -231,7 +194,7 @@
               {% case block.type %}              
 
                 {% when 'text' %}
-                  <div class="text-column color-{{ section.settings.color_scheme }} gradient" style="text-align: {{ block.settings.text_alignment }};">
+                  <div class="ethossence-preheader__text-column color-{{ section.settings.color_scheme }} gradient" style="text-align: {{ block.settings.text_alignment }};">
                       {%- render 'ethossence-text'
                         txt_link: block.settings.txt_text,
                         txt_url: block.settings.txt_url,
@@ -240,13 +203,13 @@
                   </div>
 
                 {% when 'buttons' %}
-                  <div class="button-row" style="justify-content: {{ block.settings.buttons_alignment }};">
+                  <div class="ethossence-preheader__button-row" style="justify-content: {{ block.settings.buttons_alignment }};">
 
                     {%- if block.settings.show_btn_appointment -%}
                       {%- render 'ethossence-buttons'
                         btn_url: settings.btn_appointment_url,
                         btn_label: settings.btn_appointment_label,
-                        btn_class: 'preheader-button',
+                        btn_class: 'ethossence-preheader__button',
                         btn_color_scheme: section.settings.color_scheme,  
                         format: 'link',
                         include_arrow: true
@@ -257,7 +220,7 @@
                       {%- render 'ethossence-buttons'
                         btn_url: settings.btn_product_finder_url,
                         btn_label: settings.btn_product_finder_label,
-                        btn_class: 'preheader-button',
+                        btn_class: 'ethossence-preheader__button',
                         btn_color_scheme: section.settings.color_scheme,  
                         format: 'link',
                         include_arrow: true
@@ -268,7 +231,7 @@
                       {%- render 'ethossence-buttons'
                         btn_url: settings.btn_wholesale_url,
                         btn_label: settings.btn_wholesale_label,
-                        btn_class: 'preheader-button',
+                        btn_class: 'ethossence-preheader__button',
                         btn_color_scheme: section.settings.color_scheme,  
                         format: 'link',
                         include_arrow: true
@@ -279,7 +242,7 @@
                       {%- render 'ethossence-buttons'
                         btn_url: settings.btn_quote_url,
                         btn_label: settings.btn_quote_label,
-                        btn_class: 'preheader-button',
+                        btn_class: 'ethossence-preheader__button',
                         btn_color_scheme: section.settings.color_scheme,  
                         format: 'link',
                         include_arrow: true
@@ -290,7 +253,7 @@
                       {%- render 'ethossence-buttons'
                         btn_url: block.settings.btn_custom_url,
                         btn_label: block.settings.btn_custom_label,
-                        btn_class: 'preheader-button',
+                        btn_class: 'ethossence-preheader__button',
                         btn_color_scheme: section.settings.color_scheme,  
                         format: 'link',
                         include_arrow: true
@@ -305,11 +268,10 @@
           {%- endif -%}     
 
         </div>
-      </div>
     </div>
-  </ethossence-preheader>
+  </div>
 
-{%- endif -%}  
+{%- endif -%}
 
 {% schema %}
   {

@@ -531,16 +531,16 @@ a.button,
   text-decoration: none;
 }
 
+/* Hover inversion: swap button and label colors so the label stays legible
+   across all color schemes (including dark scheme-4 where the previous
+   reduced-opacity background left white-on-white text). */
 a.button:not([disabled]):hover,
-.rte a.button:not([disabled]):hover {
-  color: rgb(var(--color-button-text)) !important;
-}
-
-/* Fix for dark color schemes where link_primary is dark on dark background */
-.color-scheme-4 a.button:not([disabled]):hover,
-.color-scheme-4 .rte a.button:not([disabled]):hover,
-.color-scheme-4 .button:not([disabled]):hover {
-  color: #ffffff !important;
+.rte a.button:not([disabled]):hover,
+.button:not([disabled]):hover,
+.shopify-challenge__button:hover,
+.customer button:hover {
+  background-color: rgb(var(--color-button-text)) !important;
+  color: rgb(var(--color-button)) !important;
 }
 
 a.button:visited,
