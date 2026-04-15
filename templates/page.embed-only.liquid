@@ -1,0 +1,15 @@
+{%- layout none -%}
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex, nofollow">
+    <meta http-equiv="refresh" content="0; url={{ routes.root_url }}">
+    <link rel="canonical" href="{{ shop.url }}{{ routes.root_url }}">
+    <title>{{ shop.name | escape }}</title>
+    <script>window.location.replace({{ routes.root_url | json }});</script>
+  </head>
+  <body>
+    <p>Redirecting to <a href="{{ routes.root_url }}">{{ shop.name | escape }}</a>&hellip;</p>
+  </body>
+</html>
