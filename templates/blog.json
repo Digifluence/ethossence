@@ -15,14 +15,14 @@
         "heading_nBmFX3": {
           "type": "heading",
           "settings": {
-            "heading": "<strong>Weld Monitoring</strong>",
+            "heading": "",
             "heading_size": "h1"
           }
         },
         "text_w8Ukmc": {
           "type": "text",
           "settings": {
-            "text": "Leading and Trailing Cameras",
+            "text": "",
             "text_style": "subtitle"
           }
         }
