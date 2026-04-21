@@ -321,7 +321,7 @@
         "columns_mobile": "1",
         "lazy_load": true,
         "show_top_line": true,
-        "show_bottom_line": false,
+        "show_bottom_line": true,
         "enable_accordion": true,
         "padding_top": 24,
         "padding_bottom": 24
