@@ -14,6 +14,7 @@
       "blocks": {
         "heading_Q7tFxW": {
           "type": "heading",
+          "disabled": true,
           "settings": {
             "heading": "<strong>Weld Monitoring</strong>",
             "heading_size": "h1"
@@ -21,6 +22,7 @@
         },
         "text_HKPyWh": {
           "type": "text",
+          "disabled": true,
           "settings": {
             "text": "Leading and Trailing Cameras",
             "text_style": "subtitle"
