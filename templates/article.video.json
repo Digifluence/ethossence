@@ -14,6 +14,7 @@
       "blocks": {
         "heading_Q7tFxW": {
           "type": "heading",
+          "disabled": true,
           "settings": {
             "heading": "<strong>Weld Monitoring</strong>",
             "heading_size": "h1"
@@ -21,6 +22,7 @@
         },
         "text_HKPyWh": {
           "type": "text",
+          "disabled": true,
           "settings": {
             "text": "Leading and Trailing Cameras",
             "text_style": "subtitle"
@@ -122,6 +124,15 @@
       ],
       "settings": {}
     },
+    "ethossence_article_comments_eJcF6H": {
+      "type": "ethossence-article-comments",
+      "name": "Article comments",
+      "settings": {
+        "color_scheme": "",
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
+    },
     "ethossence_article_related_MznPqY": {
       "type": "ethossence-article-related",
       "name": "t:sections.blog-articles-related.presets.name",
@@ -170,15 +181,6 @@
         "heading_size": "h2",
         "heading_alignment": "left",
         "color_scheme": "scheme-2",
-        "padding_top": 24,
-        "padding_bottom": 24
-      }
-    },
-    "ethossence_article_comments_eJcF6H": {
-      "type": "ethossence-article-comments",
-      "name": "Article comments",
-      "settings": {
-        "color_scheme": "",
         "padding_top": 24,
         "padding_bottom": 24
       }
