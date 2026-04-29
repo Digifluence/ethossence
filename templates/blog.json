@@ -110,7 +110,7 @@
         "show_image": true,
         "image_height": "small",
         "show_date": true,
-        "show_author": false,
+        "show_author": true,
         "padding_top": 8,
         "padding_bottom": 16
       }
