@@ -52,14 +52,14 @@
         "heading_bgChKE": {
           "type": "heading",
           "settings": {
-            "heading": "VISUALIZE WELDING",
-            "heading_size": "h0"
+            "heading": "Welding Camera Systems Built Around Your Weld, Not The Other Way Around",
+            "heading_size": "h1"
           }
         },
         "text_4XKgqf": {
           "type": "text",
           "settings": {
-            "text": "<p>Visualizing welding in-process will enable technological breakthrough, ensure quality, improve operator performance and pay for itself.</p>"
+            "text": "<p>From standard weld monitoring to custom-engineered AI platforms</p><p>Designed and manufactured in Michigan, USA</p>"
           }
         }
       },
