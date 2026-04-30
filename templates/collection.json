@@ -130,7 +130,6 @@
         "heading_Gw3D7p",
         "button_ngdQGA"
       ],
-      "disabled": true,
       "name": "Call-to-action",
       "settings": {
         "desktop_content_position": "center",
@@ -237,6 +236,7 @@
         "text_jiCNiG",
         "button_dgP8QL"
       ],
+      "disabled": true,
       "name": "t:sections.rich-text.presets.name",
       "settings": {
         "desktop_content_position": "center",
