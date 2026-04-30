@@ -226,7 +226,7 @@
             "button_link": "shopify://pages/welding-camera-consultation-demonstration-appointments",
             "button_style_secondary": false,
             "button_label_2": "",
-            "button_link_2": "",
+            "button_link_2": "shopify://pages/contact",
             "button_style_secondary_2": false
           }
         }
