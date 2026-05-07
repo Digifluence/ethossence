@@ -286,6 +286,56 @@
         "padding_bottom": 36
       }
     },
+    "multicolumn_F4hjTn": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_f9c7jP": {
+          "type": "column",
+          "settings": {
+            "title": "Let's Meet Online",
+            "heading_size": "h2",
+            "text": "",
+            "link_label": "Book an Appointment",
+            "link": "shopify://pages/welding-camera-consultation-demonstration-appointments",
+            "column_alignment": "center"
+          }
+        },
+        "column_yhjimi": {
+          "type": "column",
+          "settings": {
+            "title": "Take Our Camera Quiz",
+            "heading_size": "h2",
+            "text": "",
+            "link_label": "Camera Finder",
+            "link": "shopify://pages/meltview-camera-finder",
+            "column_alignment": "center"
+          }
+        }
+      },
+      "block_order": [
+        "column_f9c7jP",
+        "column_yhjimi"
+      ],
+      "disabled": true,
+      "name": "Different Camera?",
+      "settings": {
+        "title": "Not sure about the PIXI camera?",
+        "heading_size": "h2",
+        "image_width": "half",
+        "image_ratio": "adapt",
+        "button_label": "",
+        "button_link": "",
+        "columns_desktop": 2,
+        "column_alignment": "center",
+        "background_style": "none",
+        "color_scheme": "",
+        "link_color": "link_primary",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
     "ethossence_image_resources_8BHjr4": {
       "type": "ethossence-image-resources",
       "name": "Image resources",
@@ -621,6 +671,7 @@
     "ethossence_product_characteristics_4qjACh",
     "ethossence_product_description_NePtCU",
     "ethossence_product_specifications_93VpPJ",
+    "multicolumn_F4hjTn",
     "ethossence_image_resources_8BHjr4",
     "ethossence_video_resources_YWAtwj",
     "ethossence_faqs_xaTnFk",
