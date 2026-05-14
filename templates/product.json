@@ -517,6 +517,38 @@
         "include_margins": true
       }
     },
+    "rich_text_RFYcrx": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_BYh3Vt": {
+          "type": "heading",
+          "settings": {
+            "heading": "What Our Customers Are Saying",
+            "heading_size": "h1"
+          }
+        },
+        "text_PjCMRp": {
+          "type": "text",
+          "settings": {
+            "text": "<p>John Harkaway</p><p>Welding remote and in environmentally challenging conditions is very difficult.<br/> In our welding industry, the welding operator is typically “hands-off” <br/>from the weld location and relies on camera images to perform the <br/>welding task. The operator must make critical decisions and be able to <br/>see “Real Time” the arc puddle and all characteristics of the weld. </p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_BYh3Vt",
+        "text_PjCMRp"
+      ],
+      "disabled": true,
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
     "rich_text_fdWzG7": {
       "type": "rich-text",
       "blocks": {
@@ -681,6 +713,7 @@
     "ethossence_product_special_collections_BpNihC",
     "ethossence_product_special_collections_CRKmFr",
     "17713492916acaba61",
+    "rich_text_RFYcrx",
     "rich_text_fdWzG7",
     "featured_collection_8qpFee",
     "related-products",
