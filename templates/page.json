@@ -275,11 +275,24 @@
     "multicolumn_XVD46C": {
       "type": "multicolumn",
       "blocks": {
+        "column_N3ddhx": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/weld-monitoring-with-custom-display.jpg",
+            "title": "Volodymyr Kornilov: Embedded Software & Hardware Engineer",
+            "heading_size": "h2",
+            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+            "link_label": "",
+            "link": "",
+            "column_alignment": "default"
+          }
+        },
         "column_MVBHtn": {
           "type": "column",
           "settings": {
-            "title": "Column",
-            "heading_size": "h1",
+            "image": "shopify://shop_images/PL90-welding-camera-system.jpg",
+            "title": "Nicole Maturen: General Manager and Co-owner",
+            "heading_size": "h2",
             "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
             "link_label": "",
             "link": "",
@@ -289,8 +302,9 @@
         "column_6eVMjk": {
           "type": "column",
           "settings": {
-            "title": "Column",
-            "heading_size": "h1",
+            "image": "shopify://shop_images/sba-wosb-certified.jpg",
+            "title": "Andrew Short: Applications Engineer and Co-owner",
+            "heading_size": "h2",
             "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
             "link_label": "",
             "link": "",
@@ -300,7 +314,20 @@
         "column_8xM4qA": {
           "type": "column",
           "settings": {
-            "title": "Column",
+            "image": "shopify://shop_images/WAAM-monitoring-with-TD25.jpg",
+            "title": "Dave DeBoer: Computer Numerical Control Programmer",
+            "heading_size": "h2",
+            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+            "link_label": "",
+            "link": "",
+            "column_alignment": "default"
+          }
+        },
+        "column_qaEcnp": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/custom-meltview-pact-camera-no-cable.jpg",
+            "title": "Abdullah Khan: Engineer",
             "heading_size": "h1",
             "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
             "link_label": "",
@@ -312,8 +339,8 @@
           "type": "column",
           "settings": {
             "image": "shopify://shop_images/mira3-camera-with-custom-PERI-attachment.jpg",
-            "title": "Column",
-            "heading_size": "h1",
+            "title": "Megan Morgenstern: Quality Specialist",
+            "heading_size": "h2",
             "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
             "link_label": "",
             "link": "",
@@ -323,8 +350,9 @@
         "column_KAphJ8": {
           "type": "column",
           "settings": {
-            "title": "Column",
-            "heading_size": "h1",
+            "image": "shopify://shop_images/custom-halo-LED-with-ring-mount-on-mount.jpg",
+            "title": "Philip Wiswell: Electronic Technician",
+            "heading_size": "h2",
             "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
             "link_label": "",
             "link": "",
@@ -334,8 +362,9 @@
         "column_6hfpUJ": {
           "type": "column",
           "settings": {
-            "title": "Column",
-            "heading_size": "h1",
+            "image": "shopify://shop_images/custom-display-dual-DART2-welding-camera-system.jpg",
+            "title": "Zoe Blough: Administrative Assistant",
+            "heading_size": "h2",
             "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
             "link_label": "",
             "link": "",
@@ -345,8 +374,9 @@
         "column_AgCbNN": {
           "type": "column",
           "settings": {
-            "title": "Column",
-            "heading_size": "h1",
+            "image": "shopify://shop_images/TD25-SG.jpg",
+            "title": "Oscar Reyes-Sanchez: Junior Engineer",
+            "heading_size": "h2",
             "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
             "link_label": "",
             "link": "",
@@ -355,9 +385,11 @@
         }
       },
       "block_order": [
+        "column_N3ddhx",
         "column_MVBHtn",
         "column_6eVMjk",
         "column_8xM4qA",
+        "column_qaEcnp",
         "column_LUW8pB",
         "column_KAphJ8",
         "column_6hfpUJ",
@@ -369,7 +401,7 @@
         "title": "Meet the Team",
         "heading_size": "h1",
         "image_width": "full",
-        "image_ratio": "adapt",
+        "image_ratio": "circle",
         "button_label": "Button label",
         "button_link": "",
         "columns_desktop": 3,
@@ -377,7 +409,7 @@
         "background_style": "primary",
         "color_scheme": "",
         "link_color": "link_primary",
-        "columns_mobile": "1",
+        "columns_mobile": "2",
         "swipe_on_mobile": false,
         "padding_top": 36,
         "padding_bottom": 36
