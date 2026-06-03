@@ -271,6 +271,117 @@
         "padding_top": 36,
         "padding_bottom": 36
       }
+    },
+    "multicolumn_XVD46C": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_MVBHtn": {
+          "type": "column",
+          "settings": {
+            "title": "Column",
+            "heading_size": "h1",
+            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+            "link_label": "",
+            "link": "",
+            "column_alignment": "default"
+          }
+        },
+        "column_6eVMjk": {
+          "type": "column",
+          "settings": {
+            "title": "Column",
+            "heading_size": "h1",
+            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+            "link_label": "",
+            "link": "",
+            "column_alignment": "default"
+          }
+        },
+        "column_8xM4qA": {
+          "type": "column",
+          "settings": {
+            "title": "Column",
+            "heading_size": "h1",
+            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+            "link_label": "",
+            "link": "",
+            "column_alignment": "default"
+          }
+        },
+        "column_LUW8pB": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/mira3-camera-with-custom-PERI-attachment.jpg",
+            "title": "Column",
+            "heading_size": "h1",
+            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+            "link_label": "",
+            "link": "",
+            "column_alignment": "default"
+          }
+        },
+        "column_KAphJ8": {
+          "type": "column",
+          "settings": {
+            "title": "Column",
+            "heading_size": "h1",
+            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+            "link_label": "",
+            "link": "",
+            "column_alignment": "default"
+          }
+        },
+        "column_6hfpUJ": {
+          "type": "column",
+          "settings": {
+            "title": "Column",
+            "heading_size": "h1",
+            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+            "link_label": "",
+            "link": "",
+            "column_alignment": "default"
+          }
+        },
+        "column_AgCbNN": {
+          "type": "column",
+          "settings": {
+            "title": "Column",
+            "heading_size": "h1",
+            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+            "link_label": "",
+            "link": "",
+            "column_alignment": "default"
+          }
+        }
+      },
+      "block_order": [
+        "column_MVBHtn",
+        "column_6eVMjk",
+        "column_8xM4qA",
+        "column_LUW8pB",
+        "column_KAphJ8",
+        "column_6hfpUJ",
+        "column_AgCbNN"
+      ],
+      "disabled": true,
+      "name": "t:sections.multicolumn.presets.name",
+      "settings": {
+        "title": "Meet the Team",
+        "heading_size": "h1",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "button_label": "Button label",
+        "button_link": "",
+        "columns_desktop": 3,
+        "column_alignment": "left",
+        "background_style": "primary",
+        "color_scheme": "",
+        "link_color": "link_primary",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
     }
   },
   "order": [
@@ -284,6 +395,7 @@
     "ethossence_embed_script_EDwrMP",
     "multicolumn_3f88yA",
     "174017485838edd9b6",
-    "multicolumn_Uw9GNN"
+    "multicolumn_Uw9GNN",
+    "multicolumn_XVD46C"
   ]
 }
